@@ -12,7 +12,7 @@ Some of the issues, such as a WPA supplicant issue, are fixable by comparing MT7
 - Works with WPA2-Personal and WPA supplicant/NetworkManager without extra configuration
 
 # Building
-- sudo apt-get install build-essential linux-headers-`uname -r`
+- sudo apt-get install build-essential linux-headers-$(uname -r)
 - make clean
 - make
 - sudo make install
