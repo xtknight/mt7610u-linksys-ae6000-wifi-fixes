@@ -1,12 +1,21 @@
 # mt7610u-linksys-ae6000-wifi-fixes
 Trying to fix the MT7610U chipset driver by MediaTek so it's usable on modern Linux kernels and with nl80211/NetworkManager (and not completely breaking on old ones, maybe...).
 
+Based on the driver from the HPRATH site (thank you!)
+http://hprath.com/2014/06/cisco-linksys-ae6000-ac580-media-tek-mt7610u-mt7630u-mt7650u-linux-x64-driver-patch/
+
 Some of the issues, such as a WPA supplicant issue, are fixable by comparing MT7610U and MT7612U code from MediaTek.
 
 # Features
 - Works with 2.4/5GHz networks out of the box
 - Works with NetworkManager and nl80211 interface out of the box
 - Works with WPA2-Personal and WPA supplicant/NetworkManager without extra configuration
+
+# Building
+- sudo apt-get install build-essential
+- make clean
+- make
+- sudo make install
 
 # Major bugs fixed in original driver
 ## If you have these issues, then this driver might fix the problem.
