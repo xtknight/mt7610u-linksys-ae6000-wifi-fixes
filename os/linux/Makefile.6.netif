@@ -1,0 +1,99 @@
+include $(RT28xx_DIR)/os/linux/config.mk
+
+
+#ifdef CONFIG_STA_SUPPORT
+ifeq ($(RT28xx_MODE), STA)
+MOD_NAME = $(MODULE)_sta_net
+endif
+#endif // CONFIG_STA_SUPPORT //
+
+obj-m := $(MOD_NAME).o
+
+
+#ifdef CONFIG_STA_SUPPORT
+ifeq ($(RT28xx_MODE), STA)
+$(MOD_NAME)-objs := \
+	../../os/linux/sta_ioctl.o\
+	../../os/linux/rt_main_dev.o
+
+ifeq ($(HAS_CFG80211_SUPPORT),y)
+$(MOD_NAME)-objs += \
+	../../os/linux/cfg80211.o
+endif
+
+ifeq ($(HAS_MESH_SUPPORT),y)
+$(MOD_NAME)-objs += \
+	../../common/mesh_inf.o
+endif
+
+ifeq ($(HAS_P2P_SUPPORT), y)
+$(MOD_NAME)-objs += \
+	../../common/p2p_inf.o\
+	../../os/linux/ap_ioctl.o
+endif
+
+endif
+#endif // CONFIG_STA_SUPPORT //
+
+
+#chip related
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#ifdef MT76x0
+ifneq ($(or $(findstring mt7650u,$(CHIPSET)),$(findstring mt7630u,$(CHIPSET)),$(findstring mt7610u,$(CHIPSET))),)
+$(MOD_NAME)-objs += \
+        ../../common/rtusb_dev_id.o\
+        ../../os/linux/usb_main_dev.o
+endif
+
+ifneq ($(or $(findstring mt7650e,$(CHIPSET)),$(findstring mt7630e,$(CHIPSET)),$(findstring mt7610e,$(CHIPSET))),)
+$(MOD_NAME)-objs += \
+        ../../common/rt_pci_rbus.o\
+        ../../os/linux/pci_main_dev.o
+endif
+#endif
+
+clean:
+	rm -f ../../common/*.o
+	rm -f ../../common/.*.{cmd,flags,d}
+	rm -f ../../os/linux/*.{o,ko,mod.{o,c}}
+	rm -f ../../os/linux/.*.{cmd,flags,d}
+	rm -fr ../../os/linux/.tmp_versions
+	rm -f ../../os/linux/Module.symvers
+	rm -f ../../os/linux/Modules.symvers
+	rm -f ../../os/linux/Module.markers
+	rm -f ../../os/linux/modules.order
+	rm -f ../../chips/*.o
+	rm -f ../../chips/.*.{cmd,flags,d}
+ifeq ($(RT28xx_MODE),AP)
+	rm -f ../../ap/*.o
+	rm -f ../../ap/.*.{cmd,flags,d}
+else
+ifeq ($(RT28xx_MODE),STA)
+	rm -f ../../sta/*.o
+	rm -f ../../sta/.*.{cmd,flags,d}
+endif
+endif
+
+install:
+	install -d $(LINUX_SRC_MODULE)
+	install -m 644 -c $(addsuffix .ko,$(MOD_NAME)) $(LINUX_SRC_MODULE)
+	/sbin/depmod -a ${shell uname -r}
+
+uninstall:
+	rm -rf $(addprefix $(LINUX_SRC_MODULE),$(addsuffix .ko,$(MOD_NAME)))
+	/sbin/depmod -a ${shell uname -r}
