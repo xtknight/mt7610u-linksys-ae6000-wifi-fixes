@@ -19,6 +19,7 @@ Some of the issues, such as a WPA supplicant issue, are fixable by comparing MT7
 - Add other dev ids
 - Try to get AP mode working (huge project?)
 - Test other encryption modes like WEP, WPA2-Enterprise, etc.
+- Using -Dwext with wpa_supplicant seems to reveal a warning (WARN_ON(!bss) kernel 3.11 ~net/wireless/sme.c:658 __cfg80211_connect_result+0x24f/0x346) in the driver, which was probably there originally
 
 # Other
 - Please submit patches or let me know of anything missing or not working
