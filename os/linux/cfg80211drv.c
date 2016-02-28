@@ -729,53 +729,6 @@ BOOLEAN CFG80211DRV_Connect(
 
 	/* set channel: STATION will auto-scan */
 
-	/* set WEP key */
-	/*if (pConnInfo->pKey &&
-		((pConnInfo->GroupwiseEncrypType | pConnInfo->PairwiseEncrypType) &
-												RT_CMD_80211_CONN_ENCRYPT_WEP))
-	{
-		UCHAR KeyBuf[50];
-
-		// reset AuthMode and EncrypType
-		Set_AuthMode_Proc(pAd, "SHARED");
-		Set_EncrypType_Proc(pAd, "WEP");
-
-		// reset key
-#ifdef RT_CFG80211_DEBUG
-		hex_dump("KeyBuf=", (UINT8 *)pConnInfo->pKey, pConnInfo->KeyLen);
-#endif
-
-		pAd->StaCfg.DefaultKeyId = pConnInfo->KeyIdx; // base 0
-		if (pConnInfo->KeyLen >= sizeof(KeyBuf))
-			return FALSE;
-		memcpy(KeyBuf, pConnInfo->pKey, pConnInfo->KeyLen);
-		KeyBuf[pConnInfo->KeyLen] = 0x00;
-
-		CFG80211DBG(RT_DEBUG_ERROR,
-					("80211> pAd->StaCfg.DefaultKeyId = %d\n",
-					pAd->StaCfg.DefaultKeyId));
-
-		switch(pConnInfo->KeyIdx)
-		{
-			case 1:
-			default:
-				Set_Key1_Proc(pAd, (PSTRING)KeyBuf);
-				break;
-
-			case 2:
-				Set_Key2_Proc(pAd, (PSTRING)KeyBuf);
-				break;
-
-			case 3:
-				Set_Key3_Proc(pAd, (PSTRING)KeyBuf);
-				break;
-
-			case 4:
-				Set_Key4_Proc(pAd, (PSTRING)KeyBuf);
-				break;
-		}
-	}*/
-
 	CFG80211DBG(RT_DEBUG_TRACE, ("80211> Key = %s\n", pConnInfo->pKey));
 
 	/* set channel: STATION will auto-scan */
@@ -815,17 +768,6 @@ BOOLEAN CFG80211DRV_Connect(
 
 	pAd->StaCfg.bAutoReconnect = TRUE;
 	pAd->FlgCfg80211Connecting = TRUE;
-
-	/*SSIDLen = pConnInfo->SsidLen;
-	if (SSIDLen > NDIS_802_11_LENGTH_SSID)
-		SSIDLen = NDIS_802_11_LENGTH_SSID;
-	
-
-	memset(&SSID, 0, sizeof(SSID));
-	memcpy(SSID, pConnInfo->pSsid, SSIDLen);
-	Set_SSID_Proc(pAd, (PSTRING)SSID);
-	CFG80211DBG(RT_DEBUG_ERROR, ("80211> SSID = %s\n", SSID));*/
-
 
 	Set_SSID_Proc(pAd, (PSTRING)SSID);
 	CFG80211DBG(RT_DEBUG_TRACE, ("80211> Connecting SSID = %s\n", SSID));
@@ -1231,7 +1173,7 @@ VOID CFG80211_Scaning(
 	UINT8 BW;
 
 
-	CFG80211DBG(RT_DEBUG_ERROR, ("80211> CFG80211_Scaning ==>\n"));
+	CFG80211DBG(RT_DEBUG_TRACE, ("80211> CFG80211_Scaning ==>\n"));
 
 	if (!RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_INTERRUPT_IN_USE))
 	{

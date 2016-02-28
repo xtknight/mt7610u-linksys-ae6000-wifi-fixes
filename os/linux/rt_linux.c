@@ -3185,7 +3185,7 @@ VOID CFG80211OS_Scaning(
 								RSSI,
 								GFP_ATOMIC);
 
-	CFG80211DBG(RT_DEBUG_ERROR, ("80211> cfg80211_inform_bss_frame\n"));
+	CFG80211DBG(RT_DEBUG_TRACE, ("80211> cfg80211_inform_bss_frame\n"));
 #endif /* CONFIG_STA_SUPPORT */
 #endif /* LINUX_VERSION_CODE */
 }
