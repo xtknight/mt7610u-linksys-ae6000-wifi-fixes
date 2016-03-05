@@ -1178,7 +1178,7 @@ static void HTParametersHook(
 		{
 			pAd->CommonCfg.bForty_Mhz_Intolerant = TRUE;
 		}
-		DBGPRINT(RT_DEBUG_TRACE, ("HT: 40MHZ INTOLERANT = %d\n", pAd->CommonCfg.bForty_Mhz_Intolerant));
+		DBGPRINT(RT_DEBUG_ERROR, ("HT: 40MHZ INTOLERANT = %d\n", pAd->CommonCfg.bForty_Mhz_Intolerant));
 	}
 	/*HT_TxStream*/
 	if(RTMPGetKeyParameter("HT_TxStream", pValueStr, 10, pInput, TRUE))

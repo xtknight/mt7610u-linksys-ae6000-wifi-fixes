@@ -644,6 +644,7 @@ INT Set_NetworkType_Proc(
 			ext_ch = EXTCHA_ABOVE;
 			rf_bw = BW_40;
 			rf_channel = pAd->CommonCfg.CentralChannel;
+			DBGPRINT(RT_DEBUG_ERROR, ("%s RegTransmitSetting 40MHz, control channel lower\n", __FUNCTION__));
 		}
 		else if (WMODE_CAP_N(pAd->CommonCfg.PhyMode) &&
 	                 pAd->CommonCfg.RegTransmitSetting.field.BW == BW_40 &&
@@ -654,6 +655,7 @@ INT Set_NetworkType_Proc(
 			ext_ch = EXTCHA_BELOW;
 			rf_bw = BW_40;
 			rf_channel = pAd->CommonCfg.CentralChannel;
+			DBGPRINT(RT_DEBUG_ERROR, ("%s RegTransmitSetting 40MHz, control channel upper\n", __FUNCTION__));
 		}
 		else
 #endif /* DOT11_N_SUPPORT */
@@ -662,10 +664,11 @@ INT Set_NetworkType_Proc(
 			rf_bw = BW_20;
 			ext_ch = EXTCHA_NONE;
 			rf_channel = pAd->CommonCfg.Channel;
+			DBGPRINT(RT_DEBUG_ERROR, ("%s RegTransmitSetting 20MHz\n", __FUNCTION__));
 		}
 
 		AsicSetChannel(pAd, rf_channel, rf_bw, ext_ch, FALSE);
-		DBGPRINT(RT_DEBUG_TRACE, ("%s():BW_%s, CtrlChannel(%d), CentralChannel(%d) \n", 
+		DBGPRINT(RT_DEBUG_ERROR, ("%s():BW_%s, CtrlChannel(%d), CentralChannel(%d) \n", 
 					__FUNCTION__, (rf_bw == BW_40 ? "40" : "20"),
 					pAd->CommonCfg.Channel,
 					pAd->CommonCfg.CentralChannel));
@@ -3801,7 +3804,7 @@ INT RTMPQueryInformation(
             ulInfo = (ULONG)pAd->CommonCfg.PhyMode;
             wrq->u.data.length = sizeof(ulInfo);
             Status = copy_to_user(wrq->u.data.pointer, &ulInfo, wrq->u.data.length);
-            DBGPRINT(RT_DEBUG_TRACE, ("Query::RT_OID_802_11_PHY_MODE (=%ld)\n", ulInfo));
+            DBGPRINT(RT_DEBUG_ERROR, ("Query::RT_OID_802_11_PHY_MODE (=%ld)\n", ulInfo));
             break;
         case RT_OID_802_11_STA_CONFIG:
 /*            pStaConfig = (RT_802_11_STA_CONFIG *) kmalloc(sizeof(RT_802_11_STA_CONFIG), MEM_ALLOC_FLAG); */
@@ -3942,13 +3945,13 @@ INT RTMPQueryInformation(
             		ulInfo = (ULONG)pAd->LastRxRate;
             		wrq->u.data.length = sizeof(ulInfo);
 			Status = copy_to_user(wrq->u.data.pointer, &ulInfo, wrq->u.data.length);
-			DBGPRINT(RT_DEBUG_TRACE, ("Query::RT_OID_802_11_QUERY_LAST_RX_RATE (=%ld)\n", ulInfo));
+			DBGPRINT(RT_DEBUG_ERROR, ("Query::RT_OID_802_11_QUERY_LAST_RX_RATE (=%ld)\n", ulInfo));
 			break;
 		case RT_OID_802_11_QUERY_LAST_TX_RATE:
 			ulInfo = (ULONG)pAd->LastTxRate;
 			wrq->u.data.length = sizeof(ulInfo);
 			Status = copy_to_user(wrq->u.data.pointer, &ulInfo, wrq->u.data.length);
-			DBGPRINT(RT_DEBUG_TRACE, ("Query::RT_OID_802_11_QUERY_LAST_TX_RATE (=%lx)\n", ulInfo));
+			DBGPRINT(RT_DEBUG_ERROR, ("Query::RT_OID_802_11_QUERY_LAST_TX_RATE (=%lx)\n", ulInfo));
 			break;
         		case RT_OID_802_11_QUERY_MAP_REAL_RX_RATE:
 			RateValue=0;
@@ -3956,7 +3959,7 @@ INT RTMPQueryInformation(
 			getRate(HTPhyMode, &RateValue);
 			wrq->u.data.length = sizeof(RateValue);
 			Status = copy_to_user(wrq->u.data.pointer, &RateValue, wrq->u.data.length);
-			DBGPRINT(RT_DEBUG_TRACE, ("Query::RT_OID_802_11_QUERY_LAST_RX_RATE (=%ld)\n", RateValue));
+			DBGPRINT(RT_DEBUG_ERROR, ("Query::RT_OID_802_11_QUERY_LAST_RX_RATE (=%ld)\n", RateValue));
 			break;
 		case RT_OID_802_11_QUERY_MAP_REAL_TX_RATE:
 			RateValue=0;
@@ -3964,13 +3967,13 @@ INT RTMPQueryInformation(
 			getRate(HTPhyMode, &RateValue);
 			wrq->u.data.length = sizeof(RateValue);
 			Status = copy_to_user(wrq->u.data.pointer, &RateValue, wrq->u.data.length);
-			DBGPRINT(RT_DEBUG_TRACE, ("Query::RT_OID_802_11_QUERY_LAST_TX_RATE (=%ld)\n", RateValue));
+			DBGPRINT(RT_DEBUG_ERROR, ("Query::RT_OID_802_11_QUERY_LAST_TX_RATE (=%ld)\n", RateValue));
 			break;
 		case RT_OID_802_11_QUERY_TX_PHYMODE:
 			ulInfo = (ULONG)pAd->MacTab.Content[BSSID_WCID].HTPhyMode.word;
 			wrq->u.data.length = sizeof(ulInfo);
 			Status = copy_to_user(wrq->u.data.pointer, &ulInfo,	wrq->u.data.length);
-			DBGPRINT(RT_DEBUG_TRACE, ("Query::RT_OID_802_11_QUERY_TX_PHYMODE (=%lx)\n", ulInfo));
+			DBGPRINT(RT_DEBUG_ERROR, ("Query::RT_OID_802_11_QUERY_TX_PHYMODE (=%lx)\n", ulInfo));
 			break;
         case RT_OID_802_11_QUERY_EEPROM_VERSION:
             wrq->u.data.length = sizeof(ULONG);
@@ -4019,7 +4022,7 @@ INT RTMPQueryInformation(
 		case RT_OID_802_11_QUERY_WMM:
 			wrq->u.data.length = sizeof(BOOLEAN);
 			Status = copy_to_user(wrq->u.data.pointer, &pAd->CommonCfg.bWmmCapable, wrq->u.data.length);
-			DBGPRINT(RT_DEBUG_TRACE, ("Query::RT_OID_802_11_QUERY_WMM (=%d)\n",	pAd->CommonCfg.bWmmCapable));
+			DBGPRINT(RT_DEBUG_ERROR, ("Query::RT_OID_802_11_QUERY_WMM (=%d)\n",	pAd->CommonCfg.bWmmCapable));
 			break;
 
 
@@ -4062,9 +4065,9 @@ INT RTMPQueryInformation(
 			wrq->u.data.length = sizeof(OID_SET_HT_PHYMODE);
 			if (copy_to_user(wrq->u.data.pointer, pHTPhyMode, wrq->u.data.length))
 				Status = -EFAULT;
-			DBGPRINT(RT_DEBUG_TRACE, ("Query::RT_OID_802_11_QUERY_HT_PHYMODE (PhyMode = %d, MCS =%d, BW = %d, STBC = %d, ExtOffset=%d)\n",
+			DBGPRINT(RT_DEBUG_ERROR, ("Query::RT_OID_802_11_QUERY_HT_PHYMODE (PhyMode = %d, MCS =%d, BW = %d, STBC = %d, ExtOffset=%d)\n",
 				pHTPhyMode->HtMode, pHTPhyMode->MCS, pHTPhyMode->BW, pHTPhyMode->STBC, pHTPhyMode->ExtOffset));
-			DBGPRINT(RT_DEBUG_TRACE, (" %s(): (.word = %x )\n",
+			DBGPRINT(RT_DEBUG_ERROR, (" %s(): (.word = %x )\n",
 					__FUNCTION__, pAd->MacTab.Content[BSSID_WCID].HTPhyMode.word));
 			os_free_mem(NULL, pHTPhyMode);
 		}
@@ -4098,9 +4101,9 @@ INT RTMPQueryInformation(
                 wrq->u.data.length = sizeof(OID_SET_HT_PHYMODE);
                 if (copy_to_user(wrq->u.data.pointer, pHTPhyMode, wrq->u.data.length))
     				Status = -EFAULT;
-    			DBGPRINT(RT_DEBUG_TRACE, ("Query::RT_OID_802_11_QUERY_HT_PHYMODE (PhyMode = %d, MCS =%d, BW = %d, STBC = %d, ExtOffset=%d)\n",
+    			DBGPRINT(RT_DEBUG_ERROR, ("Query::RT_OID_802_11_QUERY_HT_PHYMODE (PhyMode = %d, MCS =%d, BW = %d, STBC = %d, ExtOffset=%d)\n",
     				pHTPhyMode->HtMode, pHTPhyMode->MCS, pHTPhyMode->BW, pHTPhyMode->STBC, pHTPhyMode->ExtOffset));
-    			DBGPRINT(RT_DEBUG_TRACE, ("%s(): (.word = %x )\n",
+    			DBGPRINT(RT_DEBUG_ERROR, ("%s(): (.word = %x )\n",
 						__FUNCTION__, pAd->MacTab.Content[BSSID_WCID].HTPhyMode.word));
 			os_free_mem(NULL, pHTPhyMode);
             }

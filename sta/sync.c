@@ -115,7 +115,7 @@ VOID BeaconTimeout(
 
 		AsicSwitchChannel(pAd, pAd->CommonCfg.CentralChannel, FALSE);
 		AsicLockChannel(pAd, pAd->CommonCfg.CentralChannel);
-		DBGPRINT(RT_DEBUG_TRACE, ("SYNC - End of SCAN, restore to 40MHz channel %d, Total BSS[%02d]\n",
+		DBGPRINT(RT_DEBUG_ERROR, ("SYNC - End of SCAN, restore to 40MHz channel %d, Total BSS[%02d]\n",
 									pAd->CommonCfg.CentralChannel, pAd->ScanTab.BssNr));
 	}
 #endif /* DOT11_N_SUPPORT */
@@ -1723,7 +1723,7 @@ VOID PeerBeaconAtJoinAction(
 				NdisZeroMemory(&pAd->MlmeAux.APQosCapability, sizeof(QOS_CAPABILITY_PARM));
 			}
 			
-			DBGPRINT(RT_DEBUG_TRACE, ("%s(): - after JOIN, SupRateLen=%d, ExtRateLen=%d\n", 
+			DBGPRINT(RT_DEBUG_ERROR, ("%s(): - after JOIN, SupRateLen=%d, ExtRateLen=%d\n", 
 								__FUNCTION__, pAd->MlmeAux.SupRateLen,
 								pAd->MlmeAux.ExtRateLen));
 
@@ -1741,9 +1741,16 @@ VOID PeerBeaconAtJoinAction(
 				UCHAR BwFallBack = 0;
 
 				if (pAd->MlmeAux.HtCapability.HtCapInfo.ChannelWidth == BW_40)
+				{
+					DBGPRINT(RT_DEBUG_ERROR, ("%s(): pAd->MlmeAux.HtCapability.HtCapInfo.ChannelWidth=BW_40\n", __FUNCTION__));
 					InfraAP_BW = TRUE;
+				}
 				else
-					InfraAP_BW = FALSE;
+				{
+					DBGPRINT(RT_DEBUG_ERROR, ("%s(): pAd->MlmeAux.HtCapability.HtCapInfo.ChannelWidth=BW_20? FORCE HACK TO BW_40\n", __FUNCTION__));
+					//InfraAP_BW = FALSE;
+					InfraAP_BW = TRUE;
+				}
 
 				AdjustChannelRelatedValue(pAd,
 											&BwFallBack,
@@ -2238,7 +2245,7 @@ VOID PeerBeacon(
 											(pAd->MlmeAux.AddHtInfo.AddHtInfo2.NonGfPresent == 1));
 					}
 					
-					DBGPRINT(RT_DEBUG_WARN, ("SYNC - AP changed B/G protection to %d\n", bUseBGProtection));
+					DBGPRINT(RT_DEBUG_ERROR, ("SYNC - AP changed B/G protection to %d\n", bUseBGProtection));
 				}
 				
 #ifdef DOT11_N_SUPPORT
@@ -2256,7 +2263,7 @@ VOID PeerBeacon(
 					else
 						AsicUpdateProtect(pAd, pAd->MlmeAux.AddHtInfo.AddHtInfo2.OperaionMode, ALLN_SETPROTECT, FALSE, FALSE);
 
-					DBGPRINT(RT_DEBUG_TRACE, ("SYNC - AP changed N OperaionMode to %d\n", pAd->MlmeAux.AddHtInfo.AddHtInfo2.OperaionMode));
+					DBGPRINT(RT_DEBUG_ERROR, ("SYNC - AP changed N OperaionMode to %d\n", pAd->MlmeAux.AddHtInfo.AddHtInfo2.OperaionMode));
 				}
 #endif /* DOT11_N_SUPPORT */
 				
@@ -2264,14 +2271,14 @@ VOID PeerBeacon(
 					ERP_IS_USE_BARKER_PREAMBLE(ie_list->Erp))
 				{
 					MlmeSetTxPreamble(pAd, Rt802_11PreambleLong);
-					DBGPRINT(RT_DEBUG_TRACE, ("SYNC - AP forced to use LONG preamble\n"));
+					DBGPRINT(RT_DEBUG_ERROR, ("SYNC - AP forced to use LONG preamble\n"));
 				}
 
 				if (OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_WMM_INUSED)    &&
 					(ie_list->EdcaParm.bValid == TRUE)                          &&
 					(ie_list->EdcaParm.EdcaUpdateCount != pAd->CommonCfg.APEdcaParm.EdcaUpdateCount))
 				{
-					DBGPRINT(RT_DEBUG_TRACE, ("SYNC - AP change EDCA parameters(from %d to %d)\n", 
+					DBGPRINT(RT_DEBUG_ERROR, ("SYNC - AP change EDCA parameters(from %d to %d)\n", 
 						pAd->CommonCfg.APEdcaParm.EdcaUpdateCount,
 						ie_list->EdcaParm.EdcaUpdateCount));
 					AsicSetEdcaParm(pAd, &ie_list->EdcaParm);
@@ -2309,7 +2316,7 @@ VOID PeerBeacon(
 							{
 								bChangeBW = TRUE;
 								pAd->CommonCfg.CentralChannel = pAd->CommonCfg.Channel;
-								DBGPRINT(RT_DEBUG_TRACE, ("FallBack from 40MHz to 20MHz(CtrlCh=%d, CentralCh=%d)\n", 
+								DBGPRINT(RT_DEBUG_ERROR, ("FallBack from 40MHz to 20MHz(CtrlCh=%d, CentralCh=%d)\n", 
 															pAd->CommonCfg.Channel, pAd->CommonCfg.CentralChannel));
 								CntlChannelWidth(pAd, pAd->CommonCfg.Channel, pAd->CommonCfg.CentralChannel, BW_20, 0);
 							}
@@ -2342,7 +2349,7 @@ VOID PeerBeacon(
 								{
 									pAd->CommonCfg.Channel = ie_list->AddHtInfo.ControlChan;
 										pAd->StaActive.SupportedHtPhy.ChannelWidth = BW_40;
-									DBGPRINT(RT_DEBUG_TRACE, ("FallBack from 20MHz to 40MHz(CtrlCh=%d, CentralCh=%d)\n", 
+									DBGPRINT(RT_DEBUG_ERROR, ("FallBack from 20MHz to 40MHz(CtrlCh=%d, CentralCh=%d)\n", 
 																pAd->CommonCfg.Channel, pAd->CommonCfg.CentralChannel));
 									CntlChannelWidth(pAd, pAd->CommonCfg.Channel, pAd->CommonCfg.CentralChannel, BW_40, ie_list->AddHtInfo.AddHtInfo.ExtChanOffset);
 									pAd->MacTab.Content[BSSID_WCID].HTPhyMode.field.BW = 1;
@@ -2860,7 +2867,7 @@ VOID BuildEffectedChannelList(
 	}
 	else
 	{
-		DBGPRINT(RT_DEBUG_TRACE, ("LinkUP 20MHz . No Effected Channel \n"));
+		DBGPRINT(RT_DEBUG_ERROR, ("LinkUP 20MHz . No Effected Channel \n"));
 		/* Now operating in 20MHz, doesn't find 40MHz effected channels */
 		return;
 	}
@@ -2969,12 +2976,13 @@ VOID CntlChannelWidth(
 	INT32 ext_ch;
 
 
-	DBGPRINT(RT_DEBUG_TRACE, ("%s: PrimaryChannel[%d] \n",__FUNCTION__,prim_ch));
-	DBGPRINT(RT_DEBUG_TRACE, ("%s: CentralChannel[%d] \n",__FUNCTION__,cent_ch));
-	DBGPRINT(RT_DEBUG_TRACE, ("%s: ChannelWidth[%d] \n",__FUNCTION__,ch_bw));
-	DBGPRINT(RT_DEBUG_TRACE, ("%s: SecondaryChannelOffset[%d] \n",__FUNCTION__,sec_ch_offset));
+	DBGPRINT(RT_DEBUG_ERROR, ("%s: PrimaryChannel[%d] \n",__FUNCTION__,prim_ch));
+	DBGPRINT(RT_DEBUG_ERROR, ("%s: CentralChannel[%d] \n",__FUNCTION__,cent_ch));
+	DBGPRINT(RT_DEBUG_ERROR, ("%s: ChannelWidth[%d] \n",__FUNCTION__,ch_bw));
+	DBGPRINT(RT_DEBUG_ERROR, ("%s: SecondaryChannelOffset[%d] \n",__FUNCTION__,sec_ch_offset));
 
 #ifdef DOT11_N_SUPPORT
+	DBGPRINT(RT_DEBUG_ERROR, ("%s: DOT11_N_SUPPORT\n",__FUNCTION__));
 	/*Change to AP channel */
 	if (ch_bw == BW_40)
 	{
@@ -3013,7 +3021,7 @@ VOID CntlChannelWidth(
 		RT28xx_ch_tunning(pAd, rf_bw);
 #endif /* RT28xx */
 
-		DBGPRINT(RT_DEBUG_TRACE, ("!!!40MHz Lower !!! Control Channel at Below. Central = %d \n", pAd->CommonCfg.CentralChannel ));
+		DBGPRINT(RT_DEBUG_ERROR, ("!!!40MHz Lower !!! Control Channel at Below. Central = %d \n", pAd->CommonCfg.CentralChannel ));
 
 		rtmp_bbp_get_agc(pAd, &pAd->BbpTuning.R66CurrentValue, RX_CHAIN_0);
 	}

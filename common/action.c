@@ -657,7 +657,7 @@ VOID ChannelSwitchAction(
 	UCHAR rf_channel = 0, rf_bw;
 
 
-	DBGPRINT(RT_DEBUG_TRACE,("%s(): NewChannel=%d, Secondary=%d\n", 
+	DBGPRINT(RT_DEBUG_ERROR,("%s(): NewChannel=%d, Secondary=%d\n", 
 				__FUNCTION__, NewChannel, Secondary));
 
 	if (ChannelSwitchSanityCheck(pAd, Wcid, NewChannel, Secondary) == FALSE)
@@ -666,6 +666,7 @@ VOID ChannelSwitchAction(
 	pAd->CommonCfg.Channel = NewChannel;
 	if (Secondary == EXTCHA_NONE)
 	{
+		DBGPRINT(RT_DEBUG_ERROR, ("%s(): EXTCHA_NONE => RecomWidth=0, rf_bw=BW_20\n", __FUNCTION__));
 		pAd->CommonCfg.CentralChannel = pAd->CommonCfg.Channel;
 		pAd->MacTab.Content[Wcid].HTPhyMode.field.BW = 0;
 		pAd->CommonCfg.AddHTInfo.AddHtInfo.RecomWidth = 0;
@@ -679,6 +680,7 @@ VOID ChannelSwitchAction(
 			(pAd->CommonCfg.HtCapability.HtCapInfo.ChannelWidth == 1)
 	)
 	{
+		DBGPRINT(RT_DEBUG_ERROR, ("%s(): EXTCHA_ABOVE/EXTCHA_BELOW => RecomWidth=1, rf_bw=BW_40\n", __FUNCTION__));
 		rf_bw = BW_40;
 		if (Secondary == EXTCHA_ABOVE)
 			pAd->CommonCfg.CentralChannel = pAd->CommonCfg.Channel + 2;
@@ -692,7 +694,7 @@ VOID ChannelSwitchAction(
 	if (rf_channel != 0) {
 		AsicSetChannel(pAd, rf_channel, rf_bw, Secondary, FALSE);
 		
-		DBGPRINT(RT_DEBUG_TRACE, ("%s(): %dMHz LINK UP, CtrlChannel=%d,  CentralChannel= %d \n",
+		DBGPRINT(RT_DEBUG_ERROR, ("%s(): %dMHz LINK UP, CtrlChannel=%d,  CentralChannel= %d \n",
 					__FUNCTION__, (rf_bw == BW_40 ? 40 : 20),
 					pAd->CommonCfg.Channel, 
 					pAd->CommonCfg.CentralChannel));

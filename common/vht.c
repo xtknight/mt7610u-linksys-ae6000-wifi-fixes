@@ -313,6 +313,7 @@ INT build_vht_op_ie(RTMP_ADAPTER *pAd, UCHAR *buf)
 
 	NdisZeroMemory((UCHAR *)&vht_op, sizeof(VHT_OP_IE));
 	vht_op.vht_op_info.ch_width = (pAd->CommonCfg.vht_bw == VHT_BW_80 ? 1: 0);
+	DBGPRINT(RT_DEBUG_ERROR, ("%s:: pAd->CommonCfg.vht_bw=%d => vht_op.vht_op_info.ch_width=%d\n", __FUNCTION__, pAd->CommonCfg.vht_bw, vht_op.vht_op_info.ch_width));
 	switch (vht_op.vht_op_info.ch_width)
 	{
 		case 0:

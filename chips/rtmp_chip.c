@@ -536,6 +536,7 @@ static VOID ChipBBPAdjust(RTMP_ADAPTER *pAd)
 	if (get_ht_cent_ch(pAd, &rf_bw, &ext_ch) == FALSE)
 #endif /* DOT11_N_SUPPORT */
 	{
+		DBGPRINT(RT_DEBUG_ERROR,("%s Force rf_bw=BW_20. originally was %d\n", __FUNCTION__, rf_bw));
 		rf_bw = BW_20;
 		ext_ch = EXTCHA_NONE;
 		pAd->CommonCfg.CentralChannel = pAd->CommonCfg.Channel;
@@ -606,6 +607,7 @@ static VOID Default_ChipAGCInit(RTMP_ADAPTER *pAd, UCHAR BandWidth)
 	if (pAd->LatchRfRegs.Channel <= 14)
 	{	// BG band
 		{
+			DBGPRINT(RT_DEBUG_ERROR,("%s BandWidth==BG band.\n", __FUNCTION__));
 			R66 = 0x2E + lan_gain;
 		}
 	}
@@ -613,10 +615,16 @@ static VOID Default_ChipAGCInit(RTMP_ADAPTER *pAd, UCHAR BandWidth)
 	{	//A band
 		{	
 			if (BandWidth == BW_20)
+			{
 				R66 = (UCHAR)(0x32 + (lan_gain * 5) / 3);
+				DBGPRINT(RT_DEBUG_ERROR,("%s BandWidth==BW_20.\n", __FUNCTION__));
+			}
 #ifdef DOT11_N_SUPPORT
 			else
+			{
 				R66 = (UCHAR)(0x3A + (lan_gain * 5) / 3);
+				DBGPRINT(RT_DEBUG_ERROR,("%s BandWidth==BW_40.\n", __FUNCTION__));
+			}
 #endif // DOT11_N_SUPPORT //
 		}
 	}

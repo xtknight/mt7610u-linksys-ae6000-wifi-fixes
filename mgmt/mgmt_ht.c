@@ -251,6 +251,7 @@ VOID RTMPSetHT(
 
 	if (pAd->CommonCfg.bForty_Mhz_Intolerant && (pHTPhyMode->BW == BW_40))
 	{
+		DBGPRINT(RT_DEBUG_ERROR, ("%s(): pAd->CommonCfg.bForty_Mhz_Intolerant && (pHTPhyMode->BW == BW_40) ==>  pHTPhyMode->BW = BW_20\n", __FUNCTION__));
 		pHTPhyMode->BW = BW_20;
 		ht_cap->HtCapInfo.Forty_Mhz_Intolerant = 1;
 	}
@@ -265,6 +266,7 @@ VOID RTMPSetHT(
 			ht_cap->HtCapInfo.CCKmodein40 = 1;
 
 		rt_ht_cap->ChannelWidth = 1;
+		DBGPRINT(RT_DEBUG_ERROR, ("%s(): pAd->CommonCfg.AddHTInfo.AddHtInfo.RecomWidth = 1\n", __FUNCTION__));
 		pAd->CommonCfg.AddHTInfo.AddHtInfo.RecomWidth = 1;
 		pAd->CommonCfg.AddHTInfo.AddHtInfo.ExtChanOffset = (pHTPhyMode->ExtOffset == EXTCHA_BELOW)? (EXTCHA_BELOW): EXTCHA_ABOVE;
 		/* Set Regsiter for extension channel position.*/
@@ -272,17 +274,19 @@ VOID RTMPSetHT(
 
 		/* Turn on BBP 40MHz mode now only as AP . */
 		/* Sta can turn on BBP 40MHz after connection with 40MHz AP. Sta only broadcast 40MHz capability before connection.*/
-		if ((pAd->OpMode == OPMODE_AP) || INFRA_ON(pAd) || ADHOC_ON(pAd)
-		)
+		//if ((pAd->OpMode == OPMODE_AP) || INFRA_ON(pAd) || ADHOC_ON(pAd))
 		{
+			//DBGPRINT(RT_DEBUG_ERROR, ("%s(): (pAd->OpMode == OPMODE_AP) || INFRA_ON(pAd) || ADHOC_ON(pAd) ==> bw=BW_40\n", __FUNCTION__));
+			DBGPRINT(RT_DEBUG_ERROR, ("%s(): bw=BW_40 FORCE ENABLED--HACK\n", __FUNCTION__));
 			rtmp_bbp_set_ctrlch(pAd, pHTPhyMode->ExtOffset);	
-				bw = BW_40;
+			bw = BW_40;
 		}
 	}
 	else
 	{
 		ht_cap->HtCapInfo.ChannelWidth = 0;
 		rt_ht_cap->ChannelWidth = 0;
+		DBGPRINT(RT_DEBUG_ERROR, ("%s(): pAd->CommonCfg.AddHTInfo.AddHtInfo.RecomWidth = 0\n", __FUNCTION__));
 		pAd->CommonCfg.AddHTInfo.AddHtInfo.RecomWidth = 0;
 		pAd->CommonCfg.AddHTInfo.AddHtInfo.ExtChanOffset = EXTCHA_NONE;
 		pAd->CommonCfg.CentralChannel = pAd->CommonCfg.Channel;
@@ -296,6 +300,7 @@ VOID RTMPSetHT(
 		pAd->CommonCfg.vht_cent_ch)
 		bw = BW_80;
 #endif /* DOT11_VHT_AC */
+	DBGPRINT(RT_DEBUG_ERROR, ("%s(): rtmp_bbp_set_bw(%d)\n", __FUNCTION__, bw));
 	rtmp_bbp_set_bw(pAd, bw);
 
 
@@ -611,12 +616,14 @@ INT	SetCommonHT(RTMP_ADAPTER *pAd)
 #ifdef DOT11N_DRAFT3
 	if(pAd->CommonCfg.bBssCoexEnable && pAd->CommonCfg.Bss2040NeedFallBack)
 	{
+		DBGPRINT(RT_DEBUG_ERROR, ("%s(): CoexEnable && Bss2040NeedFallBack: Force AddHtInfo.RecomWidth=0\n", __FUNCTION__));
 		pAd->CommonCfg.AddHTInfo.AddHtInfo.RecomWidth = 0;
 		pAd->CommonCfg.AddHTInfo.AddHtInfo.ExtChanOffset = 0;
 		pAd->CommonCfg.LastBSSCoexist2040.field.BSS20WidthReq = 1;
 		pAd->CommonCfg.Bss2040CoexistFlag |= BSS_2040_COEXIST_INFO_SYNC;
 		pAd->CommonCfg.Bss2040NeedFallBack = 1;
 	}
+	DBGPRINT(RT_DEBUG_ERROR, ("%s(): AddHtInfo.RecomWidth=%d\n", __FUNCTION__, pAd->CommonCfg.AddHTInfo.AddHtInfo.RecomWidth));
 #endif /* DOT11N_DRAFT3 */
 
 	return TRUE;
@@ -655,6 +662,7 @@ VOID RTMPUpdateHTIE(
 
 		pAddHtInfo->AddHtInfo.ExtChanOffset = pRtHt->ExtChanOffset ;
 		pAddHtInfo->AddHtInfo.RecomWidth = pRtHt->RecomWidth;
+		DBGPRINT(RT_DEBUG_ERROR, ("%s(): pAddHtInfo->AddHtInfo.RecomWidth=pRtHt->RecomWidth=%d\n", __FUNCTION__, pRtHt->RecomWidth));
 		pAddHtInfo->AddHtInfo2.OperaionMode = pRtHt->OperaionMode;
 		pAddHtInfo->AddHtInfo2.NonGfPresent = pRtHt->NonGfPresent;
 		RTMPMoveMemory(pAddHtInfo->MCSSet, /*pRtHt->MCSSet*/pMcsSet, 4); /* rt2860 only support MCS max=32, no need to copy all 16 uchar.*/

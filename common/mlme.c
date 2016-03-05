@@ -996,8 +996,10 @@ VOID STAMlmePeriodicExec(
 #ifdef RT3290
 	// TODO: shiang, what's this and how about in AP mode??
 	// Need to enable PCIE_APP0_CLK_REQ for HT40 throughput
+	DBGPRINT(RT_DEBUG_ERROR, ("%s::HT40 code area 0\n", __FUNCTION__));
 	if (IS_RT3290(pAd) && (pAd->CommonCfg.BBPCurrentBW == BW_40))
 	{
+		DBGPRINT(RT_DEBUG_ERROR, ("%s::HT40 code area 1\n", __FUNCTION__));
 		if ((pAd->RalinkCounters.LastOneSecTotalTxCount + pAd->RalinkCounters.LastOneSecRxOkDataCnt) >= 2000)
 		{
 			WLAN_FUN_CTRL_STRUC     WlanFunCtrl = {.word = 0};
@@ -4689,7 +4691,14 @@ BOOLEAN RTMPCheckHt(
 			break;
 	}	
 
+	// FIXED: Some routers don't force it properly. I guess this info is from BSS????
+	DBGPRINT(RT_DEBUG_ERROR, ("%s::FORCE HACK pAddHtInfo->AddHtInfo.RecomWidth=1\n", __FUNCTION__));
+	pAddHtInfo->AddHtInfo.RecomWidth = 1;
+
+	DBGPRINT(RT_DEBUG_ERROR, ("%s::pAddHtInfo->AddHtInfo.RecomWidth=%d\n", __FUNCTION__, pAddHtInfo->AddHtInfo.RecomWidth));
+	DBGPRINT(RT_DEBUG_ERROR, ("%s::pAd->CommonCfg.DesiredHtPhy.ChannelWidth=%d\n", __FUNCTION__, pAd->CommonCfg.DesiredHtPhy.ChannelWidth));
 	pAd->MlmeAux.HtCapability.HtCapInfo.ChannelWidth = pAddHtInfo->AddHtInfo.RecomWidth & pAd->CommonCfg.DesiredHtPhy.ChannelWidth;
+	DBGPRINT(RT_DEBUG_ERROR, ("%s::HtCapInfo.ChannelWidth=%d\n", __FUNCTION__, pAd->MlmeAux.HtCapability.HtCapInfo.ChannelWidth));
 		
 	/*
 		If both station and AP use 40MHz, still need to check if the 40MHZ band's legality in my country region
@@ -4699,11 +4708,13 @@ BOOLEAN RTMPCheckHt(
 	{
 		if (RTMPCheckChannel(pAd, pAd->MlmeAux.CentralChannel, pAd->MlmeAux.Channel) == FALSE)
 		{
-			pAd->MlmeAux.HtCapability.HtCapInfo.ChannelWidth = BW_20;
+			DBGPRINT(RT_DEBUG_ERROR, ("%s::40 MHz not allowed in country list. FORCE HACK: using it anyway.\n", __FUNCTION__));
+			//DBGPRINT(RT_DEBUG_ERROR, ("%s::40 MHz not allowed in country list. Using 20 MHz.\n", __FUNCTION__));
+			//pAd->MlmeAux.HtCapability.HtCapInfo.ChannelWidth = BW_20;
 		}
 	}
 		
-    DBGPRINT(RT_DEBUG_TRACE, ("RTMPCheckHt:: HtCapInfo.ChannelWidth=%d, RecomWidth=%d, DesiredHtPhy.ChannelWidth=%d, BW40MAvailForA/G=%d/%d, PhyMode=%d \n",
+    DBGPRINT(RT_DEBUG_ERROR, ("RTMPCheckHt:: HtCapInfo.ChannelWidth=%d, RecomWidth=%d, DesiredHtPhy.ChannelWidth=%d, BW40MAvailForA/G=%d/%d, PhyMode=%d \n",
 		pAd->MlmeAux.HtCapability.HtCapInfo.ChannelWidth, pAddHtInfo->AddHtInfo.RecomWidth, pAd->CommonCfg.DesiredHtPhy.ChannelWidth,
 		pAd->NicConfig2.field.BW40MAvailForA, pAd->NicConfig2.field.BW40MAvailForG, pAd->CommonCfg.PhyMode));
     

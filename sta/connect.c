@@ -2999,6 +2999,7 @@ VOID InitChannelRelatedValue(RTMP_ADAPTER *pAd)
 	/* Change to AP channel */
 	if ((pAd->CommonCfg.CentralChannel > pAd->CommonCfg.Channel)
 	    && (pAd->MlmeAux.HtCapability.HtCapInfo.ChannelWidth == BW_40)) {
+		DBGPRINT(RT_DEBUG_ERROR, ("%s: rf_bw=40 ABOVE\n", __FUNCTION__));
 	    	rf_channel = pAd->CommonCfg.CentralChannel;
 		rf_bw = BW_40;
 		ext_ch = EXTCHA_ABOVE;
@@ -3006,12 +3007,14 @@ VOID InitChannelRelatedValue(RTMP_ADAPTER *pAd)
 	else if ((pAd->CommonCfg.CentralChannel < pAd->CommonCfg.Channel)
 			&& (pAd->MlmeAux.HtCapability.HtCapInfo.ChannelWidth == BW_40))
 	{
+		DBGPRINT(RT_DEBUG_ERROR, ("%s: rf_bw=40 BELOW\n", __FUNCTION__));
 	    	rf_channel = pAd->CommonCfg.CentralChannel;
 		rf_bw = BW_40;
 		ext_ch = EXTCHA_BELOW;
 	} else
 #endif /* DOT11_N_SUPPORT */
 	{
+		DBGPRINT(RT_DEBUG_ERROR, ("%s: rf_bw=20\n", __FUNCTION__));
 	    	rf_channel = pAd->CommonCfg.CentralChannel;
 		rf_bw = BW_20;
 		ext_ch = EXTCHA_NONE;
@@ -3019,7 +3022,7 @@ VOID InitChannelRelatedValue(RTMP_ADAPTER *pAd)
 
 	AsicSetChannel(pAd, rf_channel, rf_bw, ext_ch, FALSE);
 
-	DBGPRINT(RT_DEBUG_TRACE,
+	DBGPRINT(RT_DEBUG_ERROR,
 		 ("%s():BW_%s, CtrlChannel=%d, CentralChannel=%d\n",
 		  __FUNCTION__, (rf_bw == BW_40 ? "40" : "20"),
 		  pAd->CommonCfg.Channel, 
@@ -3115,7 +3118,7 @@ VOID AdjustChannelRelatedValue(
 	if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_BSS_SCAN_IN_PROGRESS))
 		return;
 
-	DBGPRINT(RT_DEBUG_TRACE, ("%s():CentralChannel=%d, Channel=%d, ChannelWidth=%d\n",
+	DBGPRINT(RT_DEBUG_ERROR, ("%s():CentralChannel=%d, Channel=%d, ChannelWidth=%d\n",
 			__FUNCTION__, ExtraCh, PriCh, BandWidth));
 
 	pAd->CommonCfg.CentralChannel = ExtraCh;
@@ -3124,12 +3127,14 @@ VOID AdjustChannelRelatedValue(
 	/* Change to AP channel */
 	if ((pAd->CommonCfg.CentralChannel > pAd->CommonCfg.Channel) && (BandWidth == BW_40))
 	{
+		DBGPRINT(RT_DEBUG_ERROR, ("%s(): BW_40 above\n", __FUNCTION__));
 		rf_channel = pAd->CommonCfg.CentralChannel;
 		rf_bw = BW_40;
 		ext_ch = EXTCHA_ABOVE;
 	} 
 	else if ((pAd->CommonCfg.CentralChannel < pAd->CommonCfg.Channel) && (BandWidth == BW_40))
 	{
+		DBGPRINT(RT_DEBUG_ERROR, ("%s(): BW_40 below\n", __FUNCTION__));
 		rf_channel = pAd->CommonCfg.CentralChannel;
 		rf_bw = BW_40;
 		ext_ch = EXTCHA_BELOW;
@@ -3137,6 +3142,7 @@ VOID AdjustChannelRelatedValue(
 	else
 #endif /* DOT11_N_SUPPORT */
 	{
+		DBGPRINT(RT_DEBUG_ERROR, ("%s(): BW_20\n", __FUNCTION__));
 		rf_channel = pAd->CommonCfg.Channel;
 		rf_bw = BW_20;
 		ext_ch = EXTCHA_NONE;
@@ -3160,7 +3166,7 @@ VOID AdjustChannelRelatedValue(
 
 	AsicSetChannel(pAd, rf_channel, rf_bw, ext_ch, FALSE);
 
-	DBGPRINT(RT_DEBUG_TRACE,
+	DBGPRINT(RT_DEBUG_ERROR,
 				 ("%s():BW_%s, RF-Ch=%d, CtrlCh=%d, HT-CentralCh=%d\n",
 				__FUNCTION__, (rf_bw == BW_80 ? "80" : (rf_bw == BW_40 ? "40": "20")),
 				pAd->LatchRfRegs.Channel,

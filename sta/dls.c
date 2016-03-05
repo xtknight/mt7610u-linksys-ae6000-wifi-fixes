@@ -675,6 +675,7 @@ VOID PeerDlsRspAction(
 
 					set_entry_phy_cfg(pAd, pEntry);
 
+					DBGPRINT(RT_DEBUG_ERROR, ("%s: early code: set BW_20\n", __FUNCTION__));
 					pEntry->MaxHTPhyMode.field.BW = BW_20;
 					pEntry->MinHTPhyMode.field.BW = BW_20;
 
@@ -684,7 +685,7 @@ VOID PeerDlsRspAction(
 
 					/* If this Entry supports 802.11n, upgrade to HT rate. */
 					if ((HtCapabilityLen != 0) && WMODE_CAP_N(pAd->CommonCfg.PhyMode)) {
-						DBGPRINT(RT_DEBUG_TRACE,
+						DBGPRINT(RT_DEBUG_ERROR,
 							 ("DLS - PeerDlsRspAction Receive Peer HT Capable STA from %02x:%02x:%02x:%02x:%02x:%02x\n",
 							  PRINT_MAC(SA)));
 
@@ -696,10 +697,14 @@ VOID PeerDlsRspAction(
 							pAd->CommonCfg.AddHTInfo.AddHtInfo2.NonGfPresent = 1;
 						}
 
+						DBGPRINT(RT_DEBUG_ERROR, "%s: ModeCaps Info: HtCapability.HtCapInfo.ChannelWidth=%d, pAd->CommonCfg.DesiredHtPhy.ChannelWidth=%d\n", __FUNCTION__, HtCapability.HtCapInfo.ChannelWidth, pAd->CommonCfg.DesiredHtPhy.ChannelWidth));
+
 						if ((HtCapability.HtCapInfo.ChannelWidth) && (pAd->CommonCfg.DesiredHtPhy.ChannelWidth)) {
+							DBGPRINT(RT_DEBUG_ERROR, ("%s: set BW_40\n", __FUNCTION__));
 							pEntry->MaxHTPhyMode.field.BW = BW_40;
 							pEntry->MaxHTPhyMode.field.ShortGI = ((pAd->CommonCfg.DesiredHtPhy.ShortGIfor40) & (HtCapability.HtCapInfo.ShortGIfor40));
 						} else {
+							DBGPRINT(RT_DEBUG_ERROR, ("%s: set BW_20\n", __FUNCTION__));
 							pEntry->MaxHTPhyMode.field.BW = BW_20;
 							pEntry->MaxHTPhyMode.field.ShortGI = ((pAd->CommonCfg.DesiredHtPhy.ShortGIfor20) & (HtCapability.HtCapInfo.ShortGIfor20));
 							pAd->MacTab.fAnyStation20Only = TRUE;
