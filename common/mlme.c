@@ -3205,7 +3205,7 @@ VOID BssTableSsidSort(
 			if ((pAd->StaCfg.IEEE80211dClientMode == Rt802_11_D_Strict) &&
 				(pInBss->bHasCountryIE == FALSE))
 			{
-				DBGPRINT(RT_DEBUG_TRACE,("StaCfg.IEEE80211dClientMode == Rt802_11_D_Strict, but this AP doesn't have country IE.\n"));
+				DBGPRINT(RT_DEBUG_ERROR,("StaCfg.IEEE80211dClientMode == Rt802_11_D_Strict, but this AP doesn't have country IE.\n"));
 				continue;
 			}
 #endif /* EXT_BUILD_CHANNEL_LIST */
@@ -3215,14 +3215,14 @@ VOID BssTableSsidSort(
 			if ((pInBss->HtCapabilityLen == 0) &&
 				(WMODE_HT_ONLY(pAd->CommonCfg.PhyMode)))
 			{
-				DBGPRINT(RT_DEBUG_TRACE,("STA is in N-only Mode, this AP don't have Ht capability in Beacon.\n"));
+				DBGPRINT(RT_DEBUG_ERROR,("STA is in N-only Mode, this AP don't have Ht capability in Beacon.\n"));
 				continue;
 			}
 
 			if ((pAd->CommonCfg.PhyMode == (WMODE_G | WMODE_GN)) &&
 				((pInBss->SupRateLen + pInBss->ExtRateLen) < 12))
 			{
-				DBGPRINT(RT_DEBUG_TRACE,("STA is in GN-only Mode, this AP is in B mode.\n"));
+				DBGPRINT(RT_DEBUG_ERROR,("STA is in GN-only Mode, this AP is in B mode.\n"));
 				continue;
 			}
 #endif /* DOT11_N_SUPPORT */
@@ -3286,7 +3286,7 @@ VOID BssTableSsidSort(
 			/* We will check wepstatus for qualification Bss*/
 			else if (pAd->StaCfg.WepStatus != pInBss->WepStatus)
 			{
-				DBGPRINT(RT_DEBUG_TRACE,("StaCfg.WepStatus=%d, while pInBss->WepStatus=%d\n", pAd->StaCfg.WepStatus, pInBss->WepStatus));
+				DBGPRINT(RT_DEBUG_ERROR,("StaCfg.WepStatus=%d, while pInBss->WepStatus=%d\n", pAd->StaCfg.WepStatus, pInBss->WepStatus));
 				
 				/* For the SESv2 case, we will not qualify WepStatus.*/
 				
@@ -3315,14 +3315,14 @@ VOID BssTableSsidSort(
 			if ((pInBss->HtCapabilityLen == 0) &&
 				WMODE_HT_ONLY(pAd->CommonCfg.PhyMode))
 			{
-				DBGPRINT(RT_DEBUG_TRACE,("STA is in N-only Mode, this AP don't have Ht capability in Beacon.\n"));
+				DBGPRINT(RT_DEBUG_ERROR,("STA is in N-only Mode, this AP don't have Ht capability in Beacon.\n"));
 				continue;
 			}
 
 			if ((pAd->CommonCfg.PhyMode == (WMODE_G | WMODE_GN)) &&
 				((pInBss->SupRateLen + pInBss->ExtRateLen) < 12))
 			{
-				DBGPRINT(RT_DEBUG_TRACE,("STA is in GN-only Mode, this AP is in B mode.\n"));
+				DBGPRINT(RT_DEBUG_ERROR,("STA is in GN-only Mode, this AP is in B mode.\n"));
 				continue;
 			}
 #endif /* DOT11_N_SUPPORT */

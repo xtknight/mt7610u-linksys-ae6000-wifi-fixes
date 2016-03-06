@@ -2382,6 +2382,8 @@ INT	Set_HtBw_Proc(
 
 	HtBw = simple_strtol(arg, 0, 10);
 
+	DBGPRINT(RT_DEBUG_ERROR, ("Set_HtBw_Proc enter\n"));
+
 	if (HtBw == BW_40)
 		pAd->CommonCfg.RegTransmitSetting.field.BW  = BW_40;
 	else if (HtBw == BW_20)
@@ -2391,7 +2393,7 @@ INT	Set_HtBw_Proc(
 
 	SetCommonHT(pAd);
 
-	DBGPRINT(RT_DEBUG_TRACE, ("Set_HtBw_Proc::(HtBw=%d)\n", pAd->CommonCfg.RegTransmitSetting.field.BW));
+	DBGPRINT(RT_DEBUG_ERROR, ("Set_HtBw_Proc::(HtBw=%d)\n", pAd->CommonCfg.RegTransmitSetting.field.BW));
 
 	return TRUE;
 }

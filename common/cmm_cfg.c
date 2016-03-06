@@ -238,7 +238,7 @@ UCHAR *wmode_2_str(UCHAR wmode)
 
 UCHAR cfgmode_2_wmode(UCHAR cfg_mode)
 {
-	DBGPRINT(RT_DEBUG_OFF, ("cfg_mode=%d\n", cfg_mode));
+	DBGPRINT(RT_DEBUG_ERROR, ("cfg_mode=%d\n", cfg_mode));
 	if (cfg_mode >= PHY_MODE_MAX)
 		cfg_mode =  PHY_MODE_MAX;
 	

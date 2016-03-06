@@ -176,7 +176,7 @@ VOID RTMPSetHT(
 	HT_CAPABILITY_IE *ht_cap= &pAd->CommonCfg.HtCapability;
 	
 
-	DBGPRINT(RT_DEBUG_TRACE, ("RTMPSetHT : HT_mode(%d), ExtOffset(%d), MCS(%d), BW(%d), STBC(%d), SHORTGI(%d)\n",
+	DBGPRINT(RT_DEBUG_ERROR, ("RTMPSetHT : HT_mode(%d), ExtOffset(%d), MCS(%d), BW(%d), STBC(%d), SHORTGI(%d)\n",
 										pHTPhyMode->HtMode, pHTPhyMode->ExtOffset, 
 										pHTPhyMode->MCS, pHTPhyMode->BW,
 										pHTPhyMode->STBC, pHTPhyMode->SHORTGI));
@@ -610,6 +610,8 @@ INT	SetCommonHT(RTMP_ADAPTER *pAd)
 	SetHT.BW = (UCHAR)pAd->CommonCfg.RegTransmitSetting.field.BW;
 	SetHT.STBC = (UCHAR)pAd->CommonCfg.RegTransmitSetting.field.STBC;
 	SetHT.SHORTGI = (UCHAR)pAd->CommonCfg.RegTransmitSetting.field.ShortGI;		
+
+	DBGPRINT(RT_DEBUG_ERROR, ("%s(): pAd->CommonCfg.RegTransmitSetting.field.BW=%d\n", __FUNCTION__, pAd->CommonCfg.RegTransmitSetting.field.BW));
 
 	RTMPSetHT(pAd, &SetHT);
 

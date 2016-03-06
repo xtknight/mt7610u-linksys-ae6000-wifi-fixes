@@ -1918,6 +1918,9 @@ VOID N_ChannelCheck(RTMP_ADAPTER *pAd)
 			157, EXTCHA_ABOVE, 161, EXTCHA_BELOW,
 			0, 0};
 
+	DBGPRINT(RT_DEBUG_ERROR, ("%s:  pAd->CommonCfg.RegTransmitSetting.field.BW=%d\n", __FUNCTION__, pAd->CommonCfg.RegTransmitSetting.field.BW));
+	DBGPRINT(RT_DEBUG_ERROR, ("%s:  pAd->CommonCfg.RegTransmitSetting.field.EXTCHA=%d\n", __FUNCTION__, pAd->CommonCfg.RegTransmitSetting.field.EXTCHA));
+
 	if (WMODE_CAP_N(pAd->CommonCfg.PhyMode) &&
 		(pAd->CommonCfg.RegTransmitSetting.field.BW  == BW_40))
 	{
@@ -1933,6 +1936,8 @@ VOID N_ChannelCheck(RTMP_ADAPTER *pAd)
 			};
 			if (wfa_ht_ch_ext[idx] == 0)
 				pAd->CommonCfg.RegTransmitSetting.field.BW  = BW_20;
+			DBGPRINT(RT_DEBUG_ERROR, ("%s:  code area 2: pAd->CommonCfg.RegTransmitSetting.field.BW=%d\n", __FUNCTION__, pAd->CommonCfg.RegTransmitSetting.field.BW));
+			DBGPRINT(RT_DEBUG_ERROR, ("%s:  code area 2: pAd->CommonCfg.RegTransmitSetting.field.EXTCHA=%d\n", __FUNCTION__, pAd->CommonCfg.RegTransmitSetting.field.EXTCHA));
 		}
 		else
 		{
@@ -1952,12 +1957,15 @@ VOID N_ChannelCheck(RTMP_ADAPTER *pAd)
 					break;
 				}
 				pAd->CommonCfg.RegTransmitSetting.field.BW  = BW_20;
+				DBGPRINT(RT_DEBUG_ERROR, ("%s:  code area 3: pAd->CommonCfg.RegTransmitSetting.field.BW=%d\n", __FUNCTION__, pAd->CommonCfg.RegTransmitSetting.field.BW));
+				DBGPRINT(RT_DEBUG_ERROR, ("%s:  code area 3: pAd->CommonCfg.RegTransmitSetting.field.EXTCHA=%d\n", __FUNCTION__, pAd->CommonCfg.RegTransmitSetting.field.EXTCHA));
 			} while(FALSE);
 
 			if (Channel == 14)
 			{
 				pAd->CommonCfg.RegTransmitSetting.field.BW  = BW_20;
 				/*pAd->CommonCfg.RegTransmitSetting.field.EXTCHA = EXTCHA_NONE; We didn't set the ExtCh as NONE due to it'll set in RTMPSetHT()*/
+				DBGPRINT(RT_DEBUG_ERROR, ("%s:  code area 4: pAd->CommonCfg.RegTransmitSetting.field.BW=%d\n", __FUNCTION__, pAd->CommonCfg.RegTransmitSetting.field.BW));
 			}
 		}
 	}
@@ -1966,6 +1974,8 @@ VOID N_ChannelCheck(RTMP_ADAPTER *pAd)
 
 UCHAR N_SetCenCh(RTMP_ADAPTER *pAd, UCHAR prim_ch)
 {
+	DBGPRINT(RT_DEBUG_ERROR, ("%s:  N_SetCenCh(%u)\n", __FUNCTION__, (prim_ch & 0xff)));
+	DBGPRINT(RT_DEBUG_ERROR, ("%s:  pAd->CommonCfg.RegTransmitSetting.field.BW=%d\n", __FUNCTION__, pAd->CommonCfg.RegTransmitSetting.field.BW));
 	if (pAd->CommonCfg.RegTransmitSetting.field.BW == BW_40)
 	{
 		if (pAd->CommonCfg.RegTransmitSetting.field.EXTCHA == EXTCHA_ABOVE)
@@ -1981,6 +1991,7 @@ UCHAR N_SetCenCh(RTMP_ADAPTER *pAd, UCHAR prim_ch)
 	else
 		pAd->CommonCfg.CentralChannel = prim_ch;
 
+	DBGPRINT(RT_DEBUG_ERROR, ("%s:  pAd->CommonCfg.CentralChannel=%d\n", __FUNCTION__, pAd->CommonCfg.CentralChannel));
 	return pAd->CommonCfg.CentralChannel;
 }
 #endif /* DOT11_N_SUPPORT */

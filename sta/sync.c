@@ -1701,7 +1701,12 @@ VOID PeerBeaconAtJoinAction(
 
 			pAd->hw_cfg.cent_ch = CentralChannel;
 			pAd->MlmeAux.CentralChannel = CentralChannel;
-			DBGPRINT(RT_DEBUG_OFF, ("%s(): Set CentralChannel=%d\n", __FUNCTION__, pAd->MlmeAux.CentralChannel));
+			DBGPRINT(RT_DEBUG_ERROR, ("%s(): Set CentralChannel=%d\n", __FUNCTION__, pAd->MlmeAux.CentralChannel));
+			DBGPRINT(RT_DEBUG_ERROR, ("%s(): PhyMode=%d\n", __FUNCTION__, pAd->CommonCfg.PhyMode));
+			DBGPRINT(RT_DEBUG_ERROR, ("%s(): UseBGProtection=%d\n", __FUNCTION__, pAd->CommonCfg.UseBGProtection));
+			DBGPRINT(RT_DEBUG_ERROR, ("%s(): HTInfo2_OperationMode=%d\n", __FUNCTION__, pAd->MlmeAux.AddHtInfo.AddHtInfo2.OperaionMode));
+			DBGPRINT(RT_DEBUG_ERROR, ("%s(): HTInfo2_NonGreenfieldDevicePresent=%d\n", __FUNCTION__, pAd->MlmeAux.AddHtInfo.AddHtInfo2.NonGfPresent));
+			DBGPRINT(RT_DEBUG_ERROR, ("%s(): QoS: WmmCapable=%d\n", __FUNCTION__, pAd->CommonCfg.bWmmCapable));
 
 			RTMPUpdateMlmeRate(pAd);
 	
@@ -1712,12 +1717,15 @@ VOID PeerBeaconAtJoinAction(
 #endif /* DOT11_N_SUPPORT */
 				)
 			{
+				// Seems to force WMM on if 802.11n, regardless of WmmCapable variable
+				DBGPRINT(RT_DEBUG_ERROR, ("%s(): WmmCapable=1 or 802.11n case\n", __FUNCTION__));
 				NdisMoveMemory(&pAd->MlmeAux.APEdcaParm, &ie_list->EdcaParm, sizeof(EDCA_PARM));
 				NdisMoveMemory(&pAd->MlmeAux.APQbssLoad, &ie_list->QbssLoad, sizeof(QBSS_LOAD_PARM));
 				NdisMoveMemory(&pAd->MlmeAux.APQosCapability, &ie_list->QosCapability, sizeof(QOS_CAPABILITY_PARM));
 			}
 			else
 			{
+				DBGPRINT(RT_DEBUG_ERROR, ("%s(): WmmCapable=0 case\n", __FUNCTION__));
 				NdisZeroMemory(&pAd->MlmeAux.APEdcaParm, sizeof(EDCA_PARM));
 				NdisZeroMemory(&pAd->MlmeAux.APQbssLoad, sizeof(QBSS_LOAD_PARM));
 				NdisZeroMemory(&pAd->MlmeAux.APQosCapability, sizeof(QOS_CAPABILITY_PARM));
@@ -2263,7 +2271,7 @@ VOID PeerBeacon(
 					else
 						AsicUpdateProtect(pAd, pAd->MlmeAux.AddHtInfo.AddHtInfo2.OperaionMode, ALLN_SETPROTECT, FALSE, FALSE);
 
-					DBGPRINT(RT_DEBUG_ERROR, ("SYNC - AP changed N OperaionMode to %d\n", pAd->MlmeAux.AddHtInfo.AddHtInfo2.OperaionMode));
+					DBGPRINT(RT_DEBUG_ERROR, ("SYNC - AP changed N OperationMode to %d, NonGreenfield-Device-Present=%d\n", pAd->MlmeAux.AddHtInfo.AddHtInfo2.OperaionMode, pAd->MlmeAux.AddHtInfo.AddHtInfo2.NonGfPresent));
 				}
 #endif /* DOT11_N_SUPPORT */
 				
@@ -2297,6 +2305,17 @@ VOID PeerBeacon(
 				{
 					BOOLEAN bChangeBW = FALSE;
 
+					DBGPRINT(RT_DEBUG_ERROR, ("%s pAd->CommonCfg.BBPCurrentBW: %d\n", __FUNCTION__, pAd->CommonCfg.BBPCurrentBW));
+					DBGPRINT(RT_DEBUG_ERROR, ("%s ie_list->AddHtInfo.AddHtInfo.ExtChanOffset: %d\n", __FUNCTION__, ie_list->AddHtInfo.AddHtInfo.ExtChanOffset));
+					DBGPRINT(RT_DEBUG_ERROR, ("%s ie_list->AddHtInfo.AddHtInfo.RecomWidth: %d\n", __FUNCTION__, ie_list->AddHtInfo.AddHtInfo.RecomWidth));
+					DBGPRINT(RT_DEBUG_ERROR, ("%s ie_list->HtCapabilityLen: %d\n", __FUNCTION__, ie_list->HtCapabilityLen));
+					DBGPRINT(RT_DEBUG_ERROR, ("%s pAd->CommonCfg.DesiredHtPhy.ChannelWidth: %d\n", __FUNCTION__, pAd->CommonCfg.DesiredHtPhy.ChannelWidth));
+
+					if(ie_list->HtCapabilityLen > 0)
+						DBGPRINT(RT_DEBUG_ERROR, ("%s ie_list->HtCapability.HtCapInfo.ChannelWidth: %d\n", __FUNCTION__, ie_list->HtCapability.HtCapInfo.ChannelWidth));
+
+					DBGPRINT(RT_DEBUG_ERROR, ("%s pAd->CommonCfg.Channel: %d\n", __FUNCTION__, pAd->CommonCfg.Channel));
+
 					/*
 					     1) HT Information
 					     2) Secondary Channel Offset Element
@@ -2305,11 +2324,13 @@ VOID PeerBeacon(
 					*/
 					if (pAd->CommonCfg.BBPCurrentBW == BW_40)
 					{
+
 						if (((ie_list->AddHtInfo.AddHtInfo.ExtChanOffset == EXTCHA_NONE) &&
 							(ie_list->AddHtInfo.AddHtInfo.RecomWidth == 0)) 
 							||(ie_list->NewExtChannelOffset==0x0)
 						)
 						{
+							DBGPRINT(RT_DEBUG_ERROR, ("%s 40->20 case!\n", __FUNCTION__));
 							pAd->StaActive.SupportedHtPhy.ChannelWidth = BW_20;
 							pAd->MacTab.Content[BSSID_WCID].HTPhyMode.field.BW = 0;
 
@@ -2333,11 +2354,13 @@ VOID PeerBeacon(
 							(pAd->CommonCfg.DesiredHtPhy.ChannelWidth != BW_20)
 						)
 					{
+
 						if ((ie_list->AddHtInfo.AddHtInfo.ExtChanOffset != EXTCHA_NONE) &&
 							(ie_list->AddHtInfo.AddHtInfo.RecomWidth == 1) &&
 							(ie_list->HtCapabilityLen>0) && (ie_list->HtCapability.HtCapInfo.ChannelWidth == 1)
 						)
 						{
+							DBGPRINT(RT_DEBUG_ERROR, ("%s 20->40 case: can change to 40 MHz!\n", __FUNCTION__));
 							{
 								pAd->CommonCfg.CentralChannel = get_cent_ch_by_htinfo(pAd, 
 																		&ie_list->AddHtInfo,
@@ -2355,6 +2378,10 @@ VOID PeerBeacon(
 									pAd->MacTab.Content[BSSID_WCID].HTPhyMode.field.BW = 1;
 								}
 							}
+						}
+						else
+						{
+							DBGPRINT(RT_DEBUG_ERROR, ("%s 20->40 case: want 40 but AP is not providing external channel information, so can't change to 40 MHz!\n", __FUNCTION__));
 						}
 					}
 

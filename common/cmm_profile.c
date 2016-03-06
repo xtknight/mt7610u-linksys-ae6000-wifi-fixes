@@ -927,7 +927,7 @@ static void HTParametersHook(
             pAd->CommonCfg.BACapability.field.MMPSmode = MMPS_ENABLE;
 			/*pAd->CommonCfg.BACapability.field.MMPSmode = Value;*/
         }
-        DBGPRINT(RT_DEBUG_TRACE, ("HT: MIMOPS Mode  = %d\n", (INT) Value));
+        DBGPRINT(RT_DEBUG_ERROR, ("HT: MIMOPS Mode  = %d\n", (INT) Value));
     }
 
     if (RTMPGetKeyParameter("HT_BADecline", pValueStr, 25, pInput, TRUE))
@@ -1081,7 +1081,7 @@ static void HTParametersHook(
 			pAd->CommonCfg.RegTransmitSetting.field.HTMODE  = HTMODE_MM;
 		}		
 
-		DBGPRINT(RT_DEBUG_TRACE, ("HT: Operate Mode = %s\n", (Value==HTMODE_GF) ? "Green Field" : "Mixed Mode" ));
+		DBGPRINT(RT_DEBUG_ERROR, ("HT: Operate Mode = %s\n", (Value==HTMODE_GF) ? "Green Field" : "Mixed Mode" ));
 	}
 
 	/* Fixed Tx mode : CCK, OFDM*/
@@ -1092,7 +1092,7 @@ static void HTParametersHook(
 		{
 			pAd->StaCfg.DesiredTransmitSetting.field.FixedTxMode = 
 										RT_CfgSetFixedTxPhyMode(pValueStr);
-			DBGPRINT(RT_DEBUG_TRACE, ("Fixed Tx Mode = %d\n", 
+			DBGPRINT(RT_DEBUG_ERROR, ("Fixed Tx Mode = %d\n", 
 											pAd->StaCfg.DesiredTransmitSetting.field.FixedTxMode));			
 		}
 #endif /* CONFIG_STA_SUPPORT */
@@ -1108,11 +1108,14 @@ static void HTParametersHook(
 		else
 			pAd->CommonCfg.RegTransmitSetting.field.BW = BW_20;
 
+		DBGPRINT(RT_DEBUG_ERROR, ("HT: read HT_BW value: pAd->CommonCfg.RegTransmitSetting.field.BW = %d\n", pAd->CommonCfg.RegTransmitSetting.field.BW));
+		
+
 #ifdef MCAST_RATE_SPECIFIC
 		pAd->CommonCfg.MCastPhyMode.field.BW = pAd->CommonCfg.RegTransmitSetting.field.BW;
 #endif /* MCAST_RATE_SPECIFIC */
 
-		DBGPRINT(RT_DEBUG_TRACE, ("HT: Channel Width = %s\n", (Value==BW_40) ? "40 MHz" : "20 MHz" ));
+		DBGPRINT(RT_DEBUG_ERROR, ("HT: Channel Width = %s\n", (Value==BW_40) ? "40 MHz" : "20 MHz" ));
 	}
 
 	if (RTMPGetKeyParameter("HT_EXTCHA", pValueStr, 25, pInput, TRUE))
@@ -1124,7 +1127,7 @@ static void HTParametersHook(
 		else
 			pAd->CommonCfg.RegTransmitSetting.field.EXTCHA = EXTCHA_ABOVE;
 
-		DBGPRINT(RT_DEBUG_TRACE, ("HT: Ext Channel = %s\n", (Value==0) ? "BELOW" : "ABOVE" ));
+		DBGPRINT(RT_DEBUG_ERROR, ("HT: Ext Channel = %s\n", (Value==0) ? "BELOW" : "ABOVE" ));
 	}
 
 	/* MSC*/
@@ -1199,7 +1202,7 @@ static void HTParametersHook(
 					pAd->CommonCfg.TxStream = 2; /* only 2 tx streams for RT2860 series*/
 				break;
 		}
-		DBGPRINT(RT_DEBUG_TRACE, ("HT: Tx Stream = %d\n", pAd->CommonCfg.TxStream));
+		DBGPRINT(RT_DEBUG_ERROR, ("HT: Tx Stream = %d\n", pAd->CommonCfg.TxStream));
 	}
 	/*HT_RxStream*/
 	if(RTMPGetKeyParameter("HT_RxStream", pValueStr, 10, pInput, TRUE))
@@ -1220,7 +1223,7 @@ static void HTParametersHook(
 					pAd->CommonCfg.RxStream = 2; /* only 2 rx streams for RT2860 series*/
 				break;
 		}
-		DBGPRINT(RT_DEBUG_TRACE, ("HT: Rx Stream = %d\n", pAd->CommonCfg.RxStream));
+		DBGPRINT(RT_DEBUG_ERROR, ("HT: Rx Stream = %d\n", pAd->CommonCfg.RxStream));
 	}
 	/* HT_DisallowTKIP*/
 	if (RTMPGetKeyParameter("HT_DisallowTKIP", pValueStr, 25, pInput, TRUE))
@@ -1236,7 +1239,7 @@ static void HTParametersHook(
 			pAd->CommonCfg.HT_DisallowTKIP = FALSE;
 		}		
 
-		DBGPRINT(RT_DEBUG_TRACE, ("HT: Disallow TKIP mode = %s\n", (pAd->CommonCfg.HT_DisallowTKIP == TRUE) ? "ON" : "OFF" ));
+		DBGPRINT(RT_DEBUG_ERROR, ("HT: Disallow TKIP mode = %s\n", (pAd->CommonCfg.HT_DisallowTKIP == TRUE) ? "ON" : "OFF" ));
 	}
 
 #ifdef DOT11_N_SUPPORT
@@ -1330,7 +1333,7 @@ static void HTParametersHook(
 				Value = simple_strtol(pValueStr, 0, 10);
 				pAd->CommonCfg.bBssCoexEnable = ((Value == 1) ? TRUE : FALSE);
 
-				DBGPRINT(RT_DEBUG_TRACE, ("HT: 20/40 BssCoexSupport = %s\n", (pAd->CommonCfg.bBssCoexEnable == TRUE) ? "ON" : "OFF" ));
+				DBGPRINT(RT_DEBUG_ERROR, ("HT: 20/40 BssCoexSupport = %s\n", (pAd->CommonCfg.bBssCoexEnable == TRUE) ? "ON" : "OFF" ));
 			}
 
 			
@@ -1338,7 +1341,7 @@ static void HTParametersHook(
 			{
 				pAd->CommonCfg.BssCoexApCntThr = simple_strtol(pValueStr, 0, 10);;
 
-				DBGPRINT(RT_DEBUG_TRACE, ("HT: 20/40 BssCoexApCntThr = %d\n", pAd->CommonCfg.BssCoexApCntThr));
+				DBGPRINT(RT_DEBUG_ERROR, ("HT: 20/40 BssCoexApCntThr = %d\n", pAd->CommonCfg.BssCoexApCntThr));
 			}
 				
 #endif /* DOT11N_DRAFT3 */
@@ -1347,7 +1350,7 @@ static void HTParametersHook(
 	{
 		Value = simple_strtol(pValueStr, 0, 10);
 		pAd->CommonCfg.bRalinkBurstMode = ((Value == 1) ? 1 : 0);
-		DBGPRINT(RT_DEBUG_TRACE, ("HT: RaBurstMode= %d\n", pAd->CommonCfg.bRalinkBurstMode));
+		DBGPRINT(RT_DEBUG_ERROR, ("HT: RaBurstMode= %d\n", pAd->CommonCfg.bRalinkBurstMode));
 	}
 #endif /* DOT11_N_SUPPORT */
 
