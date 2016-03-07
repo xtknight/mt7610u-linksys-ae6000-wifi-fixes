@@ -1093,7 +1093,12 @@ int RtmpOSFileRead(RTMP_OS_FD osfd, char *pDataPtr, int readLen)
 
 int RtmpOSFileWrite(RTMP_OS_FD osfd, char *pDataPtr, int writeLen)
 {
-	return osfd->f_op->write(osfd, pDataPtr, (size_t) writeLen, &osfd->f_pos);
+	if (osfd->f_op && osfd->f_op->write) {
+		return osfd->f_op->write(osfd, pDataPtr, (size_t) writeLen, &osfd->f_pos);
+	} else {
+		DBGPRINT(RT_DEBUG_ERROR, ("no file write method, using vfs_write\n"));
+		return vfs_write(osfd, pDataPtr, (size_t) writeLen, &osfd->f_pos);
+	}
 }
 
 static inline void __RtmpOSFSInfoChange(OS_FS_INFO * pOSFSInfo, BOOLEAN bSet)
@@ -1938,23 +1943,21 @@ VOID RtmpDrvAllMacPrint(
 			 ("-->2) %s: Error %ld opening %s\n", __FUNCTION__,
 			  -PTR_ERR(file_w), fileName));
 	} else {
-		if (file_w->f_op && file_w->f_op->write) {
-			file_w->f_pos = 0;
-			macAddr = AddrStart;
+		file_w->f_pos = 0;
+		macAddr = AddrStart;
 
-			while (macAddr <= AddrEnd) {
+		while (macAddr <= AddrEnd) {
 /*				RTMP_IO_READ32(pAd, macAddr, &macValue); // sample */
-				macValue = *pBufMac++;
-				sprintf(msg, "0x%04X = 0x%08X\n", macAddr, macValue);
+			macValue = *pBufMac++;
+			sprintf(msg, "0x%04X = 0x%08X\n", macAddr, macValue);
 
-				/* write data to file */
-				file_w->f_op->write(file_w, msg, strlen(msg), &file_w->f_pos);
+			/* write data to file */
+			RtmpOSFileWrite(file_w, msg, strlen(msg));
 
-				printk("%s", msg);
-				macAddr += AddrStep;
-			}
-			sprintf(msg, "\nDump all MAC values to %s\n", fileName);
+			printk("%s", msg);
+			macAddr += AddrStep;
 		}
+		sprintf(msg, "\nDump all MAC values to %s\n", fileName);
 		filp_close(file_w, NULL);
 	}
 	set_fs(orig_fs);
@@ -1989,24 +1992,22 @@ VOID RtmpDrvAllE2PPrint(
 			 ("-->2) %s: Error %ld opening %s\n", __FUNCTION__,
 			  -PTR_ERR(file_w), fileName));
 	} else {
-		if (file_w->f_op && file_w->f_op->write) {
-			file_w->f_pos = 0;
-			eepAddr = 0x00;
+		file_w->f_pos = 0;
+		eepAddr = 0x00;
 
-			while (eepAddr <= AddrEnd) {
-				eepValue = *pMacContent;
-				sprintf(msg, "%08x = %04x\n", eepAddr, eepValue);
+		while (eepAddr <= AddrEnd) {
+			eepValue = *pMacContent;
+			sprintf(msg, "%08x = %04x\n", eepAddr, eepValue);
 
-				/* write data to file */
-				file_w->f_op->write(file_w, msg, strlen(msg), &file_w->f_pos);
+			/* write data to file */
+			RtmpOSFileWrite(file_w, msg, strlen(msg));
 
-				printk("%s", msg);
-				eepAddr += AddrStep;
-				pMacContent += (AddrStep >> 1);
-			}
-			sprintf(msg, "\nDump all EEPROM values to %s\n",
-				fileName);
+			printk("%s", msg);
+			eepAddr += AddrStep;
+			pMacContent += (AddrStep >> 1);
 		}
+		sprintf(msg, "\nDump all EEPROM values to %s\n",
+			fileName);
 		filp_close(file_w, NULL);
 	}
 	set_fs(orig_fs);
@@ -2022,7 +2023,6 @@ VOID RtmpDrvAllRFPrint(
 	struct file *file_w;
 	PSTRING fileName = "RFDump.txt";
 	mm_segment_t orig_fs;
-	UINT32 macAddr = 0, macValue = 0;
 	
 	orig_fs = get_fs();
 	set_fs(KERNEL_DS);
@@ -2034,11 +2034,9 @@ VOID RtmpDrvAllRFPrint(
 			 ("-->2) %s: Error %ld opening %s\n", __FUNCTION__,
 			  -PTR_ERR(file_w), fileName));
 	} else {
-		if (file_w->f_op && file_w->f_op->write) {
-			file_w->f_pos = 0;
-			/* write data to file */
-			file_w->f_op->write(file_w, pBuf, BufLen, &file_w->f_pos);
-		}
+		file_w->f_pos = 0;
+		/* write data to file */
+		RtmpOSFileWrite(file_w, (char*)pBuf, BufLen);
 		filp_close(file_w, NULL);
 	}
 	set_fs(orig_fs);
