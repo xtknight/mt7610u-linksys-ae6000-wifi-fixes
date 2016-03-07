@@ -11,6 +11,7 @@ Some of the issues, such as a WPA supplicant issue, are fixable by comparing MT7
 - Works with 2.4/5GHz networks out of the box
 - Works with NetworkManager and nl80211 interface out of the box
 - Works with WPA2-Personal and WPA supplicant/NetworkManager without extra configuration
+- rmmod isn't locked while driver is running and clean-up is better (work in progress)
 
 # Building
 - sudo apt-get install build-essential linux-headers-$(uname -r)
@@ -44,10 +45,11 @@ Some of the issues, such as a WPA supplicant issue, are fixable by comparing MT7
 #### If you have these issues, then this driver might fix the problem.
 - Keeps getting Disassociation with ReasonCode=1(Unspecified) while connecting to WPA2 AP
 - wpa_supplicant debug mode error:  No wpa_ie set - cannot generate msg 2/4
+- Nothing works if /etc is on BTRFS (because DAT file could not be read)
 
 # TODO
 - Remove excessive logging
-- Lots of cleanup and testing
+- Allow operation without DAT file
 - Add other dev ids
 - Try to get AP mode working (huge project?)
 - Test other encryption modes like WEP, WPA2-Enterprise, etc.
