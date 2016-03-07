@@ -1651,7 +1651,14 @@ void RtmpOSNetDevDetach(PNET_DEV pNetDev)
 	struct net_device_ops *pNetDevOps = (struct net_device_ops *)pNetDev->netdev_ops;
 #endif
 
-	unregister_netdev(pNetDev);
+	printk("RtmpOSNetDevDetach: enter\n");
+
+	if (pNetDev->reg_state == NETREG_REGISTERED)
+	{
+		// Use unregister_netdev() instead of unregister_netdevice(), which locks RTNL for us
+		printk("RtmpOSNetDevDetach: unregister_netdev\n");
+		unregister_netdev(pNetDev);
+	}
 
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,31)
 	vfree(pNetDevOps);
@@ -2556,6 +2563,7 @@ VOID CFG80211OS_UnRegister(
 #ifdef RFKILL_HW_SUPPORT
 		wiphy_rfkill_stop_polling(pCfg80211_CB->pCfg80211_Wdev->wiphy);
 #endif /* RFKILL_HW_SUPPORT */
+
 		wiphy_unregister(pCfg80211_CB->pCfg80211_Wdev->wiphy);
 		wiphy_free(pCfg80211_CB->pCfg80211_Wdev->wiphy);
 		kfree(pCfg80211_CB->pCfg80211_Wdev);

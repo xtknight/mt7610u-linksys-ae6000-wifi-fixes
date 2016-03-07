@@ -224,7 +224,7 @@ int rt28xx_init(VOID *pAdSrc, PSTRING pDefaultMac, PSTRING pHostName)
 	
 	if (Status != NDIS_STATUS_SUCCESS)
 	{
-		DBGPRINT_ERR(("NICLoadFirmware failed, Status[=0x%08x]\n", Status));
+		DBGPRINT_ERR(("NICLoadFirmware failed, Status[=0x%08x]. Try unplugging and plugging your adapter in again.\n", Status));
 		goto err1;
 	}
 	
@@ -608,7 +608,7 @@ err0:
 err0:
 #endif /* ST */
 
-	DBGPRINT(RT_DEBUG_ERROR, ("!!! rt28xx init fail !!!\n"));
+	DBGPRINT(RT_DEBUG_ERROR, ("!!! rt28xx initialization failed. Try unplugging and plugging your adapter in again.\n"));
 	return FALSE;
 }
 

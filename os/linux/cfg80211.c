@@ -437,9 +437,15 @@ static int CFG80211_OpsScan(
 	union iwreq_data Wreq;
 #endif /* WPA_SUPPLICANT_SUPPORT */
 
-
 	CFG80211DBG(RT_DEBUG_ERROR, ("80211> %s ==>\n", __FUNCTION__));
 	MAC80211_PAD_GET(pAd, pWiphy);
+
+	/* Do nothing if the driver is halting */
+	if (RTMP_TEST_FLAG(((PRTMP_ADAPTER)pAd), fRTMP_ADAPTER_HALT_IN_PROGRESS | fRTMP_ADAPTER_NIC_NOT_EXIST))
+	{
+		CFG80211DBG(RT_DEBUG_ERROR, ("80211> %s adapter halting. exiting. \n", __FUNCTION__));
+		return;
+	}
 
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,6,0))
 	struct net_device *pNdev = NULL;
@@ -712,6 +718,13 @@ static int CFG80211_OpsStaGet(
 
 	CFG80211DBG(RT_DEBUG_ERROR, ("80211> %s ==>\n", __FUNCTION__));
 	MAC80211_PAD_GET(pAd, pWiphy);
+
+	/* Do nothing if the driver is halting */
+	if (RTMP_TEST_FLAG(((PRTMP_ADAPTER)pAd), fRTMP_ADAPTER_HALT_IN_PROGRESS | fRTMP_ADAPTER_NIC_NOT_EXIST))
+	{
+		CFG80211DBG(RT_DEBUG_ERROR, ("80211> %s adapter halting. exiting. \n", __FUNCTION__));
+		return;
+	}
 
 	/* init */
 	memset(pSinfo, 0, sizeof(*pSinfo));

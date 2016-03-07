@@ -2180,6 +2180,16 @@ VOID LinkDown(
 	pAd->StaCfg.bImprovedScan = FALSE;
 #endif
 
+/* ------ new addition from mt7612u ------ */
+
+//TODO
+//#ifdef RT_CFG80211_SUPPORT
+//    if (CFG80211DRV_OpsScanRunning(pAd)) 
+//		CFG80211DRV_OpsScanInLinkDownAction(pAd);	
+//#endif /* RT_CFG80211_SUPPORT */	
+
+/* ------ new addition from mt7612u ------ */
+
 #ifdef PCIE_PS_SUPPORT
 
 	if (OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_ADVANCE_POWER_SAVE_PCIE_DEVICE)) {
@@ -2469,6 +2479,17 @@ VOID LinkDown(
 				NULL, 0);
 #endif /* NATIVE_WPA_SUPPLICANT_SUPPORT */
 
+
+
+
+/* ------ new addition from mt7612u ------ */
+#ifdef RT_CFG80211_SUPPORT
+#ifdef CONFIG_STA_SUPPORT
+	printk("LOST_AP_INFORM\n");
+	RT_CFG80211_LOST_AP_INFORM(pAd);
+#endif
+#endif /* RT_CFG80211_SUPPORT */
+/* ------ new addition from mt7612u ------ */
 
 	if (pAd->StaCfg.BssType != BSS_ADHOC)
 		pAd->StaCfg.bNotFirstScan = FALSE;
