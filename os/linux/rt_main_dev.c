@@ -55,14 +55,19 @@ MODULE_LICENSE("GPL");
 /* Private Variables Used                                              */
 /*---------------------------------------------------------------------*/
 
-PSTRING mac = "";		   /* default 00:00:00:00:00:00 */
-PSTRING hostname = "";		   /* default CMPC */
+PSTRING mac = "";		     /* default 00:00:00:00:00:00 */
+PSTRING hostname = "";		     /* default CMPC */
+ULONG RTDebugLevel = RT_DEBUG_ERROR; /* Set to debug mod param in init() */
+ULONG debug = RT_DEBUG_ERROR;        /* default RT_DEBUG_ERROR */
 #if LINUX_VERSION_CODE <= KERNEL_VERSION(2,6,12)
 MODULE_PARM (mac, "s");
+MODULE_PARM (debug, "l");
 #else
 module_param (mac, charp, 0);
+module_param (debug, long, 0); // RT_DEBUG_ERROR
 #endif
-MODULE_PARM_DESC (mac, "rt28xx: wireless mac addr");
+MODULE_PARM_DESC (mac, "wireless mac addr");
+MODULE_PARM_DESC (debug, "log verbosity level (0: off, 1: error only [default], 2: warnings, 3: trace, 4: info, 5: loud)");
 
 #ifdef OS_ABL_SUPPORT
 RTMP_DRV_ABL_OPS RtmpDrvOps, *pRtmpDrvOps = &RtmpDrvOps;
@@ -266,6 +271,8 @@ int rt28xx_open(VOID *dev)
 #endif /* CONFIG_PM */
 #endif /* CONFIG_STA_SUPPORT */
 
+	// Set debug level
+	RTDebugLevel = debug;
 
 	/* sanity check */
 	if (sizeof(ra_dma_addr_t) < sizeof(dma_addr_t))
