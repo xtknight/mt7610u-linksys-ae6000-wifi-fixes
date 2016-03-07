@@ -44,6 +44,7 @@ Some of the issues, such as a WPA supplicant issue, are fixable by comparing MT7
 # Major bugs fixed in original driver
 #### If you have these issues, then this driver might fix the problem.
 - Keeps getting Disassociation with ReasonCode=1(Unspecified) while connecting to WPA2 AP
+- NetworkManager keeps asking for password even though password is correct
 - wpa_supplicant debug mode error:  No wpa_ie set - cannot generate msg 2/4
 - Nothing works if /etc is on BTRFS (because DAT file could not be read)
 
