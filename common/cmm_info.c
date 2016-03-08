@@ -3680,45 +3680,59 @@ INT	Show_WirelessMode_Proc(
 	switch(pAd->CommonCfg.PhyMode)
 	{
 		case (WMODE_B | WMODE_G):
-			snprintf(pBuf, BufLen, "\t11B/G");
+			snprintf(pBuf, BufLen, "\t11B/G mixed");
 			break;
 		case (WMODE_B):
-			snprintf(pBuf, BufLen, "\t11B");
+			snprintf(pBuf, BufLen, "\t11B only");
 			break;
 		case (WMODE_A):
-			snprintf(pBuf, BufLen, "\t11A");
+			snprintf(pBuf, BufLen, "\t11A only");
 			break;
 		case (WMODE_A | WMODE_B | WMODE_G):
-			snprintf(pBuf, BufLen, "\t11A/B/G");
+			snprintf(pBuf, BufLen, "\t11A/B/G mixed");
 			break;
 		case (WMODE_G):
-			snprintf(pBuf, BufLen, "\t11G");
+			snprintf(pBuf, BufLen, "\t11G only");
 			break;
 #ifdef DOT11_N_SUPPORT
 		case (WMODE_A | WMODE_B | WMODE_G | WMODE_GN | WMODE_AN):
-			snprintf(pBuf, BufLen, "\t11A/B/G/N");
+			snprintf(pBuf, BufLen, "\t11A/B/G/N mixed");
 			break;
 		case (WMODE_GN):
-			snprintf(pBuf, BufLen, "\t11N only with 2.4G");
+			snprintf(pBuf, BufLen, "\t11N 2.4G only");
 			break;
 		case (WMODE_G | WMODE_GN):
-			snprintf(pBuf, BufLen, "\t11G/N");
+			snprintf(pBuf, BufLen, "\t11G/N mixed");
 			break;
 		case (WMODE_A | WMODE_AN):
-			snprintf(pBuf, BufLen, "\t11A/N");
+			snprintf(pBuf, BufLen, "\t11A/N mixed");
 			break;
 		case (WMODE_B | WMODE_G | WMODE_GN):
-			snprintf(pBuf, BufLen, "\t11B/G/N");
+			snprintf(pBuf, BufLen, "\t11B/G/N mixed");
 			break;
 		case (WMODE_A | WMODE_G | WMODE_GN | WMODE_AN):
-			snprintf(pBuf, BufLen, "\t11A/G/N");
+			snprintf(pBuf, BufLen, "\t11A/G/N mixed");
 			break;
 		case (WMODE_AN):
-			snprintf(pBuf, BufLen, "\t11N only with 5G");
+			snprintf(pBuf, BufLen, "\t11N 5G only");
 			break;
 #endif /* DOT11_N_SUPPORT */
+#ifdef DOT11_VHT_AC
+		case (WMODE_B | WMODE_G | WMODE_GN |WMODE_A | WMODE_AN | WMODE_AC):
+			snprintf(pBuf, BufLen, "\t11A/B/G/N/AC mixed");
+			break;
+		case (WMODE_G | WMODE_GN |WMODE_A | WMODE_AN | WMODE_AC):
+			snprintf(pBuf, BufLen, "\t11A/G/N/AC mixed");
+			break;
+		case (WMODE_A | WMODE_AN | WMODE_AC):
+			snprintf(pBuf, BufLen, "\t11A/N/AC mixed 5G only");
+			break;
+		case (WMODE_AN | WMODE_AC):
+			snprintf(pBuf, BufLen, "\t11N/AC mixed 5G only"); // according to MTK_Wi-Fi_SoftAP_Software_Programming_Guide_v4.4.pdf
+			break;
+#endif /* DOT11_VHT_AC*/
 		default:
-			snprintf(pBuf, BufLen, "\tUnknow Value(%d)", pAd->CommonCfg.PhyMode);
+			snprintf(pBuf, BufLen, "\tUnknown Value(%d)", pAd->CommonCfg.PhyMode);
 			break;
 	}
 

@@ -2680,6 +2680,8 @@ NDIS_STATUS	RTMPSetDefaultProfileParameters(
 		DBGPRINT(RT_DEBUG_TRACE, ("Default WirelessMode=5 (A/B/G/GN/AN mixed)\n"));
 #endif /* DOT11_VHT_AC */
 
+		DBGPRINT(RT_DEBUG_TRACE, ("Default PhyMode=%d\n", pAd->CommonCfg.PhyMode));
+
 		// BeaconPeriod=100ms
 		pAd->CommonCfg.BeaconPeriod = (USHORT) 100;
 		DBGPRINT(RT_DEBUG_TRACE, ("Default BeaconPeriod=100\n"));
