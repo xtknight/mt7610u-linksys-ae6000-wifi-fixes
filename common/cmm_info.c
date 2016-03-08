@@ -1081,7 +1081,7 @@ INT	Set_DebugFunc_Proc(
 {
 	DBGPRINT_S(RT_DEBUG_TRACE, ("==>%s()\n", __FUNCTION__));
 	RTDebugFunc = simple_strtol(arg, 0, 10);
-	DBGPRINT_S(RT_DEBUG_TRACE, ("Set RTDebugFunc = 0x%x\n", RTDebugFunc));
+	DBGPRINT_S(RT_DEBUG_TRACE, ("Set RTDebugFunc = 0x%lx\n", RTDebugFunc));
 
 	return TRUE;
 }

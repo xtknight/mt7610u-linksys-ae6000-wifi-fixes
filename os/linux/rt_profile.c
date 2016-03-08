@@ -338,7 +338,6 @@ void announce_802_3_packet(
 	IN PNDIS_PACKET pPacket,
 	IN UCHAR OpMode)
 {
-	RTMP_ADAPTER *pAd = (RTMP_ADAPTER *)pAdSrc;
 	PNDIS_PACKET pRxPkt = pPacket;
 
 	ASSERT(pPacket);
@@ -352,18 +351,22 @@ void announce_802_3_packet(
     /* Push up the protocol stack */
 
 #ifdef IKANOS_VX_1X0
-{
-	IKANOS_DataFrameRx(pAd, pRxPkt);
-	return;
-}
+	{
+		RTMP_ADAPTER *pAd = (RTMP_ADAPTER *)pAdSrc;
+		IKANOS_DataFrameRx(pAd, pRxPkt);
+		return;
+	}
 #endif /* IKANOS_VX_1X0 */
 
 #ifdef INF_PPA_SUPPORT
-	if (ppa_hook_directpath_send_fn && pAd->PPAEnable==TRUE ) 
 	{
-		RtmpOsPktInfPpaSend(pRxPkt);
-		pRxPkt=NULL;
-		return;
+		RTMP_ADAPTER *pAd = (RTMP_ADAPTER *)pAdSrc;
+		if (ppa_hook_directpath_send_fn && pAd->PPAEnable==TRUE ) 
+		{
+			RtmpOsPktInfPpaSend(pRxPkt);
+			pRxPkt=NULL;
+			return;
+		}
 	}	  	
 #endif /* INF_PPA_SUPPORT */
 
@@ -375,6 +378,7 @@ void announce_802_3_packet(
 #if defined(CONFIG_RA_CLASSIFIER)||defined(CONFIG_RA_CLASSIFIER_MODULE)
 		if(ra_classifier_hook_rx!= NULL)
 		{
+			RTMP_ADAPTER *pAd = (RTMP_ADAPTER *)pAdSrc;
 			unsigned int flags;
 			
 			RTMP_IRQ_LOCK(&pAd->page_lock, flags);
@@ -395,6 +399,7 @@ void announce_802_3_packet(
 		 */
 		if (ra_sw_nat_hook_rx!= NULL)
 		{
+			RTMP_ADAPTER *pAd = (RTMP_ADAPTER *)pAdSrc;
 			unsigned int flags;
 			
 			RtmpOsPktProtocolAssign(pRxPkt);
@@ -447,7 +452,7 @@ void STA_MonPktSend(
 
     if (pRxBlk->DataSize + sizeof(wlan_ng_prism2_header) > RX_BUFFER_AGGRESIZE)
     {
-        DBGPRINT(RT_DEBUG_ERROR, ("%s : Size is too large! (%d)\n", __FUNCTION__, pRxBlk->DataSize + sizeof(wlan_ng_prism2_header)));
+        DBGPRINT(RT_DEBUG_ERROR, ("%s : Size is too large! (%zu)\n", __FUNCTION__, pRxBlk->DataSize + sizeof(wlan_ng_prism2_header)));
 		goto err_free_sk_buff;
     }
 

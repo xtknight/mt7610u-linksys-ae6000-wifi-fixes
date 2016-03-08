@@ -173,8 +173,6 @@ VOID RTMPusecDelay(ULONG usec)
 /* Unify all delay routine by using udelay */
 VOID RtmpOsUsDelay(ULONG value)
 {
-	ULONG i;
-
 	udelay(value);
 }
 
@@ -2156,7 +2154,7 @@ int RtmpOSIRQRelease(
 	IN PPCI_DEV pci_dev,
 	IN BOOLEAN *pHaveMsi)
 {
-	struct net_device *net_dev = (struct net_device *)pNetDev;
+	//struct net_device *net_dev = (struct net_device *)pNetDev;
 
 
 
@@ -2660,7 +2658,7 @@ BOOLEAN CFG80211_SupBandInit(
 		}
 	}
 
-	CFG80211DBG(RT_DEBUG_ERROR, ("80211> Number of channel = %d\n",
+	CFG80211DBG(RT_DEBUG_ERROR, ("80211> Number of channel = %zu\n",
 				CFG80211_NUM_OF_CHAN_5GHZ));
 
 	if (pRates == NULL)
@@ -2688,7 +2686,7 @@ BOOLEAN CFG80211_SupBandInit(
 	/* init channel */
 	for(IdLoop=0; IdLoop<NumOfChan; IdLoop++)
 	{
-		// @andy 2/24/2016
+		// XTKNIGHT_FIX 2/24/2016
 		// 2.6.39 is the first kernel with ieee80211_channel_to_frequency requiring two parameters
 		// https://git.kernel.org/cgit/linux/kernel/git/stable/linux-stable.git/tree/include/net/cfg80211.h?h=linux-2.6.38.y
 		// https://git.kernel.org/cgit/linux/kernel/git/stable/linux-stable.git/tree/include/net/cfg80211.h?h=linux-2.6.39.y

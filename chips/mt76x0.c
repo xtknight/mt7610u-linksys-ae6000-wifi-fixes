@@ -1221,9 +1221,9 @@ VOID SetRfChFreqParametersMT76x0(
 			RfBand = MT76x0_Frequency_Plan[i].Band;			
 
 			if (bSDM)
-				pMT76x0_freq_item = &(MT76x0_SDM_Frequency_Plan[i]);
+				pMT76x0_freq_item = (MT76x0_FREQ_ITEM *) &(MT76x0_SDM_Frequency_Plan[i]);
 			else
-				pMT76x0_freq_item = &(MT76x0_Frequency_Plan[i]);
+				pMT76x0_freq_item = (MT76x0_FREQ_ITEM *) &(MT76x0_Frequency_Plan[i]);
 
 			/* 
 				R37
