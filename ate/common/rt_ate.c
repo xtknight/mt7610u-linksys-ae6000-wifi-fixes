@@ -4438,7 +4438,7 @@ INT Set_ATE_Load_E2P_Proc(
 	UINT32 			value = (UINT32) simple_strtol(arg, 0, 10);
 	RTMP_OS_FS_INFO	osFSInfo;
 
-	DBGPRINT(RT_DEBUG_OFF, ("===> %s (value=%d)\n\n", __FUNCTION__, value));
+	DBGPRINT(RT_DEBUG_OFF, ("===> %s (value=%d)\n", __FUNCTION__, value));
 
 	if (value > 0)
 	{
@@ -6542,10 +6542,10 @@ VOID ATEPeriodicExec(
 			pATEInfo->RxCntPerSec = 0;
 
 			if (pATEInfo->RxAntennaSel == 0)
-				ate_print(KERN_EMERG "ATEPeriodicExec: Rx AvgRssi0=%d, AvgRssi1=%d, AvgRssi2=%d\n\n",
+				ate_print(KERN_EMERG "ATEPeriodicExec: Rx AvgRssi0=%d, AvgRssi1=%d, AvgRssi2=%d\n",
 					pATEInfo->AvgRssi0, pATEInfo->AvgRssi1, pATEInfo->AvgRssi2);
 			else
-				ate_print(KERN_EMERG "ATEPeriodicExec: Rx AvgRssi=%d\n\n", pATEInfo->AvgRssi0);
+				ate_print(KERN_EMERG "ATEPeriodicExec: Rx AvgRssi=%d\n", pATEInfo->AvgRssi0);
 		}
 
 		MlmeResetRalinkCounters(pAd);

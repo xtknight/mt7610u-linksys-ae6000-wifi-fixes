@@ -2183,7 +2183,7 @@ rt_private_ioctl_bbp(struct net_device *dev, struct iw_request_info *info,
 	wrq->length = wrqin.u.data.length;
 
 	
-	DBGPRINT(RT_DEBUG_TRACE, ("<==rt_private_ioctl_bbp\n\n"));	
+	DBGPRINT(RT_DEBUG_TRACE, ("<==rt_private_ioctl_bbp"));	
     
     return Status;
 }

@@ -4883,7 +4883,7 @@ LabelOK:
 	if (arg != NULL)
 		os_free_mem(NULL, arg);
 
-	DBGPRINT(RT_DEBUG_TRACE, ("<==RTMPIoctlMAC\n\n"));
+	DBGPRINT(RT_DEBUG_TRACE, ("<==RTMPIoctlMAC\n"));
 	return;
 }
 

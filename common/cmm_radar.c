@@ -41,7 +41,7 @@ VOID RadarDetectPeriodic(
 	/* channel availability check time is 60sec, use 65 for assurance*/
 	if (pAd->Dot11_H.RDCount++ > pAd->Dot11_H.ChMovingTime)
 	{
-		DBGPRINT(RT_DEBUG_TRACE, ("Not found radar signal, start send beacon and radar detection in service monitor\n\n"));
+		DBGPRINT(RT_DEBUG_TRACE, ("Not found radar signal, start send beacon and radar detection in service monitor\n"));
 		AsicEnableBssSync(pAd);
 		pAd->Dot11_H.RDMode = RD_NORMAL_MODE;
 		return;
