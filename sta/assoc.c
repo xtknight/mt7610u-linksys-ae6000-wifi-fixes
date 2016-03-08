@@ -275,11 +275,11 @@ VOID MlmeAssocReqAction(
 
 
 #ifdef WPA_SUPPLICANT_SUPPORT
-    DBGPRINT(RT_DEBUG_ERROR, ("DETECT SUPPLICANT ENABLED\n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("wpa_supplicant support enabled\n"));
 #endif
 
 #ifdef NATIVE_WPA_SUPPLICANT_SUPPORT
-    DBGPRINT(RT_DEBUG_ERROR, ("DETECT NATIVE SUPPLICANT ENABLED\n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("Native wpa_supplicant support enabled\n"));
 #endif
 
     /* Block all authentication request durning WPA block period */
@@ -651,7 +651,7 @@ VOID MlmeAssocReqAction(
         }
 
 #ifdef WPA_SUPPLICANT_SUPPORT
-        DBGPRINT(RT_DEBUG_ERROR, ("DETECT SUPPLICANT ENABLED\n"));
+        DBGPRINT(RT_DEBUG_TRACE, ("wpa_supplicant support enabled\n"));
 
         /*
         	Can not use SIOCSIWGENIE definition, it is used in wireless.h
@@ -752,11 +752,11 @@ VOID MlmeReassocReqAction(
     USHORT Status;
 
 #ifdef WPA_SUPPLICANT_SUPPORT
-    DBGPRINT(RT_DEBUG_ERROR, ("DETECT SUPPLICANT ENABLED\n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("wpa_supplicant support enabled\n"));
 #endif
 
 #ifdef NATIVE_WPA_SUPPLICANT_SUPPORT
-    DBGPRINT(RT_DEBUG_ERROR, ("DETECT NATIVE SUPPLICANT ENABLED\n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("Native wpa_supplicant support enabled\n"));
 #endif
 
     /* Block all authentication request durning WPA block period */
@@ -1100,7 +1100,7 @@ VOID MlmeDisassocReqAction(
 
 #ifdef WPA_SUPPLICANT_SUPPORT
 
-    DBGPRINT(RT_DEBUG_ERROR, ("DETECT SUPPLICANT ENABLED\n"));
+    DBGPRINT(RT_DEBUG_ERROR, ("wpa_supplicant support enabled\n"));
 
 
 #ifndef NATIVE_WPA_SUPPLICANT_SUPPORT
@@ -1108,13 +1108,13 @@ VOID MlmeDisassocReqAction(
     if(pAd->StaCfg.WpaSupplicantUP != WPA_SUPPLICANT_DISABLE)
     {
         /*send disassociate event to wpa_supplicant */
-        RtmpOSWrielessEventSend(pAd->net_dev, RT_WLAN_EVENT_CUSTOM,
+        RtmpOSWirelessEventSend(pAd->net_dev, RT_WLAN_EVENT_CUSTOM,
                                 RT_DISASSOC_EVENT_FLAG, NULL, NULL, 0);
     }
 
 #else
 
-    DBGPRINT(RT_DEBUG_ERROR, ("DETECT NATIVE SUPPLICANT ENABLED\n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("Native wpa_supplicant support enabled\n"));
 
 #endif /* NATIVE_WPA_SUPPLICANT_SUPPORT */
 #endif /* WPA_SUPPLICANT_SUPPORT */
@@ -1257,7 +1257,7 @@ VOID PeerAssocRspAction(
 
                 PFRAME_802_11 pFrame = (PFRAME_802_11)(Elem->Msg);
                 // XTKNIGHT_FIX: this is what makes WPA2 work with supplicant on nl80211
-                DBGPRINT(RT_DEBUG_ERROR, ("ASSOC - %s() connect inform\n", __FUNCTION__));
+                DBGPRINT(RT_DEBUG_TRACE, ("ASSOC - %s() connect inform\n", __FUNCTION__));
 
                 RT_CFG80211_CONN_RESULT_INFORM(pAd, pAd->MlmeAux.Bssid,
                                                pAd->StaCfg.ReqVarIEs, pAd->StaCfg.ReqVarIELen,
@@ -1388,7 +1388,7 @@ VOID PeerReassocRspAction(
                                   HtCapabilityLen);
 
 #ifdef WPA_SUPPLICANT_SUPPORT
-                DBGPRINT(RT_DEBUG_ERROR, ("DETECT SUPPLICANT ENABLED"));
+                DBGPRINT(RT_DEBUG_ERROR, ("wpa_supplicant support enabled"));
 #ifndef NATIVE_WPA_SUPPLICANT_SUPPORT
 
                 if(pAd->StaCfg.WpaSupplicantUP != WPA_SUPPLICANT_DISABLE)
@@ -1396,26 +1396,26 @@ VOID PeerReassocRspAction(
                     SendAssocIEsToWpaSupplicant(pAd->net_dev,
                                                 pAd->StaCfg.ReqVarIEs,
                                                 pAd->StaCfg.ReqVarIELen);
-                    RtmpOSWrielessEventSend(pAd->net_dev,
+                    RtmpOSWirelessEventSend(pAd->net_dev,
                                             RT_WLAN_EVENT_CUSTOM,
                                             RT_ASSOC_EVENT_FLAG,
                                             NULL, NULL, 0);
                 }
 
 #else
-                DBGPRINT(RT_DEBUG_ERROR, ("DETECT NATIVE SUPPLICANT ENABLED"));
-#endif /* NATIVE_WPA_SUPPLICANT_SUPPORT */
+                DBGPRINT(RT_DEBUG_TRACE, ("Native wpa_supplicant support enabled"));
+#endif /* !NATIVE_WPA_SUPPLICANT_SUPPORT */
 #endif /* WPA_SUPPLICANT_SUPPORT */
 
 #ifdef NATIVE_WPA_SUPPLICANT_SUPPORT
                 {
 
-                    DBGPRINT(RT_DEBUG_ERROR, ("DETECT NATIVE SUPPLICANT ENABLED0 (send len=%d)\n", pAd->StaCfg.ReqVarIELen));
+                    DBGPRINT(RT_DEBUG_TRACE, ("Native wpa_supplicant support enabled (ReqVarIELen=%d)\n", pAd->StaCfg.ReqVarIELen));
 
                     wext_notify_event_assoc(pAd->net_dev,
                                             pAd->StaCfg.ReqVarIEs,
                                             pAd->StaCfg.ReqVarIELen);
-                    RtmpOSWrielessEventSend(pAd->net_dev,
+                    RtmpOSWirelessEventSend(pAd->net_dev,
                                             RT_WLAN_EVENT_CGIWAP,
                                             -1,
                                             &pAd->MlmeAux.Bssid[0], NULL,
@@ -1703,7 +1703,7 @@ VOID PeerDisassocAction(
                          ("ASSOC - Send disassoc to WpaSupplicant(2)\n"));
 
                 /*send disassociate event to wpa_supplicant */
-                RtmpOSWrielessEventSend(pAd->net_dev,
+                RtmpOSWirelessEventSend(pAd->net_dev,
                                         RT_WLAN_EVENT_CUSTOM,
                                         RT_DISASSOC_EVENT_FLAG,
                                         NULL, NULL, 0);
@@ -2159,7 +2159,7 @@ BOOLEAN StaAddMacTableEntry(
                                     pAd->StaCfg.ReqVarIELen);
 
 
-        RtmpOSWrielessEventSend(pAd->net_dev, RT_WLAN_EVENT_CUSTOM,
+        RtmpOSWirelessEventSend(pAd->net_dev, RT_WLAN_EVENT_CUSTOM,
                                 RT_ASSOC_EVENT_FLAG, NULL, NULL, 0);
     }
 
@@ -2168,7 +2168,7 @@ BOOLEAN StaAddMacTableEntry(
 
 #ifdef NATIVE_WPA_SUPPLICANT_SUPPORT
 
-    DBGPRINT(RT_DEBUG_ERROR, ("DETECT NATIVE SUPPLICANT ENABLED (send len=%d)\n", pAd->StaCfg.ReqVarIELen));
+    DBGPRINT(RT_DEBUG_TRACE, ("Native wpa_supplicant support enabled (ReqVarIELen%d)\n", pAd->StaCfg.ReqVarIELen));
 
     {
         /*        union iwreq_data    wrqu; */
@@ -2176,7 +2176,7 @@ BOOLEAN StaAddMacTableEntry(
                                 pAd->StaCfg.ReqVarIELen);
 
 
-        RtmpOSWrielessEventSend(pAd->net_dev, RT_WLAN_EVENT_CGIWAP, -1,
+        RtmpOSWirelessEventSend(pAd->net_dev, RT_WLAN_EVENT_CGIWAP, -1,
                                 pAd->MlmeAux.Bssid, NULL, 0);
     }
 #endif /* NATIVE_WPA_SUPPLICANT_SUPPORT */

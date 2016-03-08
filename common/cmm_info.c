@@ -1845,7 +1845,7 @@ PSTRING GetEncryptType(CHAR enc)
     if(enc == Ndis802_11Encryption4Enabled)
         return "TKIPAES";
     else
-        return "UNKNOW";
+        return "UNKNOWN";
 }
 
 PSTRING GetAuthMode(CHAR auth)
@@ -1880,7 +1880,7 @@ PSTRING GetAuthMode(CHAR auth)
     if(auth == Ndis802_11AuthModeWPA1PSKWPA2PSK)
         return "WPA1PSKWPA2PSK";
 
-    return "UNKNOW";
+    return "UNKNOWN";
 }
 
 
@@ -2073,7 +2073,7 @@ VOID	RTMPCommSiteSurveyData(
     else if(wireless_mode == Ndis802_11OFDM24_N)
         sprintf(msg+strlen(msg),"%-7s", "11b/g/n");
     else
-        sprintf(msg+strlen(msg),"%-7s", "unknow");
+        sprintf(msg+strlen(msg),"%-7s", "unknown");
 
     /* Ext Channel*/
     if(pBss->AddHtInfoLen > 0)
@@ -3829,7 +3829,7 @@ PSTRING RTMPGetRalinkAuthModeStr(
         return "WPANONE";
 
     default:
-        return "UNKNOW";
+        return "UNKNOWN";
     }
 }
 
@@ -3854,7 +3854,7 @@ PSTRING RTMPGetRalinkEncryModeStr(
         return "TKIPAES";
 
     default:
-        return "UNKNOW";
+        return "UNKNOWN";
     }
 }
 
@@ -4041,7 +4041,7 @@ INT	Show_BGProtection_Proc(
         break;
 
     default:
-        snprintf(pBuf, BufLen, "\tUnknow Value(%lu)", pAd->CommonCfg.UseBGProtection);
+        snprintf(pBuf, BufLen, "\tUnknown Value(%lu)", pAd->CommonCfg.UseBGProtection);
         break;
     }
 
@@ -4113,7 +4113,7 @@ INT	Show_HtGi_Proc(
         break;
 
     default:
-        snprintf(pBuf, BufLen, "\tUnknow Value(%u)", pAd->CommonCfg.RegTransmitSetting.field.ShortGI);
+        snprintf(pBuf, BufLen, "\tUnknown Value(%u)", pAd->CommonCfg.RegTransmitSetting.field.ShortGI);
         break;
     }
 
@@ -4136,7 +4136,7 @@ INT	Show_HtOpMode_Proc(
         break;
 
     default:
-        snprintf(pBuf, BufLen, "\tUnknow Value(%u)", pAd->CommonCfg.RegTransmitSetting.field.HTMODE);
+        snprintf(pBuf, BufLen, "\tUnknown Value(%u)", pAd->CommonCfg.RegTransmitSetting.field.HTMODE);
         break;
     }
 
@@ -4159,7 +4159,7 @@ INT	Show_HtExtcha_Proc(
         break;
 
     default:
-        snprintf(pBuf, BufLen, "\tUnknow Value(%u)", pAd->CommonCfg.RegTransmitSetting.field.EXTCHA);
+        snprintf(pBuf, BufLen, "\tUnknown Value(%u)", pAd->CommonCfg.RegTransmitSetting.field.EXTCHA);
         break;
     }
 
@@ -4301,7 +4301,7 @@ INT	Show_NetworkType_Proc(
         break;
 
     default:
-        sprintf(pBuf, "\tUnknow Value(%d)", pAd->StaCfg.BssType);
+        sprintf(pBuf, "\tUnknown Value(%d)", pAd->StaCfg.BssType);
         break;
     }
 
@@ -4356,7 +4356,7 @@ INT	Show_AuthMode_Proc(
             (AuthMode <= Ndis802_11AuthModeWPA1PSKWPA2PSK))
         snprintf(pBuf, BufLen, "\t%s", RTMPGetRalinkAuthModeStr(AuthMode));
     else
-        snprintf(pBuf, BufLen, "\tUnknow Value(%d)", AuthMode);
+        snprintf(pBuf, BufLen, "\tUnknown Value(%d)", AuthMode);
 
     return 0;
 }
@@ -4377,7 +4377,7 @@ INT	Show_EncrypType_Proc(
             (WepStatus <= Ndis802_11Encryption4KeyAbsent))
         snprintf(pBuf, BufLen, "\t%s", RTMPGetRalinkEncryModeStr(WepStatus));
     else
-        snprintf(pBuf, BufLen, "\tUnknow Value(%d)", WepStatus);
+        snprintf(pBuf, BufLen, "\tUnknown Value(%d)", WepStatus);
 
     return 0;
 }

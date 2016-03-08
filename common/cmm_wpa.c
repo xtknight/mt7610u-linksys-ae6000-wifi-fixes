@@ -204,7 +204,7 @@ VOID WpaEAPOLKeyAction(
 #ifdef CONFIG_STA_SUPPORT
 #endif /* CONFIG_STA_SUPPORT */
 
-    DBGPRINT(RT_DEBUG_TRACE, ("WpaEAPOLKeyAction ===>\n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("WpaEAPOLKeyAction()\n"));
 
     pHeader = (PHEADER_802_11)Elem->Msg;
     pEapol_packet = (PEAPOL_PACKET)&Elem->Msg[LENGTH_802_11 + LENGTH_802_1_H];

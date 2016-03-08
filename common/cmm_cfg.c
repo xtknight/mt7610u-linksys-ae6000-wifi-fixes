@@ -772,7 +772,7 @@ INT RTMP_COM_IoctlHandle(
             }
 
             /*				RTMPusecDelay(1000);*/
-            RtmpOSWrielessEventSend(pAd->net_dev, RT_WLAN_EVENT_CGIWAP, -1, NULL, NULL, 0);
+            RtmpOSWirelessEventSend(pAd->net_dev, RT_WLAN_EVENT_CGIWAP, -1, NULL, NULL, 0);
         }
 
         break;

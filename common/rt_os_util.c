@@ -156,7 +156,7 @@ VOID WpaSendMicFailureToWpaSupplicant(
     if(bUnicast)
         sprintf(custom, "%s unicast", custom);
 
-    RtmpOSWrielessEventSend(pNetDev, RT_WLAN_EVENT_CUSTOM, -1, NULL, (PUCHAR)custom, strlen(custom));
+    RtmpOSWirelessEventSend(pNetDev, RT_WLAN_EVENT_CUSTOM, -1, NULL, (PUCHAR)custom, strlen(custom));
 
     return;
 }
@@ -176,7 +176,7 @@ int wext_notify_event_assoc(
     if(ReqVarIELen <= IW_CUSTOM_MAX)
     {
         NdisMoveMemory(custom, ReqVarIEs, ReqVarIELen);
-        RtmpOSWrielessEventSend(pNetDev, RT_WLAN_EVENT_ASSOC_REQ_IE, -1, NULL,
+        RtmpOSWirelessEventSend(pNetDev, RT_WLAN_EVENT_ASSOC_REQ_IE, -1, NULL,
                                 (UCHAR *)custom, ReqVarIELen);
     }
     else
@@ -195,7 +195,7 @@ int wext_notify_event_assoc(
         for(idx=0; idx<ReqVarIELen; idx++)
             sprintf(custom, "%s%02x", custom, ReqVarIEs[idx]);
 
-        RtmpOSWrielessEventSend(pNetDev, RT_WLAN_EVENT_CUSTOM, -1, NULL, custom, len);
+        RtmpOSWirelessEventSend(pNetDev, RT_WLAN_EVENT_CUSTOM, -1, NULL, custom, len);
     }
     else
         DBGPRINT(RT_DEBUG_TRACE, ("len(%d) > MAX_CUSTOM_LEN\n", len));
@@ -221,9 +221,9 @@ VOID SendAssocIEsToWpaSupplicant(
     {
         snprintf(custom, sizeof(custom), "ASSOCINFO_ReqIEs=");
         NdisMoveMemory(custom+17, ReqVarIEs, ReqVarIELen);
-        RtmpOSWrielessEventSend(pNetDev, RT_WLAN_EVENT_CUSTOM, RT_REQIE_EVENT_FLAG, NULL, (PUCHAR)custom, ReqVarIELen + 17);
+        RtmpOSWirelessEventSend(pNetDev, RT_WLAN_EVENT_CUSTOM, RT_REQIE_EVENT_FLAG, NULL, (PUCHAR)custom, ReqVarIELen + 17);
 
-        RtmpOSWrielessEventSend(pNetDev, RT_WLAN_EVENT_CUSTOM, RT_ASSOCINFO_EVENT_FLAG, NULL, NULL, 0);
+        RtmpOSWirelessEventSend(pNetDev, RT_WLAN_EVENT_CUSTOM, RT_ASSOCINFO_EVENT_FLAG, NULL, NULL, 0);
     }
     else
         DBGPRINT(RT_DEBUG_TRACE, ("pAd->StaCfg.ReqVarIELen + 17 > MAX_CUSTOM_LEN\n"));

@@ -557,7 +557,7 @@ VOID NICReadEEPROMParameters(RTMP_ADAPTER *pAd, PSTRING mac_addr)
 #endif /* TXRX_SW_ANTDIV_SUPPORT */
 
 
-    // TODO: shiang, why we only check oxff00??
+    // TODO: shiang, why we only check 0xff00??
     if((Antenna.word & 0xFF00) == 0xFF00)
         /*	if (Antenna.word == 0xFFFF)*/
         RTMP_CHIP_ANTENNA_INFO_DEFAULT_RESET(pAd, &Antenna);
@@ -3210,7 +3210,7 @@ VOID	RTMP_TimerListAdd(
     {
         pObj->pRscObj = pRsc;
         insertTailList(pRscList, (LIST_ENTRY *)pObj);
-        DBGPRINT(RT_DEBUG_ERROR, ("%s: add timer obj %lx!\n", __FUNCTION__, (ULONG)pRsc));
+        DBGPRINT(RT_DEBUG_TRACE, ("%s: add timer obj %lx!\n", __FUNCTION__, (ULONG)pRsc));
     }
 }
 

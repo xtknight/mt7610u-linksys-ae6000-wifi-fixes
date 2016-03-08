@@ -1106,7 +1106,7 @@ VOID STAHandleRxDataFrame_Hdr_Trns(
             }
         }
 
-        /*/ find pEntry */
+        /* find pEntry */
         if(pRxWI->RxWIWirelessCliID < MAX_LEN_OF_MAC_TABLE)
         {
             pEntry = &pAd->MacTab.Content[pRxWI->RxWIWirelessCliID];

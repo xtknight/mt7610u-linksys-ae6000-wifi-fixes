@@ -248,7 +248,7 @@ BOOLEAN CFG80211DRV_OpsSetChannel(
             FlgIsChanged = TRUE;
         } /* End of if */
 
-        CFG80211DBG(RT_DEBUG_ERROR, ("80211> New BW = %d\n",
+        CFG80211DBG(RT_DEBUG_ERROR, ("mt7610u: New BW = %d\n",
                                      pAd->CommonCfg.RegTransmitSetting.field.BW));
 
         /* change HT/non-HT mode (do NOT change wireless mode here) */
@@ -265,7 +265,7 @@ BOOLEAN CFG80211DRV_OpsSetChannel(
             /* End of if */
 
             FlgIsChanged = TRUE;
-            CFG80211DBG(RT_DEBUG_ERROR, ("80211> HT Disable = %d\n",
+            CFG80211DBG(RT_DEBUG_ERROR, ("mt7610u: HT Disable = %d\n",
                                          pAd->CommonCfg.HT_Disable));
         } /* End of if */
     }
@@ -288,7 +288,7 @@ BOOLEAN CFG80211DRV_OpsSetChannel(
 
     if(Set_Channel_Proc(pAd, ChStr) == FALSE)
     {
-        CFG80211DBG(RT_DEBUG_ERROR, ("80211> Change channel fail!\n"));
+        CFG80211DBG(RT_DEBUG_ERROR, ("mt7610u: Change channel fail!\n"));
     } /* End of if */
 
 #ifdef CONFIG_STA_SUPPORT
@@ -407,7 +407,7 @@ BOOLEAN CFG80211DRV_OpsChgVirtualInf(
 
     pAd->StaCfg.bAutoReconnect = TRUE;
 
-    CFG80211DBG(RT_DEBUG_ERROR, ("80211> SSID = %s\n", pAd->CommonCfg.Ssid));
+    CFG80211DBG(RT_DEBUG_ERROR, ("mt7610u: SSID = %s\n", pAd->CommonCfg.Ssid));
     Set_SSID_Proc(pAd, (PSTRING)pAd->CommonCfg.Ssid);
 #endif /* CONFIG_STA_SUPPORT */
 
@@ -710,7 +710,7 @@ BOOLEAN CFG80211DRV_Connect(
         Set_AuthMode_Proc(pAd, "OPEN");
 
     CFG80211DBG(RT_DEBUG_TRACE,
-                ("80211> AuthMode = %d\n", pAd->StaCfg.wdev.AuthMode));
+                ("mt7610u: AuthMode = %d\n", pAd->StaCfg.wdev.AuthMode));
 
 
     /* set encryption mode */
@@ -753,12 +753,12 @@ BOOLEAN CFG80211DRV_Connect(
 
 
     CFG80211DBG(RT_DEBUG_ERROR,
-                ("80211> EncrypType = %d\n", pAd->StaCfg.WepStatus));
+                ("mt7610u: EncrypType = %d\n", pAd->StaCfg.WepStatus));
 
 
     /* set channel: STATION will auto-scan */
 
-    CFG80211DBG(RT_DEBUG_TRACE, ("80211> Key = %s\n", pConnInfo->pKey));
+    CFG80211DBG(RT_DEBUG_TRACE, ("mt7610u: Key = %s\n", pConnInfo->pKey));
 
     /* set channel: STATION will auto-scan */
 
@@ -786,7 +786,7 @@ BOOLEAN CFG80211DRV_Connect(
         KeyBuf[pConnInfo->KeyLen] = 0x00;
 
         CFG80211DBG(RT_DEBUG_ERROR,
-                    ("80211> pAd->StaCfg.DefaultKeyId = %d\n",
+                    ("mt7610u: pAd->StaCfg.DefaultKeyId = %d\n",
                      pAd->StaCfg.DefaultKeyId));
 
         Set_Wep_Key_Proc(pAd, (PSTRING)KeyBuf, (INT)pConnInfo->KeyLen, (INT)pConnInfo->KeyIdx);
@@ -800,7 +800,7 @@ BOOLEAN CFG80211DRV_Connect(
     pAd->FlgCfg80211Connecting = TRUE;
 
     Set_SSID_Proc(pAd, (PSTRING)SSID);
-    CFG80211DBG(RT_DEBUG_TRACE, ("80211> Connecting SSID = %s\n", SSID));
+    CFG80211DBG(RT_DEBUG_TRACE, ("mt7610u: Connecting SSID = %s\n", SSID));
 
 #endif /* CONFIG_STA_SUPPORT */
 
@@ -830,7 +830,7 @@ VOID CFG80211DRV_RegNotify(
     }
     else
     {
-        CFG80211DBG(RT_DEBUG_ERROR, ("crda> interface is down!\n"));
+        CFG80211DBG(RT_DEBUG_ERROR, ("mt7610u: crda: interface is down!\n"));
     } /* End of if */
 }
 
@@ -1019,7 +1019,7 @@ VOID CFG80211_RegRuleApply(
 #endif /* DFS_SUPPORT */
 
 
-    CFG80211DBG(RT_DEBUG_ERROR, ("crda> CFG80211_RegRuleApply ==>\n"));
+    CFG80211DBG(RT_DEBUG_TRACE, ("mt7610u: crda: CFG80211_RegRuleApply()\n"));
 
     /* init */
     pBand24G = NULL;
@@ -1074,7 +1074,7 @@ VOID CFG80211_RegRuleApply(
                         DfsType = ChRegion[IdReg].DfsType;
 
                     CFG80211DBG(RT_DEBUG_ERROR,
-                                ("crda> find region %c%c, DFS Type %d\n",
+                                ("mt7610u: crda: find region %c%c, DFS Type %d\n",
                                  pAlpha2[0], pAlpha2[1], DfsType));
                     break;
                 } /* End of if */
@@ -1095,11 +1095,11 @@ VOID CFG80211_RegRuleApply(
 
         if(IdBand == 0)
         {
-            CFG80211DBG(RT_DEBUG_ERROR, ("crda> reset chan/power for 2.4GHz\n"));
+            CFG80211DBG(RT_DEBUG_ERROR, ("mt7610u: crda: reset chan/power for 2.4GHz\n"));
         }
         else
         {
-            CFG80211DBG(RT_DEBUG_ERROR, ("crda> reset chan/power for 5GHz\n"));
+            CFG80211DBG(RT_DEBUG_ERROR, ("mt7610u: crda: reset chan/power for 5GHz\n"));
         } /* End of if */
 
         ChanNum = CFG80211OS_ChanNumGet(CFG80211CB, pWiphy, IdBand);
@@ -1175,7 +1175,7 @@ VOID CFG80211_RegRuleApply(
     pAd->ChannelListNum = RecId;
     RTMP_IRQ_UNLOCK(&pAd->irq_lock, IrqFlags);
 
-    CFG80211DBG(RT_DEBUG_ERROR, ("crda> Number of channels = %d\n", RecId));
+    CFG80211DBG(RT_DEBUG_ERROR, ("mt7610u: crda: Number of channels = %d\n", RecId));
 } /* End of CFG80211_RegRuleApply */
 
 
@@ -1191,10 +1191,10 @@ Return Value:
 	NONE
 
 Note:
-	Call RT_CFG80211_SCANNING_INFORM, not CFG80211_Scaning
+    Call RT_CFG80211_SCANNING_INFORM, not CFG80211_Scanning
 ========================================================================
 */
-VOID CFG80211_Scaning(
+VOID CFG80211_Scanning(
     IN VOID							*pAdCB,
     IN UINT32						BssIdx,
     IN UINT32						ChanId,
@@ -1209,11 +1209,11 @@ VOID CFG80211_Scaning(
     UINT8 BW;
 
 
-    CFG80211DBG(RT_DEBUG_TRACE, ("80211> CFG80211_Scaning ==>\n"));
+    CFG80211DBG(RT_DEBUG_TRACE, ("mt7610u: CFG80211_Scanning()\n"));
 
     if(!RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_INTERRUPT_IN_USE))
     {
-        DBGPRINT(RT_DEBUG_TRACE, ("80211> Network is down!\n"));
+        DBGPRINT(RT_DEBUG_TRACE, ("mt7610u: Network is down!\n"));
         return;
     } /* End of if */
 
@@ -1247,7 +1247,7 @@ VOID CFG80211_Scaning(
                        FlgIsNMode,
                        BW);
 #endif /* CONFIG_STA_SUPPORT */
-} /* End of CFG80211_Scaning */
+} /* End of CFG80211_Scanning */
 
 
 /*
@@ -1275,13 +1275,13 @@ VOID CFG80211_ScanEnd(
 
     if(!RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_INTERRUPT_IN_USE))
     {
-        DBGPRINT(RT_DEBUG_ERROR, ("80211> Network is down!\n"));
+        DBGPRINT(RT_DEBUG_ERROR, ("mt7610u: Network is down!\n"));
         return;
     } /* End of if */
 
     if(pAd->FlgCfg80211Scanning == FALSE)
     {
-        DBGPRINT(RT_DEBUG_ERROR, ("80211> No scan is running!\n"));
+        DBGPRINT(RT_DEBUG_TRACE, ("mt7610u: No scan is running!\n"));
         return; /* no scan is running */
     } /* End of if */
 
@@ -1331,7 +1331,7 @@ VOID CFG80211_ConnectResultInform(
     PRTMP_ADAPTER pAd = (PRTMP_ADAPTER)pAdCB;
 
 
-    CFG80211DBG(RT_DEBUG_ERROR, ("80211> CFG80211_ConnectResultInform ==>\n"));
+    CFG80211DBG(RT_DEBUG_TRACE, ("mt7610u: CFG80211_ConnectResultInform()\n"));
 
     CFG80211OS_ConnectResultInform(CFG80211CB,
                                    pBSSID,
@@ -1370,7 +1370,7 @@ BOOLEAN CFG80211_SupBandReInit(
     CFG80211_BAND BandInfo;
 
 
-    CFG80211DBG(RT_DEBUG_ERROR, ("80211> re-init bands...\n"));
+    CFG80211DBG(RT_DEBUG_ERROR, ("mt7610u: re-init bands...\n"));
 
     /* re-init bands */
     NdisZeroMemory(&BandInfo, sizeof(BandInfo));
@@ -1400,7 +1400,7 @@ VOID CFG80211_LostApInform(
     PRTMP_ADAPTER pAd = (PRTMP_ADAPTER)pAdCB;
     CFG80211_CB *p80211CB = pAd->pCfg80211_CB;
 
-    DBGPRINT(RT_DEBUG_TRACE, ("80211> CFG80211_LostApInform ==> \n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("mt7610u: CFG80211_LostApInform ==> \n"));
     pAd->StaCfg.bAutoReconnect = FALSE;
 
     // TODO
@@ -1417,7 +1417,7 @@ VOID CFG80211_LostApInform(
 
     // Can't find a good way to determine if we're connected to AP or not.
     // Just call disconnected() no matter what.
-    DBGPRINT(RT_DEBUG_TRACE, ("80211> CFG80211_LostApInform(): calling cfg80211_disconnected() \n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("mt7610u: CFG80211_LostApInform(): calling cfg80211_disconnected() \n"));
     // This is important to prevent the WARN_ON() that we are still connected to a BSS
     // (net/wireless/core.c: WARN_ON(wdev->current_bss))
 

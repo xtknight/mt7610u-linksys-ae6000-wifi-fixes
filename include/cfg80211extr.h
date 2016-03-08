@@ -44,7 +44,7 @@
 
 #define RT_CFG80211_SCANNING_INFORM(__pAd, __BssIdx, __ChanId, __pFrame,	\
 			__FrameLen, __RSSI)									\
-	CFG80211_Scaning((VOID *)__pAd, __BssIdx, __ChanId, __pFrame,			\
+	CFG80211_Scanning((VOID *)__pAd, __BssIdx, __ChanId, __pFrame,			\
 						__FrameLen, __RSSI);
 
 #define RT_CFG80211_SCAN_END(__pAd, __FlgIsAborted)							\
@@ -195,7 +195,7 @@ VOID CFG80211_RegRuleApply(
     IN VOID						*pWiphy,
     IN UCHAR					*pAlpha2);
 
-VOID CFG80211_Scaning(
+VOID CFG80211_Scanning(
     IN VOID						*pAdCB,
     IN UINT32					BssIdx,
     IN UINT32					ChanId,

@@ -1046,7 +1046,7 @@ VOID STAMlmePeriodicExec(
 
         if(bCheckBeaconLost)
         {
-            /* The NIC may lost beacons during scaning operation.*/
+            /* The NIC may lost beacons during scanning operation.*/
             MAC_TABLE_ENTRY *pEntry = &pAd->MacTab.Content[BSSID_WCID];
             MlmeCalculateChannelQuality(pAd, pEntry, pAd->Mlme.Now32);
         }

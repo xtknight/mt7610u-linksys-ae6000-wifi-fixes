@@ -514,7 +514,7 @@ int rt28xx_init(VOID *pAdSrc, PSTRING pDefaultMac, PSTRING pHostName)
 #ifdef WPA_SUPPLICANT_SUPPORT
 #ifndef NATIVE_WPA_SUPPLICANT_SUPPORT
         /* send wireless event to wpa_supplicant for infroming interface up.*/
-        RtmpOSWrielessEventSend(pAd->net_dev, RT_WLAN_EVENT_CUSTOM, RT_INTERFACE_UP, NULL, NULL, 0);
+        RtmpOSWirelessEventSend(pAd->net_dev, RT_WLAN_EVENT_CUSTOM, RT_INTERFACE_UP, NULL, NULL, 0);
 #endif /* NATIVE_WPA_SUPPLICANT_SUPPORT */
 #endif /* WPA_SUPPLICANT_SUPPORT */
 
@@ -691,7 +691,7 @@ VOID RTMPDrvSTAOpen(
 
 
     //+++Add by shiang for debug
-    DBGPRINT(RT_DEBUG_OFF, ("%s(1):Check if PDMA is idle!\n", __FUNCTION__));
+    DBGPRINT(RT_DEBUG_TRACE, ("%s(1):Check if PDMA is idle!\n", __FUNCTION__));
     AsicWaitPDMAIdle(pAd, 5, 10);
     //---Add by shiang for debug
 
@@ -703,7 +703,7 @@ VOID RTMPDrvSTAOpen(
         MlmeAutoReconnectLastSSID(pAd);
 
     //+++Add by shiang for debug
-    DBGPRINT(RT_DEBUG_OFF, ("%s(2):Check if PDMA is idle!\n", __FUNCTION__));
+    DBGPRINT(RT_DEBUG_TRACE, ("%s(2):Check if PDMA is idle!\n", __FUNCTION__));
     AsicWaitPDMAIdle(pAd, 5, 10);
     //---Add by shiang for debug
 
@@ -963,7 +963,7 @@ VOID RTMPInfClose(
 #ifdef WPA_SUPPLICANT_SUPPORT
 #ifndef NATIVE_WPA_SUPPLICANT_SUPPORT
         /* send wireless event to wpa_supplicant for infroming interface down.*/
-        RtmpOSWrielessEventSend(pAd->net_dev, RT_WLAN_EVENT_CUSTOM, RT_INTERFACE_DOWN, NULL, NULL, 0);
+        RtmpOSWirelessEventSend(pAd->net_dev, RT_WLAN_EVENT_CUSTOM, RT_INTERFACE_DOWN, NULL, NULL, 0);
 #endif /* NATIVE_WPA_SUPPLICANT_SUPPORT */
 
         if(pAd->StaCfg.pWpsProbeReqIe)

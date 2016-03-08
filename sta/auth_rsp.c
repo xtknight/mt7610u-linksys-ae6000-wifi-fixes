@@ -143,7 +143,7 @@ VOID PeerDeauthAction(
 
 
 #ifdef NATIVE_WPA_SUPPLICANT_SUPPORT
-            RtmpOSWrielessEventSend(pAd->net_dev,
+            RtmpOSWirelessEventSend(pAd->net_dev,
                                     RT_WLAN_EVENT_CGIWAP, -1, NULL,
                                     NULL, 0);
 #endif /* NATIVE_WPA_SUPPLICANT_SUPPORT */

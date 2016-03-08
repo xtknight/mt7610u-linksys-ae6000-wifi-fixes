@@ -241,7 +241,7 @@ VOID MlmeCntlMachinePerformAction(
                     RTMPSendWirelessEvent(pAd, IW_SCAN_COMPLETED_EVENT_FLAG, NULL, BSS0, 0);
 
 #ifdef WPA_SUPPLICANT_SUPPORT
-                    RtmpOSWrielessEventSend(pAd->net_dev, RT_WLAN_EVENT_SCAN, -1, NULL, NULL, 0);
+                    RtmpOSWirelessEventSend(pAd->net_dev, RT_WLAN_EVENT_SCAN, -1, NULL, NULL, 0);
 #endif /* WPA_SUPPLICANT_SUPPORT */
                 }
 
@@ -549,7 +549,7 @@ VOID CntlOidSsidProc(
 
             pAd->Mlme.CntlMachine.CurrState = CNTL_IDLE;
 #ifdef NATIVE_WPA_SUPPLICANT_SUPPORT
-            RtmpOSWrielessEventSend(pAd->net_dev,
+            RtmpOSWirelessEventSend(pAd->net_dev,
                                     RT_WLAN_EVENT_CGIWAP, -1,
                                     &pAd->MlmeAux.Bssid[0], NULL,
                                     0);
@@ -2748,7 +2748,7 @@ VOID LinkDown(
     if(pAd->StaCfg.WpaSupplicantUP)
     {
         /*send disassociate event to wpa_supplicant */
-        RtmpOSWrielessEventSend(pAd->net_dev, RT_WLAN_EVENT_CUSTOM,
+        RtmpOSWirelessEventSend(pAd->net_dev, RT_WLAN_EVENT_CUSTOM,
                                 RT_DISASSOC_EVENT_FLAG, NULL, NULL, 0);
     }
 
@@ -2756,7 +2756,7 @@ VOID LinkDown(
 #endif /* WPA_SUPPLICANT_SUPPORT */
 
 #ifdef NATIVE_WPA_SUPPLICANT_SUPPORT
-    RtmpOSWrielessEventSend(pAd->net_dev, RT_WLAN_EVENT_CGIWAP, -1, NULL,
+    RtmpOSWirelessEventSend(pAd->net_dev, RT_WLAN_EVENT_CGIWAP, -1, NULL,
                             NULL, 0);
 #endif /* NATIVE_WPA_SUPPLICANT_SUPPORT */
 

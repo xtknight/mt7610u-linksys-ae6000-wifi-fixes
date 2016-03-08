@@ -1479,7 +1479,7 @@ static UINT32 RtmpOSWirelessEventTranslate(IN UINT32 eventType)
     return eventType;
 }
 
-int RtmpOSWrielessEventSend(
+int RtmpOSWirelessEventSend(
     IN PNET_DEV pNetDev,
     IN UINT32 eventType,
     IN INT flags,
@@ -1509,7 +1509,7 @@ int RtmpOSWrielessEventSend(
     return 0;
 }
 
-int RtmpOSWrielessEventSendExt(
+int RtmpOSWirelessEventSendExt(
     IN PNET_DEV pNetDev,
     IN UINT32 eventType,
     IN INT flags,
@@ -2742,7 +2742,7 @@ VOID CFG80211OS_UnRegister(
     /* unregister */
     if(pCfg80211_CB->pCfg80211_Wdev != NULL)
     {
-        DBGPRINT(RT_DEBUG_ERROR, ("80211> unregister/free wireless device\n"));
+        DBGPRINT(RT_DEBUG_ERROR, ("mt7610u: unregister/free wireless device\n"));
 
         /*
         	Must unregister, or you will suffer problem when you change
@@ -2827,7 +2827,7 @@ BOOLEAN CFG80211_SupBandInit(
     if(pBandInfo->RFICType == 0)
         pBandInfo->RFICType = RFIC_24GHZ | RFIC_5GHZ;
 
-    CFG80211DBG(RT_DEBUG_ERROR, ("80211> RFICType = %d\n",
+    CFG80211DBG(RT_DEBUG_ERROR, ("mt7610u: RFICType = %d\n",
                                  pBandInfo->RFICType));
 
     /* init */
@@ -2847,12 +2847,12 @@ BOOLEAN CFG80211_SupBandInit(
 
         if(!pChannels)
         {
-            DBGPRINT(RT_DEBUG_ERROR, ("80211> ieee80211_channel allocation fail!\n"));
+            DBGPRINT(RT_DEBUG_ERROR, ("mt7610u: ieee80211_channel allocation fail!\n"));
             return FALSE;
         }
     }
 
-    CFG80211DBG(RT_DEBUG_ERROR, ("80211> Number of channel = %zu\n",
+    CFG80211DBG(RT_DEBUG_ERROR, ("mt7610u: Number of channel = %zu\n",
                                  CFG80211_NUM_OF_CHAN_5GHZ));
 
     if(pRates == NULL)
@@ -2862,12 +2862,12 @@ BOOLEAN CFG80211_SupBandInit(
         if(!pRates)
         {
             os_free_mem(NULL, pChannels);
-            DBGPRINT(RT_DEBUG_ERROR, ("80211> ieee80211_rate allocation fail!\n"));
+            DBGPRINT(RT_DEBUG_ERROR, ("mt7610u: ieee80211_rate allocation fail!\n"));
             return FALSE;
         }
     }
 
-    CFG80211DBG(RT_DEBUG_ERROR, ("80211> Number of rate = %d\n", NumOfRate));
+    CFG80211DBG(RT_DEBUG_ERROR, ("mt7610u: Number of rate = %d\n", NumOfRate));
 
     /* get TX power */
 #ifdef SINGLE_SKU
@@ -2876,7 +2876,7 @@ BOOLEAN CFG80211_SupBandInit(
     CurTxPower = 0; /* unknown */
 #endif /* SINGLE_SKU */
 
-    CFG80211DBG(RT_DEBUG_ERROR, ("80211> CurTxPower = %d dBm\n", CurTxPower));
+    CFG80211DBG(RT_DEBUG_ERROR, ("mt7610u: CurTxPower = %d dBm\n", CurTxPower));
 
     /* init channel */
     for(IdLoop=0; IdLoop<NumOfChan; IdLoop++)
@@ -2930,7 +2930,7 @@ BOOLEAN CFG80211_SupBandInit(
 
         memset(&pBand->ht_cap.mcs, 0, sizeof(pBand->ht_cap.mcs));
         CFG80211DBG(RT_DEBUG_ERROR,
-                    ("80211> TxStream = %d\n", pBandInfo->TxStream));
+                    ("mt7610u: TxStream = %d\n", pBandInfo->TxStream));
 
         switch(pBandInfo->TxStream)
         {
@@ -3057,7 +3057,7 @@ BOOLEAN CFG80211OS_SupBandReInit(
 
     if(pWiphy != NULL)
     {
-        CFG80211DBG(RT_DEBUG_ERROR, ("80211> re-init bands...\n"));
+        CFG80211DBG(RT_DEBUG_ERROR, ("mt7610u: re-init bands...\n"));
 
         /* re-init bands */
         CFG80211_SupBandInit(pCfg80211_CB, pBandInfo, pWiphy,
@@ -3105,12 +3105,12 @@ VOID CFG80211OS_RegHint(
 
 
     CFG80211DBG(RT_DEBUG_ERROR,
-                ("crda> regulatory domain hint: %c%c\n",
+                ("mt7610u: crda: regulatory domain hint: %c%c\n",
                  pCountryIe[0], pCountryIe[1]));
 
     if((pCfg80211_CB->pCfg80211_Wdev == NULL) || (pCountryIe == NULL))
     {
-        CFG80211DBG(RT_DEBUG_ERROR, ("crda> regulatory domain hint not support!\n"));
+        CFG80211DBG(RT_DEBUG_ERROR, ("mt7610u: crda: regulatory domain hint not support!\n"));
         return;
     }
 
@@ -3149,12 +3149,12 @@ VOID CFG80211OS_RegHint11D(
 
     if((pCfg80211_CB->pCfg80211_Wdev == NULL) || (pCountryIe == NULL))
     {
-        CFG80211DBG(RT_DEBUG_ERROR, ("crda> regulatory domain hint not support!\n"));
+        CFG80211DBG(RT_DEBUG_ERROR, ("mt7610u: crda: regulatory domain hint not support!\n"));
         return;
     }
 
     CFG80211DBG(RT_DEBUG_ERROR,
-                ("crda> regulatory domain hint: %c%c\n",
+                ("mt7610u: crda: regulatory domain hint: %c%c\n",
                  pCountryIe[0], pCountryIe[1]));
 
     /*
@@ -3342,7 +3342,7 @@ Return Value:
 	NONE
 
 Note:
-	Call RT_CFG80211_SCANNING_INFORM, not CFG80211_Scaning
+    Call RT_CFG80211_SCANNING_INFORM, not CFG80211_Scanning
 ========================================================================
 */
 VOID CFG80211OS_Scaning(
@@ -3376,7 +3376,7 @@ VOID CFG80211OS_Scaning(
 
     if(IdChan >= MAX_NUM_OF_CHANNELS)
     {
-        DBGPRINT(RT_DEBUG_ERROR, ("80211> Can not find any chan info!\n"));
+        DBGPRINT(RT_DEBUG_ERROR, ("mt7610u: Can not find any chan info!\n"));
         return;
     }
 
@@ -3390,7 +3390,7 @@ VOID CFG80211OS_Scaning(
                               RSSI,
                               GFP_ATOMIC);
 
-    CFG80211DBG(RT_DEBUG_TRACE, ("80211> cfg80211_inform_bss_frame\n"));
+    CFG80211DBG(RT_DEBUG_TRACE, ("mt7610u: cfg80211_inform_bss_frame\n"));
 #endif /* CONFIG_STA_SUPPORT */
 #endif /* LINUX_VERSION_CODE */
 }
@@ -3420,7 +3420,7 @@ VOID CFG80211OS_ScanEnd(
     CFG80211_CB *pCfg80211_CB = (CFG80211_CB *)pCB;
 
 
-    CFG80211DBG(RT_DEBUG_ERROR, ("80211> cfg80211_scan_done\n"));
+    CFG80211DBG(RT_DEBUG_TRACE, ("mt7610u: cfg80211_scan_done\n"));
     cfg80211_scan_done(pCfg80211_CB->pCfg80211_ScanReq, FlgIsAborted);
 #endif /* CONFIG_STA_SUPPORT */
 #endif /* LINUX_VERSION_CODE */

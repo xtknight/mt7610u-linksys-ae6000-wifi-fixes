@@ -629,7 +629,7 @@ VOID RtmpOsSendWirelessEvent(
     IN	RTMP_OS_SEND_WLAN_EVENT pFunc);
 
 
-int RtmpOSWrielessEventSend(
+int RtmpOSWirelessEventSend(
     IN	PNET_DEV				pNetDev,
     IN	UINT32					eventType,
     IN	INT						flags,
@@ -637,7 +637,7 @@ int RtmpOSWrielessEventSend(
     IN	PUCHAR					pData,
     IN	UINT32					dataLen);
 
-int RtmpOSWrielessEventSendExt(
+int RtmpOSWirelessEventSendExt(
     IN	PNET_DEV				pNetDev,
     IN	UINT32					eventType,
     IN	INT						flags,

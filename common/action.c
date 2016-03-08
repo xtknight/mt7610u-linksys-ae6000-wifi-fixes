@@ -451,7 +451,7 @@ ULONG BuildIntolerantChannelRep(
                     pAd->CommonCfg.TriggerEventTab.EventA[i].bValid = FALSE;
                 }
 
-                DBGPRINT(RT_DEBUG_ERROR,("ACT - BuildIntolerantChannelRep , Total Channel number = %d \n", idx));
+                DBGPRINT(RT_DEBUG_TRACE,("ACT - BuildIntolerantChannelRep , Total Channel number = %d \n", idx));
             }
         }
 
@@ -470,7 +470,7 @@ ULONG BuildIntolerantChannelRep(
 
     }
 
-    DBGPRINT(RT_DEBUG_ERROR,("ACT-BuildIntolerantChannelRep(Size=%ld)\n", FrameLen));
+    DBGPRINT(RT_DEBUG_TRACE,("ACT-BuildIntolerantChannelRep(Size=%ld)\n", FrameLen));
     hex_dump("ACT-pDestMsg", pDest, FrameLen);
 
     return FrameLen;
@@ -492,7 +492,7 @@ VOID Update2040CoexistFrameAndNotify(
 {
     BSS_2040_COEXIST_IE		OldValue;
 
-    DBGPRINT(RT_DEBUG_ERROR,("ACT - Update2040CoexistFrameAndNotify. BSSCoexist2040 = %x. EventANo = %d. \n", pAd->CommonCfg.BSSCoexist2040.word, pAd->CommonCfg.TriggerEventTab.EventANo));
+    DBGPRINT(RT_DEBUG_TRACE,("ACT - Update2040CoexistFrameAndNotify. BSSCoexist2040 = %x. EventANo = %d. \n", pAd->CommonCfg.BSSCoexist2040.word, pAd->CommonCfg.TriggerEventTab.EventANo));
     OldValue.word = pAd->CommonCfg.BSSCoexist2040.word;
     /* Reset value.*/
     pAd->CommonCfg.BSSCoexist2040.word = 0;

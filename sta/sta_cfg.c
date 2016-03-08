@@ -6460,7 +6460,7 @@ RtmpIoctl_rt_ioctl_siwscan(
 #endif /* IFUP_IN_PROBE */
       )
     {
-        RtmpOSWrielessEventSend(pAd->net_dev, RT_WLAN_EVENT_SCAN, -1, NULL, NULL, 0);
+        RtmpOSWirelessEventSend(pAd->net_dev, RT_WLAN_EVENT_SCAN, -1, NULL, NULL, 0);
         return NDIS_STATUS_SUCCESS;
     }
 

@@ -1253,7 +1253,7 @@ static NTSTATUS ResetBulkOutHdlr(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQelmt)
     /*	RTMP_TX_RING *pTxRing;*/
     unsigned long IrqFlags;
 
-    DBGPRINT(RT_DEBUG_TRACE, ("CMDTHREAD_RESET_BULK_OUT(ResetPipeid=0x%0x)===>\n", pAd->bulkResetPipeid));
+    DBGPRINT(RT_DEBUG_TRACE, ("CMDTHREAD_RESET_BULK_OUT(ResetPipeid=0x%0x)\n", pAd->bulkResetPipeid));
 
     /* All transfers must be aborted or cancelled before attempting to reset the pipe.						*/
     /*RTUSBCancelPendingBulkOutIRP(pAd);*/

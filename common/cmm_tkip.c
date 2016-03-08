@@ -444,7 +444,7 @@ BOOLEAN	RTMPTkipCompareMICValue(
     /* Calculate MIC value from plain text data*/
     RTMPTkipAppend(&pAd->PrivateInfo.Rx, pSrc, Len);
 
-    /* Get MIC valude from received frame*/
+    /* Get MIC value from received frame*/
     NdisMoveMemory(OldMic, pSrc + Len, 8);
 
     /* Get MIC value from decrypted plain data*/

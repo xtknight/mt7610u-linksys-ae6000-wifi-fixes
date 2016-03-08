@@ -339,7 +339,7 @@ VOID ChangeToCellPowerLimit(
     IN UCHAR         AironetCellPowerLimit)
 {
     /*
-    	valud 0xFF means that hasn't found power limit information
+        value 0xFF means that hasn't found power limit information
     	from the AP's Beacon/Probe response
     */
     if(AironetCellPowerLimit == 0xFF)
