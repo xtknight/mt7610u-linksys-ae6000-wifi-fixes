@@ -1,0 +1,10 @@
+tools/bin2h
+*.o
+*.o.cmd
+*.ko
+*.ko.cmd
+*.mod.c
+.tmp_versions
+Module.symvers
+modules.order
+os/linux/Makefile
