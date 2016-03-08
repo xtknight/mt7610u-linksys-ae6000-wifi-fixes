@@ -64,7 +64,7 @@
 #define RT2860_INT_TONE_RADAR	(1<<29)
 #endif /* CARRIER_DETECTION_SUPPORT*/
 
- /* Delayed Rx or indivi rx */
+/* Delayed Rx or indivi rx */
 #define RxINT			(INT_R0_DONE | INT_R1_DONE /* | INT_RX_DLY */)
 /* Delayed Tx or indivi tx */
 #define TxDataInt		(INT_T0_DONE | INT_T1_DONE | INT_T2_DONE | INT_T3_DONE /*| INT_TX_DLY*/)
@@ -125,142 +125,150 @@
 
 
 #ifdef RT_BIG_ENDIAN
-typedef union _INT_SOURCE_CSR_STRUC {
-	struct {
-		UINT32 rsv1:4;
-		UINT32 TxDelayINT:1;
-		UINT32 RxDelayINT:1;
-		UINT32 rsv2:1;
-		UINT32 GPTimer:1;
-		UINT32 AutoWakeup:1;
-		UINT32 TXFifoStatusInt:1;
-		UINT32 PreTBTT:1;
-		UINT32 tbttInt:1;
-		UINT32 MCUCommandINT:1;
-		UINT32 trCoherent:1;
-		UINT32 txCoherent:1;
-		UINT32 rxCoherent:1;
-		UINT32 rsv3:2;
-		UINT32 TxDone9:1;
-		UINT32 TxDone8:1;
-		UINT32 TxDone7:1;
-		UINT32 TxDone6:1;
-		UINT32 MgmtDmaDone:1;
-		UINT32 HccaDmaDone:1;
-		UINT32 Ac3DmaDone:1;
-		UINT32 Ac2DmaDone:1;
-		UINT32 Ac1DmaDone:1;
-		UINT32 Ac0DmaDone:1;
-		UINT32 rsv4:2;
-		UINT32 RxDone1:1;
-		UINT32 RxDone:1;
-	}field;
-	UINT32 word;
-}INT_SOURCE_CSR_STRUC;
+typedef union _INT_SOURCE_CSR_STRUC
+{
+    struct
+    {
+        UINT32 rsv1:4;
+        UINT32 TxDelayINT:1;
+        UINT32 RxDelayINT:1;
+        UINT32 rsv2:1;
+        UINT32 GPTimer:1;
+        UINT32 AutoWakeup:1;
+        UINT32 TXFifoStatusInt:1;
+        UINT32 PreTBTT:1;
+        UINT32 tbttInt:1;
+        UINT32 MCUCommandINT:1;
+        UINT32 trCoherent:1;
+        UINT32 txCoherent:1;
+        UINT32 rxCoherent:1;
+        UINT32 rsv3:2;
+        UINT32 TxDone9:1;
+        UINT32 TxDone8:1;
+        UINT32 TxDone7:1;
+        UINT32 TxDone6:1;
+        UINT32 MgmtDmaDone:1;
+        UINT32 HccaDmaDone:1;
+        UINT32 Ac3DmaDone:1;
+        UINT32 Ac2DmaDone:1;
+        UINT32 Ac1DmaDone:1;
+        UINT32 Ac0DmaDone:1;
+        UINT32 rsv4:2;
+        UINT32 RxDone1:1;
+        UINT32 RxDone:1;
+    } field;
+    UINT32 word;
+} INT_SOURCE_CSR_STRUC;
 #else
-typedef union _INT_SOURCE_CSR_STRUC {
-	struct {
-		UINT32 RxDone:1;
-		UINT32 RxDone1:1;
-		UINT32 rsv4:2;
-		UINT32 Ac0DmaDone:1;
-		UINT32 Ac1DmaDone:1;
-		UINT32 Ac2DmaDone:1;
-		UINT32 Ac3DmaDone:1;
-		UINT32 HccaDmaDone:1;
-		UINT32 MgmtDmaDone:1;
-		UINT32 TxDone6:1;
-		UINT32 TxDone7:1;
-		UINT32 TxDone8:1;
-		UINT32 TxDone9:1;
-		UINT32 rsv3:2;
-		UINT32 rxCoherent:1;
-		UINT32 txCoherent:1;
-		UINT32 trCoherent:1;
-		UINT32 MCUCommandINT:1;
-		UINT32 tbttInt:1;
-		UINT32 PreTBTT:1;
-		UINT32 TXFifoStatusInt:1;
-		UINT32 AutoWakeup:1;
-		UINT32 GPTimer:1;
-		UINT32 rsv2:1;
-		UINT32 RxDelayINT:1;
-		UINT32 TxDelayINT:1;
-		UINT32 rsv1:4;
-	}field;
-	UINT32 word;
-}INT_SOURCE_CSR_STRUC;
+typedef union _INT_SOURCE_CSR_STRUC
+{
+    struct
+    {
+        UINT32 RxDone:1;
+        UINT32 RxDone1:1;
+        UINT32 rsv4:2;
+        UINT32 Ac0DmaDone:1;
+        UINT32 Ac1DmaDone:1;
+        UINT32 Ac2DmaDone:1;
+        UINT32 Ac3DmaDone:1;
+        UINT32 HccaDmaDone:1;
+        UINT32 MgmtDmaDone:1;
+        UINT32 TxDone6:1;
+        UINT32 TxDone7:1;
+        UINT32 TxDone8:1;
+        UINT32 TxDone9:1;
+        UINT32 rsv3:2;
+        UINT32 rxCoherent:1;
+        UINT32 txCoherent:1;
+        UINT32 trCoherent:1;
+        UINT32 MCUCommandINT:1;
+        UINT32 tbttInt:1;
+        UINT32 PreTBTT:1;
+        UINT32 TXFifoStatusInt:1;
+        UINT32 AutoWakeup:1;
+        UINT32 GPTimer:1;
+        UINT32 rsv2:1;
+        UINT32 RxDelayINT:1;
+        UINT32 TxDelayINT:1;
+        UINT32 rsv1:4;
+    } field;
+    UINT32 word;
+} INT_SOURCE_CSR_STRUC;
 #endif /* RT_BIG_ENDIAN */
 
 
 /* INT_MASK_CSR:   Interrupt MASK register.   1: the interrupt is mask OFF */
 #define INT_MASK_CSR        0x204
 #ifdef RT_BIG_ENDIAN
-typedef union _PDMA_INT_MASK{
-	struct {
-		UINT32 rsv1:4;
-		UINT32 TxDelayINT:1;
-		UINT32 RxDelayINT:1;
-		UINT32 rsv2:1;
-		UINT32 GPTimer:1;
-		UINT32 AutoWakeup:1;
-		UINT32 TXFifoStatusInt:1;
-		UINT32 PreTBTT:1;
-		UINT32 tbttInt:1;
-		UINT32 MCUCommandINT:1;
-		UINT32 trCoherent:1;
-		UINT32 txCoherent:1;
-		UINT32 rxCoherent:1;
-		UINT32 rsv3:2;
-		UINT32 TxDone9:1;
-		UINT32 TxDone8:1;
-		UINT32 TxDone7:1;
-		UINT32 TxDone6:1;
-		UINT32 MgmtDmaDone:1;
-		UINT32 HccaDmaDone:1;
-		UINT32 Ac3DmaDone:1;
-		UINT32 Ac2DmaDone:1;
-		UINT32 Ac1DmaDone:1;
-		UINT32 Ac0DmaDone:1;
-		UINT32 rsv4:2;
-		UINT32 RxDone1:1;
-		UINT32 RxDone:1;
-	}field;
-	UINT32 word;
-}PMDA_INT_MASK;
+typedef union _PDMA_INT_MASK
+{
+    struct
+    {
+        UINT32 rsv1:4;
+        UINT32 TxDelayINT:1;
+        UINT32 RxDelayINT:1;
+        UINT32 rsv2:1;
+        UINT32 GPTimer:1;
+        UINT32 AutoWakeup:1;
+        UINT32 TXFifoStatusInt:1;
+        UINT32 PreTBTT:1;
+        UINT32 tbttInt:1;
+        UINT32 MCUCommandINT:1;
+        UINT32 trCoherent:1;
+        UINT32 txCoherent:1;
+        UINT32 rxCoherent:1;
+        UINT32 rsv3:2;
+        UINT32 TxDone9:1;
+        UINT32 TxDone8:1;
+        UINT32 TxDone7:1;
+        UINT32 TxDone6:1;
+        UINT32 MgmtDmaDone:1;
+        UINT32 HccaDmaDone:1;
+        UINT32 Ac3DmaDone:1;
+        UINT32 Ac2DmaDone:1;
+        UINT32 Ac1DmaDone:1;
+        UINT32 Ac0DmaDone:1;
+        UINT32 rsv4:2;
+        UINT32 RxDone1:1;
+        UINT32 RxDone:1;
+    } field;
+    UINT32 word;
+} PMDA_INT_MASK;
 #else
-typedef union _PDMA_INT_MASK{
-	struct {
-		UINT32 RxDone:1;
-		UINT32 RxDone1:1;
-		UINT32 rsv4:2;
-		UINT32 Ac0DmaDone:1;
-		UINT32 Ac1DmaDone:1;
-		UINT32 Ac2DmaDone:1;
-		UINT32 Ac3DmaDone:1;
-		UINT32 HccaDmaDone:1;
-		UINT32 MgmtDmaDone:1;
-		UINT32 TxDone6:1;
-		UINT32 TxDone7:1;
-		UINT32 TxDone8:1;
-		UINT32 TxDone9:1;
-		UINT32 rsv3:2;
-		UINT32 rxCoherent:1;
-		UINT32 txCoherent:1;
-		UINT32 trCoherent:1;
-		UINT32 MCUCommandINT:1;
-		UINT32 tbttInt:1;
-		UINT32 PreTBTT:1;
-		UINT32 TXFifoStatusInt:1;
-		UINT32 AutoWakeup:1;
-		UINT32 GPTimer:1;
-		UINT32 rsv2:1;
-		UINT32 RxDelayINT:1;
-		UINT32 TxDelayINT:1;
-		UINT32 rsv1:4;
-	}field;
-	UINT32 word;
-}PMDA_INT_MASK;
+typedef union _PDMA_INT_MASK
+{
+    struct
+    {
+        UINT32 RxDone:1;
+        UINT32 RxDone1:1;
+        UINT32 rsv4:2;
+        UINT32 Ac0DmaDone:1;
+        UINT32 Ac1DmaDone:1;
+        UINT32 Ac2DmaDone:1;
+        UINT32 Ac3DmaDone:1;
+        UINT32 HccaDmaDone:1;
+        UINT32 MgmtDmaDone:1;
+        UINT32 TxDone6:1;
+        UINT32 TxDone7:1;
+        UINT32 TxDone8:1;
+        UINT32 TxDone9:1;
+        UINT32 rsv3:2;
+        UINT32 rxCoherent:1;
+        UINT32 txCoherent:1;
+        UINT32 trCoherent:1;
+        UINT32 MCUCommandINT:1;
+        UINT32 tbttInt:1;
+        UINT32 PreTBTT:1;
+        UINT32 TXFifoStatusInt:1;
+        UINT32 AutoWakeup:1;
+        UINT32 GPTimer:1;
+        UINT32 rsv2:1;
+        UINT32 RxDelayINT:1;
+        UINT32 TxDelayINT:1;
+        UINT32 rsv1:4;
+    } field;
+    UINT32 word;
+} PMDA_INT_MASK;
 #endif /* RT_BIG_ENDIAN */
 
 
@@ -279,7 +287,7 @@ typedef union _PDMA_INT_MASK{
 		TxRing 4~7: for TxQ Channel 2 with AC_BK/BE/VI/VO
 		TxRing 8    : for TxQ CTRL
 		TxRing 9    : for TxQ MGMT
-		
+
 	For each TxRing, we have four register to control it
 		TX_RINGn_CTRL0 (0x0): base address of this ring(4-DWORD aligned address)
 		TX_RINGn_CTRL1 (0x4): maximum number of TxD count in this ring

@@ -35,23 +35,23 @@
 
 typedef struct _NETIF_ENTRY
 {
-	struct _NETIF_ENTRY *pNext;
-	PNET_DEV pNetDev;
+    struct _NETIF_ENTRY *pNext;
+    PNET_DEV pNetDev;
 } NETIF_ENTRY, *PNETIF_ENTRY;
 
 void initblockQueueTab(
-	IN PRTMP_ADAPTER pAd);
+    IN PRTMP_ADAPTER pAd);
 
 BOOLEAN blockNetIf(
-	IN PBLOCK_QUEUE_ENTRY pBlockQueueEntry,
-	IN PNET_DEV pNetDev);
+    IN PBLOCK_QUEUE_ENTRY pBlockQueueEntry,
+    IN PNET_DEV pNetDev);
 
 VOID releaseNetIf(
-	IN PBLOCK_QUEUE_ENTRY pBlockQueueEntry);
+    IN PBLOCK_QUEUE_ENTRY pBlockQueueEntry);
 
 VOID StopNetIfQueue(
-	IN PRTMP_ADAPTER pAd,
-	IN UCHAR QueIdx,
-	IN PNDIS_PACKET pPacket);
+    IN PRTMP_ADAPTER pAd,
+    IN UCHAR QueIdx,
+    IN PNDIS_PACKET pPacket);
 #endif /* __NET_IF_BLOCK_H__ */
 

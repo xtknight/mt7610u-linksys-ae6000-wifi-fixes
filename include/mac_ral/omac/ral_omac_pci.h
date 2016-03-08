@@ -87,66 +87,70 @@
 
 
 #ifdef RT_BIG_ENDIAN
-typedef	union _INT_SOURCE_CSR_STRUC {
-	struct {
+typedef	union _INT_SOURCE_CSR_STRUC
+{
+    struct
+    {
 #ifdef CARRIER_DETECTION_SUPPORT
-		UINT32			:11;
-		UINT32			RadarINT:1;
-		UINT32       	rsv:2;
+        UINT32			:11;
+        UINT32			RadarINT:1;
+        UINT32       	rsv:2;
 #else /* original source code */
-		UINT32       	:14;
+        UINT32       	:14;
 #endif /* CARRIER_DETECTION_SUPPORT */
-		UINT32       	TxCoherent:1;
-		UINT32       	RxCoherent:1;
-		UINT32       	GPTimer:1;
-		UINT32       	AutoWakeup:1;/*bit14 */
-		UINT32       	TXFifoStatusInt:1;/*FIFO Statistics is full, sw should read 0x171c */
-		UINT32       	PreTBTT:1;
-		UINT32       	TBTTInt:1;
-		UINT32       	RxTxCoherent:1;
-		UINT32       	MCUCommandINT:1;
-		UINT32       	MgmtDmaDone:1;
-		UINT32       	HccaDmaDone:1;
-		UINT32       	Ac3DmaDone:1;
-		UINT32       	Ac2DmaDone:1;
-		UINT32       	Ac1DmaDone:1;
-		UINT32		Ac0DmaDone:1;
-		UINT32		RxDone:1;
-		UINT32		TxDelayINT:1;	/*delayed interrupt, not interrupt until several int or time limit hit */
-		UINT32		RxDelayINT:1; /*dealyed interrupt */
-	}field;
-	UINT32			word;
+        UINT32       	TxCoherent:1;
+        UINT32       	RxCoherent:1;
+        UINT32       	GPTimer:1;
+        UINT32       	AutoWakeup:1;/*bit14 */
+        UINT32       	TXFifoStatusInt:1;/*FIFO Statistics is full, sw should read 0x171c */
+        UINT32       	PreTBTT:1;
+        UINT32       	TBTTInt:1;
+        UINT32       	RxTxCoherent:1;
+        UINT32       	MCUCommandINT:1;
+        UINT32       	MgmtDmaDone:1;
+        UINT32       	HccaDmaDone:1;
+        UINT32       	Ac3DmaDone:1;
+        UINT32       	Ac2DmaDone:1;
+        UINT32       	Ac1DmaDone:1;
+        UINT32		Ac0DmaDone:1;
+        UINT32		RxDone:1;
+        UINT32		TxDelayINT:1;	/*delayed interrupt, not interrupt until several int or time limit hit */
+        UINT32		RxDelayINT:1; /*dealyed interrupt */
+    } field;
+    UINT32			word;
 }	INT_SOURCE_CSR_STRUC;
 #else
-typedef	union _INT_SOURCE_CSR_STRUC {
-	struct	{
-		UINT32		RxDelayINT:1;
-		UINT32		TxDelayINT:1;
-		UINT32		RxDone:1;
-		UINT32		Ac0DmaDone:1;/*4 */
-		UINT32       	Ac1DmaDone:1;
-		UINT32       	Ac2DmaDone:1;
-		UINT32       	Ac3DmaDone:1;
-		UINT32       	HccaDmaDone:1; /* bit7 */
-		UINT32       	MgmtDmaDone:1;
-		UINT32       	MCUCommandINT:1;/*bit 9 */
-		UINT32       	RxTxCoherent:1;
-		UINT32       	TBTTInt:1;
-		UINT32       	PreTBTT:1;
-		UINT32       	TXFifoStatusInt:1;/*FIFO Statistics is full, sw should read 0x171c */
-		UINT32       	AutoWakeup:1;/*bit14 */
-		UINT32       	GPTimer:1;
-		UINT32       	RxCoherent:1;/*bit16 */
-		UINT32       	TxCoherent:1;
+typedef	union _INT_SOURCE_CSR_STRUC
+{
+    struct
+    {
+        UINT32		RxDelayINT:1;
+        UINT32		TxDelayINT:1;
+        UINT32		RxDone:1;
+        UINT32		Ac0DmaDone:1;/*4 */
+        UINT32       	Ac1DmaDone:1;
+        UINT32       	Ac2DmaDone:1;
+        UINT32       	Ac3DmaDone:1;
+        UINT32       	HccaDmaDone:1; /* bit7 */
+        UINT32       	MgmtDmaDone:1;
+        UINT32       	MCUCommandINT:1;/*bit 9 */
+        UINT32       	RxTxCoherent:1;
+        UINT32       	TBTTInt:1;
+        UINT32       	PreTBTT:1;
+        UINT32       	TXFifoStatusInt:1;/*FIFO Statistics is full, sw should read 0x171c */
+        UINT32       	AutoWakeup:1;/*bit14 */
+        UINT32       	GPTimer:1;
+        UINT32       	RxCoherent:1;/*bit16 */
+        UINT32       	TxCoherent:1;
 #ifdef CARRIER_DETECTION_SUPPORT
-		UINT32       	rsv:2;
-		UINT32			RadarINT:1;
-		UINT32			:11;
+        UINT32       	rsv:2;
+        UINT32			RadarINT:1;
+        UINT32			:11;
 #else
-		UINT32       	:14;
+        UINT32       	:14;
 #endif /* CARRIER_DETECTION_SUPPORT */
-	}	field;
-	UINT32			word;
+    }	field;
+    UINT32			word;
 } INT_SOURCE_CSR_STRUC;
 #endif
 
@@ -154,54 +158,58 @@ typedef	union _INT_SOURCE_CSR_STRUC {
 /* INT_MASK_CSR:   Interrupt MASK register.   1: the interrupt is mask OFF */
 #define INT_MASK_CSR        0x204
 #ifdef RT_BIG_ENDIAN
-typedef	union _INT_MASK_CSR_STRUC {
-	struct	{
-		UINT32       	TxCoherent:1;
-		UINT32       	RxCoherent:1;
+typedef	union _INT_MASK_CSR_STRUC
+{
+    struct
+    {
+        UINT32       	TxCoherent:1;
+        UINT32       	RxCoherent:1;
 #ifdef CARRIER_DETECTION_SUPPORT
-		UINT32			:9;
-		UINT32			RadarINT:1;
-		UINT32       	rsv:10;
+        UINT32			:9;
+        UINT32			RadarINT:1;
+        UINT32       	rsv:10;
 #else
-		UINT32       	:20;
+        UINT32       	:20;
 #endif /* CARRIER_DETECTION_SUPPORT */
-		UINT32       	MCUCommandINT:1;
-		UINT32       	MgmtDmaDone:1;
-		UINT32       	HccaDmaDone:1;
-		UINT32       	Ac3DmaDone:1;
-		UINT32       	Ac2DmaDone:1;
-		UINT32       	Ac1DmaDone:1;
-		UINT32		Ac0DmaDone:1;
-		UINT32		RxDone:1;
-		UINT32		TxDelay:1;
-		UINT32		RXDelay_INT_MSK:1;
-	}	field;
-	UINT32			word;
-}INT_MASK_CSR_STRUC, *PINT_MASK_CSR_STRUC;
+        UINT32       	MCUCommandINT:1;
+        UINT32       	MgmtDmaDone:1;
+        UINT32       	HccaDmaDone:1;
+        UINT32       	Ac3DmaDone:1;
+        UINT32       	Ac2DmaDone:1;
+        UINT32       	Ac1DmaDone:1;
+        UINT32		Ac0DmaDone:1;
+        UINT32		RxDone:1;
+        UINT32		TxDelay:1;
+        UINT32		RXDelay_INT_MSK:1;
+    }	field;
+    UINT32			word;
+} INT_MASK_CSR_STRUC, *PINT_MASK_CSR_STRUC;
 #else
-typedef	union _INT_MASK_CSR_STRUC {
-	struct {
-		UINT32		RXDelay_INT_MSK:1;
-		UINT32		TxDelay:1;
-		UINT32		RxDone:1;
-		UINT32		Ac0DmaDone:1;
-		UINT32       	Ac1DmaDone:1;
-		UINT32       	Ac2DmaDone:1;
-		UINT32       	Ac3DmaDone:1;
-		UINT32       	HccaDmaDone:1;
-		UINT32       	MgmtDmaDone:1;
-		UINT32       	MCUCommandINT:1;
+typedef	union _INT_MASK_CSR_STRUC
+{
+    struct
+    {
+        UINT32		RXDelay_INT_MSK:1;
+        UINT32		TxDelay:1;
+        UINT32		RxDone:1;
+        UINT32		Ac0DmaDone:1;
+        UINT32       	Ac1DmaDone:1;
+        UINT32       	Ac2DmaDone:1;
+        UINT32       	Ac3DmaDone:1;
+        UINT32       	HccaDmaDone:1;
+        UINT32       	MgmtDmaDone:1;
+        UINT32       	MCUCommandINT:1;
 #ifdef CARRIER_DETECTION_SUPPORT
-		UINT32       	rsv:10;
-		UINT32			RadarINT:1;
-		UINT32			:9;
+        UINT32       	rsv:10;
+        UINT32			RadarINT:1;
+        UINT32			:9;
 #else
-		UINT32       	:20;
+        UINT32       	:20;
 #endif /* CARRIER_DETECTION_SUPPORT */
-		UINT32       	RxCoherent:1;
-		UINT32       	TxCoherent:1;
-	}	field;
-	UINT32			word;
+        UINT32       	RxCoherent:1;
+        UINT32       	TxCoherent:1;
+    }	field;
+    UINT32			word;
 } INT_MASK_CSR_STRUC, *PINT_MASK_CSR_STRUC;
 #endif
 
@@ -242,28 +250,32 @@ typedef	union _INT_MASK_CSR_STRUC {
 
 #define US_CYC_CNT      0x02a4
 #ifdef BIG_ENDIAN
-typedef	union _US_CYC_CNT_STRUC {
-	struct {
-	    UINT32  rsv2:7;
-	    UINT32  TestEn:1;
-	    UINT32  TestSel:8;
-	    UINT32  rsv1:7;
-	    UINT32  MiscModeEn:1;
-	    UINT32  UsCycCnt:8;
-	} field;
-	UINT32 word;
+typedef	union _US_CYC_CNT_STRUC
+{
+    struct
+    {
+        UINT32  rsv2:7;
+        UINT32  TestEn:1;
+        UINT32  TestSel:8;
+        UINT32  rsv1:7;
+        UINT32  MiscModeEn:1;
+        UINT32  UsCycCnt:8;
+    } field;
+    UINT32 word;
 } US_CYC_CNT_STRUC;
 #else
-typedef	union _US_CYC_CNT_STRUC {
-	struct {
-		UINT32  UsCycCnt:8;
-		UINT32  MiscModeEn:1;
-		UINT32  rsv1:7;
-		UINT32  TestSel:8;
-		UINT32  TestEn:1;
-		UINT32  rsv2:7;
-	} field;
-	UINT32 word;
+typedef	union _US_CYC_CNT_STRUC
+{
+    struct
+    {
+        UINT32  UsCycCnt:8;
+        UINT32  MiscModeEn:1;
+        UINT32  rsv1:7;
+        UINT32  TestSel:8;
+        UINT32  TestEn:1;
+        UINT32  rsv2:7;
+    } field;
+    UINT32 word;
 } US_CYC_CNT_STRUC;
 #endif
 

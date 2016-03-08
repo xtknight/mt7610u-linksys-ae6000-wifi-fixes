@@ -48,7 +48,7 @@
 				1: 7991 octets(Max A-MSDU length in HT Cap set to 7935)
 				2: 11454 octets(Max A-MSDU length in HT Cap set to 7935)
 				3: reserved
-	ch_width: Supported Channel Width Set 
+	ch_width: Supported Channel Width Set
 		->Indicates the channel widths supported by the STA.
 				0: the STA does not support either 160 or 80+80 MHz
 				1: the STA support 160 MHz
@@ -85,9 +85,9 @@
 	bfee_cap_su: SU Beamformee Capable
 		-> Indicates support for operation as a single user beamformee
 				0: not support
-				1: support				
+				1: support
 	cmp_st_num_bfer: Compressed Steering Number of Beamformer Antenna Supported
-		-> Beamformee's capability indicateing the max number of beamformer 
+		-> Beamformee's capability indicateing the max number of beamformer
 			antennas the beamformee can support when sending compressed
 			beamforming feedback
 				If SU beamformee capable, set to the max value minus 1.
@@ -108,7 +108,7 @@
 	vht_txop_ps: VHT TXOP PS
 		-> Indicates whether or not the AP supports VHT TXOP Power Save Mode or
 			whether or not the STA is in VHT TXOP Power Save Mode
-		->When tx by a VHT AP in the VHT Capabilities element included in Beacon, 
+		->When tx by a VHT AP in the VHT Capabilities element included in Beacon,
 			ProbeResp, AssocResp, and ReassocResp, frames:
 				0: if the VHT AP does not support VHT TXOP PS in the BSS.
 				1: if the VHT AP support TXOP PS in the BSS.
@@ -117,7 +117,7 @@
 				0: if the VHT STA is not in TXOP Power Save Mode.
 				1: if the VHT STA is in TXOP Power Save Mode.
 	htc_vht_cap: +HTC-VHT Capable
-		-> Indicates whether or not the STA supports receiving an HT Control 
+		-> Indicates whether or not the STA supports receiving an HT Control
 			field in the VHT format
 				0: if not support
 				1: if support
@@ -144,55 +144,56 @@
 				0: if Tx antenna pattern might change during association
 				1: if Tx antenna pattern does not change during association
 */
-typedef struct GNU_PACKED _VHT_CAP_INFO{
+typedef struct GNU_PACKED _VHT_CAP_INFO
+{
 #ifdef RT_BIG_ENDIAN
-	UINT32 rsv:2;
-	UINT32 tx_ant_consistency:1;
-	UINT32 rx_ant_consistency:1;
-	UINT32 vht_link_adapt:2;
-	UINT32 max_ampdu_exp:3;
-	UINT32 htc_vht_cap:1;
-	UINT32 vht_txop_ps:1;
-	UINT32 bfee_cap_mu:1;
-	UINT32 bfer_cap_mu:1;
-	UINT32 num_snd_dimension:3;
+    UINT32 rsv:2;
+    UINT32 tx_ant_consistency:1;
+    UINT32 rx_ant_consistency:1;
+    UINT32 vht_link_adapt:2;
+    UINT32 max_ampdu_exp:3;
+    UINT32 htc_vht_cap:1;
+    UINT32 vht_txop_ps:1;
+    UINT32 bfee_cap_mu:1;
+    UINT32 bfer_cap_mu:1;
+    UINT32 num_snd_dimension:3;
 
-	UINT32 cmp_st_num_bfer:3;
-	UINT32 bfee_cap_su:1;
-	UINT32 bfer_cap_su:1;
-	UINT32 rx_stbc:3;
+    UINT32 cmp_st_num_bfer:3;
+    UINT32 bfee_cap_su:1;
+    UINT32 bfer_cap_su:1;
+    UINT32 rx_stbc:3;
 
-	UINT32 tx_stbc:1;
-	UINT32 sgi_160M:1;
-	UINT32 sgi_80M:1;
-	UINT32 rx_ldpc:1;
-	UINT32 ch_width:2;
-	UINT32 max_mpdu_len:2;
+    UINT32 tx_stbc:1;
+    UINT32 sgi_160M:1;
+    UINT32 sgi_80M:1;
+    UINT32 rx_ldpc:1;
+    UINT32 ch_width:2;
+    UINT32 max_mpdu_len:2;
 #else
-	UINT32 max_mpdu_len:2;	/* 0: 3895, 1: 7991, 2: 11454, 3: rsv */
-	UINT32 ch_width:2;	/* */
-	UINT32 rx_ldpc:1;
-	UINT32 sgi_80M:1;
-	UINT32 sgi_160M:1;
-	UINT32 tx_stbc:1;
+    UINT32 max_mpdu_len:2;	/* 0: 3895, 1: 7991, 2: 11454, 3: rsv */
+    UINT32 ch_width:2;	/* */
+    UINT32 rx_ldpc:1;
+    UINT32 sgi_80M:1;
+    UINT32 sgi_160M:1;
+    UINT32 tx_stbc:1;
 
-	UINT32 rx_stbc:3;
-	UINT32 bfer_cap_su:1;
-	UINT32 bfee_cap_su:1;
-	UINT32 cmp_st_num_bfer:3;
+    UINT32 rx_stbc:3;
+    UINT32 bfer_cap_su:1;
+    UINT32 bfee_cap_su:1;
+    UINT32 cmp_st_num_bfer:3;
 
-	UINT32 num_snd_dimension:3;
-	UINT32 bfer_cap_mu:1;
-	UINT32 bfee_cap_mu:1;
-	UINT32 vht_txop_ps:1;
-	UINT32 htc_vht_cap:1;
-	UINT32 max_ampdu_exp:3;
-	UINT32 vht_link_adapt:2;
-	UINT32 rx_ant_consistency:1;
-	UINT32 tx_ant_consistency:1;	
-	UINT32 rsv:2;
+    UINT32 num_snd_dimension:3;
+    UINT32 bfer_cap_mu:1;
+    UINT32 bfee_cap_mu:1;
+    UINT32 vht_txop_ps:1;
+    UINT32 htc_vht_cap:1;
+    UINT32 max_ampdu_exp:3;
+    UINT32 vht_link_adapt:2;
+    UINT32 rx_ant_consistency:1;
+    UINT32 tx_ant_consistency:1;
+    UINT32 rsv:2;
 #endif /* RT_BIG_ENDIAN */
-}VHT_CAP_INFO;
+} VHT_CAP_INFO;
 
 
 /*
@@ -222,27 +223,28 @@ typedef struct GNU_PACKED _VHT_CAP_INFO{
 #define VHT_MCS_CAP_9	2
 #define VHT_MCS_CAP_NA	3
 
-typedef struct GNU_PACKED _VHT_MCS_MAP{
+typedef struct GNU_PACKED _VHT_MCS_MAP
+{
 #ifdef RT_BIG_ENDIAN
-	UINT16 mcs_ss8:2;
-	UINT16 mcs_ss7:2;
-	UINT16 mcs_ss6:2;
-	UINT16 mcs_ss5:2;
-	UINT16 mcs_ss4:2;
-	UINT16 mcs_ss3:2;
-	UINT16 mcs_ss2:2;
-	UINT16 mcs_ss1:2;
+    UINT16 mcs_ss8:2;
+    UINT16 mcs_ss7:2;
+    UINT16 mcs_ss6:2;
+    UINT16 mcs_ss5:2;
+    UINT16 mcs_ss4:2;
+    UINT16 mcs_ss3:2;
+    UINT16 mcs_ss2:2;
+    UINT16 mcs_ss1:2;
 #else
-	UINT16 mcs_ss1:2;
-	UINT16 mcs_ss2:2;
-	UINT16 mcs_ss3:2;
-	UINT16 mcs_ss4:2;
-	UINT16 mcs_ss5:2;
-	UINT16 mcs_ss6:2;
-	UINT16 mcs_ss7:2;
-	UINT16 mcs_ss8:2;
+    UINT16 mcs_ss1:2;
+    UINT16 mcs_ss2:2;
+    UINT16 mcs_ss3:2;
+    UINT16 mcs_ss4:2;
+    UINT16 mcs_ss5:2;
+    UINT16 mcs_ss6:2;
+    UINT16 mcs_ss7:2;
+    UINT16 mcs_ss8:2;
 #endif /* RT_BIG_ENDIAN */
-}VHT_MCS_MAP;
+} VHT_MCS_MAP;
 
 
 /*
@@ -269,23 +271,24 @@ typedef struct GNU_PACKED _VHT_MCS_MAP{
 */
 
 // TODO: shiang-6590, check the layout of this data structure!!!!
-typedef struct GNU_PACKED _VHT_MCS_SET{
+typedef struct GNU_PACKED _VHT_MCS_SET
+{
 #ifdef RT_BIG_ENDIAN
-	UINT16 rsv2:3;
-	UINT16 tx_high_rate:13;
-	struct _VHT_MCS_MAP tx_mcs_map;
-	UINT16 rsv:3;
-	UINT16 rx_high_rate:13;
-	struct _VHT_MCS_MAP rx_mcs_map;	
+    UINT16 rsv2:3;
+    UINT16 tx_high_rate:13;
+    struct _VHT_MCS_MAP tx_mcs_map;
+    UINT16 rsv:3;
+    UINT16 rx_high_rate:13;
+    struct _VHT_MCS_MAP rx_mcs_map;
 #else
-	struct _VHT_MCS_MAP rx_mcs_map;	
-	UINT16 rx_high_rate:13;
-	UINT16 rsv:3;
-	struct _VHT_MCS_MAP tx_mcs_map;
-	UINT16 tx_high_rate:13;
-	UINT16 rsv2:3;
+    struct _VHT_MCS_MAP rx_mcs_map;
+    UINT16 rx_high_rate:13;
+    UINT16 rsv:3;
+    struct _VHT_MCS_MAP tx_mcs_map;
+    UINT16 tx_high_rate:13;
+    UINT16 rsv2:3;
 #endif /* RT_BIG_ENDIAN */
-}VHT_MCS_SET;
+} VHT_MCS_SET;
 
 
 /*
@@ -303,10 +306,11 @@ typedef struct GNU_PACKED _VHT_MCS_SET{
 		->Used to convey the combinations of MCSs and spatial streams a STA
 			supports for both reception and transmission.
 */
-typedef struct GNU_PACKED _VHT_CAP_IE{
-	VHT_CAP_INFO vht_cap;
-	VHT_MCS_SET mcs_set;
-}VHT_CAP_IE;
+typedef struct GNU_PACKED _VHT_CAP_IE
+{
+    VHT_CAP_INFO vht_cap;
+    VHT_MCS_SET mcs_set;
+} VHT_CAP_IE;
 
 
 /*
@@ -315,7 +319,7 @@ typedef struct GNU_PACKED _VHT_CAP_IE{
 
 	The operation of VHT STAs in the BSS is controlled by the HT Operation
 	element and the VHT Operation element.
-	
+
 	ch_width: Channel Width
 		-> This field, together with the HT Operation element STA Channel Width
 			field, defines the BSS operating channel width.
@@ -334,18 +338,19 @@ typedef struct GNU_PACKED _VHT_CAP_IE{
 			frequency index for the 80MHz channel of frequency segment 1 on
 			which the VHT BSS operates.
 		->Set 0 for 20MHz or 40MHz operating channel width.
-			
+
 	center_freq_2: Channel Center Frequency Segment 2
 		-> Defines the seg 2 channel center frequency for an 80+80MHz VHT BSS
 		->For a 80+80MHz operating channel width, indicates the channel center
 			frequency index of the 80MHz channel of frequency segment 2 on
 			which the VHT BSS operates. Reserved otherwise.
 */
-typedef struct GNU_PACKED _VHT_OP_INFO{
-	UINT8 ch_width;
-	UINT8 center_freq_1;
-	UINT8 center_freq_2;
-}VHT_OP_INFO;
+typedef struct GNU_PACKED _VHT_OP_INFO
+{
+    UINT8 ch_width;
+    UINT8 center_freq_1;
+    UINT8 center_freq_2;
+} VHT_OP_INFO;
 
 
 /*
@@ -354,7 +359,7 @@ typedef struct GNU_PACKED _VHT_OP_INFO{
 
 	The operation of VHT STAs in the BSS is controlled by the HT Operation
 	element and the VHT Operation element.
-	
+
 	eid: Element ID
 			192 (IE_VHT_OP)
 	len: Length
@@ -362,10 +367,11 @@ typedef struct GNU_PACKED _VHT_OP_INFO{
 	vht_op_info: VHT Operation Information
 	basic_mcs_set: VHT Basic MCS Set
 */
-typedef struct GNU_PACKED _VHT_OP_IE{
-	VHT_OP_INFO vht_op_info;
-	VHT_MCS_MAP basic_mcs_set;
-}VHT_OP_IE;
+typedef struct GNU_PACKED _VHT_OP_IE
+{
+    VHT_OP_INFO vht_op_info;
+    VHT_MCS_MAP basic_mcs_set;
+} VHT_OP_IE;
 
 
 /*
@@ -373,32 +379,34 @@ typedef struct GNU_PACKED _VHT_OP_IE{
 	Wide Bandwidth Channel Switch element, figure 8-401bx
 
 	included in the Channel Switch Announcement frames.
-	
+
 	new_ch_width: New STA Channel Width
 	center_freq_1: New Channel Center Frequency Segment 1
 	center_freq_2: New Channel Center Frequency Segment 2
 
 	The definition of upper subfields is the same as "VHT_OP_INFO"
 */
-typedef struct GNU_PACKED _WIDE_BW_CH_SWITCH_IE{
-	UINT8 e_id;
-	UINT len;
-	UINT8 new_ch_width;
-	UINT8 center_freq_1;
-	UINT8 center_freq_2;
-}WIDE_BW_CH_SWITCH_IE;
+typedef struct GNU_PACKED _WIDE_BW_CH_SWITCH_IE
+{
+    UINT8 e_id;
+    UINT len;
+    UINT8 new_ch_width;
+    UINT8 center_freq_1;
+    UINT8 center_freq_2;
+} WIDE_BW_CH_SWITCH_IE;
 
 
 /*
 	IEEE 802.11AC D2.0, sec 8.4.2.164
 	VHT Transmit Power Envelope element
 
-	
+
 */
-typedef struct GNU_PACKED _CH_SEG_PAIR{
-	UINT8 ch_center_freq;
-	UINT8 seg_ch_width;
-}CH_SEG_PAIR;
+typedef struct GNU_PACKED _CH_SEG_PAIR
+{
+    UINT8 ch_center_freq;
+    UINT8 seg_ch_width;
+} CH_SEG_PAIR;
 
 
 /*
@@ -408,71 +416,74 @@ typedef struct GNU_PACKED _CH_SEG_PAIR{
 	max_txpwr: Maximum Transmit Power
 		-> Define the maximum transmit power limit of the tx bandwidth defined
 			by the VHT Transmit Power Envelop element. The Maximum Transmit
-			Power field is a 8 bit 2's complement signed integer in the range of 
+			Power field is a 8 bit 2's complement signed integer in the range of
 			-64 dBm to 63.5 dBm with a 0.5 dB step.
 
 	NOTE: The following two subfields may repeated as needed.
 		center_freq_1: Channel Center Frequency Segment
 		ch_seg_width: Segment Channel Width
 */
-typedef struct GNU_PACKED _VHT_TXPWR_ENV_IE{
-	UINT8 e_id;
-	UINT8 len;
-	UINT8 max_txpwr;
-	CH_SEG_PAIR ch_seg_pair[0];
-}VHT_TXPWR_ENV_IE;
+typedef struct GNU_PACKED _VHT_TXPWR_ENV_IE
+{
+    UINT8 e_id;
+    UINT8 len;
+    UINT8 max_txpwr;
+    CH_SEG_PAIR ch_seg_pair[0];
+} VHT_TXPWR_ENV_IE;
 
 
 
-typedef struct  GNU_PACKED _VHT_CONTROL{
+typedef struct  GNU_PACKED _VHT_CONTROL
+{
 #ifdef RT_BIG_ENDIAN
-	UINT32 RDG:1;
-	UINT32 ACConstraint:1;
-	UINT32 unso_mfb:1;
-	UINT32 fb_tx_type:1;
-	UINT32 coding:1;
-	UINT32 gid_h:3;
-	UINT32 mfb_snr:6;
-	UINT32 mfb_bw:2;
-	UINT32 mfb_mcs:4;
-	UINT32 mfb_n_sts:3;
-	UINT32 mfsi_gidl:3;
-	UINT32 stbc_ind:1;
-	UINT32 comp_msi:2;
-	UINT32 mrq:1;
-	UINT32 rsv:1;
-	UINT32 vht:1;
+    UINT32 RDG:1;
+    UINT32 ACConstraint:1;
+    UINT32 unso_mfb:1;
+    UINT32 fb_tx_type:1;
+    UINT32 coding:1;
+    UINT32 gid_h:3;
+    UINT32 mfb_snr:6;
+    UINT32 mfb_bw:2;
+    UINT32 mfb_mcs:4;
+    UINT32 mfb_n_sts:3;
+    UINT32 mfsi_gidl:3;
+    UINT32 stbc_ind:1;
+    UINT32 comp_msi:2;
+    UINT32 mrq:1;
+    UINT32 rsv:1;
+    UINT32 vht:1;
 #else
-	UINT32 vht:1;
-	UINT32 rsv:1;
-	UINT32 mrq:1;
-	UINT32 comp_msi:2;
-	UINT32 stbc_ind:1;
-	UINT32 mfsi_gidl:3;
-	UINT32 mfb_n_sts:3;
-	UINT32 mfb_mcs:4;
-	UINT32 mfb_bw:2;
-	UINT32 mfb_snr:6;
-	UINT32 gid_h:3;
-	UINT32 coding:1;
-	UINT32 fb_tx_type:1;
-	UINT32 unso_mfb:1;
-	UINT32 ACConstraint:1;
-	UINT32 RDG:1;
+    UINT32 vht:1;
+    UINT32 rsv:1;
+    UINT32 mrq:1;
+    UINT32 comp_msi:2;
+    UINT32 stbc_ind:1;
+    UINT32 mfsi_gidl:3;
+    UINT32 mfb_n_sts:3;
+    UINT32 mfb_mcs:4;
+    UINT32 mfb_bw:2;
+    UINT32 mfb_snr:6;
+    UINT32 gid_h:3;
+    UINT32 coding:1;
+    UINT32 fb_tx_type:1;
+    UINT32 unso_mfb:1;
+    UINT32 ACConstraint:1;
+    UINT32 RDG:1;
 #endif
-}VHT_CONTROL;
+} VHT_CONTROL;
 
 
-typedef struct GNU_PACKED _NDPA_PKT{
-	USHORT frm_ctrl;
-	USHORT duration;
-	UINT8 ra[MAC_ADDR_LEN];
-	UINT8 ta[MAC_ADDR_LEN];
-	UINT8 snd_seq;
-}DNPA_PKT;
+typedef struct GNU_PACKED _NDPA_PKT
+{
+    USHORT frm_ctrl;
+    USHORT duration;
+    UINT8 ra[MAC_ADDR_LEN];
+    UINT8 ta[MAC_ADDR_LEN];
+    UINT8 snd_seq;
+} DNPA_PKT;
 
 
-	
+
 #endif /* __DOT11AC_VHT_H */
 
 #endif /* DOT11_VHT_AC */

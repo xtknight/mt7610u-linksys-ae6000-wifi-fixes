@@ -162,21 +162,21 @@ extern	const struct iw_handler_def rt28xx_ap_iw_handler_def;
  *	OS Specific definitions and data structures
  ***********************************************************************************/
 typedef struct net_device_stats	NET_DEV_STATS;
-typedef struct pci_dev 		* PPCI_DEV;
-typedef struct net_device	* PNET_DEV;
-typedef void				* PNDIS_PACKET;
+typedef struct pci_dev 		 *PPCI_DEV;
+typedef struct net_device	 *PNET_DEV;
+typedef void				 *PNDIS_PACKET;
 typedef char				NDIS_PACKET;
-typedef PNDIS_PACKET		* PPNDIS_PACKET;
+typedef PNDIS_PACKET		 *PPNDIS_PACKET;
 typedef	ra_dma_addr_t			NDIS_PHYSICAL_ADDRESS;
-typedef	ra_dma_addr_t			* PNDIS_PHYSICAL_ADDRESS;
-typedef void				* NDIS_HANDLE;
-typedef char 				* PNDIS_BUFFER;
+typedef	ra_dma_addr_t			 *PNDIS_PHYSICAL_ADDRESS;
+typedef void				 *NDIS_HANDLE;
+typedef char 				 *PNDIS_BUFFER;
 
 typedef struct ifreq		NET_IOCTL;
-typedef struct ifreq		* PNET_IOCTL;
+typedef struct ifreq		 *PNET_IOCTL;
 
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,27)
-typedef	struct pid *	RTMP_OS_PID;
+typedef	struct pid 	*RTMP_OS_PID;
 #else
 typedef pid_t 				RTMP_OS_PID;
 #endif
@@ -275,22 +275,22 @@ struct iw_statistics *rt28xx_get_wireless_stats(
 /***********************************************************************************
  *	OS file operation related data structure definitions
  ***********************************************************************************/
-typedef struct file* RTMP_OS_FD;
+typedef struct file *RTMP_OS_FD;
 
 typedef struct _OS_FS_INFO_
 {
-// https://git.kernel.org/cgit/linux/kernel/git/stable/linux-stable.git/commit/include/linux/uidgid.h?id=7a4e7408c5cadb240e068a662251754a562355e3
-// https://git.kernel.org/cgit/linux/kernel/git/stable/linux-stable.git/tree/include/linux?h=linux-3.4.y
-// https://git.kernel.org/cgit/linux/kernel/git/stable/linux-stable.git/tree/include/linux?h=linux-3.5.y
-// (uidgid.h)
+    // https://git.kernel.org/cgit/linux/kernel/git/stable/linux-stable.git/commit/include/linux/uidgid.h?id=7a4e7408c5cadb240e068a662251754a562355e3
+    // https://git.kernel.org/cgit/linux/kernel/git/stable/linux-stable.git/tree/include/linux?h=linux-3.4.y
+    // https://git.kernel.org/cgit/linux/kernel/git/stable/linux-stable.git/tree/include/linux?h=linux-3.5.y
+    // (uidgid.h)
 #if LINUX_VERSION_CODE < KERNEL_VERSION(3,5,0)
- 	int				fsuid;
- 	int				fsgid;
+    int				fsuid;
+    int				fsgid;
 #else
-	kuid_t				fsuid;
-	kgid_t				fsgid;
+    kuid_t				fsuid;
+    kgid_t				fsgid;
 #endif
-	mm_segment_t	fs;
+    mm_segment_t	fs;
 } OS_FS_INFO;
 
 #define IS_FILE_OPEN_ERR(_fd) 	((_fd == NULL) || IS_ERR((_fd)))
@@ -299,9 +299,10 @@ typedef struct _OS_FS_INFO_
 /***********************************************************************************
  *	OS semaphore related data structure and definitions
  ***********************************************************************************/
-struct os_lock  {
-	spinlock_t		lock;
-	unsigned long  	flags;
+struct os_lock
+{
+    spinlock_t		lock;
+    unsigned long  	flags;
 };
 
 typedef spinlock_t			OS_NDIS_SPIN_LOCK;
@@ -371,8 +372,8 @@ typedef spinlock_t			OS_NDIS_SPIN_LOCK;
 	Following lock/unlock definition used for BBP/RF register read/write.
 	Currently we don't use it to protect MAC register access.
 
-	For USB: 
-			we use binary semaphore to do the protection because all register 
+	For USB:
+			we use binary semaphore to do the protection because all register
 			access done in kernel thread and should allow task go sleep when
 			in protected status.
 
@@ -380,7 +381,7 @@ typedef spinlock_t			OS_NDIS_SPIN_LOCK;
 			We use interrupt to do the protection because the register may accessed
 			in thread/tasklet/timer/inteerupt, so we use interrupt_disable to protect
 			the access.
-*/	
+*/
 #define RTMP_MCU_RW_LOCK(_pAd, _irqflags)	\
 	do{								\
 		if (_pAd->infType == RTMP_DEV_INF_USB)	\
@@ -405,7 +406,7 @@ typedef spinlock_t			OS_NDIS_SPIN_LOCK;
 		}\
 	}while(0)
 
-	
+
 #ifndef wait_event_interruptible_timeout
 #define __wait_event_interruptible_timeout(wq, condition, ret) \
 do { \
@@ -590,7 +591,7 @@ typedef void (*TIMER_FUNCTION)(unsigned long);
 
 static inline void NdisGetSystemUpTime(ULONG *time)
 {
-	*time = jiffies;
+    *time = jiffies;
 }
 
 
@@ -598,55 +599,56 @@ static inline void NdisGetSystemUpTime(ULONG *time)
  *	OS specific cookie data structure binding to RTMP_ADAPTER
  ***********************************************************************************/
 
-struct os_cookie {
+struct os_cookie
+{
 
 #ifdef RTMP_MAC_USB
-	struct usb_device		*pUsb_Dev;
+    struct usb_device		*pUsb_Dev;
 #ifdef CONFIG_STA_SUPPORT
 #ifdef CONFIG_PM
 #ifdef USB_SUPPORT_SELECTIVE_SUSPEND
-	struct usb_interface *intf;
+    struct usb_interface *intf;
 #endif /* USB_SUPPORT_SELECTIVE_SUSPEND */
 #endif /* CONFIG_PM */
 #endif /* CONFIG_STA_SUPPORT */
 #endif /* RTMP_MAC_USB */
 
 #ifdef WORKQUEUE_BH
-	UINT32		     pAd_va;
+    UINT32		     pAd_va;
 #endif /* WORKQUEUE_BH */
 
-	RTMP_NET_TASK_STRUCT rx_done_task;
-	RTMP_NET_TASK_STRUCT cmd_rsp_event_task;
-	RTMP_NET_TASK_STRUCT mgmt_dma_done_task;
-	RTMP_NET_TASK_STRUCT ac0_dma_done_task;
+    RTMP_NET_TASK_STRUCT rx_done_task;
+    RTMP_NET_TASK_STRUCT cmd_rsp_event_task;
+    RTMP_NET_TASK_STRUCT mgmt_dma_done_task;
+    RTMP_NET_TASK_STRUCT ac0_dma_done_task;
 #ifdef RALINK_ATE
-	RTMP_NET_TASK_STRUCT ate_ac0_dma_done_task;
+    RTMP_NET_TASK_STRUCT ate_ac0_dma_done_task;
 #endif /* RALINK_ATE */
-	RTMP_NET_TASK_STRUCT ac1_dma_done_task;
-	RTMP_NET_TASK_STRUCT ac2_dma_done_task;
-	RTMP_NET_TASK_STRUCT ac3_dma_done_task;
-	RTMP_NET_TASK_STRUCT hcca_dma_done_task;
-	RTMP_NET_TASK_STRUCT tbtt_task;
+    RTMP_NET_TASK_STRUCT ac1_dma_done_task;
+    RTMP_NET_TASK_STRUCT ac2_dma_done_task;
+    RTMP_NET_TASK_STRUCT ac3_dma_done_task;
+    RTMP_NET_TASK_STRUCT hcca_dma_done_task;
+    RTMP_NET_TASK_STRUCT tbtt_task;
 
 #ifdef UAPSD_SUPPORT
-	RTMP_NET_TASK_STRUCT uapsd_eosp_sent_task;
+    RTMP_NET_TASK_STRUCT uapsd_eosp_sent_task;
 #endif /* UAPSD_SUPPORT */
 
 
 #ifdef RTMP_MAC_USB
-	RTMP_NET_TASK_STRUCT null_frame_complete_task;
-	RTMP_NET_TASK_STRUCT pspoll_frame_complete_task;
+    RTMP_NET_TASK_STRUCT null_frame_complete_task;
+    RTMP_NET_TASK_STRUCT pspoll_frame_complete_task;
 #endif /* RTMP_MAC_USB */
 
-	RTMP_OS_PID			apd_pid; /*802.1x daemon pid */
-	unsigned long			apd_pid_nr;
-	INT						ioctl_if_type;
-	INT 					ioctl_if;
+    RTMP_OS_PID			apd_pid; /*802.1x daemon pid */
+    unsigned long			apd_pid_nr;
+    INT						ioctl_if_type;
+    INT 					ioctl_if;
 
-	 RTMP_OS_COMPLETION SentToMCUDone;
+    RTMP_OS_COMPLETION SentToMCUDone;
 };
 
-typedef struct os_cookie	* POS_COOKIE;
+typedef struct os_cookie	 *POS_COOKIE;
 
 
 
@@ -721,7 +723,7 @@ void linux_pci_unmap_single(void *handle, ra_dma_addr_t dma_addr, size_t size, i
 
 #define PCI_MAP_SINGLE_DEV(_handle, _ptr, _size, _sd_idx, _dir)				\
 	linux_pci_map_single(_handle, _ptr, _size, _sd_idx, _dir)
-	
+
 #define PCI_UNMAP_SINGLE(_pAd, _ptr, _size, _dir)						\
 	linux_pci_unmap_single(((POS_COOKIE)(_pAd->OS_Cookie))->pci_dev, _ptr, _size, _dir)
 
@@ -798,7 +800,7 @@ void linux_pci_unmap_single(void *handle, ra_dma_addr_t dma_addr, size_t size, i
 {																\
 }
 
-//BURST_READ(_A, _R, 1, _pV);                             
+//BURST_READ(_A, _R, 1, _pV);
 #define RTMP_IO_READ32(_A, _R, _pV)								\
 	RTUSBReadMACRegister((_A), (_R), (PUINT32) (_pV))
 
@@ -890,7 +892,7 @@ void linux_pci_unmap_single(void *handle, ra_dma_addr_t dma_addr, size_t size, i
 		(RTPKT_TO_OSPKT(_pkt)->len)
 #define SET_OS_PKT_LEN(_pkt, _len)	\
 		(RTPKT_TO_OSPKT(_pkt)->len) = (_len)
-		
+
 
 #ifdef NET_SKBUFF_DATA_USES_OFFSET
 #define GET_OS_PKT_DATATAIL(_pkt) \
@@ -902,7 +904,7 @@ void linux_pci_unmap_single(void *handle, ra_dma_addr_t dma_addr, size_t size, i
 		(RTPKT_TO_OSPKT(_pkt)->tail)
 #define SET_OS_PKT_DATATAIL(_pkt, _start, _len)	\
 		((RTPKT_TO_OSPKT(_pkt))->tail) = (ULONG)((_start) + (_len))
-#endif 
+#endif
 
 
 #define GET_OS_PKT_HEAD(_pkt) \
@@ -915,7 +917,7 @@ void linux_pci_unmap_single(void *handle, ra_dma_addr_t dma_addr, size_t size, i
 		(RTPKT_TO_OSPKT(_pkt)->dev)
 #define SET_OS_PKT_NETDEV(_pkt, _pNetDev)	\
 		(RTPKT_TO_OSPKT(_pkt)->dev) = (_pNetDev)
-		
+
 #define GET_OS_PKT_TYPE(_pkt) \
 		(RTPKT_TO_OSPKT(_pkt))
 
@@ -1100,7 +1102,7 @@ void linux_pci_unmap_single(void *handle, ra_dma_addr_t dma_addr, size_t size, i
 				else																		\
 					(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+11]) &= (~RTMP_PACKET_SPECIFIC_LLCSNAP);		\
 			}while(0)
-			
+
 #define RTMP_GET_PACKET_LLCSNAP(_p)		(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+11] & RTMP_PACKET_SPECIFIC_LLCSNAP)
 
 /* IP */
@@ -1111,7 +1113,7 @@ void linux_pci_unmap_single(void *handle, ra_dma_addr_t dma_addr, size_t size, i
 				else																		\
 					(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+11]) &= (~RTMP_PACKET_SPECIFIC_IPV4);	\
 			}while(0)
-			
+
 #define RTMP_GET_PACKET_IPV4(_p)		(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+11] & RTMP_PACKET_SPECIFIC_IPV4)
 
 // TDLS
@@ -1122,7 +1124,7 @@ void linux_pci_unmap_single(void *handle, ra_dma_addr_t dma_addr, size_t size, i
 				else																		\
 					(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+11]) &= (~RTMP_PACKET_SPECIFIC_TDLS);	\
 			}while(0)
-			
+
 #define RTMP_GET_PACKET_TDLS(_p)		(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+11] & RTMP_PACKET_SPECIFIC_TDLS)
 
 /* If this flag is set, it indicates that this EAPoL frame MUST be clear. */
@@ -1168,7 +1170,7 @@ void linux_pci_unmap_single(void *handle, ra_dma_addr_t dma_addr, size_t size, i
 #ifdef INF_AMAZON_SE
 /* [CB_OFF+28], 1B, Iverson patch for WMM A5-T07 ,WirelessStaToWirelessSta do not bulk out aggregate */
 #define RTMP_SET_PACKET_NOBULKOUT(_p, _morebit)			(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+28] = _morebit)
-#define RTMP_GET_PACKET_NOBULKOUT(_p)					(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+28])			
+#define RTMP_GET_PACKET_NOBULKOUT(_p)					(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+28])
 #endif /* INF_AMAZON_SE */
 
 
@@ -1202,9 +1204,9 @@ struct net_device *alloc_netdev(int sizeof_priv, const char *mask, void (*setup)
 
 
 INT rt28xx_ioctl(
-	IN	PNET_DEV		net_dev,
-	IN	OUT	struct ifreq	*rq, 
-	IN	INT			cmd);
+    IN	PNET_DEV		net_dev,
+    IN	OUT	struct ifreq	*rq,
+    IN	INT			cmd);
 
 extern int ra_mtd_write(int num, loff_t to, size_t len, const u_char *buf);
 extern int ra_mtd_read(int num, loff_t from, size_t len, u_char *buf);
@@ -1257,7 +1259,7 @@ typedef struct usb_device_id USB_DEVICE_ID;
 #endif
 #else
 #define RTUSB_URB_ALLOC_BUFFER(_dev, _size, _dma)	kmalloc(_size, GFP_ATOMIC)
-#define RTUSB_URB_FREE_BUFFER(_dev, _size, _addr, _dma)	kfree(_addr) 
+#define RTUSB_URB_FREE_BUFFER(_dev, _size, _addr, _dma)	kfree(_addr)
 #endif
 
 #define RTUSB_FILL_BULK_URB(_urb, _dev, _pipe, _buffer, _buffer_len, _complete_fn, _context) usb_fill_bulk_urb(_urb, _dev, _pipe, _buffer, _buffer_len, _complete_fn, _context)
@@ -1313,8 +1315,8 @@ typedef struct usb_device_id USB_DEVICE_ID;
 #define RtmpUsbBulkOutPsPollComplete			RTUSBBulkOutPsPollComplete
 #define RtmpUsbBulkRxComplete					RTUSBBulkRxComplete
 #define RtmpUsbBulkCmdRspEventComplete			RTUSBBulkCmdRspEventComplete
-												
-#if ((LINUX_VERSION_CODE < KERNEL_VERSION(2, 5, 51)) || (LINUX_VERSION_CODE > KERNEL_VERSION(2, 6, 18))) 
+
+#if ((LINUX_VERSION_CODE < KERNEL_VERSION(2, 5, 51)) || (LINUX_VERSION_CODE > KERNEL_VERSION(2, 6, 18)))
 #define RTUSBBulkOutDataPacketComplete(Status, pURB, pt_regs)    RTUSBBulkOutDataPacketComplete(pURB)
 #define RTUSBBulkOutMLMEPacketComplete(Status, pURB, pt_regs)    RTUSBBulkOutMLMEPacketComplete(pURB)
 #define RTUSBBulkOutNullFrameComplete(Status, pURB, pt_regs)     RTUSBBulkOutNullFrameComplete(pURB)
@@ -1414,7 +1416,7 @@ USBHST_STATUS RTUSBBulkCmdRspEventComplete(URBCompleteStatus Status, purbb_t pUR
 					FILL_BULK_URB(pUrb, pUsb_Dev, usb_sndbulkpipe(pUsb_Dev, uEndpointAddress),	\
 								pTransferBuf, BufSize, Complete, pContext);	\
 				}while(0)
-#endif	
+#endif
 
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(2,5,0)
 #define RTUSB_FILL_RX_BULK_URB(pUrb,	\
@@ -1446,7 +1448,7 @@ USBHST_STATUS RTUSBBulkCmdRspEventComplete(URBCompleteStatus Status, purbb_t pUR
 								pTransferBuf, BufSize, Complete, pContext);	\
 				}while(0)
 #endif
-	
+
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(2,5,0)
 #define RTUSB_URB_DMA_MAPPING(pUrb)	\
 	{	\
@@ -1469,7 +1471,7 @@ USBHST_STATUS RTUSBBulkCmdRspEventComplete(URBCompleteStatus Status, purbb_t pUR
 				ret = -1;	\
 			}	\
 		}while(0)
-		
+
 #define rtusb_urb_context  context
 #define rtusb_urb_status   status
 
@@ -1502,12 +1504,12 @@ extern int rausb_submit_urb(VOID *urb);
 #endif /* gfp_t */
 
 extern void *rausb_buffer_alloc(VOID *dev,
-								size_t size,
-								ra_dma_addr_t *dma);
+                                size_t size,
+                                ra_dma_addr_t *dma);
 extern void rausb_buffer_free(VOID *dev,
-								size_t size,
-								void *addr,
-								ra_dma_addr_t dma);
+                              size_t size,
+                              void *addr,
+                              ra_dma_addr_t dma);
 #endif /* LINUX_VERSION_CODE */
 
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,7)
@@ -1515,14 +1517,14 @@ extern void rausb_kill_urb(VOID *urb);
 #endif /* LINUX_VERSION_CODE */
 
 extern int rausb_control_msg(VOID *dev,
-							unsigned int pipe,
-							__u8 request,
-							__u8 requesttype,
-							__u16 value,
-							__u16 index,
-							void *data,
-							__u16 size,
-							int timeout);
+                             unsigned int pipe,
+                             __u8 request,
+                             __u8 requesttype,
+                             __u16 value,
+                             __u16 index,
+                             void *data,
+                             __u16 size,
+                             int timeout);
 
 #endif /* OS_ABL_SUPPORT */
 
@@ -1550,18 +1552,18 @@ extern int rausb_control_msg(VOID *dev,
 /* Prototypes of completion funuc. */
 #define ATE_RTUSBBulkOutDataPacketComplete(Status, pURB, pt_regs)    ATE_RTUSBBulkOutDataPacketComplete(pURB)
 #else
-#define ATE_RTUSBBulkOutDataPacketComplete(Status, pURB, pt_regs)    ATE_RTUSBBulkOutDataPacketComplete(pURB, pt_regs)	
+#define ATE_RTUSBBulkOutDataPacketComplete(Status, pURB, pt_regs)    ATE_RTUSBBulkOutDataPacketComplete(pURB, pt_regs)
 #endif /* LINUX_VERSION_CODE */
 
 USBHST_STATUS ATE_RTUSBBulkOutDataPacketComplete(URBCompleteStatus Status, purbb_t pURB, pregs *pt_regs);
-		
+
 #endif /* RTMP_USB_SUPPORT */
 
 #endif /* RALINK_ATE */
 
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,31)
 INT RtmpOSNetDevOpsAlloc(
-	IN PVOID *pNetDevOps);
+    IN PVOID *pNetDevOps);
 #endif
 
 #define RTMP_OS_MAX_SCAN_DATA_GET()		IW_SCAN_MAX_DATA

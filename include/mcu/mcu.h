@@ -28,21 +28,23 @@
 #ifndef __MCU_H__
 #define __MCU_H__
 
-enum MCU_TYPE {
-	SWMCU,
-	M8051,
-	ANDES,
+enum MCU_TYPE
+{
+    SWMCU,
+    M8051,
+    ANDES,
 };
 
 /*
  * Power opration
  */
-enum PWR_OP {
-	RADIO_OFF = 0x30,
-	RADIO_ON,
-	RADIO_OFF_AUTO_WAKEUP,
-	RADIO_OFF_ADVANCE,
-	RADIO_ON_ADVANCE,
+enum PWR_OP
+{
+    RADIO_OFF = 0x30,
+    RADIO_ON,
+    RADIO_OFF_AUTO_WAKEUP,
+    RADIO_OFF_ADVANCE,
+    RADIO_ON_ADVANCE,
 };
 
 struct _RTMP_ADAPTER;
@@ -51,4 +53,4 @@ VOID ChipOpsMCUHook(struct _RTMP_ADAPTER *pAd, enum MCU_TYPE MCUType);
 VOID MCUCtrlInit(struct _RTMP_ADAPTER *pAd);
 VOID MCUCtrlExit(struct _RTMP_ADAPTER *pAd);
 
-#endif 
+#endif

@@ -29,24 +29,25 @@
 
 #include <linux/ieee80211.h>
 
-typedef struct __CFG80211_CB {
+typedef struct __CFG80211_CB
+{
 
-	/* we can change channel/rate information on the fly so we backup them */
-	struct ieee80211_supported_band Cfg80211_bands[IEEE80211_NUM_BANDS];
-	struct ieee80211_channel *pCfg80211_Channels;
-	struct ieee80211_rate *pCfg80211_Rates;
+    /* we can change channel/rate information on the fly so we backup them */
+    struct ieee80211_supported_band Cfg80211_bands[IEEE80211_NUM_BANDS];
+    struct ieee80211_channel *pCfg80211_Channels;
+    struct ieee80211_rate *pCfg80211_Rates;
 
-	/* used in wiphy_unregister */
-	struct wireless_dev *pCfg80211_Wdev;
+    /* used in wiphy_unregister */
+    struct wireless_dev *pCfg80211_Wdev;
 
-	/* used in scan end */
-	struct cfg80211_scan_request *pCfg80211_ScanReq;
+    /* used in scan end */
+    struct cfg80211_scan_request *pCfg80211_ScanReq;
 
-	/* monitor filter */
-	UINT32 MonFilterFlag;
+    /* monitor filter */
+    UINT32 MonFilterFlag;
 
-	/* channel information */
-	struct ieee80211_channel ChanInfo[MAX_NUM_OF_CHANNELS];
+    /* channel information */
+    struct ieee80211_channel ChanInfo[MAX_NUM_OF_CHANNELS];
 } CFG80211_CB;
 
 
@@ -73,9 +74,9 @@ Note:
 ========================================================================
 */
 BOOLEAN CFG80211_Register(
-	VOID						*pAd,
-	struct device				*pDev,
-	struct net_device			*pNetDev);
+    VOID						*pAd,
+    struct device				*pDev,
+    struct net_device			*pNetDev);
 
 
 #endif /* RT_CFG80211_SUPPORT */

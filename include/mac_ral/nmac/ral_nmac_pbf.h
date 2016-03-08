@@ -39,42 +39,46 @@
 #define PBF_SYS_CTRL 	 0x0400
 
 #ifdef RT_BIG_ENDIAN
-typedef union _PBF_SYS_CTRL_STRUC {
-	struct {
-		UINT32 rsv5:7; /* Reserved */
-		UINT32 CSR_TEST_EN:1;
-		UINT32 MAC_CLKSEL:2; /* MAC clock selection */
-		UINT32 PWRSV_EN:2;
-		UINT32 SHRM_SEL:1; /* Shared memory access selection */
-		UINT32 PBF_MSEL:2; /* Packet buffer memory access selection */
-		UINT32 rsv4:5;
-		UINT32 PBF_CLK_EN:1; /* PBF clock enable */
-		UINT32 MAC_CLK_EN:1; /* MAC clock enable */
-		UINT32 rsv3:6;
-		UINT32 PBF_RESET:1; /* PBF hardware reset */
-		UINT32 MAC_RESET:1; /* MAC hardware reset */
-		UINT32 rsv:2;
-	} field;
-	UINT32 word;
+typedef union _PBF_SYS_CTRL_STRUC
+{
+    struct
+    {
+        UINT32 rsv5:7; /* Reserved */
+        UINT32 CSR_TEST_EN:1;
+        UINT32 MAC_CLKSEL:2; /* MAC clock selection */
+        UINT32 PWRSV_EN:2;
+        UINT32 SHRM_SEL:1; /* Shared memory access selection */
+        UINT32 PBF_MSEL:2; /* Packet buffer memory access selection */
+        UINT32 rsv4:5;
+        UINT32 PBF_CLK_EN:1; /* PBF clock enable */
+        UINT32 MAC_CLK_EN:1; /* MAC clock enable */
+        UINT32 rsv3:6;
+        UINT32 PBF_RESET:1; /* PBF hardware reset */
+        UINT32 MAC_RESET:1; /* MAC hardware reset */
+        UINT32 rsv:2;
+    } field;
+    UINT32 word;
 } PBF_SYS_CTRL_STRUC;
 #else
-typedef union _PBF_SYS_CTRL_STRUC{
-	struct {
-                UINT32 rsv5:7; /* Reserved */
-                UINT32 CSR_TEST_EN:1;
-                UINT32 MAC_CLKSEL:2; /* MAC clock selection */
-                UINT32 PWRSV_EN:2;
-                UINT32 SHRM_SEL:1; /* Shared memory access selection */
-                UINT32 PBF_MSEL:2; /* Packet buffer memory access selection */
-                UINT32 rsv4:5;
-                UINT32 PBF_CLK_EN:1; /* PBF clock enable */
-                UINT32 MAC_CLK_EN:1; /* MAC clock enable */
-                UINT32 rsv3:6;
-                UINT32 PBF_RESET:1; /* PBF hardware reset */
-                UINT32 MAC_RESET:1; /* MAC hardware reset */
-                UINT32 rsv:2;
-	}field;
-	UINT32 word;
+typedef union _PBF_SYS_CTRL_STRUC
+{
+    struct
+    {
+        UINT32 rsv5:7; /* Reserved */
+        UINT32 CSR_TEST_EN:1;
+        UINT32 MAC_CLKSEL:2; /* MAC clock selection */
+        UINT32 PWRSV_EN:2;
+        UINT32 SHRM_SEL:1; /* Shared memory access selection */
+        UINT32 PBF_MSEL:2; /* Packet buffer memory access selection */
+        UINT32 rsv4:5;
+        UINT32 PBF_CLK_EN:1; /* PBF clock enable */
+        UINT32 MAC_CLK_EN:1; /* MAC clock enable */
+        UINT32 rsv3:6;
+        UINT32 PBF_RESET:1; /* PBF hardware reset */
+        UINT32 MAC_RESET:1; /* MAC hardware reset */
+        UINT32 rsv:2;
+    } field;
+    UINT32 word;
 } PBF_SYS_CTRL_STRUC;
 #endif
 

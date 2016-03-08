@@ -33,14 +33,14 @@
 /* */
 typedef struct _FREQUENCY_CALIBRATION_CONTROL
 {
-	BOOLEAN bEnableFrequencyCalibration; /* Enable the frequency calibration algorithm */
+    BOOLEAN bEnableFrequencyCalibration; /* Enable the frequency calibration algorithm */
 
-	BOOLEAN bSkipFirstFrequencyCalibration; /* Avoid calibrating frequency at the time the STA is just link-up */
-	BOOLEAN bApproachFrequency; /* Approach the frequency */
-	CHAR AdaptiveFreqOffset; /* Adaptive frequency offset */
-	CHAR LatestFreqOffsetOverBeacon; /* Latest frequency offset from the beacon */
-	CHAR BeaconPhyMode; /* Latest frequency offset from the beacon */
-	
+    BOOLEAN bSkipFirstFrequencyCalibration; /* Avoid calibrating frequency at the time the STA is just link-up */
+    BOOLEAN bApproachFrequency; /* Approach the frequency */
+    CHAR AdaptiveFreqOffset; /* Adaptive frequency offset */
+    CHAR LatestFreqOffsetOverBeacon; /* Latest frequency offset from the beacon */
+    CHAR BeaconPhyMode; /* Latest frequency offset from the beacon */
+
 } FREQUENCY_CALIBRATION_CONTROL, *PFREQUENCY_CALIBRATION_CONTROL;
 
 #define RTMP_FREQ_CAL_DISABLE(__pAd)									\

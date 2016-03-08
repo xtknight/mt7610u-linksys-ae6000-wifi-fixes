@@ -36,7 +36,7 @@
 
 /*
 	TXINFO fields defintion:
-	
+
 	USBDMATxPktLen[b0~b14]:
 		Total bytes of all sub-frame. ONLY for USB bulk Aggregation
 	IPOffset[b15~b18]:
@@ -52,7 +52,7 @@
 		For AMSDU, this field is useless
 
 	WIV[b24]:
-		Wireless Info Valid. 
+		Wireless Info Valid.
 		1: if Driver already fill WI
 		0: if DMA needs to copy WI to correctposition
 
@@ -64,55 +64,57 @@
 		Software used for USB-based chipset, reserved for other interfaces.
 
 	uso[b28]:
-		UDP checksum enable. 
+		UDP checksum enable.
 		1: indicate this packet needs to do UDP checksum
 
 	cso[b29]:
-		Checksum offload. 
+		Checksum offload.
 		1: indicate this packet needs to do checksum
 
 	USBDMANextVLD[b30]:
 		Used for USB-based chipset, reserved for other interfaces.
-		Used ONLY in USB bulk Aggregation, host driver info DMA current 
+		Used ONLY in USB bulk Aggregation, host driver info DMA current
 		frame is not he last frame in current Tx queue
 
 	USBDMATxburst[b31]:
 		force DMA transmit frame from current selected endpoint
 */
 #ifdef RT_BIG_ENDIAN
-typedef	struct _TXINFO_OMAC {
-	UINT32 USBDMATxburst:1;
-	UINT32 USBDMANextVLD:1;
-	UINT32 cso:1;
-	UINT32 uso:1;
+typedef	struct _TXINFO_OMAC
+{
+    UINT32 USBDMATxburst:1;
+    UINT32 USBDMANextVLD:1;
+    UINT32 cso:1;
+    UINT32 uso:1;
 #ifdef USB_BULK_BUF_ALIGMENT
-	UINT32 bFragLasAlignmentsectiontRound:1;
+    UINT32 bFragLasAlignmentsectiontRound:1;
 #else
-	UINT32 SwUseLastRound:1;
+    UINT32 SwUseLastRound:1;
 #endif /* USB_BULK_BUF_ALIGMENT */
-	UINT32 QSEL:2;
-	UINT32 WIV:1;
-	UINT32 TCPOffset:5;
-	UINT32 IPOffset:4;
-	UINT32 USBDMATxPktLen:15;
-}TXINFO_OMAC;
+    UINT32 QSEL:2;
+    UINT32 WIV:1;
+    UINT32 TCPOffset:5;
+    UINT32 IPOffset:4;
+    UINT32 USBDMATxPktLen:15;
+} TXINFO_OMAC;
 #else
-typedef	struct _TXINFO_OMAC {
-	UINT32 USBDMATxPktLen:15;
-	UINT32 IPOffset:4;
-	UINT32 TCPOffset:5;
-	UINT32 WIV:1;
-	UINT32 QSEL:2;
+typedef	struct _TXINFO_OMAC
+{
+    UINT32 USBDMATxPktLen:15;
+    UINT32 IPOffset:4;
+    UINT32 TCPOffset:5;
+    UINT32 WIV:1;
+    UINT32 QSEL:2;
 #ifdef USB_BULK_BUF_ALIGMENT
-	UINT32 bFragLasAlignmentsectiontRound:1;
+    UINT32 bFragLasAlignmentsectiontRound:1;
 #else
-	UINT32 SwUseLastRound:1;
+    UINT32 SwUseLastRound:1;
 #endif /* USB_BULK_BUF_ALIGMENT */
-	UINT32 uso:1;
-	UINT32 cso:1;
-	UINT32 USBDMANextVLD:1;
-	UINT32 USBDMATxburst:1;
-}TXINFO_OMAC;
+    UINT32 uso:1;
+    UINT32 cso:1;
+    UINT32 USBDMANextVLD:1;
+    UINT32 USBDMATxburst:1;
+} TXINFO_OMAC;
 #endif /* RT_BIG_ENDIAN */
 
 
@@ -124,81 +126,83 @@ typedef	struct _TXINFO_OMAC {
 #define TxInfoUDMANextVld	txinfo_omac.USBDMANextVLD
 
 #ifdef RT_BIG_ENDIAN
-typedef	struct GNU_PACKED _TXWI_OMAC {
-	/* Word 0 */
-	UINT32		PHYMODE:2;
-	UINT32		iTxBF:1; /* iTxBF enable */
-	UINT32		Sounding:1; /* Sounding enable */
-	UINT32		eTxBF:1; /* eTxBF enable */
-	UINT32		STBC:2;	/*channel bandwidth 20MHz or 40 MHz */
-	UINT32		ShortGI:1;
-	UINT32		BW:1;	/*channel bandwidth 20MHz or 40 MHz */
-	UINT32		MCS:7;
-	
-	UINT32		rsv:1;
-	UINT32		TXRPT:1;
-	UINT32		Autofallback:1; /* TX rate auto fallback disable */
-	UINT32		NDPSndBW:1; /* NDP sounding BW */
-	UINT32		NDPSndRate:2; /* 0 : MCS0, 1: MCS8, 2: MCS16, 3: reserved */
-	UINT32		txop:2;
-	UINT32		MpduDensity:3;
-	UINT32		AMPDU:1;
-	
-	UINT32		TS:1;
-	UINT32		CFACK:1;
-	UINT32		MIMOps:1;	/* the remote peer is in dynamic MIMO-PS mode */
-	UINT32		FRAG:1;		/* 1 to inform TKIP engine this is a fragment. */
-	/* Word 1 */
-	UINT32		PacketId:4;
-	UINT32		MPDUtotalByteCnt:12;
-	UINT32		wcid:8;
-	UINT32		BAWinSize:6;
-	UINT32		NSEQ:1;
-	UINT32		ACK:1;
-	/* Word 2 */
-	UINT32		IV;
-	/* Word 3 */
-	UINT32		EIV;
+typedef	struct GNU_PACKED _TXWI_OMAC
+{
+    /* Word 0 */
+    UINT32		PHYMODE:2;
+    UINT32		iTxBF:1; /* iTxBF enable */
+    UINT32		Sounding:1; /* Sounding enable */
+    UINT32		eTxBF:1; /* eTxBF enable */
+    UINT32		STBC:2;	/*channel bandwidth 20MHz or 40 MHz */
+    UINT32		ShortGI:1;
+    UINT32		BW:1;	/*channel bandwidth 20MHz or 40 MHz */
+    UINT32		MCS:7;
+
+    UINT32		rsv:1;
+    UINT32		TXRPT:1;
+    UINT32		Autofallback:1; /* TX rate auto fallback disable */
+    UINT32		NDPSndBW:1; /* NDP sounding BW */
+    UINT32		NDPSndRate:2; /* 0 : MCS0, 1: MCS8, 2: MCS16, 3: reserved */
+    UINT32		txop:2;
+    UINT32		MpduDensity:3;
+    UINT32		AMPDU:1;
+
+    UINT32		TS:1;
+    UINT32		CFACK:1;
+    UINT32		MIMOps:1;	/* the remote peer is in dynamic MIMO-PS mode */
+    UINT32		FRAG:1;		/* 1 to inform TKIP engine this is a fragment. */
+    /* Word 1 */
+    UINT32		PacketId:4;
+    UINT32		MPDUtotalByteCnt:12;
+    UINT32		wcid:8;
+    UINT32		BAWinSize:6;
+    UINT32		NSEQ:1;
+    UINT32		ACK:1;
+    /* Word 2 */
+    UINT32		IV;
+    /* Word 3 */
+    UINT32		EIV;
 
 }	TXWI_OMAC, *PTXWI_OMAC;
 #else
-typedef	struct GNU_PACKED _TXWI_OMAC {
-	/* Word	0 */
-	/* ex: 00 03 00 40 means txop = 3, PHYMODE = 1 */
-	UINT32		FRAG:1;		/* 1 to inform TKIP engine this is a fragment. */
-	UINT32		MIMOps:1;	/* the remote peer is in dynamic MIMO-PS mode */
-	UINT32		CFACK:1;
-	UINT32		TS:1;
-		
-	UINT32		AMPDU:1;
-	UINT32		MpduDensity:3;
-	UINT32		txop:2;	/*FOR "THIS" frame. 0:HT TXOP rule , 1:PIFS TX ,2:Backoff, 3:sifs only when previous frame exchange is successful. */
-	UINT32		NDPSndRate:2; /* 0 : MCS0, 1: MCS8, 2: MCS16, 3: reserved */
-	UINT32		NDPSndBW:1; /* NDP sounding BW */
-	UINT32		Autofallback:1; /* TX rate auto fallback disable */
-	UINT32		TXRPT:1;
-	UINT32		rsv:1;
-	
-	UINT32		MCS:7;
-	UINT32		BW:1;	/*channel bandwidth 20MHz or 40 MHz */
-	UINT32		ShortGI:1;
-	UINT32		STBC:2;	/* 1: STBC support MCS =0-7,   2,3 : RESERVE */
-	UINT32		eTxBF:1; /* eTxBF enable */
-	UINT32		Sounding:1; /* Sounding enable */
-	UINT32		iTxBF:1; /* iTxBF enable */
-	UINT32		PHYMODE:2;  
-	/* Word1 */
-	/* ex:  1c ff 38 00 means ACK=0, BAWinSize=7, MPDUtotalByteCnt = 0x38 */
-	UINT32		ACK:1;
-	UINT32		NSEQ:1;
-	UINT32		BAWinSize:6;
-	UINT32		wcid:8;
-	UINT32		MPDUtotalByteCnt:12;
-	UINT32		PacketId:4;
-	/*Word2 */
-	UINT32		IV;
-	/*Word3 */
-	UINT32		EIV;
+typedef	struct GNU_PACKED _TXWI_OMAC
+{
+    /* Word	0 */
+    /* ex: 00 03 00 40 means txop = 3, PHYMODE = 1 */
+    UINT32		FRAG:1;		/* 1 to inform TKIP engine this is a fragment. */
+    UINT32		MIMOps:1;	/* the remote peer is in dynamic MIMO-PS mode */
+    UINT32		CFACK:1;
+    UINT32		TS:1;
+
+    UINT32		AMPDU:1;
+    UINT32		MpduDensity:3;
+    UINT32		txop:2;	/*FOR "THIS" frame. 0:HT TXOP rule , 1:PIFS TX ,2:Backoff, 3:sifs only when previous frame exchange is successful. */
+    UINT32		NDPSndRate:2; /* 0 : MCS0, 1: MCS8, 2: MCS16, 3: reserved */
+    UINT32		NDPSndBW:1; /* NDP sounding BW */
+    UINT32		Autofallback:1; /* TX rate auto fallback disable */
+    UINT32		TXRPT:1;
+    UINT32		rsv:1;
+
+    UINT32		MCS:7;
+    UINT32		BW:1;	/*channel bandwidth 20MHz or 40 MHz */
+    UINT32		ShortGI:1;
+    UINT32		STBC:2;	/* 1: STBC support MCS =0-7,   2,3 : RESERVE */
+    UINT32		eTxBF:1; /* eTxBF enable */
+    UINT32		Sounding:1; /* Sounding enable */
+    UINT32		iTxBF:1; /* iTxBF enable */
+    UINT32		PHYMODE:2;
+    /* Word1 */
+    /* ex:  1c ff 38 00 means ACK=0, BAWinSize=7, MPDUtotalByteCnt = 0x38 */
+    UINT32		ACK:1;
+    UINT32		NSEQ:1;
+    UINT32		BAWinSize:6;
+    UINT32		wcid:8;
+    UINT32		MPDUtotalByteCnt:12;
+    UINT32		PacketId:4;
+    /*Word2 */
+    UINT32		IV;
+    /*Word3 */
+    UINT32		EIV;
 
 }	TXWI_OMAC, *PTXWI_OMAC;
 #endif
@@ -230,77 +234,79 @@ typedef	struct GNU_PACKED _TXWI_OMAC {
 	RXWI wireless information format, in PBF. invisible in driver.
 */
 #ifdef RT_BIG_ENDIAN
-typedef	struct GNU_PACKED _RXWI_OMAC{
-	/* Word 0 */
-	UINT32		tid:4;
-	UINT32		MPDUtotalByteCnt:12;
-	UINT32		UDF:3;
-	UINT32		bss_idx:3;
-	UINT32		key_idx:2;
-	UINT32		wcid:8;
-	
-	/* Word 1 */
-	UINT32		phy_mode:2;              /* 1: this RX frame is unicast to me */
-	UINT32		iTxBF:1; /* iTxBF enable */
-	UINT32		Sounding:1; /* Sounding enable */
-	UINT32		eTxBF:1; /* eTxBF enable */
-	UINT32		stbc:2;
-	UINT32		sgi:1;
-	UINT32		bw:1;
-	UINT32		mcs:7;
-	UINT32		SEQUENCE:12;
-	UINT32		FRAG:4;
-	
-	/* Word 2 */
-	UINT32		rsv1:8;
-	UINT32		RSSI2:8;
-	UINT32		RSSI1:8;
-	UINT32		RSSI0:8;
-	
-	/* Word 3 */
-	UINT32		FOFFSET:8;
-	UINT32		SNR2:8;
-	UINT32		SNR1:8;
-	UINT32		SNR0:8;
-	
-	UINT32		rsv3;
+typedef	struct GNU_PACKED _RXWI_OMAC
+{
+    /* Word 0 */
+    UINT32		tid:4;
+    UINT32		MPDUtotalByteCnt:12;
+    UINT32		UDF:3;
+    UINT32		bss_idx:3;
+    UINT32		key_idx:2;
+    UINT32		wcid:8;
+
+    /* Word 1 */
+    UINT32		phy_mode:2;              /* 1: this RX frame is unicast to me */
+    UINT32		iTxBF:1; /* iTxBF enable */
+    UINT32		Sounding:1; /* Sounding enable */
+    UINT32		eTxBF:1; /* eTxBF enable */
+    UINT32		stbc:2;
+    UINT32		sgi:1;
+    UINT32		bw:1;
+    UINT32		mcs:7;
+    UINT32		SEQUENCE:12;
+    UINT32		FRAG:4;
+
+    /* Word 2 */
+    UINT32		rsv1:8;
+    UINT32		RSSI2:8;
+    UINT32		RSSI1:8;
+    UINT32		RSSI0:8;
+
+    /* Word 3 */
+    UINT32		FOFFSET:8;
+    UINT32		SNR2:8;
+    UINT32		SNR1:8;
+    UINT32		SNR0:8;
+
+    UINT32		rsv3;
 
 }	RXWI_OMAC, *PRXWI_OMAC;
 #else
-typedef	struct GNU_PACKED _RXWI_OMAC{
-	/* Word	0 */
-	UINT32		wcid:8;
-	UINT32		key_idx:2;
-	UINT32		bss_idx:3;
-	UINT32		UDF:3;
-	UINT32		MPDUtotalByteCnt:12;
-	UINT32		tid:4;
+typedef	struct GNU_PACKED _RXWI_OMAC
+{
+    /* Word	0 */
+    UINT32		wcid:8;
+    UINT32		key_idx:2;
+    UINT32		bss_idx:3;
+    UINT32		UDF:3;
+    UINT32		MPDUtotalByteCnt:12;
+    UINT32		tid:4;
 
-	/* Word	1 */
-	UINT32		FRAG:4;
-	UINT32		SEQUENCE:12;
-	UINT32		mcs:7;
-	UINT32		bw:1;
-	UINT32		sgi:1;
-	UINT32		stbc:2;
-	UINT32		eTxBF:1; /* eTxBF enable */
-	UINT32		Sounding:1; /* Sounding enable */
-	UINT32		iTxBF:1; /* iTxBF enable */
-	UINT32		phy_mode:2;              /* 1: this RX frame is unicast to me */
+    /* Word	1 */
+    UINT32		FRAG:4;
+    UINT32		SEQUENCE:12;
+    UINT32		mcs:7;
+    UINT32		bw:1;
+    UINT32		sgi:1;
+    UINT32		stbc:2;
+    UINT32		eTxBF:1; /* eTxBF enable */
+    UINT32		Sounding:1; /* Sounding enable */
+    UINT32		iTxBF:1; /* iTxBF enable */
+    UINT32		phy_mode:2;              /* 1: this RX frame is unicast to me */
 
-	/*Word2 */
-	UINT32		RSSI0:8;
-	UINT32		RSSI1:8;
-	UINT32		RSSI2:8;
-	UINT32		rsv1:8;
+    /*Word2 */
+    UINT32		RSSI0:8;
+    UINT32		RSSI1:8;
+    UINT32		RSSI2:8;
+    UINT32		rsv1:8;
 
-	/*Word3 */
-	UINT32		SNR0:8;
-	UINT32		SNR1:8;
-	UINT32		SNR2:8;
-	UINT32		FOFFSET:8;
+    /*Word3 */
+    UINT32		SNR0:8;
+    UINT32		SNR1:8;
+    UINT32		SNR2:8;
+    UINT32		FOFFSET:8;
 
-	UINT32		rsv3;
+    UINT32		rsv3;
 
 }	RXWI_OMAC, *PRXWI_OMAC;
 #endif
@@ -352,7 +358,7 @@ typedef	struct GNU_PACKED _RXWI_OMAC{
 
 /* This resgiser is ONLY be supported for RT3883 or later.
    It conflicted with BCN#0 offset of previous chipset. */
-#define WAPI_PN_TABLE_BASE		0x7800		
+#define WAPI_PN_TABLE_BASE		0x7800
 #define WAPI_PN_ENTRY_SIZE   		8
 
 #endif /* __RAL_OMAC_H__ */

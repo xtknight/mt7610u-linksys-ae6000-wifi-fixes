@@ -42,19 +42,20 @@
 #define AES_KEY256_LENGTH 32
 #define AES_CBC_IV_LENGTH 16
 
-typedef struct {
+typedef struct
+{
     UINT8 State[AES_STATE_ROWS][AES_STATE_COLUMNS];
     UINT8 KeyWordExpansion[AES_KEY_ROWS][AES_KEY_ROWS*((AES_KEY256_LENGTH >> 2) + 6 + 1)];
 } AES_CTX_STRUC, *PAES_CTX_STRUC;
 
 
 /* AES operations */
-VOID RT_AES_KeyExpansion (
+VOID RT_AES_KeyExpansion(
     IN UINT8 Key[],
     IN UINT KeyLength,
     INOUT AES_CTX_STRUC *paes_ctx);
 
-VOID RT_AES_Encrypt (
+VOID RT_AES_Encrypt(
     IN UINT8 PlainBlock[],
     IN UINT PlainBlockSize,
     IN UINT8 Key[],
@@ -62,7 +63,7 @@ VOID RT_AES_Encrypt (
     OUT UINT8 CipherBlock[],
     INOUT UINT *CipherBlockSize);
 
-VOID RT_AES_Decrypt (
+VOID RT_AES_Decrypt(
     IN UINT8 CipherBlock[],
     IN UINT CipherBlockSize,
     IN UINT8 Key[],
@@ -71,7 +72,7 @@ VOID RT_AES_Decrypt (
     INOUT UINT *PlainBlockSize);
 
 /* AES Counter with CBC-MAC operations */
-VOID AES_CCM_MAC (
+VOID AES_CCM_MAC(
     IN UINT8 Payload[],
     IN UINT  PayloadLength,
     IN UINT8 Key[],
@@ -83,7 +84,7 @@ VOID AES_CCM_MAC (
     IN UINT  MACLength,
     OUT UINT8 MACText[]);
 
-INT AES_CCM_Encrypt (
+INT AES_CCM_Encrypt(
     IN UINT8 PlainText[],
     IN UINT  PlainTextLength,
     IN UINT8 Key[],
@@ -96,7 +97,7 @@ INT AES_CCM_Encrypt (
     OUT UINT8 CipherText[],
     INOUT UINT *CipherTextLength);
 
-INT AES_CCM_Decrypt (
+INT AES_CCM_Decrypt(
     IN UINT8 CipherText[],
     IN UINT  CipherTextLength,
     IN UINT8 Key[],
@@ -110,13 +111,13 @@ INT AES_CCM_Decrypt (
     INOUT UINT *PlainTextLength);
 
 /* AES-CMAC operations */
-VOID AES_CMAC_GenerateSubKey (
+VOID AES_CMAC_GenerateSubKey(
     IN UINT8 Key[],
     IN UINT KeyLength,
     OUT UINT8 SubKey1[],
     OUT UINT8 SubKey2[]);
 
-VOID AES_CMAC (
+VOID AES_CMAC(
     IN UINT8 PlainText[],
     IN UINT PlainTextLength,
     IN UINT8 Key[],
@@ -127,7 +128,7 @@ VOID AES_CMAC (
 
 
 /* AES-CBC operations */
-VOID AES_CBC_Encrypt (
+VOID AES_CBC_Encrypt(
     IN UINT8 PlainText[],
     IN UINT PlainTextLength,
     IN UINT8 Key[],
@@ -137,7 +138,7 @@ VOID AES_CBC_Encrypt (
     OUT UINT8 CipherText[],
     INOUT UINT *CipherTextLength);
 
-VOID AES_CBC_Decrypt (
+VOID AES_CBC_Decrypt(
     IN UINT8 CipherText[],
     IN UINT CipherTextLength,
     IN UINT8 Key[],
@@ -148,15 +149,15 @@ VOID AES_CBC_Decrypt (
     INOUT UINT *PlainTextLength);
 
 /* AES key wrap operations */
-INT AES_Key_Wrap (
+INT AES_Key_Wrap(
     IN UINT8 PlainText[],
     IN UINT  PlainTextLength,
     IN UINT8 Key[],
     IN UINT  KeyLength,
     OUT UINT8 CipherText[],
     OUT UINT *CipherTextLength);
-        
-INT AES_Key_Unwrap (
+
+INT AES_Key_Unwrap(
     IN UINT8 CipherText[],
     IN UINT  CipherTextLength,
     IN UINT8 Key[],

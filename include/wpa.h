@@ -77,9 +77,9 @@
 
 #define IS_WPA_CAPABILITY(a)       (((a) >= Ndis802_11AuthModeWPA) && ((a) <= Ndis802_11AuthModeWPA1PSKWPA2PSK))
 
-/* 	
+/*
 	WFA recommend to restrict the encryption type in 11n-HT mode.
- 	So, the WEP and TKIP shall not be allowed to use HT rate. 
+ 	So, the WEP and TKIP shall not be allowed to use HT rate.
  */
 #define IS_INVALID_HT_SECURITY(_mode)		\
 	(((_mode) == Ndis802_11Encryption1Enabled) || \
@@ -204,296 +204,296 @@
 	The prototype is defined in cmm_wpa.c
   ========================================*/
 void inc_iv_byte(
-	UCHAR *iv,
-	UINT len,
-	UINT cnt);
+    UCHAR *iv,
+    UINT len,
+    UINT cnt);
 
 BOOLEAN WpaMsgTypeSubst(
-	IN UCHAR EAPType,
-	OUT INT *MsgType);
+    IN UCHAR EAPType,
+    OUT INT *MsgType);
 
 VOID PRF(
-	IN UCHAR *key,
-	IN INT key_len,
-	IN UCHAR *prefix,
-	IN INT prefix_len,
-	IN UCHAR *data,
-	IN INT data_len,
-	OUT UCHAR *output,
-	IN INT len);
+    IN UCHAR *key,
+    IN INT key_len,
+    IN UCHAR *prefix,
+    IN INT prefix_len,
+    IN UCHAR *data,
+    IN INT data_len,
+    OUT UCHAR *output,
+    IN INT len);
 
 int RtmpPasswordHash(
-	char *password,
-	unsigned char *ssid,
-	int ssidlength,
-	unsigned char *output);
+    char *password,
+    unsigned char *ssid,
+    int ssidlength,
+    unsigned char *output);
 
-	VOID KDF(
-	IN PUINT8 key,
-	IN INT key_len,
-	IN PUINT8 label,
-	IN INT label_len,
-	IN PUINT8 data,
-	IN INT data_len,
-	OUT PUINT8 output,
-	IN USHORT len);
+VOID KDF(
+    IN PUINT8 key,
+    IN INT key_len,
+    IN PUINT8 label,
+    IN INT label_len,
+    IN PUINT8 data,
+    IN INT data_len,
+    OUT PUINT8 output,
+    IN USHORT len);
 
 PUINT8 WPA_ExtractSuiteFromRSNIE(
-	IN PUINT8 rsnie,
-	IN UINT rsnie_len,
-	IN UINT8 type,
-	OUT UINT8 *count);
+    IN PUINT8 rsnie,
+    IN UINT rsnie_len,
+    IN UINT8 type,
+    OUT UINT8 *count);
 
 VOID WpaShowAllsuite(
-	IN PUINT8 rsnie,
-	IN UINT rsnie_len);
+    IN PUINT8 rsnie,
+    IN UINT rsnie_len);
 
 VOID RTMPInsertRSNIE(
-	IN PUCHAR pFrameBuf,
-	OUT PULONG pFrameLen,
-	IN PUINT8 rsnie_ptr,
-	IN UINT8 rsnie_len,
-	IN PUINT8 pmkid_ptr,
-	IN UINT8 pmkid_len);
+    IN PUCHAR pFrameBuf,
+    OUT PULONG pFrameLen,
+    IN PUINT8 rsnie_ptr,
+    IN UINT8 rsnie_len,
+    IN PUINT8 pmkid_ptr,
+    IN UINT8 pmkid_len);
 
-/* 
- =====================================	
+/*
+ =====================================
  	function prototype in cmm_wpa.c
- =====================================	
+ =====================================
 */
 VOID RTMPToWirelessSta(
-	IN PRTMP_ADAPTER pAd,
-	IN PMAC_TABLE_ENTRY pEntry,
-	IN PUCHAR pHeader802_3,
-	IN UINT HdrLen,
-	IN PUCHAR pData,
-	IN UINT DataLen,
-	IN BOOLEAN bClearFrame);
+    IN PRTMP_ADAPTER pAd,
+    IN PMAC_TABLE_ENTRY pEntry,
+    IN PUCHAR pHeader802_3,
+    IN UINT HdrLen,
+    IN PUCHAR pData,
+    IN UINT DataLen,
+    IN BOOLEAN bClearFrame);
 
 VOID WpaDerivePTK(
-	IN PRTMP_ADAPTER pAd,
-	IN UCHAR *PMK,
-	IN UCHAR *ANonce,
-	IN UCHAR *AA,
-	IN UCHAR *SNonce,
-	IN UCHAR *SA,
-	OUT UCHAR *output,
-	IN UINT len);
+    IN PRTMP_ADAPTER pAd,
+    IN UCHAR *PMK,
+    IN UCHAR *ANonce,
+    IN UCHAR *AA,
+    IN UCHAR *SNonce,
+    IN UCHAR *SA,
+    OUT UCHAR *output,
+    IN UINT len);
 
 VOID WpaDeriveGTK(
-	IN UCHAR *PMK,
-	IN UCHAR *GNonce,
-	IN UCHAR *AA,
-	OUT UCHAR *output,
-	IN UINT len);
+    IN UCHAR *PMK,
+    IN UCHAR *GNonce,
+    IN UCHAR *AA,
+    OUT UCHAR *output,
+    IN UINT len);
 
 VOID GenRandom(
-	IN PRTMP_ADAPTER pAd,
-	IN UCHAR *macAddr,
-	OUT UCHAR *random);
+    IN PRTMP_ADAPTER pAd,
+    IN UCHAR *macAddr,
+    OUT UCHAR *random);
 
 BOOLEAN RTMPCheckWPAframe(
-	IN PRTMP_ADAPTER pAd,
-	IN PMAC_TABLE_ENTRY pEntry,
-	IN PUCHAR pData,
-	IN ULONG DataByteCount,
-	IN UCHAR FromWhichBSSID);
+    IN PRTMP_ADAPTER pAd,
+    IN PMAC_TABLE_ENTRY pEntry,
+    IN PUCHAR pData,
+    IN ULONG DataByteCount,
+    IN UCHAR FromWhichBSSID);
 
 #ifdef HDR_TRANS_SUPPORT
 BOOLEAN RTMPCheckWPAframe_Hdr_Trns(
-	IN PRTMP_ADAPTER pAd,
-	IN PMAC_TABLE_ENTRY pEntry,
-	IN PUCHAR pData,
-	IN ULONG DataByteCount,
-	IN UCHAR FromWhichBSSID);
+    IN PRTMP_ADAPTER pAd,
+    IN PMAC_TABLE_ENTRY pEntry,
+    IN PUCHAR pData,
+    IN ULONG DataByteCount,
+    IN UCHAR FromWhichBSSID);
 #endif /* HDR_TRANS_SUPPORT */
 
 BOOLEAN RTMPParseEapolKeyData(
-	IN PRTMP_ADAPTER pAd,
-	IN PUCHAR pKeyData,
-	IN UCHAR KeyDataLen,
-	IN UCHAR GroupKeyIndex,
-	IN UCHAR MsgType,
-	IN BOOLEAN bWPA2,
-	IN MAC_TABLE_ENTRY *pEntry);
+    IN PRTMP_ADAPTER pAd,
+    IN PUCHAR pKeyData,
+    IN UCHAR KeyDataLen,
+    IN UCHAR GroupKeyIndex,
+    IN UCHAR MsgType,
+    IN BOOLEAN bWPA2,
+    IN MAC_TABLE_ENTRY *pEntry);
 
 VOID WPA_ConstructKdeHdr(
-	IN UINT8 data_type,
-	IN UINT8 data_len,
-	OUT PUCHAR pBuf);
+    IN UINT8 data_type,
+    IN UINT8 data_len,
+    OUT PUCHAR pBuf);
 
 VOID ConstructEapolMsg(
-	IN PMAC_TABLE_ENTRY pEntry,
-	IN UCHAR GroupKeyWepStatus,
-	IN UCHAR MsgType,
-	IN UCHAR DefaultKeyIdx,
-	IN UCHAR *KeyNonce,
-	IN UCHAR *TxRSC,
-	IN UCHAR *GTK,
-	IN UCHAR *RSNIE,
-	IN UCHAR RSNIE_Len,
-	OUT PEAPOL_PACKET pMsg);
+    IN PMAC_TABLE_ENTRY pEntry,
+    IN UCHAR GroupKeyWepStatus,
+    IN UCHAR MsgType,
+    IN UCHAR DefaultKeyIdx,
+    IN UCHAR *KeyNonce,
+    IN UCHAR *TxRSC,
+    IN UCHAR *GTK,
+    IN UCHAR *RSNIE,
+    IN UCHAR RSNIE_Len,
+    OUT PEAPOL_PACKET pMsg);
 
 PCIPHER_KEY RTMPSwCipherKeySelection(
-	IN PRTMP_ADAPTER pAd,
-	IN PUCHAR pIV,
-	IN RX_BLK *pRxBlk,
-	IN PMAC_TABLE_ENTRY pEntry);
+    IN PRTMP_ADAPTER pAd,
+    IN PUCHAR pIV,
+    IN RX_BLK *pRxBlk,
+    IN PMAC_TABLE_ENTRY pEntry);
 
 NDIS_STATUS RTMPSoftDecryptionAction(
-	IN PRTMP_ADAPTER pAd,
-	IN PUCHAR pHdr,
-	IN UCHAR UserPriority,
-	IN PCIPHER_KEY pKey,
-	INOUT PUCHAR pData,
-	INOUT UINT16 *DataByteCnt);
+    IN PRTMP_ADAPTER pAd,
+    IN PUCHAR pHdr,
+    IN UCHAR UserPriority,
+    IN PCIPHER_KEY pKey,
+    INOUT PUCHAR pData,
+    INOUT UINT16 *DataByteCnt);
 
 VOID RTMPSoftConstructIVHdr(
-	IN UCHAR CipherAlg,
-	IN UCHAR key_id,
-	IN PUCHAR pTxIv,
-	OUT PUCHAR pHdrIv,
-	OUT UINT8 *hdr_iv_len);
+    IN UCHAR CipherAlg,
+    IN UCHAR key_id,
+    IN PUCHAR pTxIv,
+    OUT PUCHAR pHdrIv,
+    OUT UINT8 *hdr_iv_len);
 
 VOID RTMPSoftEncryptionAction(
-	IN PRTMP_ADAPTER pAd,
-	IN UCHAR CipherAlg,
-	IN PUCHAR pHdr,
-	IN PUCHAR pSrcBufData,
-	IN UINT32 SrcBufLen,
-	IN UCHAR KeyIdx,
-	IN PCIPHER_KEY pKey,
-	OUT UINT8 *ext_len);
+    IN PRTMP_ADAPTER pAd,
+    IN UCHAR CipherAlg,
+    IN PUCHAR pHdr,
+    IN PUCHAR pSrcBufData,
+    IN UINT32 SrcBufLen,
+    IN UCHAR KeyIdx,
+    IN PCIPHER_KEY pKey,
+    OUT UINT8 *ext_len);
 
 VOID RTMPMakeRSNIE(
-	IN PRTMP_ADAPTER pAd,
-	IN UINT AuthMode,
-	IN UINT WepStatus,
-	IN UCHAR apidx);
+    IN PRTMP_ADAPTER pAd,
+    IN UINT AuthMode,
+    IN UINT WepStatus,
+    IN UCHAR apidx);
 
 VOID WPAInstallPairwiseKey(
-	PRTMP_ADAPTER pAd,
-	UINT8 BssIdx,
-	PMAC_TABLE_ENTRY pEntry,
-	BOOLEAN bAE);
+    PRTMP_ADAPTER pAd,
+    UINT8 BssIdx,
+    PMAC_TABLE_ENTRY pEntry,
+    BOOLEAN bAE);
 
 VOID WPAInstallSharedKey(
-	PRTMP_ADAPTER pAd,
-	UINT8 GroupCipher,
-	UINT8 BssIdx,
-	UINT8 KeyIdx,
-	UINT8 Wcid,
-	BOOLEAN bAE,
-	PUINT8 pGtk,
-	UINT8 GtkLen);
+    PRTMP_ADAPTER pAd,
+    UINT8 GroupCipher,
+    UINT8 BssIdx,
+    UINT8 KeyIdx,
+    UINT8 Wcid,
+    BOOLEAN bAE,
+    PUINT8 pGtk,
+    UINT8 GtkLen);
 
 VOID RTMPSetWcidSecurityInfo(
-	PRTMP_ADAPTER pAd,
-	UINT8 BssIdx,
-	UINT8 KeyIdx,
-	UINT8 CipherAlg,
-	UINT8 Wcid,
-	UINT8 KeyTabFlag);
+    PRTMP_ADAPTER pAd,
+    UINT8 BssIdx,
+    UINT8 KeyIdx,
+    UINT8 CipherAlg,
+    UINT8 Wcid,
+    UINT8 KeyTabFlag);
 
 VOID CalculateMIC(
-	IN UCHAR KeyDescVer,
-	IN UCHAR *PTK,
-	OUT PEAPOL_PACKET pMsg);
+    IN UCHAR KeyDescVer,
+    IN UCHAR *PTK,
+    OUT PEAPOL_PACKET pMsg);
 
 PSTRING GetEapolMsgType(
-	CHAR msg);
+    CHAR msg);
 
 #ifdef CONFIG_STA_SUPPORT
 #endif /* CONFIG_STA_SUPPORT */
 
-/* 
- =====================================	
+/*
+ =====================================
  	function prototype in cmm_wep.c
- =====================================	
+ =====================================
 */
 UINT RTMP_CALC_FCS32(
-	IN UINT Fcs,
-	IN PUCHAR Cp,
-	IN INT Len);
+    IN UINT Fcs,
+    IN PUCHAR Cp,
+    IN INT Len);
 
 VOID RTMPConstructWEPIVHdr(
-	IN UINT8 key_idx,
-	IN UCHAR *pn,
-	OUT UCHAR *iv_hdr);
+    IN UINT8 key_idx,
+    IN UCHAR *pn,
+    OUT UCHAR *iv_hdr);
 
 BOOLEAN RTMPSoftEncryptWEP(
-	IN PRTMP_ADAPTER pAd,
-	IN PUCHAR pIvHdr,
-	IN PCIPHER_KEY pKey,
-	INOUT PUCHAR pData,
-	IN ULONG DataByteCnt);
+    IN PRTMP_ADAPTER pAd,
+    IN PUCHAR pIvHdr,
+    IN PCIPHER_KEY pKey,
+    INOUT PUCHAR pData,
+    IN ULONG DataByteCnt);
 
 BOOLEAN RTMPSoftDecryptWEP(
-	IN PRTMP_ADAPTER pAd,
-	IN PCIPHER_KEY pKey,
-	INOUT PUCHAR pData,
-	INOUT UINT16 *DataByteCnt);
+    IN PRTMP_ADAPTER pAd,
+    IN PCIPHER_KEY pKey,
+    INOUT PUCHAR pData,
+    INOUT UINT16 *DataByteCnt);
 
-/* 
- =====================================	
+/*
+ =====================================
  	function prototype in cmm_tkip.c
- =====================================	
+ =====================================
 */
 BOOLEAN RTMPSoftDecryptTKIP(
-	IN PRTMP_ADAPTER pAd,
-	IN PUCHAR pHdr,
-	IN UCHAR UserPriority,
-	IN PCIPHER_KEY pKey,
-	INOUT PUCHAR pData,
-	IN UINT16 *DataByteCnt);
+    IN PRTMP_ADAPTER pAd,
+    IN PUCHAR pHdr,
+    IN UCHAR UserPriority,
+    IN PCIPHER_KEY pKey,
+    INOUT PUCHAR pData,
+    IN UINT16 *DataByteCnt);
 
 VOID TKIP_GTK_KEY_WRAP(
-	IN UCHAR *key,
-	IN UCHAR *iv,
-	IN UCHAR *input_text,
-	IN UINT32 input_len,
-	OUT UCHAR *output_text);
+    IN UCHAR *key,
+    IN UCHAR *iv,
+    IN UCHAR *input_text,
+    IN UINT32 input_len,
+    OUT UCHAR *output_text);
 
 VOID TKIP_GTK_KEY_UNWRAP(
-	IN UCHAR *key,
-	IN UCHAR *iv,
-	IN UCHAR *input_text,
-	IN UINT32 input_len,
-	OUT UCHAR *output_text);
+    IN UCHAR *key,
+    IN UCHAR *iv,
+    IN UCHAR *input_text,
+    IN UINT32 input_len,
+    OUT UCHAR *output_text);
 
-/* 
- =====================================	
+/*
+ =====================================
  	function prototype in cmm_aes.c
- =====================================	
+ =====================================
 */
 BOOLEAN RTMPSoftDecryptAES(
-	IN PRTMP_ADAPTER pAd,
-	IN PUCHAR pData,
-	IN ULONG DataByteCnt,
-	IN PCIPHER_KEY pWpaKey);
+    IN PRTMP_ADAPTER pAd,
+    IN PUCHAR pData,
+    IN ULONG DataByteCnt,
+    IN PCIPHER_KEY pWpaKey);
 
 VOID RTMPConstructCCMPHdr(
-	IN UINT8 key_idx,
-	IN UCHAR *pn,
-	OUT UCHAR *ccmp_hdr);
+    IN UINT8 key_idx,
+    IN UCHAR *pn,
+    OUT UCHAR *ccmp_hdr);
 
 BOOLEAN RTMPSoftEncryptCCMP(
-	IN PRTMP_ADAPTER pAd,
-	IN PUCHAR pHdr,
-	IN PUCHAR pIV,
-	IN PUCHAR pKey,
-	INOUT PUCHAR pData,
-	IN UINT32 DataLen);
+    IN PRTMP_ADAPTER pAd,
+    IN PUCHAR pHdr,
+    IN PUCHAR pIV,
+    IN PUCHAR pKey,
+    INOUT PUCHAR pData,
+    IN UINT32 DataLen);
 
 BOOLEAN RTMPSoftDecryptCCMP(
-	IN PRTMP_ADAPTER pAd,
-	IN PUCHAR pHdr,
-	IN PCIPHER_KEY pKey,
-	INOUT PUCHAR pData,
-	INOUT UINT16 *DataLen);
+    IN PRTMP_ADAPTER pAd,
+    IN PUCHAR pHdr,
+    IN PCIPHER_KEY pKey,
+    INOUT PUCHAR pData,
+    INOUT UINT16 *DataLen);
 
 VOID CCMP_test_vector(
-	IN PRTMP_ADAPTER pAd,
-	IN INT input);
+    IN PRTMP_ADAPTER pAd,
+    IN INT input);
 
 #endif

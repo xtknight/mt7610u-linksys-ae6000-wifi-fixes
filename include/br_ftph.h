@@ -78,7 +78,7 @@ Note:
 ========================================================================
 */
 UINT32 BG_FTPH_PacketFromApHandle(
-	IN		PNDIS_PACKET	pPacket);
+    IN		PNDIS_PACKET	pPacket);
 
 #endif /* __BR_FTPH_H__ */
 

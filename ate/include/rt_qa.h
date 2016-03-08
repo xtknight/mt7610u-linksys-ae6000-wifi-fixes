@@ -35,14 +35,15 @@
 
 #include "rt_ate.h"
 
-typedef struct ate_racfghdr {
- 	UINT32		magic_no;
-	USHORT		command_type;
-	USHORT		command_id;
-	USHORT		length;
-	USHORT		sequence;
-	USHORT		status;
-	UCHAR		data[2046];
+typedef struct ate_racfghdr
+{
+    UINT32		magic_no;
+    USHORT		command_type;
+    USHORT		command_id;
+    USHORT		length;
+    USHORT		sequence;
+    USHORT		status;
+    UCHAR		data[2046];
 }  __attribute__((packed))RACFGHDR, *pRACFGHDR;
 
 /* Stop Transmission */
@@ -146,47 +147,47 @@ typedef struct ate_racfghdr {
 /* ATE export paramters to uppler layer */
 typedef struct __ATE_EX_PARAM
 {
-	unsigned char mode;
-	char TxPower0;
-	char TxPower1;
+    unsigned char mode;
+    char TxPower0;
+    char TxPower1;
 #ifdef DOT11N_SS3_SUPPORT
-	char TxPower2;
+    char TxPower2;
 #endif /* DOT11N_SS3_SUPPORT */
-	char TxAntennaSel;
-	char RxAntennaSel;
-	unsigned char DA[MAC_ADDR_LEN];
-	unsigned char SA[MAC_ADDR_LEN];
-	unsigned char BSSID[MAC_ADDR_LEN];
-	unsigned char MCS;
-	unsigned char PhyMode;
-	BOOLEAN ShortGI;
-	BOOLEAN BW;
-	unsigned int Channel;
-	unsigned int TxLength;
-	unsigned int TxCount;
-	unsigned int RFFreqOffset;
-	unsigned int IPG;
-	unsigned int RxTotalCnt;
-	unsigned int RxCntPerSec;
-	char LastSNR0;
-	char LastSNR1;
-	char LastSNR2;
-	char LastRssi0;
-	char LastRssi1;
-	char LastRssi2;
-	char AvgRssi0;
-	char AvgRssi1;
-	char AvgRssi2;
-	short AvgRssi0X8;
-	short AvgRssi1X8;
-	short AvgRssi2X8;
-}ATE_EX_PARAM, *pATE_EX_PARAM;
+    char TxAntennaSel;
+    char RxAntennaSel;
+    unsigned char DA[MAC_ADDR_LEN];
+    unsigned char SA[MAC_ADDR_LEN];
+    unsigned char BSSID[MAC_ADDR_LEN];
+    unsigned char MCS;
+    unsigned char PhyMode;
+    BOOLEAN ShortGI;
+    BOOLEAN BW;
+    unsigned int Channel;
+    unsigned int TxLength;
+    unsigned int TxCount;
+    unsigned int RFFreqOffset;
+    unsigned int IPG;
+    unsigned int RxTotalCnt;
+    unsigned int RxCntPerSec;
+    char LastSNR0;
+    char LastSNR1;
+    char LastSNR2;
+    char LastRssi0;
+    char LastRssi1;
+    char LastRssi2;
+    char AvgRssi0;
+    char AvgRssi1;
+    char AvgRssi2;
+    short AvgRssi0X8;
+    short AvgRssi1X8;
+    short AvgRssi2X8;
+} ATE_EX_PARAM, *pATE_EX_PARAM;
 
 NDIS_STATUS TXSTOP(
-	IN PRTMP_ADAPTER pAd);
+    IN PRTMP_ADAPTER pAd);
 
 NDIS_STATUS RXSTOP(
-	IN PRTMP_ADAPTER pAd);
+    IN PRTMP_ADAPTER pAd);
 
 #endif /* RALINK_QA */
 

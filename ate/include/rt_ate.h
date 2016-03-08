@@ -34,179 +34,182 @@
 #endif /* !STATS_COUNT_SUPPORT */
 #endif /* RALINK_ATE */
 
-typedef struct _ATE_CHIP_STRUCT {
-	/* functions */
-	VOID	(*ChannelSwitch)(PRTMP_ADAPTER pAd);
-	INT		(*TxPwrHandler)(PRTMP_ADAPTER pAd, char index);
-	INT		(*TssiCalibration)(PRTMP_ADAPTER pAd, PSTRING arg);
-	INT		(*ExtendedTssiCalibration)(PRTMP_ADAPTER pAd, PSTRING arg);
-	VOID	(*RxVGAInit)(PRTMP_ADAPTER pAd);
-	VOID	(*AsicSetTxRxPath)(PRTMP_ADAPTER pAd);
-	VOID	(*AdjustTxPower)(PRTMP_ADAPTER pAd);
-	VOID	(*AsicExtraPowerOverMAC)(PRTMP_ADAPTER pAd);
-	
-	/* command handlers */
-	INT		(*Set_BW_Proc)(PRTMP_ADAPTER pAd, PSTRING arg);
-	INT		(*Set_FREQ_OFFSET_Proc)(PRTMP_ADAPTER pAd, PSTRING arg);	
+typedef struct _ATE_CHIP_STRUCT
+{
+    /* functions */
+    VOID	(*ChannelSwitch)(PRTMP_ADAPTER pAd);
+    INT	(*TxPwrHandler)(PRTMP_ADAPTER pAd, char index);
+    INT	(*TssiCalibration)(PRTMP_ADAPTER pAd, PSTRING arg);
+    INT	(*ExtendedTssiCalibration)(PRTMP_ADAPTER pAd, PSTRING arg);
+    VOID	(*RxVGAInit)(PRTMP_ADAPTER pAd);
+    VOID	(*AsicSetTxRxPath)(PRTMP_ADAPTER pAd);
+    VOID	(*AdjustTxPower)(PRTMP_ADAPTER pAd);
+    VOID	(*AsicExtraPowerOverMAC)(PRTMP_ADAPTER pAd);
 
-	/* variables */
-	INT maxTxPwrCnt;
-	BOOLEAN bBBPStoreTXCARR;
-	BOOLEAN bBBPStoreTXCARRSUPP;
-	BOOLEAN bBBPStoreTXCONT;
-	BOOLEAN bBBPLoadATESTOP;
-		
-}ATE_CHIP_STRUCT, *PATE_CHIP_STRUCT;
+    /* command handlers */
+    INT	(*Set_BW_Proc)(PRTMP_ADAPTER pAd, PSTRING arg);
+    INT	(*Set_FREQ_OFFSET_Proc)(PRTMP_ADAPTER pAd, PSTRING arg);
 
-typedef union _CAPTURE_MODE_SHARE_MEMORY {
-	struct 
-	{
-		UINT32       LOW_BYTE0:8;
-		UINT32       LOW_BYTE1:8;
-		UINT32       HIGH_BYTE0:8;
-		UINT32       HIGH_BYTE1:8;
-	} field;
-	UINT32                   Value;
-}CAPTURE_MODE_SHARE_MEMORY, *PCAPTURE_MODE_SHARE_MEMORY;
+    /* variables */
+    INT maxTxPwrCnt;
+    BOOLEAN bBBPStoreTXCARR;
+    BOOLEAN bBBPStoreTXCARRSUPP;
+    BOOLEAN bBBPStoreTXCONT;
+    BOOLEAN bBBPLoadATESTOP;
 
-typedef struct _ATE_INFO {
-	PATE_CHIP_STRUCT pChipStruct; 
-	UCHAR Mode;
-	BOOLEAN PassiveMode;
+} ATE_CHIP_STRUCT, *PATE_CHIP_STRUCT;
+
+typedef union _CAPTURE_MODE_SHARE_MEMORY
+{
+    struct
+    {
+        UINT32       LOW_BYTE0:8;
+        UINT32       LOW_BYTE1:8;
+        UINT32       HIGH_BYTE0:8;
+        UINT32       HIGH_BYTE1:8;
+    } field;
+    UINT32                   Value;
+} CAPTURE_MODE_SHARE_MEMORY, *PCAPTURE_MODE_SHARE_MEMORY;
+
+typedef struct _ATE_INFO
+{
+    PATE_CHIP_STRUCT pChipStruct;
+    UCHAR Mode;
+    BOOLEAN PassiveMode;
 #ifdef RT3350
-	UCHAR   PABias;
+    UCHAR   PABias;
 #endif /* RT3350 */
-	CHAR TxPower0;
-	CHAR TxPower1;
+    CHAR TxPower0;
+    CHAR TxPower1;
 #ifdef DOT11N_SS3_SUPPORT
-	CHAR TxPower2;
+    CHAR TxPower2;
 #endif /* DOT11N_SS3_SUPPORT */
-	CHAR MinTxPowerBandA; /* Power range of early chipsets is -7~15 in A band */
-	CHAR MaxTxPowerBandA; /* Power range of early chipsets is -7~15 in A band */
-	CHAR TxAntennaSel;
-	CHAR RxAntennaSel;
+    CHAR MinTxPowerBandA; /* Power range of early chipsets is -7~15 in A band */
+    CHAR MaxTxPowerBandA; /* Power range of early chipsets is -7~15 in A band */
+    CHAR TxAntennaSel;
+    CHAR RxAntennaSel;
 #ifdef RLT_MAC
-	USHORT TxInfoLen;
-	USHORT TxWILen;
+    USHORT TxInfoLen;
+    USHORT TxWILen;
 #endif /* RLT_MAC */
-	TXINFO_STRUC TxInfo;	/* TxInfo */
-	TXWI_STRUC TxWI;	/* TXWI */
-	USHORT QID;
-	UCHAR Addr1[MAC_ADDR_LEN];
-	UCHAR Addr2[MAC_ADDR_LEN];
-	UCHAR Addr3[MAC_ADDR_LEN];
-	UCHAR Channel;
-	UCHAR Payload;		/* Payload pattern */
-	UCHAR TxMethod; /* Early chipsets must be applied old TXCONT/TXCARR/TXCARS mechanism. */
-	UINT32 TxLength;
-	UINT32 TxCount;
-	UINT32 TxDoneCount;	/* Tx DMA Done */
-	UINT32 RFFreqOffset;
-	UINT32 IPG;
-	BOOLEAN bRxFER;		/* Show Rx Frame Error Rate */
-	BOOLEAN	bQAEnabled;	/* QA is used. */
-	BOOLEAN bQATxStart;	/* Have compiled QA in and use it to ATE tx. */
-	BOOLEAN bQARxStart;	/* Have compiled QA in and use it to ATE rx. */
-	BOOLEAN bAutoTxAlc;	/* Set Auto Tx Alc */
-	BOOLEAN bAutoVcoCal;/* Set Auto VCO periodic calibration. */
+    TXINFO_STRUC TxInfo;	/* TxInfo */
+    TXWI_STRUC TxWI;	/* TXWI */
+    USHORT QID;
+    UCHAR Addr1[MAC_ADDR_LEN];
+    UCHAR Addr2[MAC_ADDR_LEN];
+    UCHAR Addr3[MAC_ADDR_LEN];
+    UCHAR Channel;
+    UCHAR Payload;		/* Payload pattern */
+    UCHAR TxMethod; /* Early chipsets must be applied old TXCONT/TXCARR/TXCARS mechanism. */
+    UINT32 TxLength;
+    UINT32 TxCount;
+    UINT32 TxDoneCount;	/* Tx DMA Done */
+    UINT32 RFFreqOffset;
+    UINT32 IPG;
+    BOOLEAN bRxFER;		/* Show Rx Frame Error Rate */
+    BOOLEAN	bQAEnabled;	/* QA is used. */
+    BOOLEAN bQATxStart;	/* Have compiled QA in and use it to ATE tx. */
+    BOOLEAN bQARxStart;	/* Have compiled QA in and use it to ATE rx. */
+    BOOLEAN bAutoTxAlc;	/* Set Auto Tx Alc */
+    BOOLEAN bAutoVcoCal;/* Set Auto VCO periodic calibration. */
 #ifdef RTMP_INTERNAL_TX_ALC
 #if defined(RT3350) || defined(RT3352)
-	BOOLEAN bTSSICalbrEnableG; /* Enable TSSI calibration */
-	CHAR	TssiRefPerChannel[CFG80211_NUM_OF_CHAN_2GHZ];
-	CHAR	TssiDeltaPerChannel[CFG80211_NUM_OF_CHAN_2GHZ];
+    BOOLEAN bTSSICalbrEnableG; /* Enable TSSI calibration */
+    CHAR	TssiRefPerChannel[CFG80211_NUM_OF_CHAN_2GHZ];
+    CHAR	TssiDeltaPerChannel[CFG80211_NUM_OF_CHAN_2GHZ];
 #endif /* defined(RT3350) || defined(RT3352) */
 #endif /* RTMP_INTERNAL_TX_ALC */
 #if defined(RT5592) || defined(RT6352)
 #ifdef RTMP_TEMPERATURE_COMPENSATION
-	BOOLEAN bTSSICalbrEnableG; /* Enable G-band TSSI calibration */
-	BOOLEAN bTSSICalbrEnableA; /* Enable A-band TSSI calibration */
-	CHAR	TssiReadSampleG[TSSI_READ_SAMPLE_NUM];
-	CHAR	TssiReadSampleA[TSSI_READ_SAMPLE_NUM];
+    BOOLEAN bTSSICalbrEnableG; /* Enable G-band TSSI calibration */
+    BOOLEAN bTSSICalbrEnableA; /* Enable A-band TSSI calibration */
+    CHAR	TssiReadSampleG[TSSI_READ_SAMPLE_NUM];
+    CHAR	TssiReadSampleA[TSSI_READ_SAMPLE_NUM];
 #endif /* RTMP_TEMPERATURE_COMPENSATION */
-	UCHAR	rx_agc_fc_offset20M;
-	UCHAR	rx_agc_fc_offset40M;
-	UCHAR	CaliBW20RfR24;
-	UCHAR	CaliBW40RfR24;
+    UCHAR	rx_agc_fc_offset20M;
+    UCHAR	rx_agc_fc_offset40M;
+    UCHAR	CaliBW20RfR24;
+    UCHAR	CaliBW40RfR24;
 #endif /* defined(RT5592) || defined(RT6352) */
 #ifdef TXBF_SUPPORT
-	BOOLEAN bTxBF;		/* Enable Tx Bean Forming */
-	SHORT	txSoundingMode;	/* Sounding mode for non-QA ATE. 0=none, 1=Data Sounding, 2=NDP */
-	UCHAR	calParams[2];
+    BOOLEAN bTxBF;		/* Enable Tx Bean Forming */
+    SHORT	txSoundingMode;	/* Sounding mode for non-QA ATE. 0=none, 1=Data Sounding, 2=NDP */
+    UCHAR	calParams[2];
 #endif				/* TXBF_SUPPORT */
-	UINT32 RxTotalCnt;
-	UINT32 RxCntPerSec;
-	UCHAR	forceBBPReg;	/* force to not update the specific BBP register, now used for ATE TxBF */
+    UINT32 RxTotalCnt;
+    UINT32 RxCntPerSec;
+    UCHAR	forceBBPReg;	/* force to not update the specific BBP register, now used for ATE TxBF */
 
-	CHAR LastSNR0;		/* last received SNR */
-	CHAR LastSNR1;		/* last received SNR for 2nd  antenna */
+    CHAR LastSNR0;		/* last received SNR */
+    CHAR LastSNR1;		/* last received SNR for 2nd  antenna */
 #ifdef DOT11N_SS3_SUPPORT
-	CHAR LastSNR2;
+    CHAR LastSNR2;
 #endif				/* DOT11N_SS3_SUPPORT */
-	CHAR LastRssi0;		/* last received RSSI */
-	CHAR LastRssi1;		/* last received RSSI for 2nd  antenna */
-	CHAR LastRssi2;		/* last received RSSI for 3rd  antenna */
-	CHAR AvgRssi0;		/* last 8 frames' average RSSI */
-	CHAR AvgRssi1;		/* last 8 frames' average RSSI */
-	CHAR AvgRssi2;		/* last 8 frames' average RSSI */
-	SHORT AvgRssi0X8;	/* sum of last 8 frames' RSSI */
-	SHORT AvgRssi1X8;	/* sum of last 8 frames' RSSI */
-	SHORT AvgRssi2X8;	/* sum of last 8 frames' RSSI */
-	UINT32 NumOfAvgRssiSample;
-	UINT32 Default_TX_PIN_CFG;
-	USHORT HLen;		/* Header Length */
+    CHAR LastRssi0;		/* last received RSSI */
+    CHAR LastRssi1;		/* last received RSSI for 2nd  antenna */
+    CHAR LastRssi2;		/* last received RSSI for 3rd  antenna */
+    CHAR AvgRssi0;		/* last 8 frames' average RSSI */
+    CHAR AvgRssi1;		/* last 8 frames' average RSSI */
+    CHAR AvgRssi2;		/* last 8 frames' average RSSI */
+    SHORT AvgRssi0X8;	/* sum of last 8 frames' RSSI */
+    SHORT AvgRssi1X8;	/* sum of last 8 frames' RSSI */
+    SHORT AvgRssi2X8;	/* sum of last 8 frames' RSSI */
+    UINT32 NumOfAvgRssiSample;
+    UINT32 Default_TX_PIN_CFG;
+    USHORT HLen;		/* Header Length */
 
 #ifdef RALINK_QA
-	/* Tx frame */
+    /* Tx frame */
 #ifdef RTMP_MAC_USB
-//	TXINFO_STRUC TxInfo;	/* TxInfo */
+    //	TXINFO_STRUC TxInfo;	/* TxInfo */
 #endif /* RTMP_MAC_USB */
-	USHORT PLen;		/* Pattern Length */
-	UCHAR Header[32];	/* Header buffer */
-	UCHAR Pattern[32];	/* Pattern buffer */
-	USHORT DLen;		/* Data Length */
-	USHORT seq;
-	UINT32 CID;
-	RTMP_OS_PID AtePid;
-	/* counters */
-	UINT32 U2M;
-	UINT32 OtherData;
-	UINT32 Beacon;
-	UINT32 OtherCount;
-	UINT32 TxAc0;
-	UINT32 TxAc1;
-	UINT32 TxAc2;
-	UINT32 TxAc3;
-	UINT32 TxHCCA;
-	UINT32 TxMgmt;
-	UINT32 RSSI0;
-	UINT32 RSSI1;
-	UINT32 RSSI2;
-	UINT32 SNR0;
-	UINT32 SNR1;
+    USHORT PLen;		/* Pattern Length */
+    UCHAR Header[32];	/* Header buffer */
+    UCHAR Pattern[32];	/* Pattern buffer */
+    USHORT DLen;		/* Data Length */
+    USHORT seq;
+    UINT32 CID;
+    RTMP_OS_PID AtePid;
+    /* counters */
+    UINT32 U2M;
+    UINT32 OtherData;
+    UINT32 Beacon;
+    UINT32 OtherCount;
+    UINT32 TxAc0;
+    UINT32 TxAc1;
+    UINT32 TxAc2;
+    UINT32 TxAc3;
+    UINT32 TxHCCA;
+    UINT32 TxMgmt;
+    UINT32 RSSI0;
+    UINT32 RSSI1;
+    UINT32 RSSI2;
+    UINT32 SNR0;
+    UINT32 SNR1;
 #ifdef DOT11N_SS3_SUPPORT
-	UINT32 SNR2;
+    UINT32 SNR2;
 #endif /* DOT11N_SS3_SUPPORT */
-	INT32 BF_SNR[3];	/* Last RXWI BF SNR. Units=0.25 dB */
-	/* TxStatus : 0 --> task is idle, 1 --> task is running */
-	UCHAR TxStatus;
+    INT32 BF_SNR[3];	/* Last RXWI BF SNR. Units=0.25 dB */
+    /* TxStatus : 0 --> task is idle, 1 --> task is running */
+    UCHAR TxStatus;
 #endif /* RALINK_QA */
 #ifdef TXBF_SUPPORT
 #define MAX_SOUNDING_RESPONSE_SIZE	(57*2*2*9+3+2+6)	/* Assume 114 carriers (40MHz), 3x3, 8bits/coeff, + SNR + HT HEADER + MIMO CONTROL FIELD */
-	UCHAR sounding;
-	UINT32 sounding_jiffies;
-	CHAR soundingSNR[3];
-	UINT32 LastRxRate;
-	UINT32 LastTxRate;
-	UINT32 soundingRespSize;	/* Size of Sounding response */
-	UCHAR soundingResp[MAX_SOUNDING_RESPONSE_SIZE];	/* Entire Sounding response */
+    UCHAR sounding;
+    UINT32 sounding_jiffies;
+    CHAR soundingSNR[3];
+    UINT32 LastRxRate;
+    UINT32 LastTxRate;
+    UINT32 soundingRespSize;	/* Size of Sounding response */
+    UCHAR soundingResp[MAX_SOUNDING_RESPONSE_SIZE];	/* Entire Sounding response */
 #endif /* TXBF_SUPPORT */
-	RALINK_TIMER_STRUCT PeriodicTimer;
-	ULONG OneSecPeriodicRound;
-	ULONG PeriodicRound;
+    RALINK_TIMER_STRUCT PeriodicTimer;
+    ULONG OneSecPeriodicRound;
+    ULONG PeriodicRound;
 } ATE_INFO, *PATE_INFO;
 
-/* 
-	Use bitmap to allow coexist of ATE_TXFRAME 
+/*
+	Use bitmap to allow coexist of ATE_TXFRAME
 	and ATE_RXFRAME(i.e.,to support LoopBack mode).
 */
 #define fATE_IDLE					0x00
@@ -380,23 +383,23 @@ typedef struct _ATE_INFO {
 #define BULK_OUT_LOCK(pLock, IrqFlags)	\
 		if(1 /*!(in_interrupt() & 0xffff0000)*/)	\
 			RTMP_IRQ_LOCK((pLock), IrqFlags);
-		
+
 #define BULK_OUT_UNLOCK(pLock, IrqFlags)	\
 		if(1 /*!(in_interrupt() & 0xffff0000)*/)	\
 			RTMP_IRQ_UNLOCK((pLock), IrqFlags);
 
 VOID ATE_RTUSBBulkOutDataPacket(
-	IN	PRTMP_ADAPTER	pAd,
-	IN	UCHAR			BulkOutPipeId);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	UCHAR			BulkOutPipeId);
 
 VOID ATE_RTUSBCancelPendingBulkInIRP(
-	IN	PRTMP_ADAPTER	pAd);
+    IN	PRTMP_ADAPTER	pAd);
 
 VOID ATEResetBulkIn(
-	IN PRTMP_ADAPTER	pAd);
+    IN PRTMP_ADAPTER	pAd);
 
 INT ATEResetBulkOut(
-	IN PRTMP_ADAPTER	pAd);
+    IN PRTMP_ADAPTER	pAd);
 #endif /* RTMP_MAC_USB */
 
 
@@ -408,52 +411,52 @@ VOID RT28xxATEAsicSwitchChannel(
     IN PRTMP_ADAPTER pAd);
 
 INT RT28xxATETxPwrHandler(
-	IN PRTMP_ADAPTER pAd,
-	IN char index);
+    IN PRTMP_ADAPTER pAd,
+    IN char index);
 #endif /* defined(RT28xx) || defined(RT2880) */
 
 
 #ifdef RALINK_QA
 VOID ATE_QA_Statistics(
-	IN RTMP_ADAPTER *pAd,
-	IN RXWI_STRUC *pRxWI,
-	IN RXINFO_STRUC *pRxInfo,
-	IN PHEADER_802_11 pHeader);
-	
+    IN RTMP_ADAPTER *pAd,
+    IN RXWI_STRUC *pRxWI,
+    IN RXINFO_STRUC *pRxInfo,
+    IN PHEADER_802_11 pHeader);
+
 INT RtmpDoAte(
-	IN RTMP_ADAPTER *pAd, 
-	IN RTMP_IOCTL_INPUT_STRUCT *wrq,
-	IN PSTRING wrq_name);
+    IN RTMP_ADAPTER *pAd,
+    IN RTMP_IOCTL_INPUT_STRUCT *wrq,
+    IN PSTRING wrq_name);
 
 INT Set_TxStop_Proc(
-	IN RTMP_ADAPTER	*pAd,
-	IN PSTRING arg);
+    IN RTMP_ADAPTER	*pAd,
+    IN PSTRING arg);
 
 INT Set_RxStop_Proc(
-	IN RTMP_ADAPTER *pAd, 
-	IN PSTRING arg);
+    IN RTMP_ADAPTER *pAd,
+    IN PSTRING arg);
 
 #ifdef DBG
 INT Set_EERead_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
-	IN	PSTRING			arg);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	PSTRING			arg);
 
 INT Set_EEWrite_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
-	IN	PSTRING			arg);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	PSTRING			arg);
 
 INT Set_BBPRead_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
-	IN	PSTRING			arg);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	PSTRING			arg);
 
 INT Set_BBPWrite_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
-	IN	PSTRING			arg);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	PSTRING			arg);
 
 INT Set_RFWrite_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
-	IN	PSTRING			arg);
-#endif /* DBG */ 
+    IN	PRTMP_ADAPTER	pAd,
+    IN	PSTRING			arg);
+#endif /* DBG */
 #endif /* RALINK_QA */
 
 #ifdef RLT_RF
@@ -480,132 +483,132 @@ INT Set_RFWrite_Proc(
 #endif /* RALINK_QA */
 
 VOID rt_ee_read_all(
-	IN  PRTMP_ADAPTER   pAd,
-	OUT USHORT *Data);
+    IN  PRTMP_ADAPTER   pAd,
+    OUT USHORT *Data);
 
 VOID rt_ee_write_all(
-	IN  PRTMP_ADAPTER   pAd,
-	IN  USHORT *Data);
+    IN  PRTMP_ADAPTER   pAd,
+    IN  USHORT *Data);
 
 VOID rt_ee_write_bulk(
-	IN  PRTMP_ADAPTER	pAd,
-	IN  USHORT *Data,
-	IN  USHORT offset,
-	IN  USHORT length);
+    IN  PRTMP_ADAPTER	pAd,
+    IN  USHORT *Data,
+    IN  USHORT offset,
+    IN  USHORT length);
 
 INT Set_ATE_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
-	IN	PSTRING			arg);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	PSTRING			arg);
 
 INT	Set_ATE_DA_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
-	IN	PSTRING			arg);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	PSTRING			arg);
 
 INT	Set_ATE_SA_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
-	IN	PSTRING			arg);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	PSTRING			arg);
 
 INT	Set_ATE_BSSID_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
-	IN	PSTRING			arg);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	PSTRING			arg);
 
 
 INT	Set_ATE_CHANNEL_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
-	IN	PSTRING			arg);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	PSTRING			arg);
 
 INT	Set_ATE_INIT_CHAN_Proc(
-	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	PSTRING			arg);
 
 INT Set_ADCDump_Proc(
-	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	PSTRING			arg);
 #ifdef RTMP_INTERNAL_TX_ALC
 INT Set_ATE_TSSI_CALIBRATION_Proc(
-	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	PSTRING			arg);
 
 INT Set_ATE_TSSI_CALIBRATION_EX_Proc(
-	IN      PRTMP_ADAPTER   pAd,
-	IN      PSTRING                 arg);
+    IN      PRTMP_ADAPTER   pAd,
+    IN      PSTRING                 arg);
 
 
 #if defined(RT3350) || defined(RT3352)
 INT RT335x_Set_ATE_TSSI_CALIBRATION_ENABLE_Proc(
-	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	PSTRING			arg);
 
 CHAR InsertTssi(
-	IN UCHAR InChannel,
-	IN UCHAR Channel0,
-	IN UCHAR Channel1,
-	IN CHAR Tssi0,
-	IN CHAR Tssi1);
+    IN UCHAR InChannel,
+    IN UCHAR Channel0,
+    IN UCHAR Channel1,
+    IN CHAR Tssi0,
+    IN CHAR Tssi1);
 
 INT RT335xATETssiCalibrationExtend(
-	IN struct _RTMP_ADAPTER		*pAd,
-	IN PSTRING					arg);
+    IN struct _RTMP_ADAPTER		*pAd,
+    IN PSTRING					arg);
 #endif /* defined(RT3350) || defined(RT3352) */
 
 CHAR ATEGetDesiredTSSI(
-	IN PRTMP_ADAPTER		pAd);
+    IN PRTMP_ADAPTER		pAd);
 
 #endif /* RTMP_INTERNAL_TX_ALC */
 
 #ifdef RTMP_TEMPERATURE_COMPENSATION
 
 INT Set_ATE_TEMP_CAL_Proc(
-	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	PSTRING			arg);
 
 INT Set_ATE_SHOW_TSSI_Proc(
-	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	PSTRING			arg);
 
 #ifdef MT76x0
 INT MT76x0_ATETempCalibration(
-	IN struct _RTMP_ADAPTER		*pAd,
-	IN PSTRING					arg);
+    IN struct _RTMP_ADAPTER		*pAd,
+    IN PSTRING					arg);
 #endif /* MT76x0 */
 
 
 INT Set_ATE_READ_EXTERNAL_TSSI_Proc(
-	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	PSTRING			arg);
 #endif /* RTMP_TEMPERATURE_COMPENSATION */
 
 INT	Set_ATE_TX_POWER0_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
-	IN	PSTRING			arg);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	PSTRING			arg);
 
 INT	Set_ATE_TX_POWER1_Proc(
-	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	PSTRING			arg);
 
 #ifdef DOT11N_SS3_SUPPORT
 INT	Set_ATE_TX_POWER2_Proc(
-	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	PSTRING			arg);
 #endif /* DOT11N_SS3_SUPPORT */
 
 INT	Set_ATE_TX_Antenna_Proc(
-	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	PSTRING			arg);
 
 INT	Set_ATE_RX_Antenna_Proc(
-	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	PSTRING			arg);
 
 VOID DefaultATEAsicExtraPowerOverMAC(
-	IN	PRTMP_ADAPTER 		pAd);
+    IN	PRTMP_ADAPTER 		pAd);
 
 VOID ATEAsicExtraPowerOverMAC(
-	IN	PRTMP_ADAPTER	pAd);
+    IN	PRTMP_ADAPTER	pAd);
 #ifdef RT3350
 INT	Set_ATE_PA_Bias_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
-	IN	PSTRING			arg);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	PSTRING			arg);
 #endif /* RT3350 */
 
 
@@ -614,14 +617,14 @@ INT	Set_ATE_PA_Bias_Proc(
 
 #if defined(RT28xx) || defined(RT2880)
 INT	RT28xx_Set_ATE_TX_FREQ_OFFSET_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
-	IN	PSTRING			arg);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	PSTRING			arg);
 #endif /* defined(RT28xx) || defined(RT2880) */
 
 
 INT	Set_ATE_TX_FREQ_OFFSET_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
-	IN	PSTRING			arg);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	PSTRING			arg);
 
 
 
@@ -629,188 +632,188 @@ INT	Set_ATE_TX_FREQ_OFFSET_Proc(
 
 #if defined(RT28xx) || defined(RT2880)
 INT	RT28xx_Set_ATE_TX_BW_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
-	IN	PSTRING			arg);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	PSTRING			arg);
 #endif /* defined(RT28xx) || defined(RT2880) */
 
 
 INT	Set_ATE_TX_BW_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
-	IN	PSTRING			arg);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	PSTRING			arg);
 
 INT	Set_ATE_TX_LENGTH_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
-	IN	PSTRING			arg);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	PSTRING			arg);
 
 INT	Set_ATE_TX_COUNT_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
-	IN	PSTRING			arg);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	PSTRING			arg);
 
 INT	Set_ATE_TX_MCS_Proc(
-	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	PSTRING			arg);
 
 INT	Set_ATE_TX_STBC_Proc(
-	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	PSTRING			arg);
 
 INT	Set_ATE_TX_MODE_Proc(
-	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	PSTRING			arg);
 
 INT	Set_ATE_TX_GI_Proc(
-	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	PSTRING			arg);
 
 
 INT	Set_ATE_RX_FER_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
-	IN	PSTRING			arg);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	PSTRING			arg);
 
 INT Set_ATE_Read_RF_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
-	IN	PSTRING			arg);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	PSTRING			arg);
 
 #if (!defined(RTMP_RF_RW_SUPPORT)) && (!defined(RLT_RF))
 INT Set_ATE_Write_RF1_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
-	IN	PSTRING			arg);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	PSTRING			arg);
 
 INT Set_ATE_Write_RF2_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
-	IN	PSTRING			arg);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	PSTRING			arg);
 
 INT Set_ATE_Write_RF3_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
-	IN	PSTRING			arg);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	PSTRING			arg);
 
 INT Set_ATE_Write_RF4_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
-	IN	PSTRING			arg);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	PSTRING			arg);
 #endif /* (!defined(RTMP_RF_RW_SUPPORT)) && (!defined(RLT_RF)) */
 
 INT Set_ATE_Load_E2P_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
-	IN	PSTRING			arg);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	PSTRING			arg);
 
 INT Set_ATE_Read_E2P_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
-	IN	PSTRING			arg);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	PSTRING			arg);
 
 #ifdef LED_CONTROL_SUPPORT
 #endif /* LED_CONTROL_SUPPORT */
 
 INT	Set_ATE_AUTO_ALC_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
-	IN	PSTRING			arg);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	PSTRING			arg);
 
 INT	Set_ATE_IPG_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
-	IN	PSTRING			arg);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	PSTRING			arg);
 
 INT Set_ATE_Payload_Proc(
-    IN  PRTMP_ADAPTER   pAd, 
+    IN  PRTMP_ADAPTER   pAd,
     IN  PSTRING         arg);
 
 
 #ifdef TXBF_SUPPORT
 INT	Set_ATE_TXBF_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
-	IN	PSTRING			arg);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	PSTRING			arg);
 
 INT	Set_ATE_TXSOUNDING_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
-	IN	PSTRING			arg);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	PSTRING			arg);
 
 INT	Set_ATE_TXBF_DIVCAL_Proc(
-	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	PSTRING			arg);
 
 INT	Set_ATE_TXBF_LNACAL_Proc(
-	IN	PRTMP_ADAPTER	pAd,
-	IN	PSTRING			arg);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	PSTRING			arg);
 
 INT Set_ATE_TXBF_INIT_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
-	IN	PSTRING			arg);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	PSTRING			arg);
 
 INT Set_ATE_TXBF_CAL_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
-	IN	PSTRING			arg);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	PSTRING			arg);
 
 INT Set_ATE_TXBF_GOLDEN_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
-	IN	PSTRING			arg);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	PSTRING			arg);
 
 INT Set_ATE_TXBF_VERIFY_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
-	IN	PSTRING			arg);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	PSTRING			arg);
 
 INT Set_ATE_TXBF_VERIFY_NoComp_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
-	IN	PSTRING			arg);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	PSTRING			arg);
 
 INT Set_ATE_ForceBBP_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
-	IN	PSTRING			arg);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	PSTRING			arg);
 #endif /* TXBF_SUPPORT */
 
 
 INT	Set_ATE_Show_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
-	IN	PSTRING			arg);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	PSTRING			arg);
 
 INT	Set_ATE_Help_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
-	IN	PSTRING			arg);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	PSTRING			arg);
 
 
 VOID ATEAsicAdjustTxPower(
-	IN PRTMP_ADAPTER pAd);
+    IN PRTMP_ADAPTER pAd);
 
 
 VOID ATESampleRssi(
-	IN PRTMP_ADAPTER	pAd,
-	IN RXWI_STRUC *pRxWI);	
+    IN PRTMP_ADAPTER	pAd,
+    IN RXWI_STRUC *pRxWI);
 
 
 #ifdef RTMP_MAC_USB
 INT TxDmaBusy(
-	IN PRTMP_ADAPTER pAd);
+    IN PRTMP_ADAPTER pAd);
 
 INT RxDmaBusy(
-	IN PRTMP_ADAPTER pAd);
+    IN PRTMP_ADAPTER pAd);
 
 VOID RtmpDmaEnable(
-	IN PRTMP_ADAPTER pAd,
-	IN INT Enable);
+    IN PRTMP_ADAPTER pAd,
+    IN INT Enable);
 
 INT ATESetUpFrame(
-	IN PRTMP_ADAPTER pAd,
-	IN UINT32 TxIdx);
+    IN PRTMP_ADAPTER pAd,
+    IN UINT32 TxIdx);
 
 VOID RTUSBRejectPendingPackets(
-	IN	PRTMP_ADAPTER	pAd);
+    IN	PRTMP_ADAPTER	pAd);
 #endif /* RTMP_MAC_USB */
 
 
 NDIS_STATUS ChipStructAssign(
- IN	PRTMP_ADAPTER pAd);
+    IN	PRTMP_ADAPTER pAd);
 
 NDIS_STATUS ATEInit(
- IN PRTMP_ADAPTER pAd);
+    IN PRTMP_ADAPTER pAd);
 
 #ifdef RALINK_QA
 VOID ReadQATxTypeFromBBP(
- IN	PRTMP_ADAPTER	pAd);
+    IN	PRTMP_ADAPTER	pAd);
 #endif /* RALINK_QA */
 
 #ifdef RTMP_MAC
 NDIS_STATUS ATEBBPWriteWithRxChain(
- IN RTMP_ADAPTER *pAd,
- IN UCHAR bbpId,
- IN CHAR bbpVal,
- IN RX_CHAIN_IDX rx_ch_idx);
+    IN RTMP_ADAPTER *pAd,
+    IN UCHAR bbpId,
+    IN CHAR bbpVal,
+    IN RX_CHAIN_IDX rx_ch_idx);
 #endif /* RTMP_MAC */
 
 
@@ -820,31 +823,31 @@ NDIS_STATUS ATEBBPWriteWithRxChain(
 
 #if defined(RT28xx) || defined(RT2880)
 VOID RT28xxATERxVGAInit(
- IN PRTMP_ADAPTER		pAd);
+    IN PRTMP_ADAPTER		pAd);
 #endif /* defined(RT28xx) || defined(RT2880) */
 
 
 VOID  ATEPeriodicExec(
-	IN PVOID SystemSpecific1, 
-	IN PVOID FunctionContext, 
-	IN PVOID SystemSpecific2, 
-	IN PVOID SystemSpecific3);
+    IN PVOID SystemSpecific1,
+    IN PVOID FunctionContext,
+    IN PVOID SystemSpecific2,
+    IN PVOID SystemSpecific3);
 
 VOID ATEAsicSetTxRxPath(
     IN PRTMP_ADAPTER pAd);
 
 VOID RtmpRfIoWrite(
-	IN PRTMP_ADAPTER pAd);
+    IN PRTMP_ADAPTER pAd);
 
 VOID ATEAsicSwitchChannel(
     IN PRTMP_ADAPTER pAd);
 
 VOID BbpSoftReset(
-	IN PRTMP_ADAPTER pAd);
+    IN PRTMP_ADAPTER pAd);
 
 #ifdef MT76x0
 void mt76x0_ate_adjust_per_rate_pwr(
-	IN PRTMP_ADAPTER pAd);
+    IN PRTMP_ADAPTER pAd);
 #endif /* MT76x0 */
 
 #endif /* __RT_ATE_H__ */

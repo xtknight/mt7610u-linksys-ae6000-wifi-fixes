@@ -47,19 +47,19 @@
 
 
 extern INT rt28xx_send_packets(
-	IN struct sk_buff		*skb_p,
-	IN struct net_device	*net_dev);
+    IN struct sk_buff		*skb_p,
+    IN struct net_device	*net_dev);
 
 static INT32 IKANOS_WlanDataFramesTx(
-	IN void					*_pAdBuf,
-	IN struct net_device	*pNetDev);
+    IN void					*_pAdBuf,
+    IN struct net_device	*pNetDev);
 
 static void IKANOS_WlanPktFromAp(
-	IN apPreHeader_t 		*pFrame);
+    IN apPreHeader_t 		*pFrame);
 
 static INT32 GetSpecInfoIdxFromBssid(
-	IN PRTMP_ADAPTER pAd,
-	IN INT32 FromWhichBSSID);
+    IN PRTMP_ADAPTER pAd,
+    IN INT32 FromWhichBSSID);
 
 
 
@@ -82,21 +82,21 @@ Note:
 ========================================================================
 */
 void VR_IKANOS_FP_Init(
-	IN UINT8 BssNum,
-	IN UINT8 *pApMac)
+    IN UINT8 BssNum,
+    IN UINT8 *pApMac)
 {
-	UINT32 i;
-	UINT8 mac[6];
+    UINT32 i;
+    UINT8 mac[6];
 
 
-	memcpy(mac, pApMac, 6);
+    memcpy(mac, pApMac, 6);
 
-	/* add all MAC of multiple BSS */
-	for(i=0; i<BssNum; i++)
-	{
-		apMacAddrConfig(7, mac, 0xAD);
-		mac[5] ++;
-	} /* End of for */
+    /* add all MAC of multiple BSS */
+    for(i=0; i<BssNum; i++)
+    {
+        apMacAddrConfig(7, mac, 0xAD);
+        mac[5] ++;
+    } /* End of for */
 } /* End of VR_IKANOS_FP_Init */
 
 
@@ -110,30 +110,30 @@ Arguments:
 	netdev			- our WLAN network device
 
 Return Value:
-	
+
 
 Note:
 ========================================================================
 */
 INT32 IKANOS_DataFramesTx(
-	IN struct sk_buff		*pSkb,
-	IN struct net_device	*pNetDev)
+    IN struct sk_buff		*pSkb,
+    IN struct net_device	*pNetDev)
 {
-	PRTMP_ADAPTER pAd = (PRTMP_ADAPTER)pNetDev->priv;
-	IkanosWlanTxCbFuncP *fp = &IKANOS_WlanDataFramesTx;
+    PRTMP_ADAPTER pAd = (PRTMP_ADAPTER)pNetDev->priv;
+    IkanosWlanTxCbFuncP *fp = &IKANOS_WlanDataFramesTx;
 
-	pSkb->apFlowData.txDev = pNetDev;
-	pSkb->apFlowData.txApId = IKANOS_PERAP_ID;
-	pAd->IkanosTxInfo.netdev = pNetDev;
-	pAd->IkanosTxInfo.fp = fp;
-	pSkb->apFlowData.txHandle = &(pAd->IkanosTxInfo);
-	ap2apFlowProcess(pSkb, pNetDev);
+    pSkb->apFlowData.txDev = pNetDev;
+    pSkb->apFlowData.txApId = IKANOS_PERAP_ID;
+    pAd->IkanosTxInfo.netdev = pNetDev;
+    pAd->IkanosTxInfo.fp = fp;
+    pSkb->apFlowData.txHandle = &(pAd->IkanosTxInfo);
+    ap2apFlowProcess(pSkb, pNetDev);
 
 #ifdef IKANOS_DEBUG
-	printk("ikanos> tx no fp\n"); /* debug use */
+    printk("ikanos> tx no fp\n"); /* debug use */
 #endif /* IKANOS_DEBUG */
 
-	return rt28xx_send_packets(pSkb, pNetDev);
+    return rt28xx_send_packets(pSkb, pNetDev);
 } /* End of IKANOS_DataFramesTx */
 
 
@@ -160,26 +160,26 @@ Note:
 PRTMP_ADAPTER	pIkanosAd;
 
 void IKANOS_DataFrameRx(
-	IN PRTMP_ADAPTER	pAd,
-	IN struct sk_buff	*pSkb)
+    IN PRTMP_ADAPTER	pAd,
+    IN struct sk_buff	*pSkb)
 {
     apPreHeader_t *apBuf;
-	void *pRxParam = pSkb->dev;
-	UINT32 Length = pSkb->len;
+    void *pRxParam = pSkb->dev;
+    UINT32 Length = pSkb->len;
 
 
     apBuf = (apPreHeader_t *)(translateMbuf2Apbuf(pSkb, 0));
 
     apBuf->flags1 = 1 << AP_FLAG1_IS_ETH_BIT;
     apBuf->specInfoElement = RTMP_GET_PACKET_NET_DEVICE_MBSSID(pSkb); /* MBSS */
-	pIkanosAd = pAd;
+    pIkanosAd = pAd;
 
-/*  apBuf->egressList[0].pEgress = NULL; */
-/*  apBuf->egressList[0].pFlowID = NULL; */
+    /*  apBuf->egressList[0].pEgress = NULL; */
+    /*  apBuf->egressList[0].pFlowID = NULL; */
     apBuf->flags2 = 0;
 
     apClassify(IKANOS_PERAP_ID, apBuf, (void *)IKANOS_WlanPktFromAp);
-    dev_kfree_skb(pSkb); 
+    dev_kfree_skb(pSkb);
 } /* End of IKANOS_DataFrameRx */
 
 
@@ -197,50 +197,51 @@ Arguments:
 	netdev			- our WLAN network device
 
 Return Value:
-	
+
 
 Note:
 ========================================================================
 */
 static INT32 IKANOS_WlanDataFramesTx(
-	IN void					*_pAdBuf,
-	IN struct net_device	*pNetDev)
+    IN void					*_pAdBuf,
+    IN struct net_device	*pNetDev)
 {
-	apPreHeader_t *pApBuf = (apPreHeader_t *)_pAdBuf;
-	struct sk_buff *sk = NULL;
+    apPreHeader_t *pApBuf = (apPreHeader_t *)_pAdBuf;
+    struct sk_buff *sk = NULL;
 
-	sk = (struct sk_buff *)translateApbuf2Mbuf(pApBuf);
-	if (sk == NULL)
-	{
-		printk("ikanos> translateApbuf2Mbuf returned NULL!\n");
-		return 1;
-	} /* End of if */
+    sk = (struct sk_buff *)translateApbuf2Mbuf(pApBuf);
 
-	sk->apFlowData.flags2 = 0;
-	sk->apFlowData.wlanFlags = 0;
-	sk->protocol = ETH_P_IP;
-	sk->dev = pNetDev;
-	sk->priority = 0;
+    if(sk == NULL)
+    {
+        printk("ikanos> translateApbuf2Mbuf returned NULL!\n");
+        return 1;
+    } /* End of if */
 
-	return rt28xx_send_packets(sk, pNetDev);
+    sk->apFlowData.flags2 = 0;
+    sk->apFlowData.wlanFlags = 0;
+    sk->protocol = ETH_P_IP;
+    sk->dev = pNetDev;
+    sk->priority = 0;
+
+    return rt28xx_send_packets(sk, pNetDev);
 } /* End of IKANOS_WlanDataFramesTx */
 
 
 static INT32 GetSpecInfoIdxFromBssid(
-	IN PRTMP_ADAPTER pAd,
-	IN INT32 FromWhichBSSID)
+    IN PRTMP_ADAPTER pAd,
+    IN INT32 FromWhichBSSID)
 {
-	INT32 IfIdx = MAIN_MBSSID;
+    INT32 IfIdx = MAIN_MBSSID;
 
 
 #ifdef CONFIG_STA_SUPPORT
-	IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
-	{
-		IfIdx = MAIN_MBSSID;
-	}
+    IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
+    {
+        IfIdx = MAIN_MBSSID;
+    }
 #endif /* CONFIG_STA_SUPPORT */
 
-	return IfIdx; /* return one of MBSS */
+    return IfIdx; /* return one of MBSS */
 }
 
 /*
@@ -249,8 +250,8 @@ Routine Description:
 	Get real interface index, used in get_netdev_from_bssid()
 
 Arguments:
-	pAd				- 
-	FromWhichBSSID	- 
+	pAd				-
+	FromWhichBSSID	-
 
 Return Value:
 	None
@@ -259,20 +260,20 @@ Note:
 ========================================================================
 */
 static INT32 GetSpecInfoIdxFromBssid(
-	IN PRTMP_ADAPTER	pAd,
-	IN INT32			FromWhichBSSID)
+    IN PRTMP_ADAPTER	pAd,
+    IN INT32			FromWhichBSSID)
 {
-	INT32 IfIdx = MAIN_MBSSID;
+    INT32 IfIdx = MAIN_MBSSID;
 
 
 #ifdef CONFIG_STA_SUPPORT
-	IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
-	{
-		IfIdx = MAIN_MBSSID;
-	}
+    IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
+    {
+        IfIdx = MAIN_MBSSID;
+    }
 #endif /* CONFIG_STA_SUPPORT */
 
-	return IfIdx; /* return one of MBSS */
+    return IfIdx; /* return one of MBSS */
 } /* End of GetSpecInfoIdxFromBssid */
 
 
@@ -292,28 +293,30 @@ Note:
 ========================================================================
 */
 static void IKANOS_WlanPktFromAp(
-	IN apPreHeader_t		*pFrame)
+    IN apPreHeader_t		*pFrame)
 {
-	PRTMP_ADAPTER pAd;
+    PRTMP_ADAPTER pAd;
     struct net_device *dev = NULL;
     struct sk_buff *skb;
     INT32 index;
     apPreHeader_t *apBuf = K0_TO_K1(pFrame);
 
 
-	pAd = pIkanosAd;
+    pAd = pIkanosAd;
     /*index = apBuf->specInfoElement; */
-	/*dev = pAd->ApCfg.MBSSID[index].MSSIDDev; */
-	index = GetSpecInfoIdxFromBssid(pAd, apBuf->specInfoElement);
-	dev = get_netdev_from_bssid(pAd, apBuf->specInfoElement);
-    if (dev == NULL)
+    /*dev = pAd->ApCfg.MBSSID[index].MSSIDDev; */
+    index = GetSpecInfoIdxFromBssid(pAd, apBuf->specInfoElement);
+    dev = get_netdev_from_bssid(pAd, apBuf->specInfoElement);
+
+    if(dev == NULL)
     {
         printk("ikanos> %s: ERROR null device ***************\n", __FUNCTION__);
         return;
     } /* End of if */
 
     skb = (struct sk_buff *)translateApbuf2Mbuf(apBuf);
-    if (NULL == skb)
+
+    if(NULL == skb)
     {
         printk("ikanos> %s: skb is null *********************\n", __FUNCTION__);
         return;
@@ -329,7 +332,7 @@ static void IKANOS_WlanPktFromAp(
     skb->protocol = eth_type_trans(skb, skb->dev);
 
 #ifdef IKANOS_DEBUG
-	printk("ikanos> rx no fp!\n"); /* debug use */
+    printk("ikanos> rx no fp!\n"); /* debug use */
 #endif /* IKANOS_DEBUG */
 
     netif_rx(skb);

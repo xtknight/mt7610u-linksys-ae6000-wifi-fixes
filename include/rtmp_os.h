@@ -32,9 +32,10 @@
 typedef int (*RTMP_PRINTK)(const char *ftm, ...);
 typedef int (*RTMP_SNPRINTF)(char *, ULONG, const char *ftm, ...);
 
-typedef struct _RTMP_OS_ABL_OPS {
-	int (*ra_printk)(const char *ftm, ...);
-	int (*ra_snprintf)(char *, ULONG, const char *ftm, ...);
+typedef struct _RTMP_OS_ABL_OPS
+{
+    int (*ra_printk)(const char *ftm, ...);
+    int (*ra_snprintf)(char *, ULONG, const char *ftm, ...);
 } RTMP_OS_ABL_OPS;
 
 extern RTMP_OS_ABL_OPS *pRaOsOps;
@@ -60,33 +61,35 @@ extern RTMP_OS_ABL_OPS *pRaOsOps;
 
 
 /*
-	This data structure mainly strip some callback function defined in 
+	This data structure mainly strip some callback function defined in
 	"struct net_device" in kernel source "include/linux/netdevice.h".
 
 	The definition of this data structure may various depends on different
 	OS. Use it carefully.
 */
-typedef struct _RTMP_OS_NETDEV_OP_HOOK_ {
-	void *open;
-	void *stop;
-	void *xmit;
-	void *ioctl;
-	void *get_stats;
-	void *priv;
-	void *get_wstats;
-	void *iw_handler;
-	int priv_flags;
-	unsigned char devAddr[6];
-	unsigned char devName[16];
-	unsigned char needProtcted;
+typedef struct _RTMP_OS_NETDEV_OP_HOOK_
+{
+    void *open;
+    void *stop;
+    void *xmit;
+    void *ioctl;
+    void *get_stats;
+    void *priv;
+    void *get_wstats;
+    void *iw_handler;
+    int priv_flags;
+    unsigned char devAddr[6];
+    unsigned char devName[16];
+    unsigned char needProtcted;
 } RTMP_OS_NETDEV_OP_HOOK, *PRTMP_OS_NETDEV_OP_HOOK;
 
 
-typedef enum _RTMP_TASK_STATUS_ {
-	RTMP_TASK_STAT_UNKNOWN = 0,
-	RTMP_TASK_STAT_INITED = 1,
-	RTMP_TASK_STAT_RUNNING = 2,
-	RTMP_TASK_STAT_STOPED = 4,
+typedef enum _RTMP_TASK_STATUS_
+{
+    RTMP_TASK_STAT_UNKNOWN = 0,
+    RTMP_TASK_STAT_INITED = 1,
+    RTMP_TASK_STAT_RUNNING = 2,
+    RTMP_TASK_STAT_STOPED = 4,
 } RTMP_TASK_STATUS;
 #define RTMP_TASK_CAN_DO_INSERT		(RTMP_TASK_STAT_INITED |RTMP_TASK_STAT_RUNNING)
 
@@ -94,27 +97,28 @@ typedef enum _RTMP_TASK_STATUS_ {
 
 #if defined(RTMP_MODULE_OS) || !defined(OS_ABL_FUNC_SUPPORT)
 /* used in UTIL/NETIF module */
-typedef struct _RTMP_OS_TASK_ {
-	char taskName[RTMP_OS_TASK_NAME_LEN];
-	void *priv;
-	/*unsigned long                 taskFlags; */
-	RTMP_TASK_STATUS taskStatus;
+typedef struct _RTMP_OS_TASK_
+{
+    char taskName[RTMP_OS_TASK_NAME_LEN];
+    void *priv;
+    /*unsigned long                 taskFlags; */
+    RTMP_TASK_STATUS taskStatus;
 #ifndef KTHREAD_SUPPORT
-	RTMP_OS_SEM taskSema;
-	RTMP_OS_PID taskPID;
-	struct completion taskComplete;
+    RTMP_OS_SEM taskSema;
+    RTMP_OS_PID taskPID;
+    struct completion taskComplete;
 #endif
-	unsigned char task_killed;
+    unsigned char task_killed;
 #ifdef KTHREAD_SUPPORT
-	struct task_struct *kthread_task;
-	wait_queue_head_t kthread_q;
-	BOOLEAN kthread_running;
+    struct task_struct *kthread_task;
+    wait_queue_head_t kthread_q;
+    BOOLEAN kthread_running;
 #endif
 } OS_TASK;
 #endif /* RTMP_MODULE_OS || ! OS_ABL_FUNC_SUPPORT */
 
 int RtmpOSIRQRequest(
-	IN PNET_DEV pNetDev);
+    IN PNET_DEV pNetDev);
 /*int RtmpOSIRQRelease(IN PNET_DEV pNetDev); */
 
 #ifndef OS_ABL_SUPPORT

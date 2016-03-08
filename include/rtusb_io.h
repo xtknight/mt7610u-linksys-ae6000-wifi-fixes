@@ -82,58 +82,66 @@
 #define CMDTHREAD_RESPONSE_EVENT_CALLBACK			0x0D730123
 
 
-typedef struct _CMDHandler_TLV {
-	USHORT Offset;
-	USHORT Length;
-	UCHAR DataFirst;
+typedef struct _CMDHandler_TLV
+{
+    USHORT Offset;
+    USHORT Length;
+    UCHAR DataFirst;
 } CMDHandler_TLV, *PCMDHandler_TLV;
 
 
-typedef struct _RT_SET_ASIC_WCID {
-	ULONG WCID;		/* mechanism for rekeying: 0:disable, 1: time-based, 2: packet-based */
-	ULONG SetTid;		/* time-based: seconds, packet-based: kilo-packets */
-	ULONG DeleteTid;	/* time-based: seconds, packet-based: kilo-packets */
-	UCHAR Addr[MAC_ADDR_LEN];	/* avoid in interrupt when write key */
+typedef struct _RT_SET_ASIC_WCID
+{
+    ULONG WCID;		/* mechanism for rekeying: 0:disable, 1: time-based, 2: packet-based */
+    ULONG SetTid;		/* time-based: seconds, packet-based: kilo-packets */
+    ULONG DeleteTid;	/* time-based: seconds, packet-based: kilo-packets */
+    UCHAR Addr[MAC_ADDR_LEN];	/* avoid in interrupt when write key */
 } RT_SET_ASIC_WCID, *PRT_SET_ASIC_WCID;
 
-typedef struct _RT_ASIC_WCID_SEC_INFO {
-	UCHAR BssIdx;
-	UCHAR KeyIdx;
-	UCHAR CipherAlg;
-	UINT8 Wcid;
-	UINT8 KeyTabFlag;
+typedef struct _RT_ASIC_WCID_SEC_INFO
+{
+    UCHAR BssIdx;
+    UCHAR KeyIdx;
+    UCHAR CipherAlg;
+    UINT8 Wcid;
+    UINT8 KeyTabFlag;
 } RT_ASIC_WCID_SEC_INFO, *PRT_ASIC_WCID_SEC_INFO;
 
-typedef struct _RT_ASIC_WCID_IVEIV_ENTRY {
-	UINT8 Wcid;
-	UINT32 Iv;
-	UINT32 Eiv;
+typedef struct _RT_ASIC_WCID_IVEIV_ENTRY
+{
+    UINT8 Wcid;
+    UINT32 Iv;
+    UINT32 Eiv;
 } RT_ASIC_WCID_IVEIV_ENTRY, *PRT_ASIC_WCID_IVEIV_ENTRY;
 
-typedef struct _RT_ASIC_WCID_ATTR_ENTRY {
-	UCHAR BssIdx;
-	UCHAR KeyIdx;
-	UCHAR CipherAlg;
-	UINT8 Wcid;
-	UINT8 KeyTabFlag;
+typedef struct _RT_ASIC_WCID_ATTR_ENTRY
+{
+    UCHAR BssIdx;
+    UCHAR KeyIdx;
+    UCHAR CipherAlg;
+    UINT8 Wcid;
+    UINT8 KeyTabFlag;
 } RT_ASIC_WCID_ATTR_ENTRY, *PRT_ASIC_WCID_ATTR_ENTRY;
 
-typedef struct _RT_ASIC_PAIRWISE_KEY {
-	UINT8 WCID;
-	CIPHER_KEY CipherKey;
+typedef struct _RT_ASIC_PAIRWISE_KEY
+{
+    UINT8 WCID;
+    CIPHER_KEY CipherKey;
 } RT_ASIC_PAIRWISE_KEY, *PRT_ASIC_PAIRWISE_KEY;
 
-typedef struct _RT_ASIC_SHARED_KEY {
-	UCHAR BssIndex;
-	UCHAR KeyIdx;
-	CIPHER_KEY CipherKey;
+typedef struct _RT_ASIC_SHARED_KEY
+{
+    UCHAR BssIndex;
+    UCHAR KeyIdx;
+    CIPHER_KEY CipherKey;
 } RT_ASIC_SHARED_KEY, *PRT_ASIC_SHARED_KEY;
 
-typedef struct _RT_ASIC_PROTECT_INFO {
-	USHORT OperationMode;
-	UCHAR SetMask;	
-	BOOLEAN bDisableBGProtect;
-	BOOLEAN bNonGFExist;	
+typedef struct _RT_ASIC_PROTECT_INFO
+{
+    USHORT OperationMode;
+    UCHAR SetMask;
+    BOOLEAN bDisableBGProtect;
+    BOOLEAN bNonGFExist;
 } RT_ASIC_PROTECT_INFO, *PRT_ASIC_PROTECT_INFO;
 
 /******************************************************************************
@@ -185,15 +193,15 @@ void usb_cfg_write_v1(struct _RTMP_ADAPTER *ad, u32 value);
 void usb_cfg_read_v2(struct _RTMP_ADAPTER *ad, u32 *value);
 void usb_cfg_write_v2(struct _RTMP_ADAPTER *ad, u32 value);
 int write_reg(
-	struct _RTMP_ADAPTER *ad,
-	u32 base,
-	u16 offset,
-	u32 value);
+    struct _RTMP_ADAPTER *ad,
+    u32 base,
+    u16 offset,
+    u32 value);
 
 int read_reg(
-	struct _RTMP_ADAPTER *ad,
-	u32 base,
-	u16 offset,
-	u32 *value);
+    struct _RTMP_ADAPTER *ad,
+    u32 base,
+    u16 offset,
+    u32 *value);
 
 #endif /* __RTUSB_IO_H__ */

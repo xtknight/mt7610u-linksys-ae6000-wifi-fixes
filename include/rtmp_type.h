@@ -87,69 +87,78 @@ typedef UINT *PUINT;
 
 typedef unsigned int NDIS_MEDIA_STATE;
 
-typedef union _LARGE_INTEGER {
-	struct {
+typedef union _LARGE_INTEGER
+{
+    struct
+    {
 #ifdef RT_BIG_ENDIAN
-		INT32 HighPart;
-		UINT LowPart;
+        INT32 HighPart;
+        UINT LowPart;
 #else
-		UINT LowPart;
-		INT32 HighPart;
+        UINT LowPart;
+        INT32 HighPart;
 #endif
-	} u;
-	INT64 QuadPart;
+    } u;
+    INT64 QuadPart;
 } LARGE_INTEGER;
 
 
 /* Register set pair for initialzation register set definition */
-typedef struct _RTMP_REG_PAIR {
-	UINT32 Register;
-	UINT32 Value;
+typedef struct _RTMP_REG_PAIR
+{
+    UINT32 Register;
+    UINT32 Value;
 } RTMP_REG_PAIR, *PRTMP_REG_PAIR;
 
-typedef struct _REG_PAIR {
-	UCHAR Register;
-	UCHAR Value;
+typedef struct _REG_PAIR
+{
+    UCHAR Register;
+    UCHAR Value;
 } REG_PAIR, *PREG_PAIR;
 
-typedef struct _REG_PAIR_CHANNEL {
-	UCHAR Register;
-	UCHAR FirstChannel;
-	UCHAR LastChannel;
-	UCHAR Value;
+typedef struct _REG_PAIR_CHANNEL
+{
+    UCHAR Register;
+    UCHAR FirstChannel;
+    UCHAR LastChannel;
+    UCHAR Value;
 } REG_PAIR_CHANNEL, *PREG_PAIR_CHANNEL;
 
-typedef struct _REG_PAIR_BW {
-	UCHAR Register;
-	UCHAR BW;
-	UCHAR Value;
+typedef struct _REG_PAIR_BW
+{
+    UCHAR Register;
+    UCHAR BW;
+    UCHAR Value;
 } REG_PAIR_BW, *PREG_PAIR_BW;
 
 
-typedef struct _REG_PAIR_PHY{
-	UCHAR reg;
-	UCHAR s_ch;
-	UCHAR e_ch;
-	UCHAR phy;	/* RF_MODE_XXX */
-	UCHAR bw;	/* RF_BW_XX */
-	UCHAR val;
-}REG_PAIR_PHY;
+typedef struct _REG_PAIR_PHY
+{
+    UCHAR reg;
+    UCHAR s_ch;
+    UCHAR e_ch;
+    UCHAR phy;	/* RF_MODE_XXX */
+    UCHAR bw;	/* RF_BW_XX */
+    UCHAR val;
+} REG_PAIR_PHY;
 
 
 /* Register set pair for initialzation register set definition */
-typedef struct _RTMP_RF_REGS {
-	UCHAR Channel;
-	UINT32 R1;
-	UINT32 R2;
-	UINT32 R3;
-	UINT32 R4;
+typedef struct _RTMP_RF_REGS
+{
+    UCHAR Channel;
+    UINT32 R1;
+    UINT32 R2;
+    UINT32 R3;
+    UINT32 R4;
 } RTMP_RF_REGS, *PRTMP_RF_REGS;
 
-typedef struct _FREQUENCY_ITEM {
-	UCHAR Channel;
-	UCHAR N;
-	UCHAR R;
-	UCHAR K;
+typedef struct _FREQUENCY_ITEM
+{
+    UCHAR Channel;
+    UCHAR N;
+    UCHAR R;
+    UCHAR K;
 } FREQUENCY_ITEM, *PFREQUENCY_ITEM;
 
 typedef int NTSTATUS;
@@ -157,34 +166,39 @@ typedef int NTSTATUS;
 #define STATUS_SUCCESS			0x00
 #define STATUS_UNSUCCESSFUL 		0x01
 
-typedef struct _QUEUE_ENTRY {
-	struct _QUEUE_ENTRY *Next;
+typedef struct _QUEUE_ENTRY
+{
+    struct _QUEUE_ENTRY *Next;
 } QUEUE_ENTRY, *PQUEUE_ENTRY;
 
 /* Queue structure */
-typedef struct _QUEUE_HEADER {
-	PQUEUE_ENTRY Head;
-	PQUEUE_ENTRY Tail;
-	ULONG Number;
+typedef struct _QUEUE_HEADER
+{
+    PQUEUE_ENTRY Head;
+    PQUEUE_ENTRY Tail;
+    ULONG Number;
 } QUEUE_HEADER, *PQUEUE_HEADER;
 
-typedef struct _BANK_RF_REG_PAIR {
-	UCHAR Bank;
-	UCHAR Register;
-	UCHAR Value;
+typedef struct _BANK_RF_REG_PAIR
+{
+    UCHAR Bank;
+    UCHAR Register;
+    UCHAR Value;
 } BANK_RF_REG_PAIR, *PBANK_RF_REG_PAIR;
 
-typedef struct _R_M_W_REG{
-	UINT32 Register;
-	UINT32 ClearBitMask;
-	UINT32 Value;
+typedef struct _R_M_W_REG
+{
+    UINT32 Register;
+    UINT32 ClearBitMask;
+    UINT32 Value;
 } R_M_W_REG, *PR_M_W_REG;
 
-typedef struct _RF_R_M_W_REG{
-	UCHAR Bank;
-	UCHAR Register;
-	UCHAR ClearBitMask;
-	UCHAR Value;
+typedef struct _RF_R_M_W_REG
+{
+    UCHAR Bank;
+    UCHAR Register;
+    UCHAR ClearBitMask;
+    UCHAR Value;
 } RF_R_M_W_REG, *PRF_R_M_W_REG;
 
 #endif /* __RTMP_TYPE_H__ */

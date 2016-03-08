@@ -65,7 +65,7 @@
 /* @!Release
 	RF_CSR_KICK:1
 			Write - kick RF register read/write
-				0: do nothing        
+				0: do nothing
 				1: kick read/write process
 			Read - Polling RF register read/write
 				0: idle
@@ -81,51 +81,57 @@
 	RF_CSR_DATA:8
 			DATA written to/read from RF
 */
-typedef	union _RLT_RF_CSR_CFG {
+typedef	union _RLT_RF_CSR_CFG
+{
 #ifdef RT_BIG_ENDIAN
-	struct {
-		UINT RF_CSR_KICK:1;
-		UINT RF_CSR_WR:1;
-		UINT rsv:12;
-		UINT RF_CSR_REG_BANK:3;
-		UINT RF_CSR_REG_ID:7;
-		UINT RF_CSR_DATA:8;
-	} field;
+    struct
+    {
+        UINT RF_CSR_KICK:1;
+        UINT RF_CSR_WR:1;
+        UINT rsv:12;
+        UINT RF_CSR_REG_BANK:3;
+        UINT RF_CSR_REG_ID:7;
+        UINT RF_CSR_DATA:8;
+    } field;
 #else
-	struct {
-		UINT RF_CSR_DATA:8;
-		UINT RF_CSR_REG_ID:7;
-		UINT RF_CSR_REG_BANK:3;
-		UINT rsv:12;
-		UINT RF_CSR_WR:1;
-		UINT RF_CSR_KICK:1;
-	} field;
+    struct
+    {
+        UINT RF_CSR_DATA:8;
+        UINT RF_CSR_REG_ID:7;
+        UINT RF_CSR_REG_BANK:3;
+        UINT rsv:12;
+        UINT RF_CSR_WR:1;
+        UINT RF_CSR_KICK:1;
+    } field;
 #endif /* RT_BIG_ENDIAN */
-	UINT word;
-}RLT_RF_CSR_CFG;
+    UINT word;
+} RLT_RF_CSR_CFG;
 #endif /* RLT_RF */
 
 
-typedef	union _RF_CSR_CFG_STRUC {
+typedef	union _RF_CSR_CFG_STRUC
+{
 #ifdef RT_BIG_ENDIAN
-	struct {
-		UINT32	Rsvd1:14;				/* Reserved */
-		UINT32	RF_CSR_KICK:1;			/* kick RF register read/write */
-		UINT32	RF_CSR_WR:1;			/* 0: read  1: write */
-		UINT32	TESTCSR_RFACC_REGNUM:8;	/* RF register ID */
-		UINT32	RF_CSR_DATA:8;			/* DATA */
-	} field;
+    struct
+    {
+        UINT32	Rsvd1:14;				/* Reserved */
+        UINT32	RF_CSR_KICK:1;			/* kick RF register read/write */
+        UINT32	RF_CSR_WR:1;			/* 0: read  1: write */
+        UINT32	TESTCSR_RFACC_REGNUM:8;	/* RF register ID */
+        UINT32	RF_CSR_DATA:8;			/* DATA */
+    } field;
 #else
-	struct {
-		UINT32	RF_CSR_DATA:8;
-		UINT32	TESTCSR_RFACC_REGNUM:8;
-		UINT32	RF_CSR_WR:1;
-		UINT32	RF_CSR_KICK:1;
-		UINT32	Rsvd1:14;
-	} field;
+    struct
+    {
+        UINT32	RF_CSR_DATA:8;
+        UINT32	TESTCSR_RFACC_REGNUM:8;
+        UINT32	RF_CSR_WR:1;
+        UINT32	RF_CSR_KICK:1;
+        UINT32	Rsvd1:14;
+    } field;
 #endif /* RT_BIG_ENDIAN */
-	UINT32 word;
-}RF_CSR_CFG_STRUC;
+    UINT32 word;
+} RF_CSR_CFG_STRUC;
 
 #define RF_BYPASS_0		0x0504
 

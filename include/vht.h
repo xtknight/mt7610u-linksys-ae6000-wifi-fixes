@@ -45,8 +45,8 @@ INT SetCommonVHT(struct _RTMP_ADAPTER *pAd);
 VOID rtmp_set_vht(struct _RTMP_ADAPTER *pAd, struct _RT_PHY_INFO *phy_info);
 
 void assoc_vht_info_debugshow(
-	IN RTMP_ADAPTER *pAd,
-	IN MAC_TABLE_ENTRY *pEntry,
-	IN VHT_CAP_IE *vht_cap,
-	IN VHT_OP_IE *vht_op);
+    IN RTMP_ADAPTER *pAd,
+    IN MAC_TABLE_ENTRY *pEntry,
+    IN VHT_CAP_IE *vht_cap,
+    IN VHT_OP_IE *vht_op);
 

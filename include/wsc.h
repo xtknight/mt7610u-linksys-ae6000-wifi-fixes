@@ -43,40 +43,43 @@
 
 
 /* structure to store Simple Config Attributes Info */
-typedef struct GNU_PACKED _WSC_LV_INFO {
+typedef struct GNU_PACKED _WSC_LV_INFO
+{
     USHORT  ValueLen;
     UCHAR   Value[512];
 } WSC_LV_INFO;
 
-typedef struct GNU_PACKED _WSC_IE_HEADER {
-	UCHAR elemId;
-	UCHAR length;
-	UCHAR oui[4];
+typedef struct GNU_PACKED _WSC_IE_HEADER
+{
+    UCHAR elemId;
+    UCHAR length;
+    UCHAR oui[4];
 } WSC_IE_HEADER;
 
 /* WSC IE structure */
 typedef	struct GNU_PACKED _WSC_IE
 {
-	USHORT	Type;
-	USHORT	Length;
-	UCHAR	Data[1];	/* variable length data */
+    USHORT	Type;
+    USHORT	Length;
+    UCHAR	Data[1];	/* variable length data */
 }	WSC_IE, *PWSC_IE;
 
 /* WSC fixed information within EAP */
 typedef	struct GNU_PACKED _WSC_FRAME
 {
-	UCHAR	SMI[3];
-	UINT	VendorType;
-	UCHAR	OpCode;
-	UCHAR	Flags;
+    UCHAR	SMI[3];
+    UINT	VendorType;
+    UCHAR	OpCode;
+    UCHAR	Flags;
 }	WSC_FRAME, *PWSC_FRAME;
 
 /* EAP frame format */
-typedef	struct GNU_PACKED _EAP_FRAME	{
-	UCHAR	Code;						/* 1 = Request, 2 = Response */
-	UCHAR	Id;
-	USHORT	Length;
-	UCHAR	Type;						/* 1 = Identity, 0xfe = reserved, used by WSC */
+typedef	struct GNU_PACKED _EAP_FRAME
+{
+    UCHAR	Code;						/* 1 = Request, 2 = Response */
+    UCHAR	Id;
+    USHORT	Length;
+    UCHAR	Type;						/* 1 = Identity, 0xfe = reserved, used by WSC */
 }	EAP_FRAME, *PEAP_FRAME;
 
 static inline BOOLEAN WscCheckWSCHeader(
@@ -84,21 +87,22 @@ static inline BOOLEAN WscCheckWSCHeader(
 {
     PWSC_FRAME			pWsc;
 
-	pWsc = (PWSC_FRAME) pData;
+    pWsc = (PWSC_FRAME) pData;
 
     /* Verify SMI first */
-	if (((pWsc->SMI[0] * 256 + pWsc->SMI[1]) * 256 + pWsc->SMI[2]) != WSC_SMI)
-	{
-		/* Wrong WSC SMI Vendor ID, Update WSC status */
-		return  FALSE;
-	}
-    
+    if(((pWsc->SMI[0] * 256 + pWsc->SMI[1]) * 256 + pWsc->SMI[2]) != WSC_SMI)
+    {
+        /* Wrong WSC SMI Vendor ID, Update WSC status */
+        return  FALSE;
+    }
+
     /* Verify Vendor Type */
-	if (cpu2be32(get_unaligned32(&pWsc->VendorType)) != WSC_VENDOR_TYPE)
-	{
-		/* Wrong WSC Vendor Type, Update WSC status */
-		return  FALSE;
-	}
+    if(cpu2be32(get_unaligned32(&pWsc->VendorType)) != WSC_VENDOR_TYPE)
+    {
+        /* Wrong WSC Vendor Type, Update WSC status */
+        return  FALSE;
+    }
+
     return TRUE;
 }
 

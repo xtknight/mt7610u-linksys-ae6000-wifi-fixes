@@ -61,56 +61,56 @@ BOOLEAN APBridgeToWirelessSta(
     IN  ULONG           fromwdsidx);
 
 VOID RTMP_BASetup(
-	IN PRTMP_ADAPTER pAd,
-	IN PMAC_TABLE_ENTRY pMacEntry,
-	IN UINT8 UserPriority);
+    IN PRTMP_ADAPTER pAd,
+    IN PMAC_TABLE_ENTRY pMacEntry,
+    IN UINT8 UserPriority);
 
 VOID	APSendPackets(
-	IN	NDIS_HANDLE		MiniportAdapterContext,
-	IN	PPNDIS_PACKET	ppPacketArray,
-	IN	UINT			NumberOfPackets);
+    IN	NDIS_HANDLE		MiniportAdapterContext,
+    IN	PPNDIS_PACKET	ppPacketArray,
+    IN	UINT			NumberOfPackets);
 
 NDIS_STATUS APSendPacket(
     IN  PRTMP_ADAPTER   pAd,
     IN  PNDIS_PACKET    pPacket);
 
 NDIS_STATUS APInsertPsQueue(
-	IN PRTMP_ADAPTER pAd,
-	IN PNDIS_PACKET pPacket,
-	IN MAC_TABLE_ENTRY *pMacEntry,
-	IN UCHAR QueIdx);
+    IN PRTMP_ADAPTER pAd,
+    IN PNDIS_PACKET pPacket,
+    IN MAC_TABLE_ENTRY *pMacEntry,
+    IN UCHAR QueIdx);
 
 NDIS_STATUS APHardTransmit(
-	IN	PRTMP_ADAPTER	pAd,
-	IN	TX_BLK			*pTxBlk,
-	IN	UCHAR			QueIdx);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	TX_BLK			*pTxBlk,
+    IN	UCHAR			QueIdx);
 
 VOID APRxEAPOLFrameIndicate(
-	IN	PRTMP_ADAPTER	pAd,
-	IN	MAC_TABLE_ENTRY	*pEntry,
-	IN	RX_BLK			*pRxBlk,
-	IN	UCHAR			FromWhichBSSID);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	MAC_TABLE_ENTRY	*pEntry,
+    IN	RX_BLK			*pRxBlk,
+    IN	UCHAR			FromWhichBSSID);
 
 NDIS_STATUS APCheckRxError(
-	IN RTMP_ADAPTER *pAd,
-	IN RXINFO_STRUC *pRxInfo,
-	IN UCHAR Wcid);
+    IN RTMP_ADAPTER *pAd,
+    IN RXINFO_STRUC *pRxInfo,
+    IN UCHAR Wcid);
 
 BOOLEAN APCheckClass2Class3Error(
     IN  PRTMP_ADAPTER   pAd,
-	IN ULONG Wcid, 
-	IN  PHEADER_802_11  pHeader);
+    IN ULONG Wcid,
+    IN  PHEADER_802_11  pHeader);
 
 VOID APHandleRxPsPoll(
-	IN	PRTMP_ADAPTER	pAd,
-	IN	PUCHAR			pAddr,
-	IN	USHORT			Aid,
+    IN	PRTMP_ADAPTER	pAd,
+    IN	PUCHAR			pAddr,
+    IN	USHORT			Aid,
     IN	BOOLEAN			isActive);
 
 VOID    RTMPDescriptorEndianChange(
     IN  PUCHAR          pData,
     IN  ULONG           DescriptorType);
-    
+
 VOID    RTMPFrameEndianChange(
     IN  PRTMP_ADAPTER   pAd,
     IN  PUCHAR          pData,
@@ -120,27 +120,27 @@ VOID    RTMPFrameEndianChange(
 /* ap_assoc.c */
 
 VOID APAssocStateMachineInit(
-    IN  PRTMP_ADAPTER   pAd, 
-    IN  STATE_MACHINE *S, 
+    IN  PRTMP_ADAPTER   pAd,
+    IN  STATE_MACHINE *S,
     OUT STATE_MACHINE_FUNC Trans[]);
 
 
 VOID MbssKickOutStas(
-	IN PRTMP_ADAPTER pAd,
-	IN INT apidx,
-	IN USHORT Reason);
+    IN PRTMP_ADAPTER pAd,
+    IN INT apidx,
+    IN USHORT Reason);
 
 VOID APMlmeKickOutSta(
-    IN PRTMP_ADAPTER pAd, 
-	IN PUCHAR pStaAddr, 
-	IN UCHAR Wcid,
-	IN USHORT Reason);
+    IN PRTMP_ADAPTER pAd,
+    IN PUCHAR pStaAddr,
+    IN UCHAR Wcid,
+    IN USHORT Reason);
 
 
 
 VOID  APCls3errAction(
-    IN  PRTMP_ADAPTER   pAd, 
-	IN 	ULONG Wcid,
+    IN  PRTMP_ADAPTER   pAd,
+    IN 	ULONG Wcid,
     IN	PHEADER_802_11	pHeader);
 
 /*
@@ -158,13 +158,13 @@ VOID	RTMPAddClientSec(
 /* ap_auth.c */
 
 void APAuthStateMachineInit(
-    IN PRTMP_ADAPTER pAd, 
-    IN STATE_MACHINE *Sm, 
+    IN PRTMP_ADAPTER pAd,
+    IN STATE_MACHINE *Sm,
     OUT STATE_MACHINE_FUNC Trans[]);
 
 VOID APCls2errAction(
-    IN PRTMP_ADAPTER pAd, 
-	IN 	ULONG Wcid,
+    IN PRTMP_ADAPTER pAd,
+    IN 	ULONG Wcid,
     IN	PHEADER_802_11	pHeader);
 
 /* ap_connect.c */
@@ -172,11 +172,11 @@ VOID APCls2errAction(
 
 VOID APMakeBssBeacon(
     IN  PRTMP_ADAPTER   pAd,
-	IN	INT				apidx);
+    IN	INT				apidx);
 
 VOID  APUpdateBeaconFrame(
     IN  PRTMP_ADAPTER   pAd,
-	IN	INT				apidx);
+    IN	INT				apidx);
 
 VOID APMakeAllBssBeacon(
     IN  PRTMP_ADAPTER   pAd);
@@ -193,72 +193,72 @@ VOID APSyncStateMachineInit(
     OUT STATE_MACHINE_FUNC Trans[]);
 
 VOID APScanTimeout(
-	IN PVOID SystemSpecific1,
-	IN PVOID FunctionContext,
-	IN PVOID SystemSpecific2,
-	IN PVOID SystemSpecific3);
+    IN PVOID SystemSpecific1,
+    IN PVOID FunctionContext,
+    IN PVOID SystemSpecific2,
+    IN PVOID SystemSpecific3);
 
 VOID APInvalidStateWhenScan(
-	IN PRTMP_ADAPTER pAd,
-	IN MLME_QUEUE_ELEM *Elem);
+    IN PRTMP_ADAPTER pAd,
+    IN MLME_QUEUE_ELEM *Elem);
 
 VOID APScanTimeoutAction(
-	IN PRTMP_ADAPTER pAd,
-	IN MLME_QUEUE_ELEM *Elem);
+    IN PRTMP_ADAPTER pAd,
+    IN MLME_QUEUE_ELEM *Elem);
 
 VOID APPeerProbeReqAction(
-    IN  PRTMP_ADAPTER pAd, 
+    IN  PRTMP_ADAPTER pAd,
     IN  MLME_QUEUE_ELEM *Elem);
 
 VOID APPeerBeaconAction(
-    IN PRTMP_ADAPTER pAd, 
+    IN PRTMP_ADAPTER pAd,
     IN MLME_QUEUE_ELEM *Elem);
 
 VOID APMlmeScanReqAction(
-	IN PRTMP_ADAPTER pAd,
-	IN MLME_QUEUE_ELEM *Elem);
+    IN PRTMP_ADAPTER pAd,
+    IN MLME_QUEUE_ELEM *Elem);
 
 VOID APPeerBeaconAtScanAction(
-	IN PRTMP_ADAPTER pAd,
-	IN MLME_QUEUE_ELEM *Elem);
+    IN PRTMP_ADAPTER pAd,
+    IN MLME_QUEUE_ELEM *Elem);
 
 VOID APScanCnclAction(
-	IN PRTMP_ADAPTER pAd, 
-	IN MLME_QUEUE_ELEM *Elem);
+    IN PRTMP_ADAPTER pAd,
+    IN MLME_QUEUE_ELEM *Elem);
 
 VOID ApSiteSurvey(
-	IN	PRTMP_ADAPTER  		pAd,
-	IN	PNDIS_802_11_SSID	pSsid,
-	IN	UCHAR				ScanType,
-	IN	BOOLEAN				ChannelSel);
+    IN	PRTMP_ADAPTER  		pAd,
+    IN	PNDIS_802_11_SSID	pSsid,
+    IN	UCHAR				ScanType,
+    IN	BOOLEAN				ChannelSel);
 
 VOID SupportRate(
-	IN PUCHAR SupRate,
-	IN UCHAR SupRateLen,
-	IN PUCHAR ExtRate,
-	IN UCHAR ExtRateLen,
-	OUT PUCHAR *Rates,
-	OUT PUCHAR RatesLen,
-	OUT PUCHAR pMaxSupportRate);
+    IN PUCHAR SupRate,
+    IN UCHAR SupRateLen,
+    IN PUCHAR ExtRate,
+    IN UCHAR ExtRateLen,
+    OUT PUCHAR *Rates,
+    OUT PUCHAR RatesLen,
+    OUT PUCHAR pMaxSupportRate);
 
 
 BOOLEAN ApScanRunning(
-	IN PRTMP_ADAPTER pAd);
-	
+    IN PRTMP_ADAPTER pAd);
+
 #ifdef DOT11N_DRAFT3
 VOID APOverlappingBSSScan(
-	IN RTMP_ADAPTER *pAd);
+    IN RTMP_ADAPTER *pAd);
 
 INT GetBssCoexEffectedChRange(
-	IN RTMP_ADAPTER *pAd,
-	IN BSS_COEX_CH_RANGE *pCoexChRange);
+    IN RTMP_ADAPTER *pAd,
+    IN BSS_COEX_CH_RANGE *pCoexChRange);
 
 #endif /* DOT11N_DRAFT3 */
 
 /* ap_wpa.c */
 VOID WpaStateMachineInit(
-    IN  PRTMP_ADAPTER   pAd, 
-    IN  STATE_MACHINE *Sm, 
+    IN  PRTMP_ADAPTER   pAd,
+    IN  STATE_MACHINE *Sm,
     OUT STATE_MACHINE_FUNC Trans[]);
 
 /* ap_mlme.c */
@@ -267,33 +267,33 @@ VOID APMlmePeriodicExec(
 
 BOOLEAN APMsgTypeSubst(
     IN PRTMP_ADAPTER pAd,
-    IN PFRAME_802_11 pFrame, 
-    OUT INT *Machine, 
+    IN PFRAME_802_11 pFrame,
+    OUT INT *Machine,
     OUT INT *MsgType);
 
 VOID APQuickResponeForRateUpExec(
-    IN PVOID SystemSpecific1, 
-    IN PVOID FunctionContext, 
-    IN PVOID SystemSpecific2, 
+    IN PVOID SystemSpecific1,
+    IN PVOID FunctionContext,
+    IN PVOID SystemSpecific2,
     IN PVOID SystemSpecific3);
 
 #ifdef RTMP_MAC_USB
 VOID BeaconUpdateExec(
-    IN PVOID SystemSpecific1, 
-    IN PVOID FunctionContext, 
-    IN PVOID SystemSpecific2, 
+    IN PVOID SystemSpecific1,
+    IN PVOID FunctionContext,
+    IN PVOID SystemSpecific2,
     IN PVOID SystemSpecific3);
 #endif /* RTMP_MAC_USB */
 
 VOID RTMPSetPiggyBack(
-	IN PRTMP_ADAPTER	pAd,
-	IN BOOLEAN			bPiggyBack);
+    IN PRTMP_ADAPTER	pAd,
+    IN BOOLEAN			bPiggyBack);
 
 VOID APAsicEvaluateRxAnt(
-	IN PRTMP_ADAPTER	pAd);
+    IN PRTMP_ADAPTER	pAd);
 
 VOID APAsicRxAntEvalTimeout(
-	IN PRTMP_ADAPTER	pAd);
+    IN PRTMP_ADAPTER	pAd);
 
 /* ap.c */
 NDIS_STATUS APInitialize(
@@ -317,20 +317,20 @@ VOID MacTableMaintenance(
     IN PRTMP_ADAPTER pAd);
 
 UINT32 MacTableAssocStaNumGet(
-	IN PRTMP_ADAPTER pAd);
+    IN PRTMP_ADAPTER pAd);
 
 MAC_TABLE_ENTRY *APSsPsInquiry(
-    IN  PRTMP_ADAPTER   pAd, 
-    IN  PUCHAR          pAddr, 
-    OUT SST             *Sst, 
+    IN  PRTMP_ADAPTER   pAd,
+    IN  PUCHAR          pAddr,
+    OUT SST             *Sst,
     OUT USHORT          *Aid,
     OUT UCHAR           *PsMode,
-    OUT UCHAR           *Rate); 
+    OUT UCHAR           *Rate);
 
 BOOLEAN APPsIndicate(
-    IN  PRTMP_ADAPTER   pAd, 
-    IN  PUCHAR          pAddr, 
-	IN ULONG Wcid, 
+    IN  PRTMP_ADAPTER   pAd,
+    IN  PUCHAR          pAddr,
+    IN ULONG Wcid,
     IN  UCHAR           Psm);
 
 #ifdef SYSTEM_LOG_SUPPORT
@@ -348,23 +348,23 @@ VOID APUpdateOperationMode(
 #endif /* DOT11_N_SUPPORT */
 
 VOID APUpdateCapabilityAndErpIe(
-	IN PRTMP_ADAPTER pAd);
+    IN PRTMP_ADAPTER pAd);
 
 BOOLEAN ApCheckAccessControlList(
-	IN PRTMP_ADAPTER pAd,
-	IN PUCHAR        pAddr,
-	IN UCHAR         Apidx);
+    IN PRTMP_ADAPTER pAd,
+    IN PUCHAR        pAddr,
+    IN UCHAR         Apidx);
 
 VOID ApUpdateAccessControlList(
     IN PRTMP_ADAPTER pAd,
     IN UCHAR         Apidx);
 
 VOID ApEnqueueNullFrame(
-	IN PRTMP_ADAPTER pAd,
-	IN PUCHAR        pAddr,
-	IN UCHAR         TxRate,
-	IN UCHAR         PID,
-	IN UCHAR         apidx,
+    IN PRTMP_ADAPTER pAd,
+    IN PUCHAR        pAddr,
+    IN UCHAR         TxRate,
+    IN UCHAR         PID,
+    IN UCHAR         apidx,
     IN BOOLEAN       bQosNull,
     IN BOOLEAN       bEOSP,
     IN UCHAR         OldUP);
@@ -373,55 +373,55 @@ VOID ApEnqueueNullFrame(
 
 
 BOOLEAN PeerAssocReqCmmSanity(
-    IN PRTMP_ADAPTER pAd, 
-	IN BOOLEAN isRessoc,
-    IN VOID *Msg, 
+    IN PRTMP_ADAPTER pAd,
+    IN BOOLEAN isRessoc,
+    IN VOID *Msg,
     IN INT MsgLen,
     IN IE_LISTS *ie_lists);
 
 
 BOOLEAN PeerDisassocReqSanity(
-    IN PRTMP_ADAPTER pAd, 
-    IN VOID *Msg, 
-    IN ULONG MsgLen, 
-    OUT PUCHAR pAddr2, 
+    IN PRTMP_ADAPTER pAd,
+    IN VOID *Msg,
+    IN ULONG MsgLen,
+    OUT PUCHAR pAddr2,
     OUT	UINT16	*SeqNum,
     OUT USHORT *Reason);
 
 BOOLEAN PeerDeauthReqSanity(
-    IN PRTMP_ADAPTER pAd, 
-    IN VOID *Msg, 
-    IN ULONG MsgLen, 
-    OUT PUCHAR pAddr2, 
-   	OUT	UINT16	*SeqNum,    
+    IN PRTMP_ADAPTER pAd,
+    IN VOID *Msg,
+    IN ULONG MsgLen,
+    OUT PUCHAR pAddr2,
+    OUT	UINT16	*SeqNum,
     OUT USHORT *Reason);
 
 BOOLEAN APPeerAuthSanity(
-    IN PRTMP_ADAPTER pAd, 
-    IN VOID *Msg, 
-    IN ULONG MsgLen, 
-	OUT PUCHAR pAddr1, 
-    OUT PUCHAR pAddr2, 
-    OUT USHORT *Alg, 
-    OUT USHORT *Seq, 
-    OUT USHORT *Status, 
+    IN PRTMP_ADAPTER pAd,
+    IN VOID *Msg,
+    IN ULONG MsgLen,
+    OUT PUCHAR pAddr1,
+    OUT PUCHAR pAddr2,
+    OUT USHORT *Alg,
+    OUT USHORT *Seq,
+    OUT USHORT *Status,
     OUT CHAR *ChlgText
-	);
+);
 
 
 #ifdef DOT1X_SUPPORT
 /* ap_cfg.h */
 INT	Set_OwnIPAddr_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
-	IN	PSTRING			arg);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	PSTRING			arg);
 
 INT	Set_EAPIfName_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
-	IN	PSTRING			arg);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	PSTRING			arg);
 
 INT	Set_PreAuthIfName_Proc(
-	IN	PRTMP_ADAPTER	pAd, 
-	IN	PSTRING			arg);
+    IN	PRTMP_ADAPTER	pAd,
+    IN	PSTRING			arg);
 
 /* Define in ap.c */
 BOOLEAN DOT1X_InternalCmdAction(
@@ -436,10 +436,10 @@ BOOLEAN DOT1X_EapTriggerAction(
 #endif  /* __AP_H__ */
 
 VOID AP_E2PROM_IOCTL_PostCtrl(
-	IN	RTMP_IOCTL_INPUT_STRUCT	*wrq,
-	IN	PSTRING					msg);
+    IN	RTMP_IOCTL_INPUT_STRUCT	*wrq,
+    IN	PSTRING					msg);
 
 VOID IAPP_L2_UpdatePostCtrl(
-	IN PRTMP_ADAPTER	pAd,
+    IN PRTMP_ADAPTER	pAd,
     IN UINT8 *mac_p,
     IN INT  bssid);

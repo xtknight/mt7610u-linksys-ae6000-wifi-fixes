@@ -34,26 +34,30 @@
 #include "iface/rtmp_usb.h"
 #endif /* RTMP_USB_SUPPORT */
 
-typedef struct _INF_PCI_CONFIG_ {
-	unsigned long CSRBaseAddress;	/* PCI MMIO Base Address, all access will use */
-	unsigned int irq_num;
+typedef struct _INF_PCI_CONFIG_
+{
+    unsigned long CSRBaseAddress;	/* PCI MMIO Base Address, all access will use */
+    unsigned int irq_num;
 } INF_PCI_CONFIG;
 
-typedef struct _INF_USB_CONFIG_ {
-	unsigned char BulkInEpAddr;	/* bulk-in endpoint address */
-	unsigned char BulkOutEpAddr[6];	/* bulk-out endpoint address */
+typedef struct _INF_USB_CONFIG_
+{
+    unsigned char BulkInEpAddr;	/* bulk-in endpoint address */
+    unsigned char BulkOutEpAddr[6];	/* bulk-out endpoint address */
 } INF_USB_CONFIG;
 
-typedef struct _INF_RBUS_CONFIG_ {
-	unsigned long csr_addr;
-	unsigned int irq;
+typedef struct _INF_RBUS_CONFIG_
+{
+    unsigned long csr_addr;
+    unsigned int irq;
 } INF_RBUS_CONFIG;
 
 
-typedef union _RTMP_INF_CONFIG_ {
-	struct _INF_PCI_CONFIG_ pciConfig;
-	struct _INF_USB_CONFIG_ usbConfig;
-	struct _INF_RBUS_CONFIG_ rbusConfig;
+typedef union _RTMP_INF_CONFIG_
+{
+    struct _INF_PCI_CONFIG_ pciConfig;
+    struct _INF_USB_CONFIG_ usbConfig;
+    struct _INF_RBUS_CONFIG_ rbusConfig;
 } RTMP_INF_CONFIG;
 
 #endif /* __RTMP_IFACE_H__ */

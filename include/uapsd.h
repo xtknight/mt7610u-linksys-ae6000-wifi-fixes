@@ -233,7 +233,7 @@
 
 /*
  * we can not use bMoreData bit to get EOSP bit because
- * maybe bMoreData = 1 & EOSP = 1 when Max SP Length != 0 
+ * maybe bMoreData = 1 & EOSP = 1 when Max SP Length != 0
  */
 #define UAPSD_MR_EOSP_SET(__pQosCtrl, __pTxBlk)								\
 	if (CLIENT_STATUS_TEST_FLAG((__pTxBlk)->pMacEntry,						\
@@ -316,7 +316,7 @@ Note:
 ========================================================================
 */
 UAPSD_EXTERN VOID UAPSD_Init(
-	IN	PRTMP_ADAPTER		pAd);
+    IN	PRTMP_ADAPTER		pAd);
 
 
 /*
@@ -334,7 +334,7 @@ Note:
 ========================================================================
 */
 UAPSD_EXTERN VOID UAPSD_Release(
-	IN	PRTMP_ADAPTER		pAd);
+    IN	PRTMP_ADAPTER		pAd);
 
 
 /*
@@ -371,7 +371,7 @@ Note:
 */
 UAPSD_EXTERN VOID UAPSD_SP_Close(
     IN  PRTMP_ADAPTER       pAd,
-	IN	MAC_TABLE_ENTRY		*pEntry);
+    IN	MAC_TABLE_ENTRY		*pEntry);
 
 /*
 ========================================================================
@@ -390,7 +390,7 @@ Note:
 */
 UAPSD_EXTERN BOOLEAN UAPSD_SP_IsClosed(
     IN  PRTMP_ADAPTER       pAd,
-	IN	MAC_TABLE_ENTRY		*pEntry);
+    IN	MAC_TABLE_ENTRY		*pEntry);
 
 /*
 ========================================================================
@@ -409,8 +409,8 @@ Note:
 ========================================================================
 */
 UAPSD_EXTERN VOID UAPSD_AllPacketDeliver(
-	IN	PRTMP_ADAPTER		pAd,
-	IN	MAC_TABLE_ENTRY		*pEntry);
+    IN	PRTMP_ADAPTER		pAd,
+    IN	MAC_TABLE_ENTRY		*pEntry);
 
 
 /*
@@ -444,10 +444,10 @@ Note:
 ========================================================================
 */
 UAPSD_EXTERN VOID UAPSD_AssocParse(
-	IN	PRTMP_ADAPTER		pAd,
-	IN	MAC_TABLE_ENTRY		*pEntry,
-	IN	UCHAR				*pElm,
-	IN	BOOLEAN				FlgApsdCapable);
+    IN	PRTMP_ADAPTER		pAd,
+    IN	MAC_TABLE_ENTRY		*pEntry,
+    IN	UCHAR				*pElm,
+    IN	BOOLEAN				FlgApsdCapable);
 
 
 /*
@@ -468,10 +468,10 @@ Note:
 ========================================================================
 */
 UAPSD_EXTERN VOID UAPSD_PacketEnqueue(
-	IN	PRTMP_ADAPTER		pAd,
-	IN	MAC_TABLE_ENTRY		*pEntry,
-	IN	PNDIS_PACKET		pPacket,
-	IN	UINT32				IdAc);
+    IN	PRTMP_ADAPTER		pAd,
+    IN	MAC_TABLE_ENTRY		*pEntry,
+    IN	PNDIS_PACKET		pPacket,
+    IN	UINT32				IdAc);
 
 
 /*
@@ -491,9 +491,9 @@ Note:
 ========================================================================
 */
 UAPSD_EXTERN VOID UAPSD_QoSNullTxMgmtTxDoneHandle(
-	IN	PRTMP_ADAPTER		pAd,
-	IN	PNDIS_PACKET		pPacket,
-	IN	UCHAR				*pDstMac);
+    IN	PRTMP_ADAPTER		pAd,
+    IN	PNDIS_PACKET		pPacket,
+    IN	UCHAR				*pDstMac);
 
 
 /*
@@ -513,8 +513,8 @@ Note:
 ========================================================================
 */
 UAPSD_EXTERN VOID UAPSD_QueueMaintenance(
-	IN	PRTMP_ADAPTER		pAd,
-	IN	MAC_TABLE_ENTRY		*pEntry);
+    IN	PRTMP_ADAPTER		pAd,
+    IN	MAC_TABLE_ENTRY		*pEntry);
 
 
 /*
@@ -541,9 +541,9 @@ Note:
 ========================================================================
 */
 UAPSD_EXTERN VOID UAPSD_SP_AUE_Handle(
-	IN RTMP_ADAPTER		*pAd,
+    IN RTMP_ADAPTER		*pAd,
     IN MAC_TABLE_ENTRY	*pEntry,
-	IN UCHAR			FlgSuccess);
+    IN UCHAR			FlgSuccess);
 
 
 /*
@@ -567,7 +567,7 @@ Note:
 ========================================================================
 */
 UAPSD_EXTERN VOID UAPSD_SP_CloseInRVDone(
-	IN	PRTMP_ADAPTER		pAd);
+    IN	PRTMP_ADAPTER		pAd);
 
 
 /*
@@ -589,9 +589,9 @@ Note:
 ========================================================================
 */
 UAPSD_EXTERN VOID UAPSD_SP_PacketCheck(
-	IN	PRTMP_ADAPTER		pAd,
-	IN	PNDIS_PACKET		pPacket,
-	IN	UCHAR				*pDstMac);
+    IN	PRTMP_ADAPTER		pAd,
+    IN	PNDIS_PACKET		pPacket,
+    IN	UCHAR				*pDstMac);
 
 
 #ifdef UAPSD_TIMING_RECORD_FUNC
@@ -611,7 +611,7 @@ Note:
 ========================================================================
 */
 UAPSD_EXTERN VOID UAPSD_TimingRecordCtrl(
-	IN	UINT32				Flag);
+    IN	UINT32				Flag);
 
 /*
 ========================================================================
@@ -634,8 +634,8 @@ Note:
 ========================================================================
 */
 UAPSD_EXTERN VOID UAPSD_TimingRecord(
-	IN	PRTMP_ADAPTER		pAd,
-	IN	UINT32				Type);
+    IN	PRTMP_ADAPTER		pAd,
+    IN	UINT32				Type);
 
 /*
 ========================================================================
@@ -653,7 +653,7 @@ Note:
 ========================================================================
 */
 UAPSD_EXTERN VOID UAPSD_TimeingRecordLoopIndex(
-	IN	UINT32				LoopIndex);
+    IN	UINT32				LoopIndex);
 #endif /* UAPSD_TIMING_RECORD_FUNC */
 
 
@@ -677,12 +677,12 @@ Note:
 ========================================================================
 */
 VOID UAPSD_QueueStatusGet(
-	IN	PRTMP_ADAPTER		pAd,
-	IN	MAC_TABLE_ENTRY		*pEntry,
-	OUT	BOOLEAN				*pFlgIsAnyPktForBK,
-	OUT BOOLEAN				*pFlgIsAnyPktForBE,
-	OUT BOOLEAN				*pFlgIsAnyPktForVI,
-	OUT BOOLEAN				*pFlgIsAnyPktForVO);
+    IN	PRTMP_ADAPTER		pAd,
+    IN	MAC_TABLE_ENTRY		*pEntry,
+    OUT	BOOLEAN				*pFlgIsAnyPktForBK,
+    OUT BOOLEAN				*pFlgIsAnyPktForBE,
+    OUT BOOLEAN				*pFlgIsAnyPktForVI,
+    OUT BOOLEAN				*pFlgIsAnyPktForVO);
 
 
 /*
@@ -702,9 +702,9 @@ Note:
 ========================================================================
 */
 UAPSD_EXTERN VOID UAPSD_TriggerFrameHandle(
-	IN	PRTMP_ADAPTER		pAd,
-	IN	MAC_TABLE_ENTRY		*pEntry,
-	IN	UCHAR				UpOfFrame);
+    IN	PRTMP_ADAPTER		pAd,
+    IN	MAC_TABLE_ENTRY		*pEntry,
+    IN	UCHAR				UpOfFrame);
 
 
 #ifdef RTMP_MAC_USB
@@ -727,10 +727,10 @@ Note:
 ========================================================================
 */
 UAPSD_EXTERN VOID UAPSD_TagFrame(
-	IN	RTMP_ADAPTER		*pAd,
-	IN	NDIS_PACKET			*pPkt,
-	IN	UCHAR				Wcid,
-	IN	UINT32				PktOffset);
+    IN	RTMP_ADAPTER		*pAd,
+    IN	NDIS_PACKET			*pPkt,
+    IN	UCHAR				Wcid,
+    IN	UINT32				PktOffset);
 
 
 /*
@@ -752,10 +752,10 @@ Note:
 ========================================================================
 */
 UAPSD_EXTERN VOID UAPSD_UnTagFrame(
-	IN	RTMP_ADAPTER	*pAd,
-	IN	UCHAR			AcQueId,
-	IN	UINT32			bulkStartPos,
-	IN	UINT32			bulkEnPos);
+    IN	RTMP_ADAPTER	*pAd,
+    IN	UCHAR			AcQueId,
+    IN	UINT32			bulkStartPos,
+    IN	UINT32			bulkEnPos);
 #endif /* RTMP_MAC_USB */
 
 /* End of ap_uapsd.h */

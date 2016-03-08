@@ -35,28 +35,29 @@
 #ifdef MD5_SUPPORT
 #define MD5_BLOCK_SIZE    64	/* 512 bits = 64 bytes */
 #define MD5_DIGEST_SIZE   16	/* 128 bits = 16 bytes */
-typedef struct {
-	UINT32 HashValue[4];
-	UINT64 MessageLen;
-	UINT8 Block[MD5_BLOCK_SIZE];
-	UINT BlockLen;
+typedef struct
+{
+    UINT32 HashValue[4];
+    UINT64 MessageLen;
+    UINT8 Block[MD5_BLOCK_SIZE];
+    UINT BlockLen;
 } MD5_CTX_STRUC, *PMD5_CTX_STRUC;
 
 VOID RT_MD5_Init(
-	IN MD5_CTX_STRUC * pMD5_CTX);
+    IN MD5_CTX_STRUC *pMD5_CTX);
 VOID RT_MD5_Hash(
-	IN MD5_CTX_STRUC * pMD5_CTX);
+    IN MD5_CTX_STRUC *pMD5_CTX);
 VOID RT_MD5_Append(
-	IN MD5_CTX_STRUC * pMD5_CTX,
-	IN const UINT8 Message[],
-	IN UINT MessageLen);
+    IN MD5_CTX_STRUC *pMD5_CTX,
+    IN const UINT8 Message[],
+    IN UINT MessageLen);
 VOID RT_MD5_End(
-	IN MD5_CTX_STRUC * pMD5_CTX,
-	OUT UINT8 DigestMessage[]);
+    IN MD5_CTX_STRUC *pMD5_CTX,
+    OUT UINT8 DigestMessage[]);
 VOID RT_MD5(
-	IN const UINT8 Message[],
-	IN UINT MessageLen,
-	OUT UINT8 DigestMessage[]);
+    IN const UINT8 Message[],
+    IN UINT MessageLen,
+    OUT UINT8 DigestMessage[]);
 #endif /* MD5_SUPPORT */
 
 

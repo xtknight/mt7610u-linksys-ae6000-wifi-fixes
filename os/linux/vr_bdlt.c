@@ -61,8 +61,8 @@ Note:
 */
 VOID replace_upper_layer_packet_destination(VOID *pXiDestination)
 {
-	DBGPRINT(RT_DEBUG_TRACE, ("ralink broad light> replace_upper_layer_packet_destination\n"));
-	pToUpperLayerPktSent = pXiDestination ;
+    DBGPRINT(RT_DEBUG_TRACE, ("ralink broad light> replace_upper_layer_packet_destination\n"));
+    pToUpperLayerPktSent = pXiDestination ;
 } /* End of replace_upper_layer_packet_destination */
 
 

@@ -84,53 +84,58 @@
 
 #define WPA_FUNC_SIZE                (MAX_WPA_PTK_STATE * MAX_WPA_MSG)
 
-typedef enum _WpaRole {
-	WPA_NONE,		/* 0 */
-	WPA_Authenticator,	/* 1 */
-	WPA_Supplicant,		/* 2 */
-	WPA_BOTH,		/* 3: Authenticator and Supplicant */
+typedef enum _WpaRole
+{
+    WPA_NONE,		/* 0 */
+    WPA_Authenticator,	/* 1 */
+    WPA_Supplicant,		/* 2 */
+    WPA_BOTH,		/* 3: Authenticator and Supplicant */
 } WPA_ROLE;
 
 /*for-wpa value domain of pMacEntry->WpaState  802.1i D3   p.114 */
-typedef enum _ApWpaState {
-	AS_NOTUSE,		/* 0 */
-	AS_DISCONNECT,		/* 1 */
-	AS_DISCONNECTED,	/* 2 */
-	AS_INITIALIZE,		/* 3 */
-	AS_AUTHENTICATION,	/* 4 */
-	AS_AUTHENTICATION2,	/* 5 */
-	AS_INITPMK,		/* 6 */
-	AS_INITPSK,		/* 7 */
-	AS_PTKSTART,		/* 8 */
-	AS_PTKINIT_NEGOTIATING,	/* 9 */
-	AS_PTKINITDONE,		/* 10 */
-	AS_UPDATEKEYS,		/* 11 */
-	AS_INTEGRITY_FAILURE,	/* 12 */
-	AS_KEYUPDATE,		/* 13 */
+typedef enum _ApWpaState
+{
+    AS_NOTUSE,		/* 0 */
+    AS_DISCONNECT,		/* 1 */
+    AS_DISCONNECTED,	/* 2 */
+    AS_INITIALIZE,		/* 3 */
+    AS_AUTHENTICATION,	/* 4 */
+    AS_AUTHENTICATION2,	/* 5 */
+    AS_INITPMK,		/* 6 */
+    AS_INITPSK,		/* 7 */
+    AS_PTKSTART,		/* 8 */
+    AS_PTKINIT_NEGOTIATING,	/* 9 */
+    AS_PTKINITDONE,		/* 10 */
+    AS_UPDATEKEYS,		/* 11 */
+    AS_INTEGRITY_FAILURE,	/* 12 */
+    AS_KEYUPDATE,		/* 13 */
 } AP_WPA_STATE;
 
 /* For supplicant state machine states. 802.11i Draft 4.1, p. 97 */
 /* We simplified it */
-typedef enum _WpaState {
-	SS_NOTUSE,		/* 0 */
-	SS_START,		/* 1 */
-	SS_WAIT_MSG_3,		/* 2 */
-	SS_WAIT_GROUP,		/* 3 */
-	SS_FINISH,		/* 4 */
-	SS_KEYUPDATE,		/* 5 */
+typedef enum _WpaState
+{
+    SS_NOTUSE,		/* 0 */
+    SS_START,		/* 1 */
+    SS_WAIT_MSG_3,		/* 2 */
+    SS_WAIT_GROUP,		/* 3 */
+    SS_FINISH,		/* 4 */
+    SS_KEYUPDATE,		/* 5 */
 } WPA_STATE;
 
 /* for-wpa value domain of pMacEntry->WpaState  802.1i D3   p.114 */
-typedef enum _GTKState {
-	REKEY_NEGOTIATING,
-	REKEY_ESTABLISHED,
-	KEYERROR,
+typedef enum _GTKState
+{
+    REKEY_NEGOTIATING,
+    REKEY_ESTABLISHED,
+    KEYERROR,
 } GTK_STATE;
 
 /*  for-wpa  value domain of pMacEntry->WpaState  802.1i D3   p.114 */
-typedef enum _WpaGTKState {
-	SETKEYS,
-	SETKEYS_DONE,
+typedef enum _WpaGTKState
+{
+    SETKEYS,
+    SETKEYS_DONE,
 } WPA_GTK_STATE;
 
 /* WPA internal command type */
@@ -138,12 +143,13 @@ typedef enum _WpaGTKState {
 #define WPA_SM_DISCONNECT		0xff
 
 /* WPA element IDs */
-typedef enum _WPA_VARIABLE_ELEMENT_ID {
-	WPA_ELEM_CMD = 1,
-	WPA_ELEM_PEER_RSNIE,
-	WPA_ELEM_LOCAL_RSNIE,
-	WPA_ELEM_PMK,
-	WPA_ELEM_RESV
+typedef enum _WPA_VARIABLE_ELEMENT_ID
+{
+    WPA_ELEM_CMD = 1,
+    WPA_ELEM_PEER_RSNIE,
+    WPA_ELEM_LOCAL_RSNIE,
+    WPA_ELEM_PMK,
+    WPA_ELEM_RESV
 } WPA_VARIABLE_ELEMENT_ID;
 
 #define GROUP_SUITE					0
@@ -170,71 +176,79 @@ typedef enum _WPA_VARIABLE_ELEMENT_ID {
 /*	|	1  |  1  |   1  |  1  |	-> 0x0F */
 /*	+------+-----+------+-----+ */
 /* */
-typedef enum _WpaMixPairCipher {
-	MIX_CIPHER_NOTUSE = 0x00,
-	WPA_NONE_WPA2_TKIPAES = 0x03,	/* WPA2-TKIPAES */
-	WPA_AES_WPA2_TKIP = 0x06,
-	WPA_AES_WPA2_TKIPAES = 0x07,
-	WPA_TKIP_WPA2_AES = 0x09,
-	WPA_TKIP_WPA2_TKIPAES = 0x0B,
-	WPA_TKIPAES_WPA2_NONE = 0x0C,	/* WPA-TKIPAES */
-	WPA_TKIPAES_WPA2_AES = 0x0D,
-	WPA_TKIPAES_WPA2_TKIP = 0x0E,
-	WPA_TKIPAES_WPA2_TKIPAES = 0x0F,
+typedef enum _WpaMixPairCipher
+{
+    MIX_CIPHER_NOTUSE = 0x00,
+    WPA_NONE_WPA2_TKIPAES = 0x03,	/* WPA2-TKIPAES */
+    WPA_AES_WPA2_TKIP = 0x06,
+    WPA_AES_WPA2_TKIPAES = 0x07,
+    WPA_TKIP_WPA2_AES = 0x09,
+    WPA_TKIP_WPA2_TKIPAES = 0x0B,
+    WPA_TKIPAES_WPA2_NONE = 0x0C,	/* WPA-TKIPAES */
+    WPA_TKIPAES_WPA2_AES = 0x0D,
+    WPA_TKIPAES_WPA2_TKIP = 0x0E,
+    WPA_TKIPAES_WPA2_TKIPAES = 0x0F,
 } WPA_MIX_PAIR_CIPHER;
 
 /* The internal command list for ralink dot1x daemon using */
-typedef enum _Dot1xInternalCmd {
-	DOT1X_DISCONNECT_ENTRY,
-	DOT1X_RELOAD_CONFIG,
+typedef enum _Dot1xInternalCmd
+{
+    DOT1X_DISCONNECT_ENTRY,
+    DOT1X_RELOAD_CONFIG,
 } DOT1X_INTERNAL_CMD;
 
 /* 802.1x authentication format */
-typedef struct _IEEE8021X_FRAME {
-	UCHAR Version;		/* 1.0 */
-	UCHAR Type;		/* 0 = EAP Packet */
-	USHORT Length;
+typedef struct _IEEE8021X_FRAME
+{
+    UCHAR Version;		/* 1.0 */
+    UCHAR Type;		/* 0 = EAP Packet */
+    USHORT Length;
 } IEEE8021X_FRAME, *PIEEE8021X_FRAME;
 
-typedef struct GNU_PACKED _RSN_IE_HEADER_STRUCT {
-	UCHAR Eid;
-	UCHAR Length;
-	USHORT Version;		/* Little endian format */
+typedef struct GNU_PACKED _RSN_IE_HEADER_STRUCT
+{
+    UCHAR Eid;
+    UCHAR Length;
+    USHORT Version;		/* Little endian format */
 } RSN_IE_HEADER_STRUCT, *PRSN_IE_HEADER_STRUCT;
 
 /* Cipher suite selector types */
-typedef struct GNU_PACKED _CIPHER_SUITE_STRUCT {
-	UCHAR Oui[3];
-	UCHAR Type;
+typedef struct GNU_PACKED _CIPHER_SUITE_STRUCT
+{
+    UCHAR Oui[3];
+    UCHAR Type;
 } CIPHER_SUITE_STRUCT, *PCIPHER_SUITE_STRUCT;
 
 /* Authentication and Key Management suite selector */
-typedef struct GNU_PACKED _AKM_SUITE_STRUCT {
-	UCHAR Oui[3];
-	UCHAR Type;
+typedef struct GNU_PACKED _AKM_SUITE_STRUCT
+{
+    UCHAR Oui[3];
+    UCHAR Type;
 } AKM_SUITE_STRUCT, *PAKM_SUITE_STRUCT;
 
 /* RSN capability */
-typedef struct GNU_PACKED _RSN_CAPABILITY {
-	USHORT Rsv:10;
-	USHORT GTKSAReplayCnt:2;
-	USHORT PTKSAReplayCnt:2;
-	USHORT NoPairwise:1;
-	USHORT PreAuth:1;
+typedef struct GNU_PACKED _RSN_CAPABILITY
+{
+    USHORT Rsv:10;
+    USHORT GTKSAReplayCnt:2;
+    USHORT PTKSAReplayCnt:2;
+    USHORT NoPairwise:1;
+    USHORT PreAuth:1;
 } RSN_CAPABILITY, *PRSN_CAPABILITY;
 
-typedef struct _CIPHER_KEY {
-	UCHAR Key[16];		/* 128 bits max */
-	UCHAR TxMic[8];
-	UCHAR RxMic[8];
-	UCHAR TxTsc[16];	/* TSC value. Change it from 48bit to 128bit */
-	UCHAR RxTsc[16];	/* TSC value. Change it from 48bit to 128bit */
-	UCHAR CipherAlg;	/* 0:none, 1:WEP64, 2:WEP128, 3:TKIP, 4:AES, 5:CKIP64, 6:CKIP128 */
-	UCHAR KeyLen;		/* Key length for each key, 0: entry is invalid */
+typedef struct _CIPHER_KEY
+{
+    UCHAR Key[16];		/* 128 bits max */
+    UCHAR TxMic[8];
+    UCHAR RxMic[8];
+    UCHAR TxTsc[16];	/* TSC value. Change it from 48bit to 128bit */
+    UCHAR RxTsc[16];	/* TSC value. Change it from 48bit to 128bit */
+    UCHAR CipherAlg;	/* 0:none, 1:WEP64, 2:WEP128, 3:TKIP, 4:AES, 5:CKIP64, 6:CKIP128 */
+    UCHAR KeyLen;		/* Key length for each key, 0: entry is invalid */
 #ifdef CONFIG_STA_SUPPORT
-	UCHAR BssId[6];
+    UCHAR BssId[6];
 #endif				/* CONFIG_STA_SUPPORT */
-	UCHAR Type;		/* Indicate Pairwise/Group when reporting MIC error */
+    UCHAR Type;		/* Indicate Pairwise/Group when reporting MIC error */
 } CIPHER_KEY, *PCIPHER_KEY;
 
 #endif /* WPA_CMM_H */

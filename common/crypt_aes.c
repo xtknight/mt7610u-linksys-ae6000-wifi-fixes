@@ -29,13 +29,16 @@
 
 
 /* The value given by [x^(i-1),{00},{00},{00}], with x^(i-1) being powers of x in the field GF(2^8). */
-static const UINT32 aes_rcon[] = {
-	0x00000000, 0x01000000, 0x02000000, 0x04000000, 
-    0x08000000, 0x10000000, 0x20000000, 0x40000000, 
-    0x80000000, 0x1B000000, 0x36000000};
+static const UINT32 aes_rcon[] =
+{
+    0x00000000, 0x01000000, 0x02000000, 0x04000000,
+    0x08000000, 0x10000000, 0x20000000, 0x40000000,
+    0x80000000, 0x1B000000, 0x36000000
+};
 
-static const UINT8 aes_sbox_enc[] = {
-  /*  0     1     2     3     4     5     6     7     8     9     a     b     c     d     e     f    */
+static const UINT8 aes_sbox_enc[] =
+{
+    /*  0     1     2     3     4     5     6     7     8     9     a     b     c     d     e     f    */
     0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f, 0xc5, 0x30, 0x01, 0x67, 0x2b, 0xfe, 0xd7 ,0xab, 0x76, /* 0 */
     0xca, 0x82, 0xc9, 0x7d, 0xfa, 0x59, 0x47, 0xf0, 0xad, 0xd4, 0xa2, 0xaf, 0x9c, 0xa4 ,0x72, 0xc0, /* 1 */
     0xb7, 0xfd, 0x93, 0x26, 0x36, 0x3f, 0xf7, 0xcc, 0x34, 0xa5, 0xe5, 0xf1, 0x71, 0xd8 ,0x31, 0x15, /* 2 */
@@ -54,8 +57,9 @@ static const UINT8 aes_sbox_enc[] = {
     0x8c, 0xa1, 0x89, 0x0d, 0xbf, 0xe6, 0x42, 0x68, 0x41, 0x99, 0x2d, 0x0f, 0xb0, 0x54 ,0xbb, 0x16, /* f */
 };
 
-static const UINT8 aes_sbox_dec[] = {
-  /*  0     1     2     3     4     5     6     7     8     9     a     b     c     d     e     f    */
+static const UINT8 aes_sbox_dec[] =
+{
+    /*  0     1     2     3     4     5     6     7     8     9     a     b     c     d     e     f    */
     0x52, 0x09, 0x6a, 0xd5, 0x30, 0x36, 0xa5, 0x38, 0xbf, 0x40, 0xa3, 0x9e, 0x81, 0xf3, 0xd7, 0xfb, /* 0 */
     0x7c, 0xe3, 0x39, 0x82, 0x9b, 0x2f, 0xff, 0x87, 0x34, 0x8e, 0x43, 0x44, 0xc4, 0xde, 0xe9, 0xcb, /* 1 */
     0x54, 0x7b, 0x94, 0x32, 0xa6, 0xc2, 0x23, 0x3d, 0xee, 0x4c, 0x95, 0x0b, 0x42, 0xfa, 0xc3, 0x4e, /* 2 */
@@ -75,8 +79,9 @@ static const UINT8 aes_sbox_dec[] = {
 };
 
 /* ArrayIndex*{02} */
-static const UINT8 aes_mul_2[] = {
-  /*  0     1     2     3     4     5     6     7     8     9     a     b     c     d     e     f    */
+static const UINT8 aes_mul_2[] =
+{
+    /*  0     1     2     3     4     5     6     7     8     9     a     b     c     d     e     f    */
     0x00, 0x02, 0x04, 0x06, 0x08, 0x0a, 0x0c, 0x0e, 0x10, 0x12, 0x14, 0x16, 0x18, 0x1a, 0x1c, 0x1e, /* 0 */
     0x20, 0x22, 0x24, 0x26, 0x28, 0x2a, 0x2c, 0x2e, 0x30, 0x32, 0x34, 0x36, 0x38, 0x3a, 0x3c, 0x3e, /* 1 */
     0x40, 0x42, 0x44, 0x46, 0x48, 0x4a, 0x4c, 0x4e, 0x50, 0x52, 0x54, 0x56, 0x58, 0x5a, 0x5c, 0x5e, /* 2 */
@@ -96,8 +101,9 @@ static const UINT8 aes_mul_2[] = {
 };
 
 /* ArrayIndex*{03} */
-static const UINT8 aes_mul_3[] = {
-  /*  0     1     2     3     4     5     6     7     8     9     a     b     c     d     e     f    */
+static const UINT8 aes_mul_3[] =
+{
+    /*  0     1     2     3     4     5     6     7     8     9     a     b     c     d     e     f    */
     0x00, 0x03, 0x06, 0x05, 0x0c, 0x0f, 0x0a, 0x09, 0x18, 0x1b, 0x1e, 0x1d, 0x14, 0x17, 0x12, 0x11, /* 0 */
     0x30, 0x33, 0x36, 0x35, 0x3c, 0x3f, 0x3a, 0x39, 0x28, 0x2b, 0x2e, 0x2d, 0x24, 0x27, 0x22, 0x21, /* 1 */
     0x60, 0x63, 0x66, 0x65, 0x6c, 0x6f, 0x6a, 0x69, 0x78, 0x7b, 0x7e, 0x7d, 0x74, 0x77, 0x72, 0x71, /* 2 */
@@ -117,8 +123,9 @@ static const UINT8 aes_mul_3[] = {
 };
 
 /* ArrayIndex*{09} */
-static const UINT8 aes_mul_9[] = {
-  /*  0     1     2     3     4     5     6     7     8     9     a     b     c     d     e     f    */
+static const UINT8 aes_mul_9[] =
+{
+    /*  0     1     2     3     4     5     6     7     8     9     a     b     c     d     e     f    */
     0x00, 0x09, 0x12, 0x1b, 0x24, 0x2d, 0x36, 0x3f, 0x48, 0x41, 0x5a, 0x53, 0x6c, 0x65, 0x7e, 0x77, /* 0 */
     0x90, 0x99, 0x82, 0x8b, 0xb4, 0xbd, 0xa6, 0xaf, 0xd8, 0xd1, 0xca, 0xc3, 0xfc, 0xf5, 0xee, 0xe7, /* 1 */
     0x3b, 0x32, 0x29, 0x20, 0x1f, 0x16, 0x0d, 0x04, 0x73, 0x7a, 0x61, 0x68, 0x57, 0x5e, 0x45, 0x4c, /* 2 */
@@ -138,8 +145,9 @@ static const UINT8 aes_mul_9[] = {
 };
 
 /* ArrayIndex*{0b} */
-static const UINT8 aes_mul_b[] = {
-  /*  0     1     2     3     4     5     6     7     8     9     a     b     c     d     e     f    */
+static const UINT8 aes_mul_b[] =
+{
+    /*  0     1     2     3     4     5     6     7     8     9     a     b     c     d     e     f    */
     0x00, 0x0b, 0x16, 0x1d, 0x2c, 0x27, 0x3a, 0x31, 0x58, 0x53, 0x4e, 0x45, 0x74, 0x7f, 0x62, 0x69, /* 0 */
     0xb0, 0xbb, 0xa6, 0xad, 0x9c, 0x97, 0x8a, 0x81, 0xe8, 0xe3, 0xfe, 0xf5, 0xc4, 0xcf, 0xd2, 0xd9, /* 1 */
     0x7b, 0x70, 0x6d, 0x66, 0x57, 0x5c, 0x41, 0x4a, 0x23, 0x28, 0x35, 0x3e, 0x0f, 0x04, 0x19, 0x12, /* 2 */
@@ -159,8 +167,9 @@ static const UINT8 aes_mul_b[] = {
 };
 
 /* ArrayIndex*{0d} */
-static const UINT8 aes_mul_d[] = {
-  /*  0     1     2     3     4     5     6     7     8     9     a     b     c     d     e     f    */
+static const UINT8 aes_mul_d[] =
+{
+    /*  0     1     2     3     4     5     6     7     8     9     a     b     c     d     e     f    */
     0x00, 0x0d, 0x1a, 0x17, 0x34, 0x39, 0x2e, 0x23, 0x68, 0x65, 0x72, 0x7f, 0x5c, 0x51, 0x46, 0x4b, /* 0 */
     0xd0, 0xdd, 0xca, 0xc7, 0xe4, 0xe9, 0xfe, 0xf3, 0xb8, 0xb5, 0xa2, 0xaf, 0x8c, 0x81, 0x96, 0x9b, /* 1 */
     0xbb, 0xb6, 0xa1, 0xac, 0x8f, 0x82, 0x95, 0x98, 0xd3, 0xde, 0xc9, 0xc4, 0xe7, 0xea, 0xfd, 0xf0, /* 2 */
@@ -180,8 +189,9 @@ static const UINT8 aes_mul_d[] = {
 };
 
 /* ArrayIndex*{0e} */
-static const UINT8 aes_mul_e[] = {
-  /*  0     1     2     3     4     5     6     7     8     9     a     b     c     d     e     f    */
+static const UINT8 aes_mul_e[] =
+{
+    /*  0     1     2     3     4     5     6     7     8     9     a     b     c     d     e     f    */
     0x00, 0x0e, 0x1c, 0x12, 0x38, 0x36, 0x24, 0x2a, 0x70, 0x7e, 0x6c, 0x62, 0x48, 0x46, 0x54, 0x5a, /* 0 */
     0xe0, 0xee, 0xfc, 0xf2, 0xd8, 0xd6, 0xc4, 0xca, 0x90, 0x9e, 0x8c, 0x82, 0xa8, 0xa6, 0xb4, 0xba, /* 1 */
     0xdb, 0xd5, 0xc7, 0xc9, 0xe3, 0xed, 0xff, 0xf1, 0xab, 0xa5, 0xb7, 0xb9, 0x93, 0x9d, 0x8f, 0x81, /* 2 */
@@ -202,11 +212,15 @@ static const UINT8 aes_mul_e[] = {
 
 /* For AES_CMAC */
 #define AES_MAC_LENGTH 16 /* 128-bit string */
-static UINT8 Const_Zero[16] = {
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
-static UINT8 Const_Rb[16] = {
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x87};
-   
+static UINT8 Const_Zero[16] =
+{
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+};
+static UINT8 Const_Rb[16] =
+{
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x87
+};
+
 /*
 ========================================================================
 Routine Description:
@@ -224,7 +238,7 @@ Note:
     Pseudo code for key expansion
     ------------------------------------------
        Nk = (key length/4);
-       
+
        while (i < Nk)
            KeyWordExpansion[i] = word(key[4*i], key[4*i + 1], key[4*i + 2], key[4*i + 3]);
            i++;
@@ -243,7 +257,7 @@ Note:
        end while
 ========================================================================
 */
-VOID RT_AES_KeyExpansion (
+VOID RT_AES_KeyExpansion(
     IN UINT8 Key[],
     IN UINT KeyLength,
     INOUT AES_CTX_STRUC *paes_ctx)
@@ -254,7 +268,8 @@ VOID RT_AES_KeyExpansion (
     UINT32 Temprcon;
 
     NumberOfWordOfKey = KeyLength >> 2;
-    while (KeyIndex < NumberOfWordOfKey)
+
+    while(KeyIndex < NumberOfWordOfKey)
     {
         paes_ctx->KeyWordExpansion[0][KeyIndex] = Key[4*KeyIndex];
         paes_ctx->KeyWordExpansion[1][KeyIndex] = Key[4*KeyIndex + 1];
@@ -263,27 +278,33 @@ VOID RT_AES_KeyExpansion (
         KeyIndex++;
     }
 
-    NumberOfWordOfKeyExpansion = ((UINT) AES_KEY_ROWS) * ((KeyLength >> 2) + 6 + 1);    
-    while (KeyIndex < NumberOfWordOfKeyExpansion)
+    NumberOfWordOfKeyExpansion = ((UINT) AES_KEY_ROWS) * ((KeyLength >> 2) + 6 + 1);
+
+    while(KeyIndex < NumberOfWordOfKeyExpansion)
     {
         TempWord[0] = paes_ctx->KeyWordExpansion[0][KeyIndex - 1];
         TempWord[1] = paes_ctx->KeyWordExpansion[1][KeyIndex - 1];
         TempWord[2] = paes_ctx->KeyWordExpansion[2][KeyIndex - 1];
         TempWord[3] = paes_ctx->KeyWordExpansion[3][KeyIndex - 1];
-        if ((KeyIndex % NumberOfWordOfKey) == 0) {
+
+        if((KeyIndex % NumberOfWordOfKey) == 0)
+        {
             Temprcon = aes_rcon[KeyIndex/NumberOfWordOfKey];
             Temp = aes_sbox_enc[TempWord[1]]^((Temprcon >> 24) & 0xff);
             TempWord[1] = aes_sbox_enc[TempWord[2]]^((Temprcon >> 16) & 0xff);
             TempWord[2] = aes_sbox_enc[TempWord[3]]^((Temprcon >>  8) & 0xff);
-            TempWord[3] = aes_sbox_enc[TempWord[0]]^((Temprcon      ) & 0xff);
+            TempWord[3] = aes_sbox_enc[TempWord[0]]^((Temprcon) & 0xff);
             TempWord[0] = Temp;
-        } else if ((NumberOfWordOfKey > 6) && ((KeyIndex % NumberOfWordOfKey) == 4)) {
+        }
+        else if((NumberOfWordOfKey > 6) && ((KeyIndex % NumberOfWordOfKey) == 4))
+        {
             Temp = aes_sbox_enc[TempWord[0]];
             TempWord[1] = aes_sbox_enc[TempWord[1]];
             TempWord[2] = aes_sbox_enc[TempWord[2]];
             TempWord[3] = aes_sbox_enc[TempWord[3]];
             TempWord[0] = Temp;
         }
+
         paes_ctx->KeyWordExpansion[0][KeyIndex] = paes_ctx->KeyWordExpansion[0][KeyIndex - NumberOfWordOfKey]^TempWord[0];
         paes_ctx->KeyWordExpansion[1][KeyIndex] = paes_ctx->KeyWordExpansion[1][KeyIndex - NumberOfWordOfKey]^TempWord[1];
         paes_ctx->KeyWordExpansion[2][KeyIndex] = paes_ctx->KeyWordExpansion[2][KeyIndex - NumberOfWordOfKey]^TempWord[2];
@@ -312,13 +333,13 @@ Return Value:
 Note:
     Reference to FIPS-PUB 197
     1. Check if block size is 16 bytes(128 bits) and if key length is 16, 24, or 32 bytes(128, 192, or 256 bits)
-    2. Transfer the plain block to state block 
+    2. Transfer the plain block to state block
     3. Main encryption rounds
     4. Transfer the state block to cipher block
     ------------------------------------------
        NumberOfRound = (key length / 4) + 6;
        state block = plain block;
-       
+
        AddRoundKey(state block, key);
        for round = 1 to NumberOfRound
            SubBytes(state block)
@@ -334,7 +355,7 @@ Note:
        cipher block = state block;
 ========================================================================
 */
-VOID RT_AES_Encrypt (
+VOID RT_AES_Encrypt(
     IN UINT8 PlainBlock[],
     IN UINT PlainBlockSize,
     IN UINT8 Key[],
@@ -342,48 +363,54 @@ VOID RT_AES_Encrypt (
     OUT UINT8 CipherBlock[],
     INOUT UINT *CipherBlockSize)
 {
-/*    AES_CTX_STRUC aes_ctx;
-*/
-	AES_CTX_STRUC *paes_ctx = NULL;
+    /*    AES_CTX_STRUC aes_ctx;
+    */
+    AES_CTX_STRUC *paes_ctx = NULL;
     UINT RowIndex, ColumnIndex;
     UINT RoundIndex, NumberOfRound = 0;
     UINT8 Temp, Row0, Row1, Row2, Row3;
 
-    /*   
-     * 1. Check if block size is 16 bytes(128 bits) and if key length is 16, 24, or 32 bytes(128, 192, or 256 bits) 
+    /*
+     * 1. Check if block size is 16 bytes(128 bits) and if key length is 16, 24, or 32 bytes(128, 192, or 256 bits)
      */
-    if (PlainBlockSize != AES_BLOCK_SIZES) {
-    	DBGPRINT(RT_DEBUG_ERROR, ("RT_AES_Encrypt: plain block size is %d bytes, it must be %d bytes(128 bits).\n", 
-            PlainBlockSize, AES_BLOCK_SIZES));
-        return;
-    }
-    if ((KeyLength != AES_KEY128_LENGTH) && (KeyLength != AES_KEY192_LENGTH) && (KeyLength != AES_KEY256_LENGTH)) {
-    	DBGPRINT(RT_DEBUG_ERROR, ("RT_AES_Encrypt: key length is %d bytes, it must be %d, %d, or %d bytes(128, 192, or 256 bits).\n", 
-            KeyLength, AES_KEY128_LENGTH, AES_KEY192_LENGTH, AES_KEY256_LENGTH));
-        return;
-    }
-    if (*CipherBlockSize < AES_BLOCK_SIZES) {
-    	DBGPRINT(RT_DEBUG_ERROR, ("RT_AES_Encrypt: cipher block size is %d bytes, it must be %d bytes(128 bits).\n", 
-            *CipherBlockSize, AES_BLOCK_SIZES));
+    if(PlainBlockSize != AES_BLOCK_SIZES)
+    {
+        DBGPRINT(RT_DEBUG_ERROR, ("RT_AES_Encrypt: plain block size is %d bytes, it must be %d bytes(128 bits).\n",
+                                  PlainBlockSize, AES_BLOCK_SIZES));
         return;
     }
 
-	/* allocate memory */
-	os_alloc_mem(NULL, (UCHAR **)&paes_ctx, sizeof(AES_CTX_STRUC));
-	if (paes_ctx == NULL)
-	{
-		DBGPRINT(RT_DEBUG_ERROR, ("%s: Allocate memory fail!!!\n", __FUNCTION__));
-		return;
-	}
+    if((KeyLength != AES_KEY128_LENGTH) && (KeyLength != AES_KEY192_LENGTH) && (KeyLength != AES_KEY256_LENGTH))
+    {
+        DBGPRINT(RT_DEBUG_ERROR, ("RT_AES_Encrypt: key length is %d bytes, it must be %d, %d, or %d bytes(128, 192, or 256 bits).\n",
+                                  KeyLength, AES_KEY128_LENGTH, AES_KEY192_LENGTH, AES_KEY256_LENGTH));
+        return;
+    }
 
-    /* 
-     * 2. Transfer the plain block to state block 
+    if(*CipherBlockSize < AES_BLOCK_SIZES)
+    {
+        DBGPRINT(RT_DEBUG_ERROR, ("RT_AES_Encrypt: cipher block size is %d bytes, it must be %d bytes(128 bits).\n",
+                                  *CipherBlockSize, AES_BLOCK_SIZES));
+        return;
+    }
+
+    /* allocate memory */
+    os_alloc_mem(NULL, (UCHAR **)&paes_ctx, sizeof(AES_CTX_STRUC));
+
+    if(paes_ctx == NULL)
+    {
+        DBGPRINT(RT_DEBUG_ERROR, ("%s: Allocate memory fail!!!\n", __FUNCTION__));
+        return;
+    }
+
+    /*
+     * 2. Transfer the plain block to state block
      */
-    for (RowIndex = 0; RowIndex < AES_STATE_ROWS;RowIndex++)
-        for (ColumnIndex = 0; ColumnIndex < AES_STATE_COLUMNS;ColumnIndex++)
+    for(RowIndex = 0; RowIndex < AES_STATE_ROWS; RowIndex++)
+        for(ColumnIndex = 0; ColumnIndex < AES_STATE_COLUMNS; ColumnIndex++)
             paes_ctx->State[RowIndex][ColumnIndex] = PlainBlock[RowIndex + 4*ColumnIndex];
 
-    /* 
+    /*
      *  3. Main encryption rounds
      */
     RT_AES_KeyExpansion(Key, KeyLength, paes_ctx);
@@ -391,15 +418,16 @@ VOID RT_AES_Encrypt (
 
     /* AES_AddRoundKey */
     RoundIndex = 0;
-    for (RowIndex = 0; RowIndex < AES_STATE_ROWS;RowIndex++)
-        for (ColumnIndex = 0; ColumnIndex < AES_STATE_COLUMNS;ColumnIndex++)
+
+    for(RowIndex = 0; RowIndex < AES_STATE_ROWS; RowIndex++)
+        for(ColumnIndex = 0; ColumnIndex < AES_STATE_COLUMNS; ColumnIndex++)
             paes_ctx->State[RowIndex][ColumnIndex] ^= paes_ctx->KeyWordExpansion[RowIndex][(RoundIndex*((UINT) AES_STATE_COLUMNS)) + ColumnIndex];
 
-    for (RoundIndex = 1; RoundIndex < NumberOfRound;RoundIndex++)
+    for(RoundIndex = 1; RoundIndex < NumberOfRound; RoundIndex++)
     {
         /* AES_SubBytes */
-        for (RowIndex = 0; RowIndex < AES_STATE_ROWS;RowIndex++)
-            for (ColumnIndex = 0; ColumnIndex < AES_STATE_COLUMNS;ColumnIndex++)
+        for(RowIndex = 0; RowIndex < AES_STATE_ROWS; RowIndex++)
+            for(ColumnIndex = 0; ColumnIndex < AES_STATE_COLUMNS; ColumnIndex++)
                 paes_ctx->State[RowIndex][ColumnIndex] = aes_sbox_enc[paes_ctx->State[RowIndex][ColumnIndex]];
 
         /* AES_ShiftRows */
@@ -421,7 +449,7 @@ VOID RT_AES_Encrypt (
         paes_ctx->State[3][0] = Temp;
 
         /* AES_MixColumns */
-        for (ColumnIndex = 0; ColumnIndex < AES_STATE_COLUMNS;ColumnIndex++)
+        for(ColumnIndex = 0; ColumnIndex < AES_STATE_COLUMNS; ColumnIndex++)
         {
             Row0 = paes_ctx->State[0][ColumnIndex];
             Row1 = paes_ctx->State[1][ColumnIndex];
@@ -434,15 +462,16 @@ VOID RT_AES_Encrypt (
         }
 
         /* AES_AddRoundKey */
-        for (RowIndex = 0; RowIndex < AES_STATE_ROWS;RowIndex++)
-            for (ColumnIndex = 0; ColumnIndex < AES_STATE_COLUMNS;ColumnIndex++)
+        for(RowIndex = 0; RowIndex < AES_STATE_ROWS; RowIndex++)
+            for(ColumnIndex = 0; ColumnIndex < AES_STATE_COLUMNS; ColumnIndex++)
                 paes_ctx->State[RowIndex][ColumnIndex] ^= paes_ctx->KeyWordExpansion[RowIndex][(RoundIndex*((UINT) AES_STATE_COLUMNS)) + ColumnIndex];
     }
 
     /* AES_SubBytes */
-    for (RowIndex = 0; RowIndex < AES_STATE_ROWS;RowIndex++)
-        for (ColumnIndex = 0; ColumnIndex < AES_STATE_COLUMNS;ColumnIndex++)
+    for(RowIndex = 0; RowIndex < AES_STATE_ROWS; RowIndex++)
+        for(ColumnIndex = 0; ColumnIndex < AES_STATE_COLUMNS; ColumnIndex++)
             paes_ctx->State[RowIndex][ColumnIndex] = aes_sbox_enc[paes_ctx->State[RowIndex][ColumnIndex]];
+
     /* AES_ShiftRows */
     Temp = paes_ctx->State[1][0];
     paes_ctx->State[1][0] = paes_ctx->State[1][1];
@@ -460,22 +489,23 @@ VOID RT_AES_Encrypt (
     paes_ctx->State[3][2] = paes_ctx->State[3][1];
     paes_ctx->State[3][1] = paes_ctx->State[3][0];
     paes_ctx->State[3][0] = Temp;
+
     /* AES_AddRoundKey */
-    for (RowIndex = 0; RowIndex < AES_STATE_ROWS;RowIndex++)
-        for (ColumnIndex = 0; ColumnIndex < AES_STATE_COLUMNS;ColumnIndex++)
+    for(RowIndex = 0; RowIndex < AES_STATE_ROWS; RowIndex++)
+        for(ColumnIndex = 0; ColumnIndex < AES_STATE_COLUMNS; ColumnIndex++)
             paes_ctx->State[RowIndex][ColumnIndex] ^= paes_ctx->KeyWordExpansion[RowIndex][(RoundIndex*((UINT) AES_STATE_COLUMNS)) + ColumnIndex];
 
-    /* 
-     * 4. Transfer the state block to cipher block 
+    /*
+     * 4. Transfer the state block to cipher block
      */
-    for (RowIndex = 0; RowIndex < AES_STATE_ROWS;RowIndex++)
-        for (ColumnIndex = 0; ColumnIndex < AES_STATE_COLUMNS;ColumnIndex++)
+    for(RowIndex = 0; RowIndex < AES_STATE_ROWS; RowIndex++)
+        for(ColumnIndex = 0; ColumnIndex < AES_STATE_COLUMNS; ColumnIndex++)
             CipherBlock[RowIndex + 4*ColumnIndex] = paes_ctx->State[RowIndex][ColumnIndex];
 
     *CipherBlockSize = ((UINT) AES_STATE_ROWS)*((UINT) AES_STATE_COLUMNS);
 
-	if (paes_ctx != NULL)
-		os_free_mem(NULL, paes_ctx);
+    if(paes_ctx != NULL)
+        os_free_mem(NULL, paes_ctx);
 }
 
 
@@ -498,13 +528,13 @@ Return Value:
 Note:
     Reference to FIPS-PUB 197
     1. Check if block size is 16 bytes(128 bits) and if key length is 16, 24, or 32 bytes(128, 192, or 256 bits)
-    2. Transfer the cipher block to state block 
+    2. Transfer the cipher block to state block
     3. Main decryption rounds
     4. Transfer the state block to plain block
     ------------------------------------------
        NumberOfRound = (key length / 4) + 6;
        state block = cipher block;
-       
+
        AddRoundKey(state block, key);
        for round = NumberOfRound to 1
            InvSubBytes(state block)
@@ -520,7 +550,7 @@ Note:
        plain block = state block;
 ========================================================================
 */
-VOID RT_AES_Decrypt (
+VOID RT_AES_Decrypt(
     IN UINT8 CipherBlock[],
     IN UINT CipherBlockSize,
     IN UINT8 Key[],
@@ -528,48 +558,54 @@ VOID RT_AES_Decrypt (
     OUT UINT8 PlainBlock[],
     INOUT UINT *PlainBlockSize)
 {
-/*    AES_CTX_STRUC aes_ctx;
-*/
-	AES_CTX_STRUC *paes_ctx = NULL;
+    /*    AES_CTX_STRUC aes_ctx;
+    */
+    AES_CTX_STRUC *paes_ctx = NULL;
     UINT RowIndex, ColumnIndex;
     UINT RoundIndex, NumberOfRound = 0;
     UINT8 Temp, Row0, Row1, Row2, Row3;
 
-    /*   
-     * 1. Check if block size is 16 bytes(128 bits) and if key length is 16, 24, or 32 bytes(128, 192, or 256 bits) 
+    /*
+     * 1. Check if block size is 16 bytes(128 bits) and if key length is 16, 24, or 32 bytes(128, 192, or 256 bits)
      */
-    if (*PlainBlockSize < AES_BLOCK_SIZES) {
-    	DBGPRINT(RT_DEBUG_ERROR, ("RT_AES_Decrypt: plain block size is %d bytes, it must be %d bytes(128 bits).\n", 
-            *PlainBlockSize, AES_BLOCK_SIZES));
-        return;
-    }
-    if ((KeyLength != AES_KEY128_LENGTH) && (KeyLength != AES_KEY192_LENGTH) && (KeyLength != AES_KEY256_LENGTH)) {
-    	DBGPRINT(RT_DEBUG_ERROR, ("RT_AES_Decrypt: key length is %d bytes, it must be %d, %d, or %d bytes(128, 192, or 256 bits).\n", 
-            KeyLength, AES_KEY128_LENGTH, AES_KEY192_LENGTH, AES_KEY256_LENGTH));
-        return;
-    }
-    if (CipherBlockSize != AES_BLOCK_SIZES) {
-    	DBGPRINT(RT_DEBUG_ERROR, ("RT_AES_Decrypt: cipher block size is %d bytes, it must be %d bytes(128 bits).\n", 
-            CipherBlockSize, AES_BLOCK_SIZES));
+    if(*PlainBlockSize < AES_BLOCK_SIZES)
+    {
+        DBGPRINT(RT_DEBUG_ERROR, ("RT_AES_Decrypt: plain block size is %d bytes, it must be %d bytes(128 bits).\n",
+                                  *PlainBlockSize, AES_BLOCK_SIZES));
         return;
     }
 
-	/* allocate memory */
-	os_alloc_mem(NULL, (UCHAR **)&paes_ctx, sizeof(AES_CTX_STRUC));
-	if (paes_ctx == NULL)
-	{
-		DBGPRINT(RT_DEBUG_ERROR, ("%s: Allocate memory fail!!!\n", __FUNCTION__));
-		return;
-	}
+    if((KeyLength != AES_KEY128_LENGTH) && (KeyLength != AES_KEY192_LENGTH) && (KeyLength != AES_KEY256_LENGTH))
+    {
+        DBGPRINT(RT_DEBUG_ERROR, ("RT_AES_Decrypt: key length is %d bytes, it must be %d, %d, or %d bytes(128, 192, or 256 bits).\n",
+                                  KeyLength, AES_KEY128_LENGTH, AES_KEY192_LENGTH, AES_KEY256_LENGTH));
+        return;
+    }
 
-    /* 
-     * 2. Transfer the cipher block to state block 
+    if(CipherBlockSize != AES_BLOCK_SIZES)
+    {
+        DBGPRINT(RT_DEBUG_ERROR, ("RT_AES_Decrypt: cipher block size is %d bytes, it must be %d bytes(128 bits).\n",
+                                  CipherBlockSize, AES_BLOCK_SIZES));
+        return;
+    }
+
+    /* allocate memory */
+    os_alloc_mem(NULL, (UCHAR **)&paes_ctx, sizeof(AES_CTX_STRUC));
+
+    if(paes_ctx == NULL)
+    {
+        DBGPRINT(RT_DEBUG_ERROR, ("%s: Allocate memory fail!!!\n", __FUNCTION__));
+        return;
+    }
+
+    /*
+     * 2. Transfer the cipher block to state block
      */
-    for (RowIndex = 0; RowIndex < AES_STATE_ROWS;RowIndex++)
-        for (ColumnIndex = 0; ColumnIndex < AES_STATE_COLUMNS;ColumnIndex++)
+    for(RowIndex = 0; RowIndex < AES_STATE_ROWS; RowIndex++)
+        for(ColumnIndex = 0; ColumnIndex < AES_STATE_COLUMNS; ColumnIndex++)
             paes_ctx->State[RowIndex][ColumnIndex] = CipherBlock[RowIndex + 4*ColumnIndex];
 
-    /* 
+    /*
      *  3. Main decryption rounds
      */
     RT_AES_KeyExpansion(Key, KeyLength, paes_ctx);
@@ -577,11 +613,12 @@ VOID RT_AES_Decrypt (
 
     /* AES_AddRoundKey */
     RoundIndex = NumberOfRound;
-    for (RowIndex = 0; RowIndex < AES_STATE_ROWS;RowIndex++)
-        for (ColumnIndex = 0; ColumnIndex < AES_STATE_COLUMNS;ColumnIndex++)
+
+    for(RowIndex = 0; RowIndex < AES_STATE_ROWS; RowIndex++)
+        for(ColumnIndex = 0; ColumnIndex < AES_STATE_COLUMNS; ColumnIndex++)
             paes_ctx->State[RowIndex][ColumnIndex] ^= paes_ctx->KeyWordExpansion[RowIndex][(RoundIndex*((UINT) AES_STATE_COLUMNS)) + ColumnIndex];
 
-    for (RoundIndex = (NumberOfRound - 1); RoundIndex > 0 ;RoundIndex--)
+    for(RoundIndex = (NumberOfRound - 1); RoundIndex > 0 ; RoundIndex--)
     {
         /* AES_InvShiftRows */
         Temp = paes_ctx->State[1][3];
@@ -602,17 +639,17 @@ VOID RT_AES_Decrypt (
         paes_ctx->State[3][3] = Temp;
 
         /* AES_InvSubBytes */
-        for (RowIndex = 0; RowIndex < AES_STATE_ROWS;RowIndex++)
-            for (ColumnIndex = 0; ColumnIndex < AES_STATE_COLUMNS;ColumnIndex++)
+        for(RowIndex = 0; RowIndex < AES_STATE_ROWS; RowIndex++)
+            for(ColumnIndex = 0; ColumnIndex < AES_STATE_COLUMNS; ColumnIndex++)
                 paes_ctx->State[RowIndex][ColumnIndex] = aes_sbox_dec[paes_ctx->State[RowIndex][ColumnIndex]];
 
         /* AES_AddRoundKey */
-        for (RowIndex = 0; RowIndex < AES_STATE_ROWS;RowIndex++)
-            for (ColumnIndex = 0; ColumnIndex < AES_STATE_COLUMNS;ColumnIndex++)
+        for(RowIndex = 0; RowIndex < AES_STATE_ROWS; RowIndex++)
+            for(ColumnIndex = 0; ColumnIndex < AES_STATE_COLUMNS; ColumnIndex++)
                 paes_ctx->State[RowIndex][ColumnIndex] ^= paes_ctx->KeyWordExpansion[RowIndex][(RoundIndex*((UINT) AES_STATE_COLUMNS)) + ColumnIndex];
 
         /* AES_InvMixColumns */
-        for (ColumnIndex = 0; ColumnIndex < AES_STATE_COLUMNS;ColumnIndex++)
+        for(ColumnIndex = 0; ColumnIndex < AES_STATE_COLUMNS; ColumnIndex++)
         {
             Row0 = paes_ctx->State[0][ColumnIndex];
             Row1 = paes_ctx->State[1][ColumnIndex];
@@ -642,26 +679,28 @@ VOID RT_AES_Decrypt (
     paes_ctx->State[3][1] = paes_ctx->State[3][2];
     paes_ctx->State[3][2] = paes_ctx->State[3][3];
     paes_ctx->State[3][3] = Temp;
+
     /* AES_InvSubBytes */
-    for (RowIndex = 0; RowIndex < AES_STATE_ROWS;RowIndex++)
-        for (ColumnIndex = 0; ColumnIndex < AES_STATE_COLUMNS;ColumnIndex++)
+    for(RowIndex = 0; RowIndex < AES_STATE_ROWS; RowIndex++)
+        for(ColumnIndex = 0; ColumnIndex < AES_STATE_COLUMNS; ColumnIndex++)
             paes_ctx->State[RowIndex][ColumnIndex] = aes_sbox_dec[paes_ctx->State[RowIndex][ColumnIndex]];
+
     /* AES_AddRoundKey */
-    for (RowIndex = 0; RowIndex < AES_STATE_ROWS;RowIndex++)
-        for (ColumnIndex = 0; ColumnIndex < AES_STATE_COLUMNS;ColumnIndex++)
+    for(RowIndex = 0; RowIndex < AES_STATE_ROWS; RowIndex++)
+        for(ColumnIndex = 0; ColumnIndex < AES_STATE_COLUMNS; ColumnIndex++)
             paes_ctx->State[RowIndex][ColumnIndex] ^= paes_ctx->KeyWordExpansion[RowIndex][(RoundIndex*((UINT) AES_STATE_COLUMNS)) + ColumnIndex];
 
-    /* 
-     * 4. Transfer the state block to plain block 
+    /*
+     * 4. Transfer the state block to plain block
      */
-    for (RowIndex = 0; RowIndex < AES_STATE_ROWS;RowIndex++)
-        for (ColumnIndex = 0; ColumnIndex < AES_STATE_COLUMNS;ColumnIndex++)
+    for(RowIndex = 0; RowIndex < AES_STATE_ROWS; RowIndex++)
+        for(ColumnIndex = 0; ColumnIndex < AES_STATE_COLUMNS; ColumnIndex++)
             PlainBlock[RowIndex + 4*ColumnIndex] = paes_ctx->State[RowIndex][ColumnIndex];
 
     *PlainBlockSize = ((UINT) AES_STATE_ROWS)*((UINT) AES_STATE_COLUMNS);
 
-	if (paes_ctx != NULL)
-		os_free_mem(NULL, paes_ctx);
+    if(paes_ctx != NULL)
+        os_free_mem(NULL, paes_ctx);
 }
 
 
@@ -669,7 +708,7 @@ VOID RT_AES_Decrypt (
 /*
 ========================================================================
 Routine Description:
-    AES-CBCMAC 
+    AES-CBCMAC
 
 Arguments:
     Payload        Data
@@ -689,7 +728,7 @@ Note:
     Reference to RFC 3601, and NIST 800-38C.
 ========================================================================
 */
-VOID AES_CCM_MAC (
+VOID AES_CCM_MAC(
     IN UINT8 Payload[],
     IN UINT  PayloadLength,
     IN UINT8 Key[],
@@ -705,22 +744,28 @@ VOID AES_CCM_MAC (
     UINT  Block_Index = 0, ADD_Index = 0, Payload_Index = 0;
     UINT  Temp_Value = 0, Temp_Index = 0, Temp_Length = 0, Copy_Length = 0;
 
-    /*   
+    /*
      * 1. Formatting of the Control Information and the Nonce
      */
     NdisZeroMemory(Block, AES_BLOCK_SIZES);
-    if (AADLength > 0)
+
+    if(AADLength > 0)
         Block[0] |= 0x40; /* Set bit 6 to 1 */
+
     Temp_Value = ((MACLength - 2) >> 1) << 3; /* Set bit 3-5 to (t-2)/2 */
     Block[0] |= Temp_Value;
     Temp_Value = (15 - NonceLength) - 1; /* Set bit 0-2 to (q-1), q = 15 - Nonce Length */
     Block[0] |= Temp_Value;
-    for (Temp_Index = 0; Temp_Index < NonceLength; Temp_Index++)
+
+    for(Temp_Index = 0; Temp_Index < NonceLength; Temp_Index++)
         Block[Temp_Index + 1] = Nonce[Temp_Index];
-    if (NonceLength < 12)
+
+    if(NonceLength < 12)
         Block[12] = (PayloadLength >> 24) & 0xff;
-    if (NonceLength < 13)
+
+    if(NonceLength < 13)
         Block[13] = (PayloadLength >> 16) & 0xff;
+
     Block[14] = (PayloadLength >> 8) & 0xff;
     Block[15] = PayloadLength & 0xff;
 
@@ -733,13 +778,17 @@ VOID AES_CCM_MAC (
      *      If 0 < AADLength < (2^16 - 2^8), AData_Length = 2
      *      If (2^16 - 2^8) < AADLength < 2^32, AData_Length = 6
      *      If 2^32 < AADLength < 2^64, AData_Length = 10 (not implement)
-     */    
+     */
     NdisZeroMemory(Block, AES_BLOCK_SIZES);
-    if ((AADLength > 0) && (AADLength < 0xFF00)) {
+
+    if((AADLength > 0) && (AADLength < 0xFF00))
+    {
         Block_Index = 2;
         Block[0] = (AADLength >> 8) & 0xff;
         Block[1] = AADLength & 0xff;
-    } else {
+    }
+    else
+    {
         Block_Index = 6;
         Block[2] = (AADLength >> 24) & 0xff;
         Block[3] = (AADLength >> 16) & 0xff;
@@ -747,45 +796,56 @@ VOID AES_CCM_MAC (
         Block[5] = AADLength & 0xff;
     }
 
-    while (ADD_Index < AADLength) 
+    while(ADD_Index < AADLength)
     {
         Copy_Length = AADLength - ADD_Index;
-        if (Copy_Length > AES_BLOCK_SIZES)
+
+        if(Copy_Length > AES_BLOCK_SIZES)
             Copy_Length = AES_BLOCK_SIZES;
-        if ((Copy_Length + Block_Index) > AES_BLOCK_SIZES) {
+
+        if((Copy_Length + Block_Index) > AES_BLOCK_SIZES)
+        {
             Copy_Length = AES_BLOCK_SIZES - Block_Index;
         }
-        for (Temp_Index = 0; Temp_Index < Copy_Length; Temp_Index++)
-            Block[Temp_Index + Block_Index] = AAD[ADD_Index + Temp_Index];        
-        for (Temp_Index = 0; Temp_Index < AES_BLOCK_SIZES; Temp_Index++)
+
+        for(Temp_Index = 0; Temp_Index < Copy_Length; Temp_Index++)
+            Block[Temp_Index + Block_Index] = AAD[ADD_Index + Temp_Index];
+
+        for(Temp_Index = 0; Temp_Index < AES_BLOCK_SIZES; Temp_Index++)
             Block[Temp_Index] ^= Block_MAC[Temp_Index];
+
         NdisZeroMemory(Block_MAC, AES_BLOCK_SIZES);
-        Temp_Length = sizeof(Block_MAC);        
+        Temp_Length = sizeof(Block_MAC);
         RT_AES_Encrypt(Block, AES_BLOCK_SIZES , Key, KeyLength, Block_MAC, &Temp_Length);
         ADD_Index += Copy_Length;
-        Block_Index = 0;        
+        Block_Index = 0;
         NdisZeroMemory(Block, AES_BLOCK_SIZES);
     }
 
     /*
      * 3. Calculate the MAC (MIC)
      */
-    while (Payload_Index < PayloadLength) 
+    while(Payload_Index < PayloadLength)
     {
         NdisZeroMemory(Block, AES_BLOCK_SIZES);
         Copy_Length = PayloadLength - Payload_Index;
-        if (Copy_Length > AES_BLOCK_SIZES)
+
+        if(Copy_Length > AES_BLOCK_SIZES)
             Copy_Length = AES_BLOCK_SIZES;
-        for (Temp_Index = 0; Temp_Index < Copy_Length; Temp_Index++)
-            Block[Temp_Index] = Payload[Payload_Index + Temp_Index];        
-        for (Temp_Index = 0; Temp_Index < AES_BLOCK_SIZES; Temp_Index++)
+
+        for(Temp_Index = 0; Temp_Index < Copy_Length; Temp_Index++)
+            Block[Temp_Index] = Payload[Payload_Index + Temp_Index];
+
+        for(Temp_Index = 0; Temp_Index < AES_BLOCK_SIZES; Temp_Index++)
             Block[Temp_Index] ^= Block_MAC[Temp_Index];
+
         NdisZeroMemory(Block_MAC, AES_BLOCK_SIZES);
         Temp_Length = sizeof(Block_MAC);
         RT_AES_Encrypt(Block, AES_BLOCK_SIZES , Key, KeyLength, Block_MAC, &Temp_Length);
         Payload_Index += Copy_Length;
     }
-    for (Temp_Index = 0; Temp_Index < MACLength; Temp_Index++)
+
+    for(Temp_Index = 0; Temp_Index < MACLength; Temp_Index++)
         MACText[Temp_Index] = Block_MAC[Temp_Index];
 }
 
@@ -823,7 +883,7 @@ Note:
     Here, the implement of AES_CCM is suitable for WI_FI.
 ========================================================================
 */
-INT AES_CCM_Encrypt (
+INT AES_CCM_Encrypt(
     IN UINT8 PlainText[],
     IN UINT PlainTextLength,
     IN UINT8 Key[],
@@ -841,42 +901,47 @@ INT AES_CCM_Encrypt (
     UINT  Cipher_Index = 0;
     UINT Temp_Value = 0, Temp_Index = 0, Temp_Length = 0, Copy_Length = 0;
 
-    /*   
+    /*
      * 1. Check Input Values
      *    - Key length must be 16 bytes
      *    - Nonce length range is form 7 to 13 bytes
      *    - MAC length must be 4, 6, 8, 10, 12, 14, or 16 bytes
      *    - CipherTextLength > PlainTextLength + MACLength
      */
-    if (KeyLength != AES_KEY128_LENGTH) {
-    	DBGPRINT(RT_DEBUG_ERROR, ("AES_CCM_Encrypt: The key length must be %d bytes\n", AES_KEY128_LENGTH));
+    if(KeyLength != AES_KEY128_LENGTH)
+    {
+        DBGPRINT(RT_DEBUG_ERROR, ("AES_CCM_Encrypt: The key length must be %d bytes\n", AES_KEY128_LENGTH));
         return -1;
     }
 
-    if ((NonceLength < 7) || (NonceLength > 13)) {
-    	DBGPRINT(RT_DEBUG_ERROR, ("AES_CCM_Encrypt: A valid nonce length is 7-13 bytes\n"));
+    if((NonceLength < 7) || (NonceLength > 13))
+    {
+        DBGPRINT(RT_DEBUG_ERROR, ("AES_CCM_Encrypt: A valid nonce length is 7-13 bytes\n"));
         return -2;
     }
 
-    if ((MACLength != 4) && (MACLength != 6) && (MACLength != 8) && (MACLength != 10)
-        && (MACLength != 12) && (MACLength != 14) && (MACLength != 16)) {
-    	DBGPRINT(RT_DEBUG_ERROR, ("AES_CCM_Encrypt: The MAC length  must be 4, 6, 8, 10, 12, 14, or 16 bytes\n"));
+    if((MACLength != 4) && (MACLength != 6) && (MACLength != 8) && (MACLength != 10)
+            && (MACLength != 12) && (MACLength != 14) && (MACLength != 16))
+    {
+        DBGPRINT(RT_DEBUG_ERROR, ("AES_CCM_Encrypt: The MAC length  must be 4, 6, 8, 10, 12, 14, or 16 bytes\n"));
         return -3;
     }
 
-    if (*CipherTextLength < (PlainTextLength + MACLength)) {
-    	DBGPRINT(RT_DEBUG_ERROR, ("AES_CCM_Encrypt: The CipherTextLength is not enough.\n"));
+    if(*CipherTextLength < (PlainTextLength + MACLength))
+    {
+        DBGPRINT(RT_DEBUG_ERROR, ("AES_CCM_Encrypt: The CipherTextLength is not enough.\n"));
         return -4;
     }
 
 
-    /*   
+    /*
      * 1. Formatting of the Counter Block
      */
     NdisZeroMemory(Block_CTR, AES_BLOCK_SIZES);
     Temp_Value = (15 - NonceLength) - 1; /* Set bit 0-2 to (q-1), q = 15 - Nonce Length */
     Block_CTR[0] |= Temp_Value;
-    for (Temp_Index = 0; Temp_Index < NonceLength; Temp_Index++)
+
+    for(Temp_Index = 0; Temp_Index < NonceLength; Temp_Index++)
         Block_CTR[Temp_Index + 1] = Nonce[Temp_Index];
 
     /*
@@ -885,28 +950,33 @@ INT AES_CCM_Encrypt (
     AES_CCM_MAC(PlainText, PlainTextLength, Key, KeyLength, Nonce, NonceLength, AAD, AADLength, MACLength, Block_MAC);
     Temp_Length = sizeof(Block_CTR_Cipher);
     RT_AES_Encrypt(Block_CTR, AES_BLOCK_SIZES , Key, KeyLength, Block_CTR_Cipher, &Temp_Length);
-    for (Temp_Index = 0; Temp_Index < MACLength; Temp_Index++)
+
+    for(Temp_Index = 0; Temp_Index < MACLength; Temp_Index++)
         Block_MAC[Temp_Index] ^= Block_CTR_Cipher[Temp_Index];
 
-    /*   
+    /*
      * 3. Cipher Payload
      */
-    while (Cipher_Index < PlainTextLength) 
+    while(Cipher_Index < PlainTextLength)
     {
         Block_CTR[15] += 1;
         Temp_Length = sizeof(Block_CTR_Cipher);
         RT_AES_Encrypt(Block_CTR, AES_BLOCK_SIZES , Key, KeyLength, Block_CTR_Cipher, &Temp_Length);
 
         Copy_Length = PlainTextLength - Cipher_Index;
-        if (Copy_Length > AES_BLOCK_SIZES)
-            Copy_Length = AES_BLOCK_SIZES;                
-        for (Temp_Index = 0; Temp_Index < Copy_Length; Temp_Index++)
+
+        if(Copy_Length > AES_BLOCK_SIZES)
+            Copy_Length = AES_BLOCK_SIZES;
+
+        for(Temp_Index = 0; Temp_Index < Copy_Length; Temp_Index++)
             CipherText[Cipher_Index + Temp_Index] = PlainText[Cipher_Index + Temp_Index]^Block_CTR_Cipher[Temp_Index];
 
         Cipher_Index += Copy_Length;
     }
-    for (Temp_Index = 0; Temp_Index < MACLength; Temp_Index++)
-            CipherText[PlainTextLength + Temp_Index] = Block_MAC[Temp_Index];    
+
+    for(Temp_Index = 0; Temp_Index < MACLength; Temp_Index++)
+        CipherText[PlainTextLength + Temp_Index] = Block_MAC[Temp_Index];
+
     *CipherTextLength = PlainTextLength + MACLength;
 
     return 0;
@@ -940,13 +1010,13 @@ Function Value:
     -3: The MAC length  must be 4, 6, 8, 10, 12, 14, or 16 bytes.
     -4: The PlainTextLength is not enough.
     -5: The MIC does not match.
-    
+
 Note:
     Reference to RFC 3601, and NIST 800-38C.
     Here, the implement of AES_CCM is suitable for WI_FI.
 ========================================================================
 */
-INT AES_CCM_Decrypt (
+INT AES_CCM_Decrypt(
     IN UINT8 CipherText[],
     IN UINT  CipherTextLength,
     IN UINT8 Key[],
@@ -955,7 +1025,7 @@ INT AES_CCM_Decrypt (
     IN UINT  NonceLength,
     IN UINT8 AAD[],
     IN UINT  AADLength,
-    IN UINT  MACLength,    
+    IN UINT  MACLength,
     OUT UINT8 PlainText[],
     INOUT UINT *PlainTextLength)
 {
@@ -965,40 +1035,46 @@ INT AES_CCM_Decrypt (
     UINT Temp_Value = 0, Temp_Index = 0, Temp_Length = 0, Copy_Length = 0;
 
 
-    /*   
+    /*
      * 1. Check Input Values
      *    - Key length must be 16 bytes
      *    - Nonce length range is form 7 to 13 bytes
      */
-    if (KeyLength != AES_KEY128_LENGTH) {
-    	DBGPRINT(RT_DEBUG_ERROR, ("AES_CCM_Decrypt: The key length must be %d bytes\n", AES_KEY128_LENGTH));
+    if(KeyLength != AES_KEY128_LENGTH)
+    {
+        DBGPRINT(RT_DEBUG_ERROR, ("AES_CCM_Decrypt: The key length must be %d bytes\n", AES_KEY128_LENGTH));
         return -1;
     }
 
-    if ((NonceLength < 7) || (NonceLength > 13)) {
-    	DBGPRINT(RT_DEBUG_ERROR, ("AES_CCM_Decrypt: A valid nonce length is 7-13 bytes\n"));
+    if((NonceLength < 7) || (NonceLength > 13))
+    {
+        DBGPRINT(RT_DEBUG_ERROR, ("AES_CCM_Decrypt: A valid nonce length is 7-13 bytes\n"));
         return -2;
     }
-    
-    if ((MACLength != 4) && (MACLength != 6) && (MACLength != 8) && (MACLength != 10)
-        && (MACLength != 12) && (MACLength != 14) && (MACLength != 16)) {
-    	DBGPRINT(RT_DEBUG_ERROR, ("AES_CCM_Decrypt: The MAC length  must be 4, 6, 8, 10, 12, 14, or 16 bytes\n"));
+
+    if((MACLength != 4) && (MACLength != 6) && (MACLength != 8) && (MACLength != 10)
+            && (MACLength != 12) && (MACLength != 14) && (MACLength != 16))
+    {
+        DBGPRINT(RT_DEBUG_ERROR, ("AES_CCM_Decrypt: The MAC length  must be 4, 6, 8, 10, 12, 14, or 16 bytes\n"));
         return -3;
     }
-    
-    if (*PlainTextLength < (CipherTextLength - MACLength)) {
-    	DBGPRINT(RT_DEBUG_ERROR, ("AES_CCM_Decrypt: The PlainTextLength is not enough.\n"));
+
+    if(*PlainTextLength < (CipherTextLength - MACLength))
+    {
+        DBGPRINT(RT_DEBUG_ERROR, ("AES_CCM_Decrypt: The PlainTextLength is not enough.\n"));
         return -4;
     }
 
-    /*   
+    /*
      * 2. Formatting of the Counter Block
      */
     NdisZeroMemory(Block_CTR, AES_BLOCK_SIZES);
     Temp_Value = (15 - NonceLength) - 1; /* Set bit 0-2 to (q-1), q = 15 - Nonce Length */
     Block_CTR[0] |= Temp_Value;
-    for (Temp_Index = 0; Temp_Index < NonceLength; Temp_Index++)
+
+    for(Temp_Index = 0; Temp_Index < NonceLength; Temp_Index++)
         Block_CTR[Temp_Index + 1] = Nonce[Temp_Index];
+
     Temp_Length = sizeof(Block_CTR_Cipher);
     RT_AES_Encrypt(Block_CTR, AES_BLOCK_SIZES , Key, KeyLength, Block_CTR_Cipher, &Temp_Length);
 
@@ -1006,27 +1082,32 @@ INT AES_CCM_Decrypt (
      * 3. Catch the MAC (MIC) from CipherText
      */
     Block_Index = 0;
-    for (Temp_Index = (CipherTextLength - MACLength); Temp_Index < CipherTextLength; Temp_Index++, Block_Index++)
+
+    for(Temp_Index = (CipherTextLength - MACLength); Temp_Index < CipherTextLength; Temp_Index++, Block_Index++)
         Block_MAC_From_Cipher[Block_Index] = CipherText[Temp_Index]^Block_CTR_Cipher[Block_Index];
 
     /*
      * 4. Decryption the Payload
-     */     
-    while (Cipher_Index < (CipherTextLength - MACLength)) 
+     */
+    while(Cipher_Index < (CipherTextLength - MACLength))
     {
         Block_CTR[15] += 1;
         Temp_Length = sizeof(Block_CTR_Cipher);
         RT_AES_Encrypt(Block_CTR, AES_BLOCK_SIZES , Key, KeyLength, Block_CTR_Cipher, &Temp_Length);
 
         Copy_Length = (CipherTextLength - MACLength) - Cipher_Index;
-        if (Copy_Length > AES_BLOCK_SIZES)
-            Copy_Length = AES_BLOCK_SIZES;                
-        for (Temp_Index = 0; Temp_Index < Copy_Length; Temp_Index++)
+
+        if(Copy_Length > AES_BLOCK_SIZES)
+            Copy_Length = AES_BLOCK_SIZES;
+
+        for(Temp_Index = 0; Temp_Index < Copy_Length; Temp_Index++)
             PlainText[Cipher_Index + Temp_Index] = CipherText[Cipher_Index + Temp_Index]^Block_CTR_Cipher[Temp_Index];
+
         Cipher_Index += Copy_Length;
     }
+
     *PlainTextLength = CipherTextLength - MACLength;
-    
+
     /*
      * 5. Calculate the MAC (MIC) from Payload
      */
@@ -1035,8 +1116,9 @@ INT AES_CCM_Decrypt (
     /*
      * 6. Check the MIC
      */
-    if (NdisCmpMemory(Block_MAC_From_Cipher, Block_MAC, MACLength) != 0) {
-    	DBGPRINT(RT_DEBUG_ERROR, ("AES_CCM_Decrypt: The MIC does not match.\n"));
+    if(NdisCmpMemory(Block_MAC_From_Cipher, Block_MAC, MACLength) != 0)
+    {
+        DBGPRINT(RT_DEBUG_ERROR, ("AES_CCM_Decrypt: The MIC does not match.\n"));
         return -5;
     }
 
@@ -1059,7 +1141,7 @@ Return Value:
 
 Note:
     Reference to RFC 4493
-    
+
     Step 1.  L := AES-128(K, const_Zero);
     Step 2.  if MSB(L) is equal to 0
                 then    K1 := L << 1;
@@ -1070,7 +1152,7 @@ Note:
     Step 4.  return K1, K2;
 ========================================================================
 */
-VOID AES_CMAC_GenerateSubKey (
+VOID AES_CMAC_GenerateSubKey(
     IN UINT8 Key[],
     IN UINT KeyLength,
     OUT UINT8 SubKey1[],
@@ -1080,9 +1162,10 @@ VOID AES_CMAC_GenerateSubKey (
     UINT  SubKey1_Length = 0;
     INT   Index = 0;
 
-    if (KeyLength != AES_KEY128_LENGTH) {
-    	DBGPRINT(RT_DEBUG_ERROR, ("AES_CMAC_GenerateSubKey: key length is %d bytes, it must be %d bytes(128 bits).\n", 
-            KeyLength, AES_KEY128_LENGTH));
+    if(KeyLength != AES_KEY128_LENGTH)
+    {
+        DBGPRINT(RT_DEBUG_ERROR, ("AES_CMAC_GenerateSubKey: key length is %d bytes, it must be %d bytes(128 bits).\n",
+                                  KeyLength, AES_KEY128_LENGTH));
         return;
     }
 
@@ -1095,14 +1178,19 @@ VOID AES_CMAC_GenerateSubKey (
      *           then    K1 := L << 1;
      *           else    K1 := (L << 1) XOR const_Rb;
      */
-    MSB_L = SubKey1[0] & 0x80;    
-    for(Index = 0; Index < 15; Index++) {
+    MSB_L = SubKey1[0] & 0x80;
+
+    for(Index = 0; Index < 15; Index++)
+    {
         Top_Bit = (SubKey1[Index + 1] & 0x80)?1:0;
         SubKey1[Index] <<= 1;
         SubKey1[Index] |= Top_Bit;
     }
+
     SubKey1[15] <<= 1;
-    if (MSB_L > 0) {
+
+    if(MSB_L > 0)
+    {
         for(Index = 0; Index < 16; Index++)
             SubKey1[Index] ^= Const_Rb[Index];
     }
@@ -1113,13 +1201,18 @@ VOID AES_CMAC_GenerateSubKey (
      *           else    K2 := (K1 << 1) XOR const_Rb;
      */
     MSB_K1 = SubKey1[0] & 0x80;
-    for(Index = 0; Index < 15; Index++) {
+
+    for(Index = 0; Index < 15; Index++)
+    {
         Top_Bit = (SubKey1[Index + 1] & 0x80)?1:0;
         SubKey2[Index] = SubKey1[Index] << 1;
         SubKey2[Index] |= Top_Bit;
     }
+
     SubKey2[15] = SubKey1[15] << 1;
-    if (MSB_K1 > 0) {
+
+    if(MSB_K1 > 0)
+    {
         for(Index = 0; Index < 16; Index++)
             SubKey2[Index] ^= Const_Rb[Index];
     }
@@ -1146,7 +1239,7 @@ Note:
     Reference to RFC 4493
 ========================================================================
 */
-VOID AES_CMAC (
+VOID AES_CMAC(
     IN UINT8 PlainText[],
     IN UINT PlainTextLength,
     IN UINT8 Key[],
@@ -1161,23 +1254,26 @@ VOID AES_CMAC (
     INT Index;
     UINT X_Length;
 
-    if (*MACTextLength < AES_MAC_LENGTH) {
-    	DBGPRINT(RT_DEBUG_ERROR, ("AES_CMAC: MAC text length is less than %d bytes).\n", 
-            AES_MAC_LENGTH));
+    if(*MACTextLength < AES_MAC_LENGTH)
+    {
+        DBGPRINT(RT_DEBUG_ERROR, ("AES_CMAC: MAC text length is less than %d bytes).\n",
+                                  AES_MAC_LENGTH));
         return;
     }
-    if (KeyLength != AES_KEY128_LENGTH) {
-    	DBGPRINT(RT_DEBUG_ERROR, ("AES_CMAC: key length is %d bytes, it must be %d bytes(128 bits).\n", 
-            KeyLength, AES_KEY128_LENGTH));
+
+    if(KeyLength != AES_KEY128_LENGTH)
+    {
+        DBGPRINT(RT_DEBUG_ERROR, ("AES_CMAC: key length is %d bytes, it must be %d bytes(128 bits).\n",
+                                  KeyLength, AES_KEY128_LENGTH));
         return;
     }
 
     /* Step 1.  (K1,K2) := Generate_Subkey(K); */
     NdisZeroMemory(SubKey1, 16);
-    NdisZeroMemory(SubKey2, 16);   
+    NdisZeroMemory(SubKey2, 16);
     AES_CMAC_GenerateSubKey(Key, KeyLength, SubKey1, SubKey2);
 
-    /*   
+    /*
      * 2. Main algorithm
      *    - Plain text divide into serveral blocks (16 bytes/block)
      *    - If plain text is not divided with no remainder by block, padding size = (block - remainder plain text)
@@ -1185,25 +1281,32 @@ VOID AES_CMAC (
      */
     PlainBlockStart = 0;
     NdisMoveMemory(X, Const_Zero, AES_BLOCK_SIZES);
-    while ((PlainTextLength - PlainBlockStart) > AES_BLOCK_SIZES)
+
+    while((PlainTextLength - PlainBlockStart) > AES_BLOCK_SIZES)
     {
-        for (Index = 0; Index < AES_BLOCK_SIZES; Index++)
-                Y[Index] = PlainText[PlainBlockStart + Index]^X[Index];
+        for(Index = 0; Index < AES_BLOCK_SIZES; Index++)
+            Y[Index] = PlainText[PlainBlockStart + Index]^X[Index];
 
         X_Length = sizeof(X);
         RT_AES_Encrypt(Y, sizeof(Y) , Key, KeyLength, X, &X_Length);
         PlainBlockStart += ((UINT) AES_BLOCK_SIZES);
     }
-    if ((PlainTextLength - PlainBlockStart) == AES_BLOCK_SIZES) {
-        for (Index = 0; Index < AES_BLOCK_SIZES; Index++)
-                Y[Index] = PlainText[PlainBlockStart + Index]^X[Index]^SubKey1[Index];        
-    } else {    
+
+    if((PlainTextLength - PlainBlockStart) == AES_BLOCK_SIZES)
+    {
+        for(Index = 0; Index < AES_BLOCK_SIZES; Index++)
+            Y[Index] = PlainText[PlainBlockStart + Index]^X[Index]^SubKey1[Index];
+    }
+    else
+    {
         NdisZeroMemory(Y, AES_BLOCK_SIZES);
         NdisMoveMemory(Y, &PlainText[PlainBlockStart], (PlainTextLength - PlainBlockStart));
         Y[(PlainTextLength - PlainBlockStart)] = 0x80;
-        for (Index = 0; Index < AES_BLOCK_SIZES; Index++)
-                Y[Index] = Y[Index]^X[Index]^SubKey2[Index];
+
+        for(Index = 0; Index < AES_BLOCK_SIZES; Index++)
+            Y[Index] = Y[Index]^X[Index]^SubKey2[Index];
     }
+
     RT_AES_Encrypt(Y, sizeof(Y) , Key, KeyLength, MACText, MACTextLength);
 }
 
@@ -1211,8 +1314,10 @@ VOID AES_CMAC (
 /* For AES_Key_Wrap */
 #define AES_KEY_WRAP_IV_LENGTH 8 /* 64-bit */
 #define AES_KEY_WRAP_BLOCK_SIZE 8 /* 64-bit */
-static UINT8 Default_IV[8] = {
-    0xa6, 0xa6, 0xa6, 0xa6, 0xa6, 0xa6, 0xa6, 0xa6};
+static UINT8 Default_IV[8] =
+{
+    0xa6, 0xa6, 0xa6, 0xa6, 0xa6, 0xa6, 0xa6, 0xa6
+};
 
 /*
 ========================================================================
@@ -1236,7 +1341,7 @@ Note:
     Reference to RFC 3602 and NIST 800-38A
 ========================================================================
 */
-VOID AES_CBC_Encrypt (
+VOID AES_CBC_Encrypt(
     IN UINT8 PlainText[],
     IN UINT PlainTextLength,
     IN UINT8 Key[],
@@ -1250,51 +1355,61 @@ VOID AES_CBC_Encrypt (
     UINT Index;
     UINT8 Block[AES_BLOCK_SIZES];
 
-    /*   
+    /*
      * 1. Check the input parameters
      *    - CipherTextLength > (PlainTextLength + Padding size), Padding size = block size - (PlainTextLength % block size)
-     *    - Key length must be 16, 24, or 32 bytes(128, 192, or 256 bits) 
-     *    - IV length must be 16 bytes(128 bits) 
+     *    - Key length must be 16, 24, or 32 bytes(128, 192, or 256 bits)
+     *    - IV length must be 16 bytes(128 bits)
      */
     PaddingSize = ((UINT) AES_BLOCK_SIZES) - (PlainTextLength % ((UINT)AES_BLOCK_SIZES));
-    if (*CipherTextLength < (PlainTextLength + PaddingSize)) {
-    	DBGPRINT(RT_DEBUG_ERROR, ("AES_CBC_Encrypt: cipher text length is %d bytes < (plain text length %d bytes + padding size %d bytes).\n", 
-            *CipherTextLength, PlainTextLength, PaddingSize));
+
+    if(*CipherTextLength < (PlainTextLength + PaddingSize))
+    {
+        DBGPRINT(RT_DEBUG_ERROR, ("AES_CBC_Encrypt: cipher text length is %d bytes < (plain text length %d bytes + padding size %d bytes).\n",
+                                  *CipherTextLength, PlainTextLength, PaddingSize));
         return;
     }
-    if ((KeyLength != AES_KEY128_LENGTH) && (KeyLength != AES_KEY192_LENGTH) && (KeyLength != AES_KEY256_LENGTH)) {
-    	DBGPRINT(RT_DEBUG_ERROR, ("AES_CBC_Encrypt: key length is %d bytes, it must be %d, %d, or %d bytes(128, 192, or 256 bits).\n", 
-            KeyLength, AES_KEY128_LENGTH, AES_KEY192_LENGTH, AES_KEY256_LENGTH));
+
+    if((KeyLength != AES_KEY128_LENGTH) && (KeyLength != AES_KEY192_LENGTH) && (KeyLength != AES_KEY256_LENGTH))
+    {
+        DBGPRINT(RT_DEBUG_ERROR, ("AES_CBC_Encrypt: key length is %d bytes, it must be %d, %d, or %d bytes(128, 192, or 256 bits).\n",
+                                  KeyLength, AES_KEY128_LENGTH, AES_KEY192_LENGTH, AES_KEY256_LENGTH));
         return;
     }
-    if (IVLength != AES_CBC_IV_LENGTH) {
-    	DBGPRINT(RT_DEBUG_ERROR, ("AES_CBC_Encrypt: IV length is %d bytes, it must be %d bytes(128bits).\n", 
-            IVLength, AES_CBC_IV_LENGTH));
+
+    if(IVLength != AES_CBC_IV_LENGTH)
+    {
+        DBGPRINT(RT_DEBUG_ERROR, ("AES_CBC_Encrypt: IV length is %d bytes, it must be %d bytes(128bits).\n",
+                                  IVLength, AES_CBC_IV_LENGTH));
         return;
     }
 
 
-    /*   
+    /*
      * 2. Main algorithm
      *    - Plain text divide into serveral blocks (16 bytes/block)
      *    - If plain text is divided with no remainder by block, add a new block and padding size = block(16 bytes)
      *    - If plain text is not divided with no remainder by block, padding size = (block - remainder plain text)
      *    - Execute RT_AES_Encrypt procedure.
-     *    
+     *
      *    - Padding method: The remainder bytes will be filled with padding size (1 byte)
      */
     PlainBlockStart = 0;
     CipherBlockStart = 0;
-    while ((PlainTextLength - PlainBlockStart) >= AES_BLOCK_SIZES)
+
+    while((PlainTextLength - PlainBlockStart) >= AES_BLOCK_SIZES)
     {
-        if (CipherBlockStart == 0) {
-            for (Index = 0; Index < AES_BLOCK_SIZES; Index++)
-                Block[Index] = PlainText[PlainBlockStart + Index]^IV[Index];                
-        } else {
-            for (Index = 0; Index < AES_BLOCK_SIZES; Index++)
+        if(CipherBlockStart == 0)
+        {
+            for(Index = 0; Index < AES_BLOCK_SIZES; Index++)
+                Block[Index] = PlainText[PlainBlockStart + Index]^IV[Index];
+        }
+        else
+        {
+            for(Index = 0; Index < AES_BLOCK_SIZES; Index++)
                 Block[Index] = PlainText[PlainBlockStart + Index]^CipherText[CipherBlockStart - ((UINT) AES_BLOCK_SIZES) + Index];
         }
-            
+
         CipherBlockSize = *CipherTextLength - CipherBlockStart;
         RT_AES_Encrypt(Block, AES_BLOCK_SIZES , Key, KeyLength, CipherText + CipherBlockStart, &CipherBlockSize);
 
@@ -1304,13 +1419,18 @@ VOID AES_CBC_Encrypt (
 
     NdisMoveMemory(Block, (&PlainText[0] + PlainBlockStart), (PlainTextLength - PlainBlockStart));
     NdisFillMemory((Block + (((UINT) AES_BLOCK_SIZES) -PaddingSize)), PaddingSize, (UINT8) PaddingSize);
-    if (CipherBlockStart == 0) {
-       for (Index = 0; Index < AES_BLOCK_SIZES; Index++)
-           Block[Index] ^= IV[Index];
-    } else {
-       for (Index = 0; Index < AES_BLOCK_SIZES; Index++)
-           Block[Index] ^= CipherText[CipherBlockStart - ((UINT) AES_BLOCK_SIZES) + Index];
+
+    if(CipherBlockStart == 0)
+    {
+        for(Index = 0; Index < AES_BLOCK_SIZES; Index++)
+            Block[Index] ^= IV[Index];
     }
+    else
+    {
+        for(Index = 0; Index < AES_BLOCK_SIZES; Index++)
+            Block[Index] ^= CipherText[CipherBlockStart - ((UINT) AES_BLOCK_SIZES) + Index];
+    }
+
     CipherBlockSize = *CipherTextLength - CipherBlockStart;
     RT_AES_Encrypt(Block, AES_BLOCK_SIZES , Key, KeyLength, CipherText + CipherBlockStart, &CipherBlockSize);
     CipherBlockStart += CipherBlockSize;
@@ -1340,7 +1460,7 @@ Note:
     Reference to RFC 3602 and NIST 800-38A
 ========================================================================
 */
-VOID AES_CBC_Decrypt (
+VOID AES_CBC_Decrypt(
     IN UINT8 CipherText[],
     IN UINT CipherTextLength,
     IN UINT8 Key[],
@@ -1353,30 +1473,35 @@ VOID AES_CBC_Decrypt (
     UINT PaddingSize, PlainBlockStart, CipherBlockStart, PlainBlockSize;
     UINT Index;
 
-    /*   
+    /*
      * 1. Check the input parameters
      *    - CipherTextLength must be divided with no remainder by block
-     *    - Key length must be 16, 24, or 32 bytes(128, 192, or 256 bits) 
-     *    - IV length must be 16 bytes(128 bits) 
+     *    - Key length must be 16, 24, or 32 bytes(128, 192, or 256 bits)
+     *    - IV length must be 16 bytes(128 bits)
      */
-    if ((CipherTextLength % AES_BLOCK_SIZES) != 0) {
-    	DBGPRINT(RT_DEBUG_ERROR, ("AES_CBC_Decrypt: cipher text length is %d bytes, it can't be divided with no remainder by block size(%d).\n", 
-            CipherTextLength, AES_BLOCK_SIZES));
+    if((CipherTextLength % AES_BLOCK_SIZES) != 0)
+    {
+        DBGPRINT(RT_DEBUG_ERROR, ("AES_CBC_Decrypt: cipher text length is %d bytes, it can't be divided with no remainder by block size(%d).\n",
+                                  CipherTextLength, AES_BLOCK_SIZES));
         return;
     }
-    if ((KeyLength != AES_KEY128_LENGTH) && (KeyLength != AES_KEY192_LENGTH) && (KeyLength != AES_KEY256_LENGTH)) {
-    	DBGPRINT(RT_DEBUG_ERROR, ("AES_CBC_Decrypt: key length is %d bytes, it must be %d, %d, or %d bytes(128, 192, or 256 bits).\n", 
-            KeyLength, AES_KEY128_LENGTH, AES_KEY192_LENGTH, AES_KEY256_LENGTH));
+
+    if((KeyLength != AES_KEY128_LENGTH) && (KeyLength != AES_KEY192_LENGTH) && (KeyLength != AES_KEY256_LENGTH))
+    {
+        DBGPRINT(RT_DEBUG_ERROR, ("AES_CBC_Decrypt: key length is %d bytes, it must be %d, %d, or %d bytes(128, 192, or 256 bits).\n",
+                                  KeyLength, AES_KEY128_LENGTH, AES_KEY192_LENGTH, AES_KEY256_LENGTH));
         return;
     }
-    if (IVLength != AES_CBC_IV_LENGTH) {
-    	DBGPRINT(RT_DEBUG_ERROR, ("AES_CBC_Decrypt: IV length is %d bytes, it must be %d bytes(128bits).\n", 
-            IVLength, AES_CBC_IV_LENGTH));
+
+    if(IVLength != AES_CBC_IV_LENGTH)
+    {
+        DBGPRINT(RT_DEBUG_ERROR, ("AES_CBC_Decrypt: IV length is %d bytes, it must be %d bytes(128bits).\n",
+                                  IVLength, AES_CBC_IV_LENGTH));
         return;
     }
 
 
-    /*   
+    /*
      * 2. Main algorithm
      *    - Cypher text divide into serveral blocks (16 bytes/block)
      *    - Execute RT_AES_Decrypt procedure.
@@ -1384,16 +1509,20 @@ VOID AES_CBC_Decrypt (
      */
     CipherBlockStart = 0;
     PlainBlockStart = 0;
-    while ((CipherTextLength - CipherBlockStart) >= AES_BLOCK_SIZES)
+
+    while((CipherTextLength - CipherBlockStart) >= AES_BLOCK_SIZES)
     {
         PlainBlockSize = *PlainTextLength - PlainBlockStart;
         RT_AES_Decrypt(CipherText + CipherBlockStart, AES_BLOCK_SIZES , Key, KeyLength, PlainText + PlainBlockStart, &PlainBlockSize);
 
-        if (PlainBlockStart == 0) {
-            for (Index = 0; Index < AES_BLOCK_SIZES; Index++)
-                PlainText[PlainBlockStart + Index] ^= IV[Index];                
-        } else {
-            for (Index = 0; Index < AES_BLOCK_SIZES; Index++)
+        if(PlainBlockStart == 0)
+        {
+            for(Index = 0; Index < AES_BLOCK_SIZES; Index++)
+                PlainText[PlainBlockStart + Index] ^= IV[Index];
+        }
+        else
+        {
+            for(Index = 0; Index < AES_BLOCK_SIZES; Index++)
                 PlainText[PlainBlockStart + Index] ^= CipherText[CipherBlockStart + Index - ((UINT) AES_BLOCK_SIZES)];
         }
 
@@ -1401,7 +1530,7 @@ VOID AES_CBC_Decrypt (
         PlainBlockStart += PlainBlockSize;
     }
 
-    PaddingSize = (UINT8) PlainText[PlainBlockStart -1];   
+    PaddingSize = (UINT8) PlainText[PlainBlockStart -1];
     *PlainTextLength = PlainBlockStart - PaddingSize;
 
 }
@@ -1421,17 +1550,17 @@ Arguments:
 Return Value:
     CipherText       The ciphertext
     CipherTextLength Return the length of the ciphertext in bytes
-    
+
 Function Value:
      0: Success
     -1: The key length must be 16, 24, or 32 bytes
     -2: Not enough memory
-    
+
 Note:
     Reference to RFC 3394
 ========================================================================
 */
-INT AES_Key_Wrap (
+INT AES_Key_Wrap(
     IN UINT8 PlainText[],
     IN UINT  PlainTextLength,
     IN UINT8 Key[],
@@ -1443,20 +1572,24 @@ INT AES_Key_Wrap (
     UINT8 *pResult;
     UINT  Temp_Length = 0, Number_Of_Block = 0;
     INT   Index_i = 0, Index_j = 0;
-    
-    /*   
+
+    /*
      * 0. Check input parameter
      */
-    if ((KeyLength != AES_KEY128_LENGTH) && (KeyLength != AES_KEY192_LENGTH) && (KeyLength != AES_KEY256_LENGTH)) {
-    	DBGPRINT(RT_DEBUG_ERROR, ("AES_Key_Wrap: key length is %d bytes, it must be %d, %d, or %d bytes(128, 192, or 256 bits).\n", 
-            KeyLength, AES_KEY128_LENGTH, AES_KEY192_LENGTH, AES_KEY256_LENGTH));
+    if((KeyLength != AES_KEY128_LENGTH) && (KeyLength != AES_KEY192_LENGTH) && (KeyLength != AES_KEY256_LENGTH))
+    {
+        DBGPRINT(RT_DEBUG_ERROR, ("AES_Key_Wrap: key length is %d bytes, it must be %d, %d, or %d bytes(128, 192, or 256 bits).\n",
+                                  KeyLength, AES_KEY128_LENGTH, AES_KEY192_LENGTH, AES_KEY256_LENGTH));
         return -1;
-    } /* End of if */    
-	os_alloc_mem(NULL, (UCHAR **)&pResult, sizeof(UINT8)*PlainTextLength);
-/*    if ((pResult = (UINT8 *) kmalloc(sizeof(UINT8)*PlainTextLength, GFP_ATOMIC)) == NULL) {
-*/
-    if (pResult == NULL) {
-    	DBGPRINT(RT_DEBUG_ERROR, ("AES_Key_Wrap: allocate %zu bytes memory failure.\n", sizeof(UINT8)*PlainTextLength));
+    } /* End of if */
+
+    os_alloc_mem(NULL, (UCHAR **)&pResult, sizeof(UINT8)*PlainTextLength);
+
+    /*    if ((pResult = (UINT8 *) kmalloc(sizeof(UINT8)*PlainTextLength, GFP_ATOMIC)) == NULL) {
+    */
+    if(pResult == NULL)
+    {
+        DBGPRINT(RT_DEBUG_ERROR, ("AES_Key_Wrap: allocate %zu bytes memory failure.\n", sizeof(UINT8)*PlainTextLength));
         return -2;
     } /* End of if */
 
@@ -1473,17 +1606,17 @@ INT AES_Key_Wrap (
     /*
      * 2. Calculate intermediate values
      */
-    for (Index_j = 0;Index_j < 6 ;Index_j++)
-    {   
-        for (Index_i = 0;Index_i < Number_Of_Block;Index_i++)
+    for(Index_j = 0; Index_j < 6 ; Index_j++)
+    {
+        for(Index_i = 0; Index_i < Number_Of_Block; Index_i++)
         {
             NdisMoveMemory(Block_Input, IV, 8);
             NdisMoveMemory(Block_Input + 8, pResult + (Index_i*8), 8);
-            Temp_Length = sizeof(Block_B);            
+            Temp_Length = sizeof(Block_B);
             RT_AES_Encrypt(Block_Input, AES_BLOCK_SIZES , Key, KeyLength, Block_B, &Temp_Length);
 
             NdisMoveMemory(IV, Block_B, 8);
-            IV[7] = Block_B[7] ^ ((Number_Of_Block * Index_j) + Index_i + 1);            
+            IV[7] = Block_B[7] ^ ((Number_Of_Block * Index_j) + Index_i + 1);
             NdisMoveMemory(pResult + (Index_i*8), (Block_B + 8), 8);
         } /* End of for */
     } /* End of for */
@@ -1496,9 +1629,9 @@ INT AES_Key_Wrap (
     NdisMoveMemory(CipherText, IV, AES_KEY_WRAP_IV_LENGTH);
     NdisMoveMemory(CipherText + AES_KEY_WRAP_IV_LENGTH, pResult, PlainTextLength);
 
-/*    kfree(pResult);
-*/
-	os_free_mem(NULL, pResult);
+    /*    kfree(pResult);
+    */
+    os_free_mem(NULL, pResult);
     return 0;
 } /* End of AES_Key_Wrap */
 
@@ -1516,7 +1649,7 @@ Arguments:
 
 Return Value:
     PlainText        Plain text
-    PlainTextLength  Return the length of the plain text in bytes    
+    PlainTextLength  Return the length of the plain text in bytes
 
 Function Value:
      0: Success
@@ -1525,7 +1658,7 @@ Note:
     Reference to RFC 3394
 ========================================================================
 */
-INT AES_Key_Unwrap (
+INT AES_Key_Unwrap(
     IN UINT8 CipherText[],
     IN UINT  CipherTextLength,
     IN UINT8 Key[],
@@ -1537,21 +1670,26 @@ INT AES_Key_Unwrap (
     UINT8 *pResult;
     UINT  Temp_Length = 0, Number_Of_Block = 0, PlainLength;
     INT   Index_i = 0, Index_j = 0;
-    
-    /*   
+
+    /*
      * 0. Check input parameter
      */
     PlainLength = CipherTextLength - AES_KEY_WRAP_IV_LENGTH;
-    if ((KeyLength != AES_KEY128_LENGTH) && (KeyLength != AES_KEY192_LENGTH) && (KeyLength != AES_KEY256_LENGTH)) {
-    	DBGPRINT(RT_DEBUG_ERROR, ("AES_Key_Unwrap: key length is %d bytes, it must be %d, %d, or %d bytes(128, 192, or 256 bits).\n", 
-            KeyLength, AES_KEY128_LENGTH, AES_KEY192_LENGTH, AES_KEY256_LENGTH));
+
+    if((KeyLength != AES_KEY128_LENGTH) && (KeyLength != AES_KEY192_LENGTH) && (KeyLength != AES_KEY256_LENGTH))
+    {
+        DBGPRINT(RT_DEBUG_ERROR, ("AES_Key_Unwrap: key length is %d bytes, it must be %d, %d, or %d bytes(128, 192, or 256 bits).\n",
+                                  KeyLength, AES_KEY128_LENGTH, AES_KEY192_LENGTH, AES_KEY256_LENGTH));
         return -1;
-    } /* End of if */    
-	os_alloc_mem(NULL, (UCHAR **)&pResult, sizeof(UINT8)*PlainLength);
-/*    if ((pResult = (UINT8 *) kmalloc(sizeof(UINT8)*PlainLength, GFP_ATOMIC)) == NULL) {
-*/
-    if (pResult == NULL) {
-    	DBGPRINT(RT_DEBUG_ERROR, ("AES_Key_Unwrap: allocate %zu bytes memory failure.\n", sizeof(UINT8)*PlainLength));
+    } /* End of if */
+
+    os_alloc_mem(NULL, (UCHAR **)&pResult, sizeof(UINT8)*PlainLength);
+
+    /*    if ((pResult = (UINT8 *) kmalloc(sizeof(UINT8)*PlainLength, GFP_ATOMIC)) == NULL) {
+    */
+    if(pResult == NULL)
+    {
+        DBGPRINT(RT_DEBUG_ERROR, ("AES_Key_Unwrap: allocate %zu bytes memory failure.\n", sizeof(UINT8)*PlainLength));
         return -2;
     } /* End of if */
 
@@ -1568,16 +1706,16 @@ INT AES_Key_Unwrap (
     /*
      * 2. Calculate intermediate values
      */
-    for (Index_j = 5;Index_j >= 0 ;Index_j--)
-    {   
-        for (Index_i = (Number_Of_Block - 1);Index_i >= 0;Index_i--)
+    for(Index_j = 5; Index_j >= 0 ; Index_j--)
+    {
+        for(Index_i = (Number_Of_Block - 1); Index_i >= 0; Index_i--)
         {
             IV[7] = IV[7] ^ ((Number_Of_Block * Index_j) + Index_i + 1);
             NdisMoveMemory(Block_Input, IV, 8);
             NdisMoveMemory(Block_Input + 8, pResult + (Index_i*8), 8);
             Temp_Length = sizeof(Block_B);
             RT_AES_Decrypt(Block_Input, AES_BLOCK_SIZES , Key, KeyLength, Block_B, &Temp_Length);
-            
+
             NdisMoveMemory(IV, Block_B, 8);
             NdisMoveMemory(pResult + (Index_i*8), (Block_B + 8), 8);
         } /* End of for */
@@ -1589,9 +1727,9 @@ INT AES_Key_Unwrap (
     *PlainTextLength = PlainLength;
     NdisMoveMemory(PlainText, pResult, PlainLength);
 
-/*    kfree(pResult);    
-*/
-	os_free_mem(NULL, pResult);
+    /*    kfree(pResult);
+    */
+    os_free_mem(NULL, pResult);
     return 0;
 } /* End of AES_Key_Unwrap */
 

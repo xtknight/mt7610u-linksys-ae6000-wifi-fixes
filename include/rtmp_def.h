@@ -90,7 +90,7 @@
 #endif
 #define NUM_OF_LOCAL_TXBUF      2
 #define TXD_SIZE		16	/* TXD_SIZE = TxD + TxInfo */
-#define RXD_SIZE		16	
+#define RXD_SIZE		16
 
 #define RXINFO_OFFSET	12
 
@@ -199,38 +199,41 @@
 #define fRTMP_ADAPTER_IDLE_RADIO_OFF         0x40000000
 #define fRTMP_ADAPTER_POLL_IDLE				 0x80000000
 
-enum ASIC_CAP{
-	fASIC_CAP_CSO = 0x1,
-	fASIC_CAP_TSO = 0x2,
-	fASIC_CAP_MCS_LUT = 0x4,
+enum ASIC_CAP
+{
+    fASIC_CAP_CSO = 0x1,
+    fASIC_CAP_TSO = 0x2,
+    fASIC_CAP_MCS_LUT = 0x4,
 
-	fASIC_CAP_PMF_ENC = 0x10,
+    fASIC_CAP_PMF_ENC = 0x10,
 };
 #define fRTMP_ADAPTER_WSC_PBC_PIN0		0x00000004
 #define fRTMP_ADAPTER_DISABLE_DOT_11N	0x00000008
 
-enum PHY_CAP{
-	fPHY_CAP_24G = 0x1,
-	fPHY_CAP_5G = 0x2,
+enum PHY_CAP
+{
+    fPHY_CAP_24G = 0x1,
+    fPHY_CAP_5G = 0x2,
 
-	fPHY_CAP_HT = 0x10,
-	fPHY_CAP_VHT = 0x20,
+    fPHY_CAP_HT = 0x10,
+    fPHY_CAP_VHT = 0x20,
 
-	fPHY_CAP_TXBF = 0x100,
+    fPHY_CAP_TXBF = 0x100,
 };
 
 #define PHY_CAP_2G(_x)		(((_x) & fPHY_CAP_24G) == fPHY_CAP_24G)
 #define PHY_CAP_5G(_x)		(((_x) & fPHY_CAP_5G) == fPHY_CAP_5G)
 
-enum WIFI_MODE{
-	WMODE_INVALID = 0,
-	WMODE_A = 1 << 0,
-	WMODE_B = 1 << 1,
-	WMODE_G = 1 << 2,
-	WMODE_GN = 1 << 3,
-	WMODE_AN = 1 << 4,
-	WMODE_AC = 1 << 5,
-	WMODE_COMP = 6,	/* total types of supported wireless mode, add this value once yow add new type */
+enum WIFI_MODE
+{
+    WMODE_INVALID = 0,
+    WMODE_A = 1 << 0,
+    WMODE_B = 1 << 1,
+    WMODE_G = 1 << 2,
+    WMODE_GN = 1 << 3,
+    WMODE_AN = 1 << 4,
+    WMODE_AC = 1 << 5,
+    WMODE_COMP = 6,	/* total types of supported wireless mode, add this value once yow add new type */
 };
 
 #define WMODE_CAP_5G(_x)			(((_x) & (WMODE_A | WMODE_AN | WMODE_AC)) != 0)
@@ -1512,8 +1515,8 @@ enum WIFI_MODE{
 
 #define MAX_INI_BUFFER_SIZE		10000
 #define MAX_PARAM_BUFFER_SIZE		(2048)	/* enough for ACL (18*64) */
-											/*18 : the length of Mac address acceptable format "01:02:03:04:05:06;") */
-											/*64 : MAX_NUM_OF_ACL_LIST */
+/*18 : the length of Mac address acceptable format "01:02:03:04:05:06;") */
+/*64 : MAX_NUM_OF_ACL_LIST */
 
 #ifdef RT_BIG_ENDIAN
 #define DIR_READ                    0
@@ -1560,11 +1563,11 @@ enum WIFI_MODE{
 /* The signal threshold (RSSI) over new rate adaption */
 #define SIGNAL_THRESHOLD_OVER_NEW_RATE_ADAPT    -65
 
-/* After Linux 2.6.9, 
- * VLAN module use Private (from user) interface flags (netdevice->priv_flags). 
- * #define IFF_802_1Q_VLAN 0x1         --    802.1Q VLAN device.  in if.h     
+/* After Linux 2.6.9,
+ * VLAN module use Private (from user) interface flags (netdevice->priv_flags).
+ * #define IFF_802_1Q_VLAN 0x1         --    802.1Q VLAN device.  in if.h
  * ref to ip_sabotage_out() [ out->priv_flags & IFF_802_1Q_VLAN ] in br_netfilter.c
- * 
+ *
  * For this reason, we MUST use EVEN value in priv_flags
  */
 #define INT_MAIN			0x0100
@@ -1769,36 +1772,40 @@ enum WIFI_MODE{
 #define	WPA_SUPPLICANT_ENABLE_WPS			0x80
 
 /* definition for Antenna Diversity flag */
-typedef enum {
-	ANT_DIVERSITY_DISABLE,
-	ANT_DIVERSITY_ENABLE ,
-	ANT_FIX_ANT0,
-	ANT_FIX_ANT1,
-	ANT_SW_DIVERSITY_ENABLE,
-	ANT_HW_DIVERSITY_ENABLE,
-	ANT_DIVERSITY_DEFAULT
-}ANT_DIVERSITY_TYPE;
+typedef enum
+{
+    ANT_DIVERSITY_DISABLE,
+    ANT_DIVERSITY_ENABLE ,
+    ANT_FIX_ANT0,
+    ANT_FIX_ANT1,
+    ANT_SW_DIVERSITY_ENABLE,
+    ANT_HW_DIVERSITY_ENABLE,
+    ANT_DIVERSITY_DEFAULT
+} ANT_DIVERSITY_TYPE;
 
-enum IEEE80211_BAND {
-  IEEE80211_BAND_2G,
-  IEEE80211_BAND_5G,
-  IEEE80211_BAND_NUMS
+enum IEEE80211_BAND
+{
+    IEEE80211_BAND_2G,
+    IEEE80211_BAND_5G,
+    IEEE80211_BAND_NUMS
 };
 
-enum {
-	RESUME_RADIO_ON,
-	SUSPEND_RADIO_OFF,
-	MLME_RADIO_ON,
-	MLME_RADIO_OFF,
+enum
+{
+    RESUME_RADIO_ON,
+    SUSPEND_RADIO_OFF,
+    MLME_RADIO_ON,
+    MLME_RADIO_OFF,
 };
 
 /* Advertismenet Protocol ID definitions */
-enum DOT11U_ADVERTISMENT_PROTOCOL_ID {
-	ACCESS_NETWORK_QUERY_PROTOCOL = 0,
-	MIH_INFORMATION_SERVICE = 1,
-	MIH_COMMAND_AND_EVENT_SERVICES_CAPBILITY_DISCOVERY = 2,
-	EMERGENCY_ALERT_SYSTEM = 3,
-	VENDOR_SPECIFIC = 221
+enum DOT11U_ADVERTISMENT_PROTOCOL_ID
+{
+    ACCESS_NETWORK_QUERY_PROTOCOL = 0,
+    MIH_INFORMATION_SERVICE = 1,
+    MIH_COMMAND_AND_EVENT_SERVICES_CAPBILITY_DISCOVERY = 2,
+    EMERGENCY_ALERT_SYSTEM = 3,
+    VENDOR_SPECIFIC = 221
 };
 
 #define ABS(_x, _y) ((_x) > (_y)) ? ((_x) -(_y)) : ((_y) -(_x))

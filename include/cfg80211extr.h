@@ -52,7 +52,7 @@
 
 #ifdef CONFIG_STA_SUPPORT
 #define RT_CFG80211_LOST_AP_INFORM(__pAd) 									\
-	CFG80211_LostApInform((VOID *)__pAd);	
+	CFG80211_LostApInform((VOID *)__pAd);
 #endif /*CONFIG_STA_SUPPORT*/
 
 #define RT_CFG80211_REINIT(__pAd)											\
@@ -107,116 +107,116 @@
 
 /* utilities used in DRV module */
 INT CFG80211DRV_IoctlHandle(
-	IN	VOID					*pAdSrc,
-	IN	RTMP_IOCTL_INPUT_STRUCT	*wrq,
-	IN	INT						cmd,
-	IN	USHORT					subcmd,
-	IN	VOID					*pData,
-	IN	ULONG					Data);
+    IN	VOID					*pAdSrc,
+    IN	RTMP_IOCTL_INPUT_STRUCT	*wrq,
+    IN	INT						cmd,
+    IN	USHORT					subcmd,
+    IN	VOID					*pData,
+    IN	ULONG					Data);
 
 BOOLEAN CFG80211DRV_OpsSetChannel(
-	VOID						*pAdOrg,
-	VOID						*pData);
+    VOID						*pAdOrg,
+    VOID						*pData);
 
 BOOLEAN CFG80211DRV_OpsChgVirtualInf(
-	VOID						*pAdOrg,
-	VOID						*pFlgFilter,
-	UINT8						IfType);
+    VOID						*pAdOrg,
+    VOID						*pFlgFilter,
+    UINT8						IfType);
 
 BOOLEAN CFG80211DRV_OpsScan(
-	VOID						*pAdOrg);
+    VOID						*pAdOrg);
 
 // TODO
 //VOID CFG80211DRV_OpsScanInLinkDownAction(VOID *pAdOrg);
 
 BOOLEAN CFG80211DRV_OpsJoinIbss(
-	VOID						*pAdOrg,
-	VOID						*pData);
+    VOID						*pAdOrg,
+    VOID						*pData);
 
 BOOLEAN CFG80211DRV_OpsLeave(
-	VOID						*pAdOrg);
+    VOID						*pAdOrg);
 
 BOOLEAN CFG80211DRV_StaGet(
-	VOID						*pAdOrg,
-	VOID						*pData);
+    VOID						*pAdOrg,
+    VOID						*pData);
 
 BOOLEAN CFG80211DRV_Connect(
-	VOID						*pAdOrg,
-	VOID						*pData);
+    VOID						*pAdOrg,
+    VOID						*pData);
 
 BOOLEAN CFG80211DRV_KeyAdd(
-	VOID						*pAdOrg,
-	VOID						*pData);
+    VOID						*pAdOrg,
+    VOID						*pData);
 
 VOID CFG80211DRV_RegNotify(
-	VOID						*pAdOrg,
-	VOID						*pData);
+    VOID						*pAdOrg,
+    VOID						*pData);
 
 VOID CFG80211DRV_SurveyGet(
-	VOID						*pAdOrg,
-	VOID						*pData);
+    VOID						*pAdOrg,
+    VOID						*pData);
 
 VOID CFG80211DRV_PmkidConfig(
-	VOID						*pAdOrg,
-	VOID						*pData);
+    VOID						*pAdOrg,
+    VOID						*pData);
 
 #ifdef CONFIG_STA_SUPPORT
 VOID CFG80211_LostApInform(VOID *pAdCB);
 #endif
 
 VOID CFG80211_RegHint(
-	IN VOID						*pAdCB,
-	IN UCHAR					*pCountryIe,
-	IN ULONG					CountryIeLen);
+    IN VOID						*pAdCB,
+    IN UCHAR					*pCountryIe,
+    IN ULONG					CountryIeLen);
 
 VOID CFG80211_RegHint11D(
-	IN VOID						*pAdCB,
-	IN UCHAR					*pCountryIe,
-	IN ULONG					CountryIeLen);
+    IN VOID						*pAdCB,
+    IN UCHAR					*pCountryIe,
+    IN ULONG					CountryIeLen);
 
 VOID CFG80211_ScanEnd(
-	IN VOID						*pAdCB,
-	IN BOOLEAN					FlgIsAborted);
+    IN VOID						*pAdCB,
+    IN BOOLEAN					FlgIsAborted);
 
 VOID CFG80211_ConnectResultInform(
-	IN VOID						*pAdCB,
-	IN UCHAR					*pBSSID,
-	IN UCHAR					*pReqIe,
-	IN UINT32					ReqIeLen,
-	IN UCHAR					*pRspIe,
-	IN UINT32					RspIeLen,
-	IN UCHAR					FlgIsSuccess);
+    IN VOID						*pAdCB,
+    IN UCHAR					*pBSSID,
+    IN UCHAR					*pReqIe,
+    IN UINT32					ReqIeLen,
+    IN UCHAR					*pRspIe,
+    IN UINT32					RspIeLen,
+    IN UCHAR					FlgIsSuccess);
 
 BOOLEAN CFG80211_SupBandReInit(
-	IN VOID						*pAdCB);
+    IN VOID						*pAdCB);
 
 VOID CFG80211_RegRuleApply(
-	IN VOID						*pAdCB,
-	IN VOID						*pWiphy,
-	IN UCHAR					*pAlpha2);
+    IN VOID						*pAdCB,
+    IN VOID						*pWiphy,
+    IN UCHAR					*pAlpha2);
 
 VOID CFG80211_Scaning(
-	IN VOID						*pAdCB,
-	IN UINT32					BssIdx,
-	IN UINT32					ChanId,
-	IN UCHAR					*pFrame,
-	IN UINT32					FrameLen,
-	IN INT32					RSSI);
+    IN VOID						*pAdCB,
+    IN UINT32					BssIdx,
+    IN UINT32					ChanId,
+    IN UCHAR					*pFrame,
+    IN UINT32					FrameLen,
+    IN INT32					RSSI);
 
 #ifdef RFKILL_HW_SUPPORT
 VOID CFG80211_RFKillStatusUpdate(
-	IN PVOID					pAd,
-	IN BOOLEAN					active);
+    IN PVOID					pAd,
+    IN BOOLEAN					active);
 #endif /* RFKILL_HW_SUPPORT */
 
 VOID CFG80211_UnRegister(
-	IN VOID						*pAdOrg,
-	IN VOID						*pNetDev);
+    IN VOID						*pAdOrg,
+    IN VOID						*pNetDev);
 
 #ifdef RT_P2P_SPECIFIC_WIRELESS_EVENT
 INT CFG80211_SendWirelessEvent(
-	IN VOID                                         *pAdCB,
-	IN UCHAR 					*pMacAddr);
+    IN VOID                                         *pAdCB,
+    IN UCHAR 					*pMacAddr);
 #endif /* RT_P2P_SPECIFIC_WIRELESS_EVENT */
 
 #endif /* RT_CFG80211_SUPPORT */
