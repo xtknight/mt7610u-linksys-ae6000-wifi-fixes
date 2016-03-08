@@ -196,7 +196,7 @@ VOID RT28xxATEAsicSwitchChannel(
                     {
                         TxPwer = (7+TxPwer);
                         R3 |= (TxPwer << 10);
-                        DBGPRINT(RT_DEBUG_TRACE, ("ATEAsicSwitchChannel: TxPwer=%d \n", TxPwer));
+                        DBGPRINT(RT_DEBUG_TRACE, ("ATEAsicSwitchChannel: TxPwer=%d\n", TxPwer));
                     }
                     else
                     {
@@ -209,7 +209,7 @@ VOID RT28xxATEAsicSwitchChannel(
                     {
                         TxPwer2 = (7+TxPwer2);
                         R4 |= (TxPwer2 << 7);
-                        DBGPRINT(RT_DEBUG_TRACE, ("ATEAsicSwitchChannel: TxPwer2=%d \n", TxPwer2));
+                        DBGPRINT(RT_DEBUG_TRACE, ("ATEAsicSwitchChannel: TxPwer2=%d\n", TxPwer2));
                     }
                     else
                     {

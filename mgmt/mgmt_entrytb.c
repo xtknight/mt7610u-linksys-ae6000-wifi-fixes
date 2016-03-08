@@ -554,7 +554,7 @@ BOOLEAN MacTableDeleteEntry(
         }
         else
         {
-            DBGPRINT(RT_DEBUG_OFF, ("\n%s: Impossible Wcid = %d !!!!!\n", __FUNCTION__, wcid));
+            DBGPRINT(RT_DEBUG_ERROR, ("\n%s: Impossible Wcid = %d !!!!!\n", __FUNCTION__, wcid));
         }
     }
 

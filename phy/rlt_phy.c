@@ -147,9 +147,9 @@ INT rtmp_bbp_set_rxpath(struct _RTMP_ADAPTER *pAd, INT rxpath)
     if(agc != agc_r0)
         RTMP_BBP_IO_WRITE32(pAd, AGC1_R0, agc);
 
-    //DBGPRINT(RT_DEBUG_OFF, ("%s(): rxpath=%d, Set AGC1_R0=0x%x, agc_r0=0x%x\n", __FUNCTION__, rxpath, agc, agc_r0));
+    //DBGPRINT(RT_DEBUG_TRACE, ("%s(): rxpath=%d, Set AGC1_R0=0x%x, agc_r0=0x%x\n", __FUNCTION__, rxpath, agc, agc_r0));
     //		RTMP_BBP_IO_READ32(pAd, AGC1_R0, &agc);
-    //DBGPRINT(RT_DEBUG_OFF, ("%s(): rxpath=%d, After write, Get AGC1_R0=0x%x,\n", __FUNCTION__, rxpath, agc));
+    //DBGPRINT(RT_DEBUG_TRACE, ("%s(): rxpath=%d, After write, Get AGC1_R0=0x%x,\n", __FUNCTION__, rxpath, agc));
 
     return TRUE;
 }
@@ -261,9 +261,9 @@ INT rtmp_bbp_set_ctrlch(struct _RTMP_ADAPTER *pAd, INT ext_ch)
     if(be != be_r0)
         RTMP_BBP_IO_WRITE32(pAd, TXBE_R0, be);
 
-    //DBGPRINT(RT_DEBUG_OFF, ("%s(): ext_ch=%d, Set AGC1_R0=0x%x, agc_r0=0x%x\n", __FUNCTION__, ext_ch, agc, agc_r0));
+    //DBGPRINT(RT_DEBUG_TRACE, ("%s(): ext_ch=%d, Set AGC1_R0=0x%x, agc_r0=0x%x\n", __FUNCTION__, ext_ch, agc, agc_r0));
     //		RTMP_BBP_IO_READ32(pAd, AGC1_R0, &agc);
-    //DBGPRINT(RT_DEBUG_OFF, ("%s(): ext_ch=%d, After write, Get AGC1_R0=0x%x,\n", __FUNCTION__, ext_ch, agc));
+    //DBGPRINT(RT_DEBUG_TRACE, ("%s(): ext_ch=%d, After write, Get AGC1_R0=0x%x,\n", __FUNCTION__, ext_ch, agc));
 
     return TRUE;
 }

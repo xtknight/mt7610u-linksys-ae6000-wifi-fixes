@@ -202,13 +202,13 @@ INT Show_AGS_Proc(
     UINT32 IdQuality;
 
 
-    DBGPRINT(RT_DEBUG_OFF, ("MCS Group\t\tMCS Index\n"));
-    DBGPRINT(RT_DEBUG_OFF, ("%d\t\t\t%d\n\n", pEntry->AGSCtrl.MCSGroup, pEntry->CurrTxRateIndex));
+    DBGPRINT(RT_DEBUG_ERROR, ("MCS Group\t\tMCS Index\n"));
+    DBGPRINT(RT_DEBUG_ERROR, ("%d\t\t\t%d\n\n", pEntry->AGSCtrl.MCSGroup, pEntry->CurrTxRateIndex));
 
-    DBGPRINT(RT_DEBUG_OFF, ("MCS Quality:\n"));
+    DBGPRINT(RT_DEBUG_ERROR, ("MCS Quality:\n"));
 
     for(IdQuality=0; IdQuality<=23; IdQuality++)
-        DBGPRINT(RT_DEBUG_OFF, ("%02d\t\t%d\n", IdQuality, pEntry->TxQuality[IdQuality]));
+        DBGPRINT(RT_DEBUG_ERROR, ("%02d\t\t%d\n", IdQuality, pEntry->TxQuality[IdQuality]));
 
     return TRUE;
 }

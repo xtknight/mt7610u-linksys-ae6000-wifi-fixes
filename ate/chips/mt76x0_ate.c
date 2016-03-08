@@ -395,7 +395,7 @@ void mt76x0_ate_asic_adjust_tx_pwr(
             mac_val = (mac_val & (~0x3f)) | delta_pwr;
             RTMP_IO_WRITE32(pAd, TX_ALC_CFG_1, mac_val);
 
-            DBGPRINT(RT_DEBUG_OFF,
+            DBGPRINT(RT_DEBUG_TRACE,
                      ("%s - delta_pwr = %d, TssiCalibratedOffset = %d, TssiMpOffset = %d, 0x13B4 = 0x%08x, %s = %d, DeltaPwrBeforeTempComp = %d, LastTempCompDeltaPwr =%d\n",
                       __FUNCTION__,
                       pAd->LastTempCompDeltaPwr,
@@ -409,7 +409,7 @@ void mt76x0_ate_asic_adjust_tx_pwr(
         }
         else
         {
-            DBGPRINT(RT_DEBUG_OFF, ("%s(): failed to get the compensation level\n", __FUNCTION__));
+            DBGPRINT(RT_DEBUG_ERROR, ("%s(): failed to get the compensation level\n", __FUNCTION__));
         }
     }
 }

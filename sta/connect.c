@@ -759,7 +759,7 @@ VOID CntlOidRTBssidProc(
 
             if((pAd->StaCfg.ConnectinfoChannel  != 0)&& (pAd->StaCfg.Connectinfoflag == TRUE))
             {
-                DBGPRINT(RT_DEBUG_OFF, ("CntlOidRTBssidProc BSSID %02x:%02x:%02x:%02x:%02x:%02x\n",
+                DBGPRINT(RT_DEBUG_INFO, ("CntlOidRTBssidProc BSSID %02x:%02x:%02x:%02x:%02x:%02x\n",
                                         PRINT_MAC(pAd->StaCfg.ConnectinfoBssid)));
                 pAd->CommonCfg.Channel = pAd->StaCfg.ConnectinfoChannel;
                 MlmeEnqueue(pAd, SYNC_STATE_MACHINE, MT2_MLME_FORCE_JOIN_REQ,
@@ -1689,7 +1689,7 @@ VOID LinkUp(
         OPSTATUS_SET_FLAG(pAd, fOP_STATUS_MEDIA_STATE_CONNECTED);
     }
 
-    DBGPRINT(RT_DEBUG_TRACE, ("!!!%s LINK UP !!! \n", (BssType == BSS_ADHOC ? "ADHOC" : "Infra")));
+    DBGPRINT(RT_DEBUG_TRACE, ("!!!%s LINK UP !!!\n", (BssType == BSS_ADHOC ? "ADHOC" : "Infra")));
 
     DBGPRINT(RT_DEBUG_TRACE,
              ("!!! LINK UP !!! (BssType=%d, AID=%d, ssid=%s, Channel=%d, CentralChannel = %d)\n",
@@ -2163,7 +2163,7 @@ VOID LinkUp(
         }
 
         DBGPRINT(RT_DEBUG_TRACE,
-                 ("!!!MaxRAmpduFactor= %d \n",
+                 ("!!!MaxRAmpduFactor= %d\n",
                   pEntry->MaxRAmpduFactor));
     }
 
@@ -2263,7 +2263,7 @@ VOID LinkUp(
 
     COPY_MAC_ADDR(pAd->CommonCfg.LastBssid, pAd->CommonCfg.Bssid);
     DBGPRINT(RT_DEBUG_TRACE,
-             ("!!!pAd->bNextDisableRxBA= %d \n",
+             ("!!!pAd->bNextDisableRxBA= %d\n",
               pAd->CommonCfg.IOTestParm.bNextDisableRxBA));
     /* BSSID add in one MAC entry too.  Because in Tx, ASIC need to check Cipher and IV/EIV, BAbitmap */
     /* Pther information in MACTab.Content[BSSID_WCID] is not necessary for driver. */
@@ -2309,7 +2309,7 @@ VOID LinkUp(
         }
         else
         {
-            DBGPRINT(RT_DEBUG_TRACE, ("not supports 20/40 BSS COEX !!! \n"));
+            DBGPRINT(RT_DEBUG_TRACE, ("not supports 20/40 BSS COEX !!!\n"));
             DBGPRINT(RT_DEBUG_TRACE,
                      ("pAd->CommonCfg Info: bBssCoexEnable=%d, Channel=%d, CentralChannel=%d, PhyMode=%d\n",
                       pAd->CommonCfg.bBssCoexEnable, pAd->CommonCfg.Channel,
@@ -2766,7 +2766,7 @@ VOID LinkDown(
     /* ------ new addition from mt7612u ------ */
 #ifdef RT_CFG80211_SUPPORT
 #ifdef CONFIG_STA_SUPPORT
-    printk("LOST_AP_INFORM\n");
+    DBGPRINT(RT_DEBUG_TRACE, ("LOST_AP_INFORM\n"));
     RT_CFG80211_LOST_AP_INFORM(pAd);
 #endif
 #endif /* RT_CFG80211_SUPPORT */
@@ -3454,7 +3454,7 @@ VOID AdjustChannelRelatedValue(
     if(RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_BSS_SCAN_IN_PROGRESS))
         return;
 
-    DBGPRINT(RT_DEBUG_TRACE, ("%s():CentralChannel=%d, Channel=%d, ChannelWidth=%d\n",
+    DBGPRINT(RT_DEBUG_INFO, ("%s():CentralChannel=%d, Channel=%d, ChannelWidth=%d\n",
                               __FUNCTION__, ExtraCh, PriCh, BandWidth));
 
     pAd->CommonCfg.CentralChannel = ExtraCh;
@@ -3492,7 +3492,7 @@ VOID AdjustChannelRelatedValue(
         rf_channel = pAd->CommonCfg.vht_cent_ch;
     }
 
-    DBGPRINT(RT_DEBUG_OFF, ("%s(): Input BW=%d, rf_channel=%d, vht_bw=%d, Channel=%d, vht_cent_ch=%d!\n",
+    DBGPRINT(RT_DEBUG_INFO, ("%s(): Input BW=%d, rf_channel=%d, vht_bw=%d, Channel=%d, vht_cent_ch=%d!\n",
                             __FUNCTION__, rf_bw, rf_channel, pAd->CommonCfg.vht_bw, pAd->CommonCfg.Channel,
                             pAd->CommonCfg.vht_cent_ch));
 #endif /* DOT11_VHT_AC */
@@ -3503,14 +3503,14 @@ VOID AdjustChannelRelatedValue(
 
     AsicSetChannel(pAd, rf_channel, rf_bw, ext_ch, FALSE);
 
-    DBGPRINT(RT_DEBUG_TRACE,
+    DBGPRINT(RT_DEBUG_INFO,
              ("%s():BW_%s, RF-Ch=%d, CtrlCh=%d, HT-CentralCh=%d\n",
               __FUNCTION__, (rf_bw == BW_80 ? "80" : (rf_bw == BW_40 ? "40": "20")),
               pAd->LatchRfRegs.Channel,
               pAd->CommonCfg.Channel,
               pAd->CommonCfg.CentralChannel));
 #ifdef DOT11_VHT_AC
-    DBGPRINT(RT_DEBUG_TRACE, ("VHT-CentralCh=%d\n", pAd->CommonCfg.vht_cent_ch));
+    DBGPRINT(RT_DEBUG_INFO, ("VHT-CentralCh=%d\n", pAd->CommonCfg.vht_cent_ch));
 #endif /* DOT11_VHT_AC */
 
     DBGPRINT(RT_DEBUG_TRACE, ("AdjustChannelRelatedValue ==> not any connection !!!\n"));

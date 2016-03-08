@@ -626,7 +626,7 @@ INT Set_NetworkType_Proc(
 #ifdef RT_CFG80211_SUPPORT
 #ifdef CONFIG_STA_SUPPORT
         // This helps when doing rmmod in Monitor mode if it was switched from Managed mode in the past
-        DBGPRINT(RT_DEBUG_TRACE, ("MONITOR: LOST_AP_INFORM \n"));
+        DBGPRINT(RT_DEBUG_TRACE, ("MONITOR: LOST_AP_INFORM\n"));
         RT_CFG80211_LOST_AP_INFORM(pAd);
 #endif
 #endif /* RT_CFG80211_SUPPORT */
@@ -645,7 +645,7 @@ INT Set_NetworkType_Proc(
         pAd->StaCfg.bAutoReconnect = FALSE;
         /* reset all mlme state machine */
         RTMP_MLME_RESET_STATE_MACHINE(pAd);
-        DBGPRINT(RT_DEBUG_TRACE, ("fOP_STATUS_MEDIA_STATE_CONNECTED \n"));
+        DBGPRINT(RT_DEBUG_TRACE, ("fOP_STATUS_MEDIA_STATE_CONNECTED\n"));
 
         if(pAd->CommonCfg.CentralChannel == 0)
         {
@@ -698,7 +698,7 @@ INT Set_NetworkType_Proc(
         }
 
         AsicSetChannel(pAd, rf_channel, rf_bw, ext_ch, FALSE);
-        DBGPRINT(RT_DEBUG_TRACE, ("%s():BW_%s, CtrlChannel(%d), CentralChannel(%d) \n",
+        DBGPRINT(RT_DEBUG_TRACE, ("%s():BW_%s, CtrlChannel(%d), CentralChannel(%d)\n",
                                   __FUNCTION__, (rf_bw == BW_40 ? "40" : "20"),
                                   pAd->CommonCfg.Channel,
                                   pAd->CommonCfg.CentralChannel));
@@ -2068,7 +2068,7 @@ INT RTMPSetInformation(
     case OID_802_11_BSSID_LIST_SCAN:
         RTMP_GetCurrentSystemTick(&Now);
         /*            Now = jiffies; */
-        DBGPRINT(RT_DEBUG_TRACE, ("Set::OID_802_11_BSSID_LIST_SCAN, TxCnt = %d \n", pAd->RalinkCounters.LastOneSecTotalTxCount));
+        DBGPRINT(RT_DEBUG_TRACE, ("Set::OID_802_11_BSSID_LIST_SCAN, TxCnt = %d\n", pAd->RalinkCounters.LastOneSecTotalTxCount));
 
         if(MONITOR_ON(pAd))
         {
@@ -2430,7 +2430,7 @@ INT RTMPSetInformation(
             }
 
             pAd->StaCfg.PortSecured = WPA_802_1X_PORT_NOT_SECURED;
-            DBGPRINT(RT_DEBUG_TRACE, ("Set::OID_802_11_AUTHENTICATION_MODE (=%d) \n",pAd->StaCfg.AuthMode));
+            DBGPRINT(RT_DEBUG_TRACE, ("Set::OID_802_11_AUTHENTICATION_MODE (=%d)\n",pAd->StaCfg.AuthMode));
         }
 
         break;
@@ -2520,7 +2520,7 @@ INT RTMPSetInformation(
 
 #endif /* TXBF_SUPPORT */
 
-        DBGPRINT(RT_DEBUG_TRACE, ("Set::RT_OID_802_11_RESET_COUNTERS \n"));
+        DBGPRINT(RT_DEBUG_TRACE, ("Set::RT_OID_802_11_RESET_COUNTERS\n"));
         break;
 
     case OID_802_11_RTS_THRESHOLD:
@@ -2567,7 +2567,7 @@ INT RTMPSetInformation(
                 pAd->CommonCfg.FragmentThreshold = (USHORT)FragThresh;
         }
 
-        DBGPRINT(RT_DEBUG_TRACE, ("Set::OID_802_11_FRAGMENTATION_THRESHOLD (=%ld) \n",FragThresh));
+        DBGPRINT(RT_DEBUG_TRACE, ("Set::OID_802_11_FRAGMENTATION_THRESHOLD (=%ld)\n",FragThresh));
         break;
 
     case OID_802_11_POWER_MODE:
@@ -2814,7 +2814,7 @@ INT RTMPSetInformation(
             POID_SET_HT_PHYMODE	pHTPhyMode = &HT_PhyMode;
 
             Status = copy_from_user(&HT_PhyMode, wrq->u.data.pointer, wrq->u.data.length);
-            DBGPRINT(RT_DEBUG_TRACE, ("Set::pHTPhyMode	(PhyMode = %d,TransmitNo = %d, HtMode =	%d,	ExtOffset =	%d , MCS = %d, BW =	%d,	STBC = %d, SHORTGI = %d) \n",
+            DBGPRINT(RT_DEBUG_TRACE, ("Set::pHTPhyMode	(PhyMode = %d,TransmitNo = %d, HtMode =	%d,	ExtOffset =	%d , MCS = %d, BW =	%d,	STBC = %d, SHORTGI = %d)\n",
                                       pHTPhyMode->PhyMode, pHTPhyMode->TransmitNo,pHTPhyMode->HtMode,pHTPhyMode->ExtOffset,
                                       pHTPhyMode->MCS, pHTPhyMode->BW, pHTPhyMode->STBC, pHTPhyMode->SHORTGI));
 
@@ -2928,7 +2928,7 @@ INT RTMPSetInformation(
                         RT_OID_802_11_SET_DLS_PARAM,
                         sizeof(RT_802_11_DLS),
                         &Dls, 0);
-            DBGPRINT(RT_DEBUG_TRACE,("Set::RT_OID_802_11_SET_DLS_PARAM \n"));
+            DBGPRINT(RT_DEBUG_TRACE,("Set::RT_OID_802_11_SET_DLS_PARAM\n"));
         }
 
         break;
@@ -3039,7 +3039,7 @@ INT RTMPSetInformation(
         break;
 
     case RT_OID_802_11_ADD_IMME_BA:
-        DBGPRINT(RT_DEBUG_TRACE, (" Set :: RT_OID_802_11_ADD_IMME_BA \n"));
+        DBGPRINT(RT_DEBUG_TRACE, (" Set :: RT_OID_802_11_ADD_IMME_BA\n"));
 
         if(wrq->u.data.length != sizeof(OID_ADD_BA_ENTRY))
             Status = -EINVAL;
@@ -3082,7 +3082,7 @@ INT RTMPSetInformation(
                     /*BATableInsertEntry(pAd, pEntry->Aid, BA.MACAddr, 0, 0xffff, BA.TID, BA.nMSDU, BA.IsRecipient); */
                 }
 
-                DBGPRINT(RT_DEBUG_TRACE, ("Set::RT_OID_802_11_ADD_IMME_BA. Rec = %d. Mac = %x:%x:%x:%x:%x:%x . \n",
+                DBGPRINT(RT_DEBUG_TRACE, ("Set::RT_OID_802_11_ADD_IMME_BA. Rec = %d. Mac = %x:%x:%x:%x:%x:%x .\n",
                                           BA.IsRecipient, BA.MACAddr[0], BA.MACAddr[1], BA.MACAddr[2], BA.MACAddr[2]
                                           , BA.MACAddr[4], BA.MACAddr[5]));
             }
@@ -3091,7 +3091,7 @@ INT RTMPSetInformation(
         break;
 
     case RT_OID_802_11_TEAR_IMME_BA:
-        DBGPRINT(RT_DEBUG_TRACE, ("Set :: RT_OID_802_11_TEAR_IMME_BA \n"));
+        DBGPRINT(RT_DEBUG_TRACE, ("Set :: RT_OID_802_11_TEAR_IMME_BA\n"));
 
         if(wrq->u.data.length != sizeof(OID_ADD_BA_ENTRY))
             Status = -EINVAL;
@@ -3132,7 +3132,7 @@ INT RTMPSetInformation(
                         BAOriSessionTearDown(pAd, pEntry->Aid, pBA->TID, FALSE, TRUE);
                     }
                     else
-                        DBGPRINT(RT_DEBUG_TRACE, ("Set :: Not found pEntry \n"));
+                        DBGPRINT(RT_DEBUG_TRACE, ("Set :: Not found pEntry\n"));
                 }
                 else
                 {
@@ -3143,7 +3143,7 @@ INT RTMPSetInformation(
                         BARecSessionTearDown(pAd, (UCHAR)pEntry->Aid, pBA->TID, TRUE);
                     }
                     else
-                        DBGPRINT(RT_DEBUG_TRACE, ("Set :: Not found pEntry \n"));
+                        DBGPRINT(RT_DEBUG_TRACE, ("Set :: Not found pEntry\n"));
                 }
 
                 os_free_mem(NULL, pBA);
@@ -3422,7 +3422,7 @@ INT RTMPSetInformation(
                 /* Found, replace it */
                 if(CachedIdx < PMKID_NO)
                 {
-                    DBGPRINT(RT_DEBUG_OFF, ("Update OID_802_11_PMKID, idx = %d\n", CachedIdx));
+                    DBGPRINT(RT_DEBUG_INFO, ("Update OID_802_11_PMKID, idx = %d\n", CachedIdx));
                     NdisMoveMemory(&pAd->StaCfg.SavedPMK[CachedIdx], pBssIdInfo, sizeof(BSSID_INFO));
                     pAd->StaCfg.SavedPMKNum++;
                 }
@@ -3431,7 +3431,7 @@ INT RTMPSetInformation(
                 {
                     /* Randomly replace one */
                     CachedIdx = (pBssIdInfo->BSSID[5] % PMKID_NO);
-                    DBGPRINT(RT_DEBUG_OFF, ("Update OID_802_11_PMKID, idx = %d\n", CachedIdx));
+                    DBGPRINT(RT_DEBUG_INFO, ("Update OID_802_11_PMKID, idx = %d\n", CachedIdx));
                     NdisMoveMemory(&pAd->StaCfg.SavedPMK[CachedIdx], pBssIdInfo, sizeof(BSSID_INFO));
                 }
             }
@@ -3506,7 +3506,7 @@ INT RTMPSetInformation(
         break;
 
     case OID_802_11_LONGRETRYLIMIT:
-        DBGPRINT(RT_DEBUG_TRACE, ("Set::OID_802_11_LONGRETRYLIMIT \n"));
+        DBGPRINT(RT_DEBUG_TRACE, ("Set::OID_802_11_LONGRETRYLIMIT\n"));
 
         if(wrq->u.data.length != sizeof(ULONG))
             Status = -EINVAL;
@@ -3569,7 +3569,7 @@ INT RTMPSetInformation(
 
 
     case OID_802_11_WEPDEFAULTKEYID:
-        DBGPRINT(RT_DEBUG_TRACE, ("Set::OID_802_11_WEPDEFAULTKEYID \n"));
+        DBGPRINT(RT_DEBUG_TRACE, ("Set::OID_802_11_WEPDEFAULTKEYID\n"));
 
         if(wrq->u.data.length != sizeof(UCHAR))
             Status = -EINVAL;
@@ -3580,7 +3580,7 @@ INT RTMPSetInformation(
 
 
     case OID_802_11_CURRENTCHANNEL:
-        DBGPRINT(RT_DEBUG_TRACE, ("Set::OID_802_11_CURRENTCHANNEL \n"));
+        DBGPRINT(RT_DEBUG_TRACE, ("Set::OID_802_11_CURRENTCHANNEL\n"));
 
         if(wrq->u.data.length != sizeof(UCHAR))
             Status = -EINVAL;
@@ -3607,7 +3607,7 @@ INT RTMPSetInformation(
             Status = copy_from_user(&pAd->StaCfg.PSPXlink, wrq->u.data.pointer, wrq->u.data.length);
             /*if (pAd->StaCfg.PSPXlink)
             	RX_FILTER_SET_FLAG(pAd, fRX_FILTER_ACCEPT_PROMISCUOUS)*/
-            DBGPRINT(RT_DEBUG_TRACE,("Set::RT_OID_802_11_SET_PSPXLINK_MODE(=%d) \n", pAd->StaCfg.PSPXlink));
+            DBGPRINT(RT_DEBUG_TRACE,("Set::RT_OID_802_11_SET_PSPXLINK_MODE(=%d)\n", pAd->StaCfg.PSPXlink));
         }
 
         break;
@@ -3677,7 +3677,7 @@ INT RTMPQueryInformation(
         break;
 
     case RT_OID_VERSION_INFO:
-        DBGPRINT(RT_DEBUG_TRACE, ("Query::RT_OID_VERSION_INFO \n"));
+        DBGPRINT(RT_DEBUG_TRACE, ("Query::RT_OID_VERSION_INFO\n"));
         wrq->u.data.length = 8*sizeof(CHAR);
         snprintf(&driverVersion[0], sizeof(driverVersion), "%s", STA_DRIVER_VERSION);
         driverVersion[7] = '\0';
@@ -3907,7 +3907,7 @@ INT RTMPQueryInformation(
             MAP_CHANNEL_ID_TO_KHZ(pAd->CommonCfg.Channel, pConfiguration->DSConfig);
             wrq->u.data.length = sizeof(NDIS_802_11_CONFIGURATION);
             Status = copy_to_user(wrq->u.data.pointer, pConfiguration, wrq->u.data.length);
-            DBGPRINT(RT_DEBUG_TRACE, ("Query::OID_802_11_CONFIGURATION(BeaconPeriod=%ld,AtimW=%ld,Channel=%d) \n",
+            DBGPRINT(RT_DEBUG_TRACE, ("Query::OID_802_11_CONFIGURATION(BeaconPeriod=%ld,AtimW=%ld,Channel=%d)\n",
                                       pConfiguration->BeaconPeriod, pConfiguration->ATIMWindow, pAd->CommonCfg.Channel));
             /*				kfree(pConfiguration); */
             os_free_mem(NULL, pConfiguration);
@@ -3999,7 +3999,7 @@ INT RTMPQueryInformation(
 
         if(pStatistics)
         {
-            DBGPRINT(RT_DEBUG_TRACE, ("Query::OID_802_11_STATISTICS \n"));
+            DBGPRINT(RT_DEBUG_TRACE, ("Query::OID_802_11_STATISTICS\n"));
             /* add the most up-to-date h/w raw counters into software counters */
             NICUpdateRawCounters(pAd);
 
@@ -4367,7 +4367,7 @@ INT RTMPQueryInformation(
 #endif /* WPA_SUPPLICANT_SUPPORT */
 
     case RT_OID_DRIVER_DEVICE_NAME:
-        DBGPRINT(RT_DEBUG_TRACE, ("Query::RT_OID_DRIVER_DEVICE_NAME \n"));
+        DBGPRINT(RT_DEBUG_TRACE, ("Query::RT_OID_DRIVER_DEVICE_NAME\n"));
         wrq->u.data.length = 16;
 
         if(copy_to_user(wrq->u.data.pointer, pAd->StaCfg.dev_name, wrq->u.data.length))
@@ -4410,7 +4410,7 @@ INT RTMPQueryInformation(
         break;
 
     case RT_OID_802_11_COUNTRY_REGION:
-        DBGPRINT(RT_DEBUG_TRACE, ("Query::RT_OID_802_11_COUNTRY_REGION \n"));
+        DBGPRINT(RT_DEBUG_TRACE, ("Query::RT_OID_802_11_COUNTRY_REGION\n"));
         wrq->u.data.length = sizeof(ulInfo);
         ulInfo = pAd->CommonCfg.CountryRegionForABand;
         ulInfo = (ulInfo << 8)|(pAd->CommonCfg.CountryRegion);
@@ -4465,7 +4465,7 @@ INT RTMPQueryInformation(
             Status = -EFAULT;
         }
 
-        DBGPRINT(RT_DEBUG_TRACE, ("Query::RT_OID_QUERY_MULTIPLE_CARD_SUPPORT(=%d) \n", i));
+        DBGPRINT(RT_DEBUG_TRACE, ("Query::RT_OID_QUERY_MULTIPLE_CARD_SUPPORT(=%d)\n", i));
         break;
 #ifdef SNMP_SUPPORT
 
@@ -4475,32 +4475,32 @@ INT RTMPQueryInformation(
         break;
 
     case RT_OID_802_11_MANUFACTUREROUI:
-        DBGPRINT(RT_DEBUG_TRACE, ("Query::RT_OID_802_11_MANUFACTUREROUI \n"));
+        DBGPRINT(RT_DEBUG_TRACE, ("Query::RT_OID_802_11_MANUFACTUREROUI\n"));
         wrq->u.data.length = ManufacturerOUI_LEN;
         Status = copy_to_user(wrq->u.data.pointer, &pAd->CurrentAddress, wrq->u.data.length);
         break;
 
     case RT_OID_802_11_MANUFACTURERNAME:
-        DBGPRINT(RT_DEBUG_TRACE, ("Query::RT_OID_802_11_MANUFACTURERNAME \n"));
+        DBGPRINT(RT_DEBUG_TRACE, ("Query::RT_OID_802_11_MANUFACTURERNAME\n"));
         wrq->u.data.length = strlen(ManufacturerNAME);
         Status = copy_to_user(wrq->u.data.pointer, ManufacturerNAME, wrq->u.data.length);
         break;
 
     case RT_OID_802_11_RESOURCETYPEIDNAME:
-        DBGPRINT(RT_DEBUG_TRACE, ("Query::RT_OID_802_11_RESOURCETYPEIDNAME \n"));
+        DBGPRINT(RT_DEBUG_TRACE, ("Query::RT_OID_802_11_RESOURCETYPEIDNAME\n"));
         wrq->u.data.length = strlen(ResourceTypeIdName);
         Status = copy_to_user(wrq->u.data.pointer, ResourceTypeIdName, wrq->u.data.length);
         break;
 
     case RT_OID_802_11_PRIVACYOPTIONIMPLEMENTED:
-        DBGPRINT(RT_DEBUG_TRACE, ("Query::RT_OID_802_11_PRIVACYOPTIONIMPLEMENTED \n"));
+        DBGPRINT(RT_DEBUG_TRACE, ("Query::RT_OID_802_11_PRIVACYOPTIONIMPLEMENTED\n"));
         ulInfo = 1; /* 1 is support wep else 2 is not support. */
         wrq->u.data.length = sizeof(ulInfo);
         Status = copy_to_user(wrq->u.data.pointer, &ulInfo, wrq->u.data.length);
         break;
 
     case RT_OID_802_11_POWERMANAGEMENTMODE:
-        DBGPRINT(RT_DEBUG_TRACE, ("Query::RT_OID_802_11_POWERMANAGEMENTMODE \n"));
+        DBGPRINT(RT_DEBUG_TRACE, ("Query::RT_OID_802_11_POWERMANAGEMENTMODE\n"));
 
         if(pAd->StaCfg.Psm == PSMP_ACTION)
             ulInfo = 1; /* 1 is power active else 2 is power save. */
@@ -4512,9 +4512,9 @@ INT RTMPQueryInformation(
         break;
 
     case OID_802_11_WEPDEFAULTKEYVALUE:
-        DBGPRINT(RT_DEBUG_TRACE, ("Query::OID_802_11_WEPDEFAULTKEYVALUE \n"));
+        DBGPRINT(RT_DEBUG_TRACE, ("Query::OID_802_11_WEPDEFAULTKEYVALUE\n"));
         pKeyIdxValue = wrq->u.data.pointer;
-        DBGPRINT(RT_DEBUG_TRACE,("KeyIdxValue.KeyIdx = %d, \n",pKeyIdxValue->KeyIdx));
+        DBGPRINT(RT_DEBUG_TRACE,("KeyIdxValue.KeyIdx = %d,\n",pKeyIdxValue->KeyIdx));
         valueLen = pAd->SharedKey[BSS0][pAd->StaCfg.DefaultKeyId].KeyLen;
         NdisMoveMemory(pKeyIdxValue->Value,
                        &pAd->SharedKey[BSS0][pAd->StaCfg.DefaultKeyId].Key,
@@ -4524,7 +4524,7 @@ INT RTMPQueryInformation(
         wrq->u.data.length = sizeof(DefaultKeyIdxValue);
 
         Status = copy_to_user(wrq->u.data.pointer, pKeyIdxValue, wrq->u.data.length);
-        DBGPRINT(RT_DEBUG_TRACE,("DefaultKeyId = %d, total len = %d, str len=%d, KeyValue= %02x %02x %02x %02x \n",
+        DBGPRINT(RT_DEBUG_TRACE,("DefaultKeyId = %d, total len = %d, str len=%d, KeyValue= %02x %02x %02x %02x\n",
                                  pAd->StaCfg.DefaultKeyId,
                                  wrq->u.data.length,
                                  pAd->SharedKey[BSS0][pAd->StaCfg.DefaultKeyId].KeyLen,
@@ -4535,14 +4535,14 @@ INT RTMPQueryInformation(
         break;
 
     case OID_802_11_WEPDEFAULTKEYID:
-        DBGPRINT(RT_DEBUG_TRACE, ("Query::RT_OID_802_11_WEPDEFAULTKEYID \n"));
+        DBGPRINT(RT_DEBUG_TRACE, ("Query::RT_OID_802_11_WEPDEFAULTKEYID\n"));
         wrq->u.data.length = sizeof(UCHAR);
         Status = copy_to_user(wrq->u.data.pointer, &pAd->StaCfg.DefaultKeyId, wrq->u.data.length);
-        DBGPRINT(RT_DEBUG_TRACE, ("DefaultKeyId =%d \n", pAd->StaCfg.DefaultKeyId));
+        DBGPRINT(RT_DEBUG_TRACE, ("DefaultKeyId=%d\n", pAd->StaCfg.DefaultKeyId));
         break;
 
     case RT_OID_802_11_WEPKEYMAPPINGLENGTH:
-        DBGPRINT(RT_DEBUG_TRACE, ("Query::RT_OID_802_11_WEPKEYMAPPINGLENGTH \n"));
+        DBGPRINT(RT_DEBUG_TRACE, ("Query::RT_OID_802_11_WEPKEYMAPPINGLENGTH\n"));
         wrq->u.data.length = sizeof(UCHAR);
         Status = copy_to_user(wrq->u.data.pointer,
                               &pAd->SharedKey[BSS0][pAd->StaCfg.DefaultKeyId].KeyLen,
@@ -4550,7 +4550,7 @@ INT RTMPQueryInformation(
         break;
 
     case OID_802_11_SHORTRETRYLIMIT:
-        DBGPRINT(RT_DEBUG_TRACE, ("Query::OID_802_11_SHORTRETRYLIMIT \n"));
+        DBGPRINT(RT_DEBUG_TRACE, ("Query::OID_802_11_SHORTRETRYLIMIT\n"));
         wrq->u.data.length = sizeof(ULONG);
         RTMP_IO_READ32(pAd, TX_RTY_CFG, &tx_rty_cfg.word);
         ShortRetryLimit = tx_rty_cfg.field.ShortRtyLimit;
@@ -4559,7 +4559,7 @@ INT RTMPQueryInformation(
         break;
 
     case OID_802_11_LONGRETRYLIMIT:
-        DBGPRINT(RT_DEBUG_TRACE, ("Query::OID_802_11_LONGRETRYLIMIT \n"));
+        DBGPRINT(RT_DEBUG_TRACE, ("Query::OID_802_11_LONGRETRYLIMIT\n"));
         wrq->u.data.length = sizeof(ULONG);
         RTMP_IO_READ32(pAd, TX_RTY_CFG, &tx_rty_cfg.word);
         LongRetryLimit = tx_rty_cfg.field.LongRtyLimit;
@@ -4568,7 +4568,7 @@ INT RTMPQueryInformation(
         break;
 
     case RT_OID_802_11_PRODUCTID:
-        DBGPRINT(RT_DEBUG_TRACE, ("Query::RT_OID_802_11_PRODUCTID \n"));
+        DBGPRINT(RT_DEBUG_TRACE, ("Query::RT_OID_802_11_PRODUCTID\n"));
 
 #ifdef RTMP_MAC_USB
         snprintf((PSTRING)tmp, sizeof(tmp), "%04x %04x\n",
@@ -4581,15 +4581,15 @@ INT RTMPQueryInformation(
         break;
 
     case RT_OID_802_11_MANUFACTUREID:
-        DBGPRINT(RT_DEBUG_TRACE, ("Query::RT_OID_802_11_MANUFACTUREID \n"));
+        DBGPRINT(RT_DEBUG_TRACE, ("Query::RT_OID_802_11_MANUFACTUREID\n"));
         wrq->u.data.length = strlen(ManufacturerNAME);
         Status = copy_to_user(wrq->u.data.pointer, ManufacturerNAME, wrq->u.data.length);
         break;
 
     case OID_802_11_CURRENTCHANNEL:
-        DBGPRINT(RT_DEBUG_TRACE, ("Query::OID_802_11_CURRENTCHANNEL \n"));
+        DBGPRINT(RT_DEBUG_TRACE, ("Query::OID_802_11_CURRENTCHANNEL\n"));
         wrq->u.data.length = sizeof(UCHAR);
-        DBGPRINT(RT_DEBUG_TRACE, ("sizeof UCHAR=%d, channel=%d \n", sizeof(UCHAR), pAd->CommonCfg.Channel));
+        DBGPRINT(RT_DEBUG_TRACE, ("sizeof UCHAR=%d, channel=%d\n", sizeof(UCHAR), pAd->CommonCfg.Channel));
         Status = copy_to_user(wrq->u.data.pointer, &pAd->CommonCfg.Channel, wrq->u.data.length);
         DBGPRINT(RT_DEBUG_TRACE, ("Status=%d\n", Status));
         break;
@@ -4598,7 +4598,7 @@ INT RTMPQueryInformation(
     case OID_802_11_BUILD_CHANNEL_EX:
     {
         UCHAR value;
-        DBGPRINT(RT_DEBUG_TRACE, ("Query::OID_802_11_BUILD_CHANNEL_EX \n"));
+        DBGPRINT(RT_DEBUG_TRACE, ("Query::OID_802_11_BUILD_CHANNEL_EX\n"));
         wrq->u.data.length = sizeof(UCHAR);
 #ifdef EXT_BUILD_CHANNEL_LIST
         DBGPRINT(RT_DEBUG_TRACE, ("Support EXT_BUILD_CHANNEL_LIST.\n"));
@@ -4616,7 +4616,7 @@ INT RTMPQueryInformation(
     {
         PRT_CHANNEL_LIST_INFO pChListBuf;
 
-        DBGPRINT(RT_DEBUG_TRACE, ("Query::OID_802_11_GET_CH_LIST \n"));
+        DBGPRINT(RT_DEBUG_TRACE, ("Query::OID_802_11_GET_CH_LIST\n"));
 
         if(pAd->ChannelListNum == 0)
         {
@@ -4649,7 +4649,7 @@ INT RTMPQueryInformation(
     break;
 
     case OID_802_11_GET_COUNTRY_CODE:
-        DBGPRINT(RT_DEBUG_TRACE, ("Query::OID_802_11_GET_COUNTRY_CODE \n"));
+        DBGPRINT(RT_DEBUG_TRACE, ("Query::OID_802_11_GET_COUNTRY_CODE\n"));
         wrq->u.data.length = 2;
         Status = copy_to_user(wrq->u.data.pointer, &pAd->CommonCfg.CountryCode, 2);
         DBGPRINT(RT_DEBUG_TRACE, ("Status=%d\n", Status));
@@ -4658,7 +4658,7 @@ INT RTMPQueryInformation(
 #ifdef EXT_BUILD_CHANNEL_LIST
 
     case OID_802_11_GET_CHANNEL_GEOGRAPHY:
-        DBGPRINT(RT_DEBUG_TRACE, ("Query::OID_802_11_GET_CHANNEL_GEOGRAPHY \n"));
+        DBGPRINT(RT_DEBUG_TRACE, ("Query::OID_802_11_GET_CHANNEL_GEOGRAPHY\n"));
         wrq->u.data.length = 1;
         Status = copy_to_user(wrq->u.data.pointer, &pAd->CommonCfg.Geography, 1);
         DBGPRINT(RT_DEBUG_TRACE, ("Status=%d\n", Status));
@@ -5076,7 +5076,7 @@ VOID RTMPIoctlMAC(
 
     memset(arg, 0x00, 255);
 
-    DBGPRINT(RT_DEBUG_OFF, ("%s():wrq->u.data.length=%d, wrq->u.data.pointer=%s!\n", __FUNCTION__, wrq->u.data.length, wrq->u.data.pointer));
+    DBGPRINT(RT_DEBUG_TRACE, ("%s():wrq->u.data.length=%d, wrq->u.data.pointer=%s!\n", __FUNCTION__, wrq->u.data.length, wrq->u.data.pointer));
 
     if(wrq->u.data.length > 1)
     {
@@ -5543,7 +5543,7 @@ VOID RTMPIoctlBbp32(
     UINT32 bbpValue;
     BOOLEAN bIsPrintAllBBP = FALSE;
 
-    DBGPRINT(RT_DEBUG_OFF, ("Into RTMPIoctlBbp32()!\n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("Into RTMPIoctlBbp32()!\n"));
 
     if(wrq->u.data.length > 1)  /*No parameters. */
     {
@@ -5590,11 +5590,11 @@ VOID RTMPIoctlBbp32(
         else
         {
             /*Write */
-            DBGPRINT(RT_DEBUG_OFF, ("this_char=%s, value=%s\n", this_char, value));
+            DBGPRINT(RT_DEBUG_TRACE, ("this_char=%s, value=%s\n", this_char, value));
 
             if((sscanf(this_char, "%x", &(bbpId)) == 1) && (sscanf(value, "%x", &(bbpValue)) == 1))
             {
-                DBGPRINT(RT_DEBUG_OFF, ("BBP[0x%04x]:%08x\n", bbpId, bbpValue));
+                DBGPRINT(RT_DEBUG_TRACE, ("BBP[0x%04x]:%08x\n", bbpId, bbpValue));
 
                 if((bbpId <= 0x2fff) && (bbpId >= 0x2000))
                 {
@@ -5603,7 +5603,7 @@ VOID RTMPIoctlBbp32(
                     RTMP_BBP_IO_READ32(pAd, bbpId, &regBBP);
                     sprintf(extra+strlen(extra), "BBP[0x%04x]:%08x\n", bbpId, regBBP);
                     wrq->u.data.length = strlen(extra) + 1; /* 1: size of '\0' */
-                    DBGPRINT(RT_DEBUG_OFF, ("msg=%s\n", extra));
+                    DBGPRINT(RT_DEBUG_TRACE, ("msg=%s\n", extra));
                 }
                 else
                 {
@@ -8023,7 +8023,7 @@ RtmpIoctl_rt_ioctl_siwpmksa(
         /* Found, replace it */
         if(CachedIdx < PMKID_NO)
         {
-            DBGPRINT(RT_DEBUG_OFF, ("Update PMKID, idx = %d\n", CachedIdx));
+            DBGPRINT(RT_DEBUG_TRACE, ("Update PMKID, idx = %d\n", CachedIdx));
             NdisMoveMemory(&pAd->StaCfg.SavedPMK[CachedIdx].BSSID[0], pIoctlPmaSa->pBssid, MAC_ADDR_LEN);
             NdisMoveMemory(&pAd->StaCfg.SavedPMK[CachedIdx].PMKID[0], pIoctlPmaSa->pPmkid, 16);
             pAd->StaCfg.SavedPMKNum++;
@@ -8033,7 +8033,7 @@ RtmpIoctl_rt_ioctl_siwpmksa(
         {
             /* Randomly replace one */
             CachedIdx = (pIoctlPmaSa->pBssid[5] % PMKID_NO);
-            DBGPRINT(RT_DEBUG_OFF, ("Update PMKID, idx = %d\n", CachedIdx));
+            DBGPRINT(RT_DEBUG_TRACE, ("Update PMKID, idx = %d\n", CachedIdx));
             NdisMoveMemory(&pAd->StaCfg.SavedPMK[CachedIdx].BSSID[0], pIoctlPmaSa->pBssid, MAC_ADDR_LEN);
             NdisMoveMemory(&pAd->StaCfg.SavedPMK[CachedIdx].PMKID[0], pIoctlPmaSa->pPmkid, 16);
         }

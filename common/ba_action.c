@@ -482,7 +482,7 @@ void ba_flush_reordering_timeout_mpdus(
            )
     {
         /*
-        		DBGPRINT(RT_DEBUG_OFF, ("timeout[%d] (%lx-%lx = %d > %d): %x, ", pBAEntry->list.qlen, Now32, (pBAEntry->LastIndSeqAtTimer),
+                DBGPRINT(RT_DEBUG_TRACE, ("timeout[%d] (%lx-%lx = %d > %d): %x, ", pBAEntry->list.qlen, Now32, (pBAEntry->LastIndSeqAtTimer),
         			   (int)((long) Now32 - (long)(pBAEntry->LastIndSeqAtTimer)), REORDERING_PACKET_TIMEOUT,
         			   pBAEntry->LastIndSeq));
         */
@@ -501,7 +501,7 @@ void ba_flush_reordering_timeout_mpdus(
             pBAEntry->LastIndSeq = Sequence;
         }
 
-        DBGPRINT(RT_DEBUG_OFF, ("%x, flush one!\n", pBAEntry->LastIndSeq));
+        DBGPRINT(RT_DEBUG_TRACE, ("%x, flush one!\n", pBAEntry->LastIndSeq));
 
     }
 }
@@ -558,7 +558,7 @@ VOID BAOriSessionSetUp(
 
         if(pBAEntry == NULL)
         {
-            DBGPRINT(RT_DEBUG_TRACE,("ADDBA - MlmeADDBAAction() allocate BA session failed \n"));
+            DBGPRINT(RT_DEBUG_TRACE,("ADDBA - MlmeADDBAAction() allocate BA session failed\n"));
             return;
         }
     }
@@ -650,7 +650,7 @@ VOID BAOriSessionAdd(
 
         if(NStatus != NDIS_STATUS_SUCCESS)
         {
-            DBGPRINT(RT_DEBUG_TRACE,("BA - BAOriSessionAdd() allocate memory failed \n"));
+            DBGPRINT(RT_DEBUG_TRACE,("BA - BAOriSessionAdd() allocate memory failed\n"));
             return;
         }
 
@@ -782,7 +782,7 @@ BA_REC_ENTRY *BATableAllocRecEntry(
 
     if(pAd->BATable.numAsRecipient >= (MAX_LEN_OF_BA_REC_TABLE - 1))
     {
-        DBGPRINT(RT_DEBUG_OFF, ("BA Recipeint Session (%ld) > %d\n",
+        DBGPRINT(RT_DEBUG_TRACE, ("BA Recipeint Session (%ld) > %d\n",
                                 pAd->BATable.numAsRecipient, (MAX_LEN_OF_BA_REC_TABLE - 1)));
         goto done;
     }
@@ -967,10 +967,10 @@ VOID BAOriSessionTearDown(
         return;
     }
 
-    DBGPRINT(RT_DEBUG_TRACE,("%s===>Wcid=%d.TID=%d \n", __FUNCTION__, Wcid, TID));
+    DBGPRINT(RT_DEBUG_TRACE,("%s===>Wcid=%d.TID=%d\n", __FUNCTION__, Wcid, TID));
 
     pBAEntry = &pAd->BATable.BAOriEntry[Idx];
-    DBGPRINT(RT_DEBUG_TRACE,("\t===>Idx = %ld, Wcid=%d.TID=%d, ORI_BA_Status = %d \n", Idx, Wcid, TID, pBAEntry->ORI_BA_Status));
+    DBGPRINT(RT_DEBUG_TRACE,("\t===>Idx = %ld, Wcid=%d.TID=%d, ORI_BA_Status = %d\n", Idx, Wcid, TID, pBAEntry->ORI_BA_Status));
 
     /* Prepare DelBA action frame and send to the peer.*/
     if((bPassive == FALSE) && (TID == pBAEntry->TID) && (pBAEntry->ORI_BA_Status == Originator_Done))
@@ -1031,11 +1031,11 @@ VOID BARecSessionTearDown(
     if(Idx == 0)
         return;
 
-    DBGPRINT(RT_DEBUG_TRACE,("%s===>Wcid=%d.TID=%d \n", __FUNCTION__, Wcid, TID));
+    DBGPRINT(RT_DEBUG_TRACE,("%s===>Wcid=%d.TID=%d\n", __FUNCTION__, Wcid, TID));
 
 
     pBAEntry = &pAd->BATable.BARecEntry[Idx];
-    DBGPRINT(RT_DEBUG_TRACE,("\t===>Idx = %ld, Wcid=%d.TID=%d, REC_BA_Status = %d \n", Idx, Wcid, TID, pBAEntry->REC_BA_Status));
+    DBGPRINT(RT_DEBUG_TRACE,("\t===>Idx = %ld, Wcid=%d.TID=%d, REC_BA_Status = %d\n", Idx, Wcid, TID, pBAEntry->REC_BA_Status));
 
     /* Prepare DelBA action frame and send to the peer.*/
     if((TID == pBAEntry->TID) && (pBAEntry->REC_BA_Status == Recipient_Accept))
@@ -1237,7 +1237,7 @@ VOID BARecSessionIdleTimeout(
             pAd = pBAEntry->pAdapter;
             /* flush all pending reordering mpdus */
             ba_refresh_reordering_mpdus(pAd, pBAEntry);
-            DBGPRINT(RT_DEBUG_OFF, ("%ld: REC BA session Timeout\n", Now32));
+            DBGPRINT(RT_DEBUG_TRACE, ("%ld: REC BA session Timeout\n", Now32));
         }
     }
 }
@@ -1270,7 +1270,7 @@ VOID PeerAddBAReqAction(
         return;
 
     pMacEntry = &pAd->MacTab.Content[Elem->Wcid];
-    DBGPRINT(RT_DEBUG_TRACE,("BA - PeerAddBAReqAction----> \n"));
+    DBGPRINT(RT_DEBUG_TRACE,("BA - PeerAddBAReqAction---->\n"));
     ptemp = (PULONG)Elem->Msg;
     /*DBGPRINT_RAW(RT_DEBUG_EMU, ("%08x:: %08x:: %08x:: %08x:: %08x:: %08x:: %08x:: %08x:: %08x\n", *(ptemp), *(ptemp+1), *(ptemp+2), *(ptemp+3), *(ptemp+4), *(ptemp+5), *(ptemp+6), *(ptemp+7), *(ptemp+8)));*/
 
@@ -1302,7 +1302,7 @@ VOID PeerAddBAReqAction(
 
     if(NStatus != NDIS_STATUS_SUCCESS)
     {
-        DBGPRINT(RT_DEBUG_TRACE,("ACTION - PeerBAAction() allocate memory failed \n"));
+        DBGPRINT(RT_DEBUG_TRACE,("ACTION - PeerBAAction() allocate memory failed\n"));
         return;
     }
 
@@ -1359,7 +1359,7 @@ VOID PeerAddBAReqAction(
     MiniportMMRequest(pAd, QID_AC_BE, pOutBuffer, FrameLen);
     MlmeFreeMemory(pAd, pOutBuffer);
 
-    DBGPRINT(RT_DEBUG_TRACE, ("%s(%d): TID(%d), BufSize(%d) <== \n", __FUNCTION__, Elem->Wcid, ADDframe.BaParm.TID,
+    DBGPRINT(RT_DEBUG_TRACE, ("%s(%d): TID(%d), BufSize(%d) <==\n", __FUNCTION__, Elem->Wcid, ADDframe.BaParm.TID,
                               ADDframe.BaParm.BufSize));
 }
 
@@ -1472,7 +1472,7 @@ BOOLEAN CntlEnqueueForRecv(
     /* First check the size, it MUST not exceed the mlme queue size*/
     if(MsgLen > MGMT_DMA_BUFFER_SIZE)  /* 1600B */
     {
-        DBGPRINT_ERR(("CntlEnqueueForRecv: frame too large, size = %ld \n", MsgLen));
+        DBGPRINT_ERR(("CntlEnqueueForRecv: frame too large, size = %ld\n", MsgLen));
         return FALSE;
     }
     else if(MsgLen != sizeof(FRAME_BA_REQ))
@@ -1527,7 +1527,7 @@ VOID SendPSMPAction(
 
     if(NStatus != NDIS_STATUS_SUCCESS)
     {
-        DBGPRINT(RT_DEBUG_ERROR,("BA - MlmeADDBAAction() allocate memory failed \n"));
+        DBGPRINT(RT_DEBUG_ERROR,("BA - MlmeADDBAAction() allocate memory failed\n"));
         return;
     }
 
@@ -1559,7 +1559,7 @@ VOID SendPSMPAction(
                       END_OF_ARGS);
     MiniportMMRequest(pAd, QID_AC_BE, pOutBuffer, FrameLen);
     MlmeFreeMemory(pAd, pOutBuffer);
-    DBGPRINT(RT_DEBUG_ERROR,("HT - SendPSMPAction( %d )  \n", Frame.Psmp));
+    DBGPRINT(RT_DEBUG_ERROR,("HT - SendPSMPAction( %d ) \n", Frame.Psmp));
 }
 
 

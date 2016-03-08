@@ -79,7 +79,7 @@ VOID SoftwareFlowControl(
 
     if(RunningQueueNo>pAd->LastRunningQueueNo)
     {
-        DBGPRINT(RT_DEBUG_INFO,("SoftwareFlowControl  reset %d > %d \n",RunningQueueNo,pAd->LastRunningQueueNo));
+        DBGPRINT(RT_DEBUG_INFO,("SoftwareFlowControl  reset %d > %d\n",RunningQueueNo,pAd->LastRunningQueueNo));
 
         ResetBulkOutSize=TRUE;
         pAd->RunningQueueNoCount=0;
@@ -91,7 +91,7 @@ VOID SoftwareFlowControl(
     }
     else if(RunningQueueNo<pAd->LastRunningQueueNo)
     {
-        DBGPRINT(RT_DEBUG_INFO,("SoftwareFlowControl  reset %d < %d \n",RunningQueueNo,pAd->LastRunningQueueNo));
+        DBGPRINT(RT_DEBUG_INFO,("SoftwareFlowControl  reset %d < %d\n",RunningQueueNo,pAd->LastRunningQueueNo));
         pAd->RunningQueueNoCount++;
 
         if(pAd->RunningQueueNoCount>=6)
@@ -348,7 +348,7 @@ VOID	RTUSBBulkOutDataPacket(
     {
         if(RTMPEqualMemory(pHTTXContext->SavedPad, allzero,4))
         {
-            DBGPRINT_RAW(RT_DEBUG_ERROR,("e1, allzero : %x  %x  %x  %x  %x  %x  %x  %x \n",
+            DBGPRINT_RAW(RT_DEBUG_ERROR,("e1, allzero : %x  %x  %x  %x  %x  %x  %x  %x\n",
                                          pHTTXContext->SavedPad[0], pHTTXContext->SavedPad[1], pHTTXContext->SavedPad[2],pHTTXContext->SavedPad[3]
                                          ,pHTTXContext->SavedPad[4], pHTTXContext->SavedPad[5], pHTTXContext->SavedPad[6],pHTTXContext->SavedPad[7]));
         }
@@ -389,7 +389,7 @@ VOID	RTUSBBulkOutDataPacket(
                 else if(((ThisBulkSize&0xffff8000) != 0) || ((ThisBulkSize&pAd->BulkOutDataSizeLimit[BulkOutPipeId]) == pAd->BulkOutDataSizeLimit[BulkOutPipeId]))
                 {
                     /*printk("===Bulkout size limit :%d ===\n",MaxBulkOutSize);*/
-                    /*DBGPRINT(RT_DEBUG_TRACE,("b mode BulkOutPipeId %d  pAd->BulkOutDataSizeLimit[BulkOutPipeId] %d  \n",BulkOutPipeId,pAd->BulkOutDataSizeLimit[BulkOutPipeId]));*/
+                    /*DBGPRINT(RT_DEBUG_TRACE,("b mode BulkOutPipeId %d  pAd->BulkOutDataSizeLimit[BulkOutPipeId] %d \n",BulkOutPipeId,pAd->BulkOutDataSizeLimit[BulkOutPipeId]));*/
                     pHTTXContext->ENextBulkOutPosition = TmpBulkEndPos;
                     break;
                 }
@@ -468,7 +468,7 @@ VOID	RTUSBBulkOutDataPacket(
                 	when bulk size is > 0x6000, it mean that this is the lasttround at this alignmnet section.
                 */
                 bLasAlignmentsectiontRound = TRUE;
-                /*				printk("data bulk out bLasAlignmentsectiontRound \n");*/
+                /*				printk("data bulk out bLasAlignmentsectiontRound\n");*/
 #endif /* USB_BULK_BUF_ALIGMENT */
 
                 break;
@@ -533,7 +533,7 @@ VOID	RTUSBBulkOutDataPacket(
             DBGPRINT(RT_DEBUG_ERROR /*RT_DEBUG_TRACE*/,("e2, TxInfoPktLen==0, Size=%ld, bCSPad=%d, CWPos=%ld, NBPos=%ld, CWRPos=%ld!\n",
                      pHTTXContext->BulkOutSize, pHTTXContext->bCopySavePad, pHTTXContext->CurWritePosition, pHTTXContext->NextBulkOutPosition, pHTTXContext->CurWriteRealPos));
             {
-                DBGPRINT_RAW(RT_DEBUG_ERROR /*RT_DEBUG_TRACE*/,("%x  %x  %x  %x  %x  %x  %x  %x \n",
+                DBGPRINT_RAW(RT_DEBUG_ERROR /*RT_DEBUG_TRACE*/,("%x  %x  %x  %x  %x  %x  %x  %x\n",
                              pHTTXContext->SavedPad[0], pHTTXContext->SavedPad[1], pHTTXContext->SavedPad[2],pHTTXContext->SavedPad[3]
                              ,pHTTXContext->SavedPad[4], pHTTXContext->SavedPad[5], pHTTXContext->SavedPad[6],pHTTXContext->SavedPad[7]));
             }

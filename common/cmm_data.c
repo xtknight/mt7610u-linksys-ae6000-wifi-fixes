@@ -45,40 +45,40 @@ VOID dump_rxinfo(RTMP_ADAPTER *pAd, RXINFO_STRUC *pRxInfo)
 {
     hex_dump("RxInfo Raw Data", (UCHAR *)pRxInfo, sizeof(RXINFO_STRUC));
 
-    DBGPRINT(RT_DEBUG_OFF, ("RxInfo Fields:\n"));
+    DBGPRINT(RT_DEBUG_ERROR, ("RxInfo Fields:\n"));
 
 #ifdef RLT_MAC
-    DBGPRINT(RT_DEBUG_OFF, ("\tBA=%d\n", pRxInfo->BA));
-    DBGPRINT(RT_DEBUG_OFF, ("\tDATA=%d\n", pRxInfo->DATA));
-    DBGPRINT(RT_DEBUG_OFF, ("\tNULLDATA=%d\n", pRxInfo->NULLDATA));
-    DBGPRINT(RT_DEBUG_OFF, ("\tFRAG=%d\n", pRxInfo->FRAG));
-    DBGPRINT(RT_DEBUG_OFF, ("\tU2M=%d\n", pRxInfo->U2M));
-    DBGPRINT(RT_DEBUG_OFF, ("\tMcast=%d\n", pRxInfo->Mcast));
-    DBGPRINT(RT_DEBUG_OFF, ("\tBcast=%d\n", pRxInfo->Bcast));
-    DBGPRINT(RT_DEBUG_OFF, ("\tMyBss=%d\n", pRxInfo->MyBss));
-    DBGPRINT(RT_DEBUG_OFF, ("\tCrc=%d\n", pRxInfo->Crc));
-    DBGPRINT(RT_DEBUG_OFF, ("\tCipherErr=%d\n", pRxInfo->CipherErr));
-    DBGPRINT(RT_DEBUG_OFF, ("\tAMSDU=%d\n", pRxInfo->AMSDU));
-    DBGPRINT(RT_DEBUG_OFF, ("\tHTC=%d\n", pRxInfo->HTC));
-    DBGPRINT(RT_DEBUG_OFF, ("\tRSSI=%d\n", pRxInfo->RSSI));
-    DBGPRINT(RT_DEBUG_OFF, ("\tL2PAD=%d\n", pRxInfo->L2PAD));
-    DBGPRINT(RT_DEBUG_OFF, ("\tAMPDU=%d\n", pRxInfo->AMPDU));
-    DBGPRINT(RT_DEBUG_OFF, ("\tDecrypted=%d\n", pRxInfo->Decrypted));
-    DBGPRINT(RT_DEBUG_OFF, ("\tBssIdx3=%d\n", pRxInfo->BssIdx3));
-    DBGPRINT(RT_DEBUG_OFF, ("\twapi_kidx=%d\n", pRxInfo->wapi_kidx));
-    DBGPRINT(RT_DEBUG_OFF, ("\tpn_len=%d\n", pRxInfo->pn_len));
-    DBGPRINT(RT_DEBUG_OFF, ("\tsw_fc_type0=%d\n", pRxInfo->action_wanted));
-    DBGPRINT(RT_DEBUG_OFF, ("\tsw_fc_type1=%d\n", pRxInfo->sw_fc_type1));
-    DBGPRINT(RT_DEBUG_OFF, ("\tprobe_rsp=%d\n", pRxInfo->probe_rsp));
-    DBGPRINT(RT_DEBUG_OFF, ("\tbeacon=%d\n", pRxInfo->beacon));
-    DBGPRINT(RT_DEBUG_OFF, ("\tdisasso=%d\n", pRxInfo->disasso));
-    DBGPRINT(RT_DEBUG_OFF, ("\tdeauth=%d\n", pRxInfo->deauth));
-    DBGPRINT(RT_DEBUG_OFF, ("\taction_wanted=%d\n", pRxInfo->action_wanted));
-    DBGPRINT(RT_DEBUG_OFF, ("\trsv=%d\n", pRxInfo->rsv));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tBA=%d\n", pRxInfo->BA));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tDATA=%d\n", pRxInfo->DATA));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tNULLDATA=%d\n", pRxInfo->NULLDATA));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tFRAG=%d\n", pRxInfo->FRAG));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tU2M=%d\n", pRxInfo->U2M));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tMcast=%d\n", pRxInfo->Mcast));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tBcast=%d\n", pRxInfo->Bcast));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tMyBss=%d\n", pRxInfo->MyBss));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tCrc=%d\n", pRxInfo->Crc));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tCipherErr=%d\n", pRxInfo->CipherErr));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tAMSDU=%d\n", pRxInfo->AMSDU));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tHTC=%d\n", pRxInfo->HTC));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tRSSI=%d\n", pRxInfo->RSSI));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tL2PAD=%d\n", pRxInfo->L2PAD));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tAMPDU=%d\n", pRxInfo->AMPDU));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tDecrypted=%d\n", pRxInfo->Decrypted));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tBssIdx3=%d\n", pRxInfo->BssIdx3));
+    DBGPRINT(RT_DEBUG_ERROR, ("\twapi_kidx=%d\n", pRxInfo->wapi_kidx));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tpn_len=%d\n", pRxInfo->pn_len));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tsw_fc_type0=%d\n", pRxInfo->action_wanted));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tsw_fc_type1=%d\n", pRxInfo->sw_fc_type1));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tprobe_rsp=%d\n", pRxInfo->probe_rsp));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tbeacon=%d\n", pRxInfo->beacon));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tdisasso=%d\n", pRxInfo->disasso));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tdeauth=%d\n", pRxInfo->deauth));
+    DBGPRINT(RT_DEBUG_ERROR, ("\taction_wanted=%d\n", pRxInfo->action_wanted));
+    DBGPRINT(RT_DEBUG_ERROR, ("\trsv=%d\n", pRxInfo->rsv));
 #endif /* RLT_MAC */
 
 #ifdef RTMP_MAC
-    DBGPRINT(RT_DEBUG_OFF, ("\t",));
+    DBGPRINT(RT_DEBUG_ERROR, ("\t",));
 #endif /* RTMP_MAC */
 }
 
@@ -88,19 +88,19 @@ VOID dumpRxFCEInfo(RTMP_ADAPTER *pAd, RXFCE_INFO *pRxFceInfo)
 {
     hex_dump("RxFCEInfo Raw Data", (UCHAR *)pRxFceInfo, sizeof(RXFCE_INFO));
 
-    DBGPRINT(RT_DEBUG_OFF, ("RxFCEInfo Fields:\n"));
+    DBGPRINT(RT_DEBUG_ERROR, ("RxFCEInfo Fields:\n"));
 
-    DBGPRINT(RT_DEBUG_OFF, ("\tinfo_type=%d\n", pRxFceInfo->info_type));
-    DBGPRINT(RT_DEBUG_OFF, ("\ts_port=%d\n", pRxFceInfo->s_port));
-    DBGPRINT(RT_DEBUG_OFF, ("\tqsel=%d\n", pRxFceInfo->qsel));
-    DBGPRINT(RT_DEBUG_OFF, ("\tpcie_intr=%d\n", pRxFceInfo->pcie_intr));
-    DBGPRINT(RT_DEBUG_OFF, ("\tmac_len=%d\n", pRxFceInfo->mac_len));
-    DBGPRINT(RT_DEBUG_OFF, ("\tl3l4_done=%d\n", pRxFceInfo->l3l4_done));
-    DBGPRINT(RT_DEBUG_OFF, ("\tpkt_80211=%d\n", pRxFceInfo->pkt_80211));
-    DBGPRINT(RT_DEBUG_OFF, ("\tip_err=%d\n", pRxFceInfo->ip_err));
-    DBGPRINT(RT_DEBUG_OFF, ("\ttcp_err=%d\n", pRxFceInfo->tcp_err));
-    DBGPRINT(RT_DEBUG_OFF, ("\tudp_err=%d\n", pRxFceInfo->udp_err));
-    DBGPRINT(RT_DEBUG_OFF, ("\tpkt_len=%d\n", pRxFceInfo->pkt_len));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tinfo_type=%d\n", pRxFceInfo->info_type));
+    DBGPRINT(RT_DEBUG_ERROR, ("\ts_port=%d\n", pRxFceInfo->s_port));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tqsel=%d\n", pRxFceInfo->qsel));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tpcie_intr=%d\n", pRxFceInfo->pcie_intr));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tmac_len=%d\n", pRxFceInfo->mac_len));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tl3l4_done=%d\n", pRxFceInfo->l3l4_done));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tpkt_80211=%d\n", pRxFceInfo->pkt_80211));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tip_err=%d\n", pRxFceInfo->ip_err));
+    DBGPRINT(RT_DEBUG_ERROR, ("\ttcp_err=%d\n", pRxFceInfo->tcp_err));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tudp_err=%d\n", pRxFceInfo->udp_err));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tpkt_len=%d\n", pRxFceInfo->pkt_len));
 }
 #endif /* RLT_MAC */
 
@@ -112,28 +112,28 @@ VOID dumpTxWI(RTMP_ADAPTER *pAd, TXWI_STRUC *pTxWI)
 {
     hex_dump("TxWI Raw Data: ", (UCHAR *)pTxWI, sizeof(TXWI_STRUC));
 
-    DBGPRINT(RT_DEBUG_OFF, ("TxWI Fields:\n"));
-    DBGPRINT(RT_DEBUG_OFF, ("\tPHYMODE=%d(%s)\n", pTxWI->TxWIPHYMODE,  get_phymode_str(pTxWI->TxWIPHYMODE)));
-    DBGPRINT(RT_DEBUG_OFF, ("\tSTBC=%d\n", pTxWI->TxWISTBC));
-    DBGPRINT(RT_DEBUG_OFF, ("\tShortGI=%d\n", pTxWI->TxWIShortGI));
-    DBGPRINT(RT_DEBUG_OFF, ("\tBW=%d(%sMHz)\n", pTxWI->TxWIBW, get_bw_str(pTxWI->TxWIBW)));
-    DBGPRINT(RT_DEBUG_OFF, ("\tLDPC=%d\n",pTxWI->TxWILDPC));
-    DBGPRINT(RT_DEBUG_OFF, ("\tMCS=%d\n", pTxWI->TxWIMCS));
-    DBGPRINT(RT_DEBUG_OFF, ("\tTxOP=%d(%s)\n", pTxWI->TxWITXOP, TXWI_TXOP_STR(pTxWI->TxWITXOP)));
-    DBGPRINT(RT_DEBUG_OFF, ("\tMpduDensity=%d\n", pTxWI->TxWIMpduDensity));
-    DBGPRINT(RT_DEBUG_OFF, ("\tAMPDU=%d\n", pTxWI->TxWIAMPDU));
-    DBGPRINT(RT_DEBUG_OFF, ("\tTS=%d\n", pTxWI->TxWITS));
-    DBGPRINT(RT_DEBUG_OFF, ("\tCF-ACK=%d\n", pTxWI->TxWICFACK));
-    DBGPRINT(RT_DEBUG_OFF, ("\tMIMO-PS=%d\n", pTxWI->TxWIMIMOps));
-    DBGPRINT(RT_DEBUG_OFF, ("\tNSEQ=%d\n", pTxWI->TxWINSEQ));
-    DBGPRINT(RT_DEBUG_OFF, ("\tACK=%d\n", pTxWI->TxWIACK));
-    DBGPRINT(RT_DEBUG_OFF, ("\tFRAG=%d\n", pTxWI->TxWIFRAG));
-    DBGPRINT(RT_DEBUG_OFF, ("\tWCID=%d\n", pTxWI->TxWIWirelessCliID));
-    DBGPRINT(RT_DEBUG_OFF, ("\tBAWinSize=%d\n", pTxWI->TxWIBAWinSize));
-    DBGPRINT(RT_DEBUG_OFF, ("\tMPDUtotalByteCnt=%d\n", pTxWI->TxWIMPDUByteCnt));
-    DBGPRINT(RT_DEBUG_OFF, ("\tTXBF_PT_SCA=%d\n", pTxWI->TxWITxBfPTSca));
-    DBGPRINT(RT_DEBUG_OFF, ("\tTIM=%d\n", pTxWI->TxWITIM));
-    DBGPRINT(RT_DEBUG_OFF, ("\tPID=%d\n", pTxWI->TxWIPacketId));
+    DBGPRINT(RT_DEBUG_ERROR, ("TxWI Fields:\n"));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tPHYMODE=%d(%s)\n", pTxWI->TxWIPHYMODE,  get_phymode_str(pTxWI->TxWIPHYMODE)));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tSTBC=%d\n", pTxWI->TxWISTBC));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tShortGI=%d\n", pTxWI->TxWIShortGI));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tBW=%d(%sMHz)\n", pTxWI->TxWIBW, get_bw_str(pTxWI->TxWIBW)));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tLDPC=%d\n",pTxWI->TxWILDPC));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tMCS=%d\n", pTxWI->TxWIMCS));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tTxOP=%d(%s)\n", pTxWI->TxWITXOP, TXWI_TXOP_STR(pTxWI->TxWITXOP)));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tMpduDensity=%d\n", pTxWI->TxWIMpduDensity));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tAMPDU=%d\n", pTxWI->TxWIAMPDU));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tTS=%d\n", pTxWI->TxWITS));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tCF-ACK=%d\n", pTxWI->TxWICFACK));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tMIMO-PS=%d\n", pTxWI->TxWIMIMOps));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tNSEQ=%d\n", pTxWI->TxWINSEQ));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tACK=%d\n", pTxWI->TxWIACK));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tFRAG=%d\n", pTxWI->TxWIFRAG));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tWCID=%d\n", pTxWI->TxWIWirelessCliID));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tBAWinSize=%d\n", pTxWI->TxWIBAWinSize));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tMPDUtotalByteCnt=%d\n", pTxWI->TxWIMPDUByteCnt));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tTXBF_PT_SCA=%d\n", pTxWI->TxWITxBfPTSca));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tTIM=%d\n", pTxWI->TxWITIM));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tPID=%d\n", pTxWI->TxWIPacketId));
 }
 
 
@@ -141,25 +141,25 @@ VOID dump_rxwi(RTMP_ADAPTER *pAd, RXWI_STRUC *pRxWI)
 {
     hex_dump("RxWI Raw Data", (UCHAR *)pRxWI, sizeof(RXWI_STRUC));
 
-    DBGPRINT(RT_DEBUG_OFF, ("RxWI Fields:\n"));
-    DBGPRINT(RT_DEBUG_OFF, ("\tWCID=%d\n", pRxWI->RxWIWirelessCliID));
-    DBGPRINT(RT_DEBUG_OFF, ("\tPhyMode=%d(%s)\n", pRxWI->RxWIPhyMode, get_phymode_str(pRxWI->RxWIPhyMode)));
+    DBGPRINT(RT_DEBUG_ERROR, ("RxWI Fields:\n"));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tWCID=%d\n", pRxWI->RxWIWirelessCliID));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tPhyMode=%d(%s)\n", pRxWI->RxWIPhyMode, get_phymode_str(pRxWI->RxWIPhyMode)));
 #ifdef RT65xx
 
     if(IS_RT65XX(pAd) && (pRxWI->RxWIPhyMode == MODE_VHT))
-        DBGPRINT(RT_DEBUG_OFF, ("\tMCS=%d(Nss:%d, MCS:%d)\n", pRxWI->RxWIMCS, (pRxWI->RxWIMCS >> 4), (pRxWI->RxWIMCS & 0xf)));
+        DBGPRINT(RT_DEBUG_ERROR, ("\tMCS=%d(Nss:%d, MCS:%d)\n", pRxWI->RxWIMCS, (pRxWI->RxWIMCS >> 4), (pRxWI->RxWIMCS & 0xf)));
     else
 #endif /* RT65xx */
-        DBGPRINT(RT_DEBUG_OFF, ("\tMCS=%d\n", pRxWI->RxWIMCS));
+        DBGPRINT(RT_DEBUG_ERROR, ("\tMCS=%d\n", pRxWI->RxWIMCS));
 
-    DBGPRINT(RT_DEBUG_OFF, ("\tLDPC=%d\n", pRxWI->RxWILDPC));
-    DBGPRINT(RT_DEBUG_OFF, ("\tBW=%d\n", pRxWI->RxWIBW));
-    DBGPRINT(RT_DEBUG_OFF, ("\tSGI=%d\n", pRxWI->RxWISGI));
-    DBGPRINT(RT_DEBUG_OFF, ("\tMPDUtotalByteCnt=%d\n", pRxWI->RxWIMPDUByteCnt));
-    DBGPRINT(RT_DEBUG_OFF, ("\tTID=%d\n", pRxWI->RxWITID));
-    DBGPRINT(RT_DEBUG_OFF, ("\tSTBC=%d\n", pRxWI->RxWISTBC));
-    DBGPRINT(RT_DEBUG_OFF, ("\tkey_idx=%d\n", pRxWI->RxWIKeyIndex));
-    DBGPRINT(RT_DEBUG_OFF, ("\tBSS_IDX=%d\n", pRxWI->RxWIBSSID));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tLDPC=%d\n", pRxWI->RxWILDPC));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tBW=%d\n", pRxWI->RxWIBW));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tSGI=%d\n", pRxWI->RxWISGI));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tMPDUtotalByteCnt=%d\n", pRxWI->RxWIMPDUByteCnt));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tTID=%d\n", pRxWI->RxWITID));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tSTBC=%d\n", pRxWI->RxWISTBC));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tkey_idx=%d\n", pRxWI->RxWIKeyIndex));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tBSS_IDX=%d\n", pRxWI->RxWIBSSID));
 }
 
 
@@ -175,25 +175,25 @@ VOID dump_txinfo(RTMP_ADAPTER *pAd, TXINFO_STRUC *pTxInfo)
 {
     hex_dump("TxInfo Raw Data: ", (UCHAR *)pTxInfo, sizeof(TXINFO_STRUC));
 
-    DBGPRINT(RT_DEBUG_OFF, ("TxInfo Fields:\n"));
+    DBGPRINT(RT_DEBUG_ERROR, ("TxInfo Fields:\n"));
 
 #ifdef RLT_MAC
     {
         struct _TXINFO_NMAC_PKT *pkt_txinfo = (struct _TXINFO_NMAC_PKT *)pTxInfo;
 
-        DBGPRINT(RT_DEBUG_OFF, ("\tInfo_Type=%d(%s)\n", pkt_txinfo->info_type, TXINFO_TYPE_STR(pkt_txinfo->info_type)));
-        DBGPRINT(RT_DEBUG_OFF, ("\td_port=%d(%s)\n", pkt_txinfo->d_port, TXINFO_DPORT_STR(pkt_txinfo->d_port)));
-        DBGPRINT(RT_DEBUG_OFF, ("\tQSEL=%d(%s)\n", pkt_txinfo->QSEL, TXINFO_QUE_STR(pkt_txinfo->QSEL)));
-        DBGPRINT(RT_DEBUG_OFF, ("\tWIV=%d\n", pkt_txinfo->wiv));
-        DBGPRINT(RT_DEBUG_OFF, ("\t802.11=%d\n", pkt_txinfo->pkt_80211));
-        DBGPRINT(RT_DEBUG_OFF, ("\tcso=%d\n", pkt_txinfo->cso));
-        DBGPRINT(RT_DEBUG_OFF, ("\ttso=%d\n", pkt_txinfo->tso));
-        DBGPRINT(RT_DEBUG_OFF, ("\tpkt_len=0x%x\n", pkt_txinfo->pkt_len));
+        DBGPRINT(RT_DEBUG_ERROR, ("\tInfo_Type=%d(%s)\n", pkt_txinfo->info_type, TXINFO_TYPE_STR(pkt_txinfo->info_type)));
+        DBGPRINT(RT_DEBUG_ERROR, ("\td_port=%d(%s)\n", pkt_txinfo->d_port, TXINFO_DPORT_STR(pkt_txinfo->d_port)));
+        DBGPRINT(RT_DEBUG_ERROR, ("\tQSEL=%d(%s)\n", pkt_txinfo->QSEL, TXINFO_QUE_STR(pkt_txinfo->QSEL)));
+        DBGPRINT(RT_DEBUG_ERROR, ("\tWIV=%d\n", pkt_txinfo->wiv));
+        DBGPRINT(RT_DEBUG_ERROR, ("\t802.11=%d\n", pkt_txinfo->pkt_80211));
+        DBGPRINT(RT_DEBUG_ERROR, ("\tcso=%d\n", pkt_txinfo->cso));
+        DBGPRINT(RT_DEBUG_ERROR, ("\ttso=%d\n", pkt_txinfo->tso));
+        DBGPRINT(RT_DEBUG_ERROR, ("\tpkt_len=0x%x\n", pkt_txinfo->pkt_len));
     }
 #endif /* RLT_MAC */
 
 #ifdef RTMP_MAC
-    DBGPRINT(RT_DEBUG_OFF, ("\n"));
+    DBGPRINT(RT_DEBUG_ERROR, ("\n"));
 #endif /* RTMP_MAC */
 }
 
@@ -1989,7 +1989,7 @@ VOID Indicate_Legacy_Packet(
                         RTMP_TIME_AFTER((unsigned long)Now32, (unsigned long)(pBAEntry->LastIndSeqAtTimer+(REORDERING_PACKET_TIMEOUT)))
                   )
                 {
-                    DBGPRINT(RT_DEBUG_OFF, ("Indicate_Legacy_Packet():flush reordering_timeout_mpdus! RxWI->Flags=%d, pRxWI.TID=%d, RxD->AMPDU=%d!\n",
+                    DBGPRINT(RT_DEBUG_ERROR, ("Indicate_Legacy_Packet():flush reordering_timeout_mpdus! RxWI->Flags=%d, pRxWI.TID=%d, RxD->AMPDU=%d!\n",
                                             pRxBlk->Flags, pRxBlk->pRxWI->RxWITID, pRxBlk->pRxInfo->AMPDU));
                     hex_dump("Dump the legacy Packet:", GET_OS_PKT_DATAPTR(pRxBlk->pRxPacket), 64);
                     ba_flush_reordering_timeout_mpdus(pAd, pBAEntry, Now32);
@@ -2099,7 +2099,7 @@ VOID Indicate_Legacy_Packet_Hdr_Trns(
                         RTMP_TIME_AFTER((unsigned long)Now32, (unsigned long)(pBAEntry->LastIndSeqAtTimer+(REORDERING_PACKET_TIMEOUT)))
                   )
                 {
-                    DBGPRINT(RT_DEBUG_OFF, ("Indicate_Legacy_Packet():flush reordering_timeout_mpdus! RxWI->Flags=%d, pRxWI.TID=%d, RxD->AMPDU=%d!\n",
+                    DBGPRINT(RT_DEBUG_ERROR, ("Indicate_Legacy_Packet():flush reordering_timeout_mpdus! RxWI->Flags=%d, pRxWI.TID=%d, RxD->AMPDU=%d!\n",
                                             pRxBlk->Flags, pRxBlk->pRxWI->RxWITID, pRxBlk->pRxInfo->AMPDU));
                     hex_dump("Dump the legacy Packet:", GET_OS_PKT_DATAPTR(pRxBlk->pRxPacket), 64);
                     ba_flush_reordering_timeout_mpdus(pAd, pBAEntry, Now32);

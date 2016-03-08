@@ -307,7 +307,7 @@ VOID MlmeAssocReqAction(
         if(NStatus != NDIS_STATUS_SUCCESS)
         {
             DBGPRINT(RT_DEBUG_TRACE,
-                     ("ASSOC - MlmeAssocReqAction() allocate memory failed \n"));
+                     ("ASSOC - MlmeAssocReqAction() allocate memory failed\n"));
             pAd->Mlme.AssocMachine.CurrState = ASSOC_IDLE;
             Status = MLME_FAIL_NO_RESOURCE;
             MlmeEnqueue(pAd, MLME_CNTL_STATE_MACHINE,
@@ -346,7 +346,7 @@ VOID MlmeAssocReqAction(
         VarIesOffset += pAd->MlmeAux.SupRateLen;
         /* End Add by James */
 
-        DBGPRINT(RT_DEBUG_ERROR, ("ASSOC - Send ASSOC request...\n"));
+        DBGPRINT(RT_DEBUG_INFO, ("ASSOC - Send ASSOC request...\n"));
         MgtMacHeaderInit(pAd, &AssocHdr, SUBTYPE_ASSOC_REQ, 0, ApAddr,
                          ApAddr);
 
@@ -709,7 +709,7 @@ VOID MlmeAssocReqAction(
     else
     {
         DBGPRINT(RT_DEBUG_TRACE,
-                 ("ASSOC - MlmeAssocReqAction() sanity check failed. BUG!!!!!! \n"));
+                 ("ASSOC - MlmeAssocReqAction() sanity check failed. BUG!!!!!!\n"));
         pAd->Mlme.AssocMachine.CurrState = ASSOC_IDLE;
         Status = MLME_INVALID_FORMAT;
         MlmeEnqueue(pAd, MLME_CNTL_STATE_MACHINE, MT2_ASSOC_CONF, 2,
@@ -781,7 +781,7 @@ VOID MlmeReassocReqAction(
         if(NStatus != NDIS_STATUS_SUCCESS)
         {
             DBGPRINT(RT_DEBUG_TRACE,
-                     ("ASSOC - MlmeReassocReqAction() allocate memory failed \n"));
+                     ("ASSOC - MlmeReassocReqAction() allocate memory failed\n"));
             pAd->Mlme.AssocMachine.CurrState = ASSOC_IDLE;
             Status = MLME_FAIL_NO_RESOURCE;
             MlmeEnqueue(pAd, MLME_CNTL_STATE_MACHINE,
@@ -917,7 +917,7 @@ VOID MlmeReassocReqAction(
                               extInfoLen,			&extCapInfo,
                               END_OF_ARGS);
             FrameLen += TmpLen;
-            /*printk("iverson test extCapInfo.BssTransitionManmt %x \n",extCapInfo.BssTransitionManmt); */
+            /*printk("iverson test extCapInfo.BssTransitionManmt %x\n",extCapInfo.BssTransitionManmt); */
         }
 
         /* add Ralink proprietary IE to inform AP this STA is going to use AGGREGATION or PIGGY-BACK+AGGREGATION */
@@ -986,7 +986,7 @@ VOID MlmeReassocReqAction(
     else
     {
         DBGPRINT(RT_DEBUG_TRACE,
-                 ("ASSOC - MlmeReassocReqAction() sanity check failed. BUG!!!! \n"));
+                 ("ASSOC - MlmeReassocReqAction() sanity check failed. BUG!!!!\n"));
         pAd->Mlme.AssocMachine.CurrState = ASSOC_IDLE;
         Status = MLME_INVALID_FORMAT;
         MlmeEnqueue(pAd, MLME_CNTL_STATE_MACHINE, MT2_REASSOC_CONF, 2,
@@ -1162,7 +1162,7 @@ VOID PeerAssocRspAction(
 
     if(ie_list == NULL)
     {
-        DBGPRINT(RT_DEBUG_OFF, ("%s():mem alloc failed!\n", __FUNCTION__));
+        DBGPRINT(RT_DEBUG_ERROR, ("%s(): mem alloc failed!\n", __FUNCTION__));
         return;
     }
 
@@ -1182,7 +1182,7 @@ VOID PeerAssocRspAction(
                      ("%s():ASSOC - receive ASSOC_RSP to me (status=%d)\n", __FUNCTION__, Status));
 #ifdef DOT11_N_SUPPORT
             DBGPRINT(RT_DEBUG_TRACE,
-                     ("%s():MacTable [%d].AMsduSize = %d. ClientStatusFlags = 0x%lx \n",
+                     ("%s():MacTable [%d].AMsduSize = %d. ClientStatusFlags = 0x%lx\n",
                       __FUNCTION__, Elem->Wcid,
                       pAd->MacTab.Content[BSSID_WCID].AMsduSize,
                       pAd->MacTab.Content[BSSID_WCID].ClientStatusFlags));
@@ -1315,7 +1315,7 @@ VOID PeerReassocRspAction(
 
     if(ie_list == NULL)
     {
-        DBGPRINT(RT_DEBUG_OFF, ("%s():mem alloc failed!\n", __FUNCTION__));
+        DBGPRINT(RT_DEBUG_ERROR, ("%s(): mem alloc failed!\n", __FUNCTION__));
         return;
     }
 
@@ -1388,7 +1388,7 @@ VOID PeerReassocRspAction(
                                   HtCapabilityLen);
 
 #ifdef WPA_SUPPLICANT_SUPPORT
-                DBGPRINT(RT_DEBUG_ERROR, ("wpa_supplicant support enabled"));
+                DBGPRINT(RT_DEBUG_TRACE, ("wpa_supplicant support enabled"));
 #ifndef NATIVE_WPA_SUPPLICANT_SUPPORT
 
                 if(pAd->StaCfg.WpaSupplicantUP != WPA_SUPPLICANT_DISABLE)
@@ -1524,7 +1524,7 @@ VOID AssocPostProc(
     }
 
     DBGPRINT(RT_DEBUG_TRACE,
-             ("%s():=>AP.AMsduSize = %d. ClientStatusFlags = 0x%lx \n",
+             ("%s():=>AP.AMsduSize = %d. ClientStatusFlags = 0x%lx\n",
               __FUNCTION__,
               pAd->MacTab.Content[BSSID_WCID].AMsduSize,
               pAd->MacTab.Content[BSSID_WCID].ClientStatusFlags));
@@ -1558,7 +1558,7 @@ VOID AssocPostProc(
         pAd->MacTab.Content[BSSID_WCID].RSNIE_Len = 0;
         NdisZeroMemory(pAd->MacTab.Content[BSSID_WCID].RSN_IE, MAX_LEN_OF_RSNIE);
 
-        DBGPRINT(RT_DEBUG_ERROR,
+        DBGPRINT(RT_DEBUG_INFO,
                  ("ASSOC - AuthMode = %d\n", pAd->StaCfg.AuthMode));
 
         /* Store appropriate RSN_IE for WPA SM negotiation later */
@@ -1569,7 +1569,8 @@ VOID AssocPostProc(
             USHORT len;
             PEID_STRUCT pEid;
 
-            DBGPRINT_ERR(("Storing RSS_IE for WPA SM negotiation later\n"));
+            DBGPRINT(RT_DEBUG_INFO,
+                     ("Storing RSS_IE for WPA SM negotiation later\n"));
 
             pVIE = pAd->ScanTab.BssEntry[Idx].VarIEs;
             len = pAd->ScanTab.BssEntry[Idx].VarIELen;
@@ -1592,8 +1593,8 @@ VOID AssocPostProc(
                 {
                     NdisMoveMemory(pAd->MacTab.Content[BSSID_WCID].RSN_IE, pVIE, (pEid->Len + 2));
                     pAd->MacTab.Content[BSSID_WCID].RSNIE_Len = (pEid->Len + 2);
-                    DBGPRINT(RT_DEBUG_ERROR,
-                             ("%s():=> Store RSN_IE for WPA SM negotiation\n", __FUNCTION__));
+                    DBGPRINT(RT_DEBUG_INFO,
+                             ("%s(): Store RSN_IE for WPA SM negotiation\n", __FUNCTION__));
                 }
                 /* For WPA2/WPA2PSK */
                 else if((pEid->Eid == IE_RSN)
@@ -1603,8 +1604,8 @@ VOID AssocPostProc(
                 {
                     NdisMoveMemory(pAd->MacTab.Content[BSSID_WCID].RSN_IE, pVIE, (pEid->Len + 2));
                     pAd->MacTab.Content[BSSID_WCID].RSNIE_Len = (pEid->Len + 2);
-                    DBGPRINT(RT_DEBUG_ERROR,
-                             ("%s():=> Store RSN_IE for WPA2 SM negotiation\n", __FUNCTION__));
+                    DBGPRINT(RT_DEBUG_INFO,
+                             ("%s(): Store RSN_IE for WPA2 SM negotiation\n", __FUNCTION__));
                 }
 
                 pVIE += (pEid->Len + 2);
@@ -1652,11 +1653,11 @@ VOID PeerDisassocAction(
     UCHAR Addr2[MAC_ADDR_LEN];
     USHORT Reason;
 
-    DBGPRINT(RT_DEBUG_ERROR, ("ASSOC - PeerDisassocAction()\n"));
+    DBGPRINT(RT_DEBUG_INFO, ("ASSOC - PeerDisassocAction()\n"));
 
     if(PeerDisassocSanity(pAd, Elem->Msg, Elem->MsgLen, Addr2, &Reason))
     {
-        DBGPRINT(RT_DEBUG_ERROR,
+        DBGPRINT(RT_DEBUG_INFO,
                  ("ASSOC - PeerDisassocAction() Reason = %d\n",
                   Reason));
 
@@ -1692,14 +1693,14 @@ VOID PeerDisassocAction(
 #ifdef WPA_SUPPLICANT_SUPPORT
 #ifndef NATIVE_WPA_SUPPLICANT_SUPPORT
 
-            DBGPRINT(RT_DEBUG_ERROR,
+            DBGPRINT(RT_DEBUG_INFO,
                      ("ASSOC - Send disassoc to WpaSupplicant(1)\n"));
 
             if(pAd->StaCfg.WpaSupplicantUP !=
                     WPA_SUPPLICANT_DISABLE)
             {
 
-                DBGPRINT(RT_DEBUG_ERROR,
+                DBGPRINT(RT_DEBUG_INFO,
                          ("ASSOC - Send disassoc to WpaSupplicant(2)\n"));
 
                 /*send disassociate event to wpa_supplicant */
@@ -2145,14 +2146,14 @@ BOOLEAN StaAddMacTableEntry(
 #ifdef WPA_SUPPLICANT_SUPPORT
 #ifndef NATIVE_WPA_SUPPLICANT_SUPPORT
 
-    DBGPRINT(RT_DEBUG_ERROR,
+    DBGPRINT(RT_DEBUG_INFO,
              ("ASSOC - Send assoc IEs to WpaSupplicant(0)\n"));
 
 
     if(pAd->StaCfg.WpaSupplicantUP)
     {
 
-        DBGPRINT(RT_DEBUG_ERROR,
+        DBGPRINT(RT_DEBUG_INFO,
                  ("ASSOC - Send assoc IEs to WpaSupplicant(1)\n"));
 
         SendAssocIEsToWpaSupplicant(pAd->net_dev, pAd->StaCfg.ReqVarIEs,

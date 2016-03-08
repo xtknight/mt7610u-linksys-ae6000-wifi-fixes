@@ -677,7 +677,7 @@ VOID DefaultATEAsicAdjustTxPower(
             RTMP_IO_WRITE32(pAd, TX_PWR_CFG_0 + (index << 2), TxPwr[index]);
 #endif /* DOT11N_SS3_SUPPORT */
 
-            DBGPRINT(RT_DEBUG_TRACE, ("ATEAsicAdjustTxPower - DeltaPwr=%d, offset=0x%x, TxPwr=%lx, BbpR1=%x, round=%ld, pTxAgcCompensate=%d \n",
+            DBGPRINT(RT_DEBUG_TRACE, ("ATEAsicAdjustTxPower - DeltaPwr=%d, offset=0x%x, TxPwr=%lx, BbpR1=%x, round=%ld, pTxAgcCompensate=%d\n",
                                       DeltaPwr, TX_PWR_CFG_0 + (index << 2), TxPwr[index], BbpR49, pATEInfo->OneSecPeriodicRound, *pTxAgcCompensate));
 
         }
@@ -2820,7 +2820,7 @@ static NDIS_STATUS TXFRAME(
                 }
                 else
                 {
-                    DBGPRINT(RT_DEBUG_OFF, ("Channel %d, Calibrated Tx.Power0= 0x%04x\n", CurrentChannel, ChannelPower));
+                    DBGPRINT(RT_DEBUG_TRACE, ("Channel %d, Calibrated Tx.Power0= 0x%04x\n", CurrentChannel, ChannelPower));
                 }
             }
         }
@@ -4269,7 +4269,7 @@ INT	Set_ATE_TX_MODE_Proc(
     {
         phy_mode = MODE_CCK;
         DBGPRINT_ERR(("Set_ATE_TX_MODE_Proc::Out of range.\nIt should be in range of 0~4\n"));
-        DBGPRINT(RT_DEBUG_OFF, ("0: CCK, 1: OFDM, 2: HT_MIX, 3: HT_GREEN_FIELD, 4: VHT.\n"));
+        DBGPRINT(RT_DEBUG_ERROR, ("0: CCK, 1: OFDM, 2: HT_MIX, 3: HT_GREEN_FIELD, 4: VHT.\n"));
         return FALSE;
     }
 
@@ -4335,7 +4335,7 @@ INT	Set_ATE_TX_MODE_Proc(
                 BbpData &= (~0x18);
                 ATE_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R4, BbpData);
 #endif /* RTMP_MAC */
-                DBGPRINT(RT_DEBUG_OFF, ("Set_ATE_TX_MODE_Proc::CCK Only support 20MHZ. Switch to 20MHZ.\n"));
+                DBGPRINT(RT_DEBUG_ERROR, ("Set_ATE_TX_MODE_Proc::CCK Only support 20MHZ. Switch to 20MHZ.\n"));
             }
 
 #ifdef RT3350
@@ -4505,10 +4505,10 @@ INT Set_ATE_Read_RF_Proc(
     IN	PSTRING			arg)
 {
     {
-        DBGPRINT(RT_DEBUG_OFF, ("R1 = %x\n", pAd->LatchRfRegs.R1));
-        DBGPRINT(RT_DEBUG_OFF, ("R2 = %x\n", pAd->LatchRfRegs.R2));
-        DBGPRINT(RT_DEBUG_OFF, ("R3 = %x\n", pAd->LatchRfRegs.R3));
-        DBGPRINT(RT_DEBUG_OFF, ("R4 = %x\n", pAd->LatchRfRegs.R4));
+        DBGPRINT(RT_DEBUG_TRACE, ("R1 = %x\n", pAd->LatchRfRegs.R1));
+        DBGPRINT(RT_DEBUG_TRACE, ("R2 = %x\n", pAd->LatchRfRegs.R2));
+        DBGPRINT(RT_DEBUG_TRACE, ("R3 = %x\n", pAd->LatchRfRegs.R3));
+        DBGPRINT(RT_DEBUG_TRACE, ("R4 = %x\n", pAd->LatchRfRegs.R4));
     }
     return TRUE;
 }
@@ -4591,7 +4591,7 @@ INT Set_ATE_Load_E2P_Proc(
     UINT32 			value = (UINT32) simple_strtol(arg, 0, 10);
     RTMP_OS_FS_INFO	osFSInfo;
 
-    DBGPRINT(RT_DEBUG_OFF, ("===> %s (value=%d)\n", __FUNCTION__, value));
+    DBGPRINT(RT_DEBUG_TRACE, ("===> %s (value=%d)\n", __FUNCTION__, value));
 
     if(value > 0)
     {
@@ -4651,7 +4651,7 @@ INT Set_ATE_Load_E2P_Proc(
         RtmpOSFSInfoChange(&osFSInfo, FALSE);
     }
 
-    DBGPRINT(RT_DEBUG_OFF, ("<=== %s (ret=%d)\n", __FUNCTION__, ret));
+    DBGPRINT(RT_DEBUG_TRACE, ("<=== %s (ret=%d)\n", __FUNCTION__, ret));
 
     return ret;
 }
@@ -4670,10 +4670,10 @@ INT Set_ATE_Read_E2P_Proc(
 
     for(i = 0; i < (EEPROM_SIZE >> 1); i++)
     {
-        DBGPRINT(RT_DEBUG_OFF, ("%4.4x ", *p));
+        DBGPRINT(RT_DEBUG_TRACE, ("%4.4x ", *p));
 
         if(((i+1) % 16) == 0)
-            DBGPRINT(RT_DEBUG_OFF, ("\n"));
+            DBGPRINT(RT_DEBUG_TRACE, ("\n"));
 
         p++;
     }
@@ -5433,7 +5433,7 @@ INT	Set_ATE_IPG_Proc(
 
     if(value <= 0)
     {
-        DBGPRINT(RT_DEBUG_OFF, ("Set_ATE_IPG_Proc::IPG is disabled(IPG == 0).\n"));
+        DBGPRINT(RT_DEBUG_TRACE, ("Set_ATE_IPG_Proc::IPG is disabled(IPG == 0).\n"));
         return TRUE;
     }
 
@@ -5606,28 +5606,28 @@ INT	Set_ATE_Show_Proc(
     default:
     {
         Mode_String = "Unknown ATE mode";
-        DBGPRINT(RT_DEBUG_OFF, ("ERROR! Unknown ATE mode!\n"));
+        DBGPRINT(RT_DEBUG_TRACE, ("ERROR! Unknown ATE mode!\n"));
         break;
     }
     }
 
-    DBGPRINT(RT_DEBUG_OFF, ("ATE Mode=%s\n", Mode_String));
+    DBGPRINT(RT_DEBUG_TRACE, ("ATE Mode=%s\n", Mode_String));
 #ifdef RT3350
 
     if(IS_RT3350(pAd))
-        DBGPRINT(RT_DEBUG_OFF, ("PABias=%u\n", pATEInfo->PABias));
+        DBGPRINT(RT_DEBUG_TRACE, ("PABias=%u\n", pATEInfo->PABias));
 
 #endif /* RT3350 */
-    DBGPRINT(RT_DEBUG_OFF, ("TxPower0=%d\n", pATEInfo->TxPower0));
-    DBGPRINT(RT_DEBUG_OFF, ("TxPower1=%d\n", pATEInfo->TxPower1));
+    DBGPRINT(RT_DEBUG_TRACE, ("TxPower0=%d\n", pATEInfo->TxPower0));
+    DBGPRINT(RT_DEBUG_TRACE, ("TxPower1=%d\n", pATEInfo->TxPower1));
 #ifdef DOT11N_SS3_SUPPORT
-    DBGPRINT(RT_DEBUG_OFF, ("TxPower2=%d\n", pATEInfo->TxPower2));
+    DBGPRINT(RT_DEBUG_TRACE, ("TxPower2=%d\n", pATEInfo->TxPower2));
 #endif /* DOT11N_SS3_SUPPORT */
-    DBGPRINT(RT_DEBUG_OFF, ("TxAntennaSel=%d\n", pATEInfo->TxAntennaSel));
-    DBGPRINT(RT_DEBUG_OFF, ("RxAntennaSel=%d\n", pATEInfo->RxAntennaSel));
-    DBGPRINT(RT_DEBUG_OFF, ("BBPCurrentBW=%u\n", bw));
-    DBGPRINT(RT_DEBUG_OFF, ("GI=%u\n", sgi));
-    DBGPRINT(RT_DEBUG_OFF, ("MCS=%u\n", mcs));
+    DBGPRINT(RT_DEBUG_TRACE, ("TxAntennaSel=%d\n", pATEInfo->TxAntennaSel));
+    DBGPRINT(RT_DEBUG_TRACE, ("RxAntennaSel=%d\n", pATEInfo->RxAntennaSel));
+    DBGPRINT(RT_DEBUG_TRACE, ("BBPCurrentBW=%u\n", bw));
+    DBGPRINT(RT_DEBUG_TRACE, ("GI=%u\n", sgi));
+    DBGPRINT(RT_DEBUG_TRACE, ("MCS=%u\n", mcs));
 
     switch(phy_mode)
     {
@@ -5650,30 +5650,30 @@ INT	Set_ATE_Show_Proc(
     default:
     {
         TxMode_String = "Unknown TxMode";
-        DBGPRINT(RT_DEBUG_OFF, ("ERROR! Unknown TxMode!\n"));
+        DBGPRINT(RT_DEBUG_ERROR, ("ERROR! Unknown TxMode!\n"));
         break;
     }
     }
 
-    DBGPRINT(RT_DEBUG_OFF, ("TxMode=%s\n", TxMode_String));
-    DBGPRINT(RT_DEBUG_OFF, ("Addr1=%02x:%02x:%02x:%02x:%02x:%02x\n",
+    DBGPRINT(RT_DEBUG_TRACE, ("TxMode=%s\n", TxMode_String));
+    DBGPRINT(RT_DEBUG_TRACE, ("Addr1=%02x:%02x:%02x:%02x:%02x:%02x\n",
                             pATEInfo->Addr1[0], pATEInfo->Addr1[1], pATEInfo->Addr1[2], pATEInfo->Addr1[3], pATEInfo->Addr1[4], pATEInfo->Addr1[5]));
-    DBGPRINT(RT_DEBUG_OFF, ("Addr2=%02x:%02x:%02x:%02x:%02x:%02x\n",
+    DBGPRINT(RT_DEBUG_TRACE, ("Addr2=%02x:%02x:%02x:%02x:%02x:%02x\n",
                             pATEInfo->Addr2[0], pATEInfo->Addr2[1], pATEInfo->Addr2[2], pATEInfo->Addr2[3], pATEInfo->Addr2[4], pATEInfo->Addr2[5]));
-    DBGPRINT(RT_DEBUG_OFF, ("Addr3=%02x:%02x:%02x:%02x:%02x:%02x\n",
+    DBGPRINT(RT_DEBUG_TRACE, ("Addr3=%02x:%02x:%02x:%02x:%02x:%02x\n",
                             pATEInfo->Addr3[0], pATEInfo->Addr3[1], pATEInfo->Addr3[2], pATEInfo->Addr3[3], pATEInfo->Addr3[4], pATEInfo->Addr3[5]));
-    DBGPRINT(RT_DEBUG_OFF, ("Channel=%u\n", pATEInfo->Channel));
-    DBGPRINT(RT_DEBUG_OFF, ("TxLength=%u\n", pATEInfo->TxLength));
-    DBGPRINT(RT_DEBUG_OFF, ("TxCount=%u\n", pATEInfo->TxCount));
-    DBGPRINT(RT_DEBUG_OFF, ("RFFreqOffset=%u\n", pATEInfo->RFFreqOffset));
-    DBGPRINT(RT_DEBUG_OFF, ("bAutoTxAlc=%d\n", pATEInfo->bAutoTxAlc));
-    DBGPRINT(RT_DEBUG_OFF, ("IPG=%u\n", pATEInfo->IPG));
-    DBGPRINT(RT_DEBUG_OFF, ("Payload=0x%02x\n", pATEInfo->Payload));
+    DBGPRINT(RT_DEBUG_TRACE, ("Channel=%u\n", pATEInfo->Channel));
+    DBGPRINT(RT_DEBUG_TRACE, ("TxLength=%u\n", pATEInfo->TxLength));
+    DBGPRINT(RT_DEBUG_TRACE, ("TxCount=%u\n", pATEInfo->TxCount));
+    DBGPRINT(RT_DEBUG_TRACE, ("RFFreqOffset=%u\n", pATEInfo->RFFreqOffset));
+    DBGPRINT(RT_DEBUG_TRACE, ("bAutoTxAlc=%d\n", pATEInfo->bAutoTxAlc));
+    DBGPRINT(RT_DEBUG_TRACE, ("IPG=%u\n", pATEInfo->IPG));
+    DBGPRINT(RT_DEBUG_TRACE, ("Payload=0x%02x\n", pATEInfo->Payload));
 #ifdef TXBF_SUPPORT
-    DBGPRINT(RT_DEBUG_OFF, ("bTxBF=%d\n", pATEInfo->bTxBF));
-    DBGPRINT(RT_DEBUG_OFF, ("txSoundingMode=%d\n", pATEInfo->txSoundingMode));
+    DBGPRINT(RT_DEBUG_TRACE, ("bTxBF=%d\n", pATEInfo->bTxBF));
+    DBGPRINT(RT_DEBUG_TRACE, ("txSoundingMode=%d\n", pATEInfo->txSoundingMode));
 #endif /* TXBF_SUPPORT */
-    DBGPRINT(RT_DEBUG_OFF, ("Set_ATE_Show_Proc Success\n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("Set_ATE_Show_Proc Success\n"));
     return TRUE;
 }
 
@@ -5683,66 +5683,66 @@ INT	Set_ATE_Help_Proc(
     IN	PSTRING			arg)
 {
 #ifdef CONFIG_RT2880_ATE_CMD_NEW
-    DBGPRINT(RT_DEBUG_OFF, ("ATE=ATESTART, ATESTOP, TXCONT, TXCARR, TXCARS, TXFRAME, RXFRAME\n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("ATE=ATESTART, ATESTOP, TXCONT, TXCARR, TXCARS, TXFRAME, RXFRAME\n"));
 #else
-    DBGPRINT(RT_DEBUG_OFF, ("ATE=APSTOP, APSTART, TXCONT, TXCARR, TXCARS, TXFRAME, RXFRAME\n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("ATE=APSTOP, APSTART, TXCONT, TXCARR, TXCARS, TXFRAME, RXFRAME\n"));
 #endif /* CONFIG_RT2880_ATE_CMD_NEW */
-    DBGPRINT(RT_DEBUG_OFF, ("ATEDA\n"));
-    DBGPRINT(RT_DEBUG_OFF, ("ATESA\n"));
-    DBGPRINT(RT_DEBUG_OFF, ("ATEBSSID\n"));
-    DBGPRINT(RT_DEBUG_OFF, ("ATECHANNEL, range:0~14(unless A band !)\n"));
-    DBGPRINT(RT_DEBUG_OFF, ("ATETXPOW0, set power level of antenna 1.\n"));
-    DBGPRINT(RT_DEBUG_OFF, ("ATETXPOW1, set power level of antenna 2.\n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("ATEDA\n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("ATESA\n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("ATEBSSID\n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("ATECHANNEL, range:0~14(unless A band !)\n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("ATETXPOW0, set power level of antenna 1.\n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("ATETXPOW1, set power level of antenna 2.\n"));
 #ifdef DOT11N_SS3_SUPPORT
-    DBGPRINT(RT_DEBUG_OFF, ("ATETXPOW2, set power level of antenna 3.\n"));
-    DBGPRINT(RT_DEBUG_OFF, ("ATETXANT, set TX antenna. 0:all, 1:antenna one, 2:antenna two, 3:antenna three.\n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("ATETXPOW2, set power level of antenna 3.\n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("ATETXANT, set TX antenna. 0:all, 1:antenna one, 2:antenna two, 3:antenna three.\n"));
 #else
-    DBGPRINT(RT_DEBUG_OFF, ("ATETXANT, set TX antenna. 0:all, 1:antenna one, 2:antenna two.\n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("ATETXANT, set TX antenna. 0:all, 1:antenna one, 2:antenna two.\n"));
 #endif /* DOT11N_SS3_SUPPORT */
-    DBGPRINT(RT_DEBUG_OFF, ("ATERXANT, set RX antenna.0:all, 1:antenna one, 2:antenna two, 3:antenna three.\n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("ATERXANT, set RX antenna.0:all, 1:antenna one, 2:antenna two, 3:antenna three.\n"));
 #ifdef RT3350
 
     if(IS_RT3350(pAd))
-        DBGPRINT(RT_DEBUG_OFF, ("ATEPABIAS, set power amplifier bias for EVM, range 0~15\n"));
+        DBGPRINT(RT_DEBUG_TRACE, ("ATEPABIAS, set power amplifier bias for EVM, range 0~15\n"));
 
 #endif /* RT3350 */
 #if defined(RTMP_RF_RW_SUPPORT) || defined(RLT_RF)
-    DBGPRINT(RT_DEBUG_OFF, ("ATETXFREQOFFSET, set frequency offset, range 0~95\n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("ATETXFREQOFFSET, set frequency offset, range 0~95\n"));
 #else
-    DBGPRINT(RT_DEBUG_OFF, ("ATETXFREQOFFSET, set frequency offset, range 0~63\n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("ATETXFREQOFFSET, set frequency offset, range 0~63\n"));
 #endif /* RTMP_RF_RW_SUPPORT */
-    DBGPRINT(RT_DEBUG_OFF, ("ATETXBW, set BandWidth, 0:20MHz, 1:40MHz , 2:80MHz.\n"));
-    DBGPRINT(RT_DEBUG_OFF, ("ATETXLEN, set Frame length, range 24~%d\n", (MAX_FRAME_SIZE - 34/* == 2312 */)));
-    DBGPRINT(RT_DEBUG_OFF, ("ATETXCNT, set how many frame going to transmit.\n"));
-    DBGPRINT(RT_DEBUG_OFF, ("ATETXMCS, set MCS, reference to rate table.\n"));
-    DBGPRINT(RT_DEBUG_OFF, ("ATETXMODE, set Mode 0:CCK, 1:OFDM, 2:HT-Mix, 3:GreenField, 4:VHT, reference to rate table.\n"));
-    DBGPRINT(RT_DEBUG_OFF, ("ATETXGI, set GI interval, 0:Long, 1:Short\n"));
-    DBGPRINT(RT_DEBUG_OFF, ("ATERXFER, 0:disable Rx Frame error rate. 1:enable Rx Frame error rate.\n"));
-    DBGPRINT(RT_DEBUG_OFF, ("ATERRF, show all RF registers.\n"));
-    DBGPRINT(RT_DEBUG_OFF, ("ATEWRF1, set RF1 register.\n"));
-    DBGPRINT(RT_DEBUG_OFF, ("ATEWRF2, set RF2 register.\n"));
-    DBGPRINT(RT_DEBUG_OFF, ("ATEWRF3, set RF3 register.\n"));
-    DBGPRINT(RT_DEBUG_OFF, ("ATEWRF4, set RF4 register.\n"));
-    DBGPRINT(RT_DEBUG_OFF, ("ATELDE2P, load EEPROM from .bin file.\n"));
-    DBGPRINT(RT_DEBUG_OFF, ("ATERE2P, display all EEPROM content.\n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("ATETXBW, set BandWidth, 0:20MHz, 1:40MHz , 2:80MHz.\n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("ATETXLEN, set Frame length, range 24~%d\n", (MAX_FRAME_SIZE - 34/* == 2312 */)));
+    DBGPRINT(RT_DEBUG_TRACE, ("ATETXCNT, set how many frame going to transmit.\n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("ATETXMCS, set MCS, reference to rate table.\n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("ATETXMODE, set Mode 0:CCK, 1:OFDM, 2:HT-Mix, 3:GreenField, 4:VHT, reference to rate table.\n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("ATETXGI, set GI interval, 0:Long, 1:Short\n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("ATERXFER, 0:disable Rx Frame error rate. 1:enable Rx Frame error rate.\n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("ATERRF, show all RF registers.\n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("ATEWRF1, set RF1 register.\n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("ATEWRF2, set RF2 register.\n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("ATEWRF3, set RF3 register.\n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("ATEWRF4, set RF4 register.\n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("ATELDE2P, load EEPROM from .bin file.\n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("ATERE2P, display all EEPROM content.\n"));
 #ifdef LED_CONTROL_SUPPORT
 #endif /* LED_CONTROL_SUPPORT */
-    DBGPRINT(RT_DEBUG_OFF, ("ATEAUTOALC, enable ATE auto Tx alc (Tx auto level control).\n"));
-    DBGPRINT(RT_DEBUG_OFF, ("ATEIPG, set ATE Tx frame IPG.\n"));
-    DBGPRINT(RT_DEBUG_OFF, ("ATEPAYLOAD, set ATE payload pattern for TxFrame.\n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("ATEAUTOALC, enable ATE auto Tx alc (Tx auto level control).\n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("ATEIPG, set ATE Tx frame IPG.\n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("ATEPAYLOAD, set ATE payload pattern for TxFrame.\n"));
 #ifdef TXBF_SUPPORT
-    DBGPRINT(RT_DEBUG_OFF, ("ATETXBF, enable ATE Tx beam forming.\n"));
-    DBGPRINT(RT_DEBUG_OFF, ("ATETXSOUNDING, Sounding mode 0:none, 1:Data sounding, 2:2 stream NDP, 3:3 stream NDP.\n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("ATETXBF, enable ATE Tx beam forming.\n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("ATETXSOUNDING, Sounding mode 0:none, 1:Data sounding, 2:2 stream NDP, 3:3 stream NDP.\n"));
 #endif /* TXBF_SUPPORT */
 #ifdef RTMP_INTERNAL_TX_ALC
-    DBGPRINT(RT_DEBUG_OFF, ("ATETSSICBA, start internal TSSI calibration.\n"));
-    DBGPRINT(RT_DEBUG_OFF, ("ATETSSICBAEX, start extended internal TSSI calibration.\n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("ATETSSICBA, start internal TSSI calibration.\n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("ATETSSICBAEX, start extended internal TSSI calibration.\n"));
 #endif /* RTMP_INTERNAL_TX_ALC */
 #ifdef RTMP_TEMPERATURE_COMPENSATION
-    DBGPRINT(RT_DEBUG_OFF, ("ATEREADEXTSSI, start advanced temperature TSSI calibration.\n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("ATEREADEXTSSI, start advanced temperature TSSI calibration.\n"));
 #endif /* RTMP_TEMPERATURE_COMPENSATION */
-    DBGPRINT(RT_DEBUG_OFF, ("ATESHOW, display all parameters of ATE.\n"));
-    DBGPRINT(RT_DEBUG_OFF, ("ATEHELP, online help.\n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("ATESHOW, display all parameters of ATE.\n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("ATEHELP, online help.\n"));
 
     return TRUE;
 }
@@ -5882,7 +5882,7 @@ INT RT335xATETssiCalibrationExtend(
 
     if(pAd->bUseEfuse)
     {
-        if(pAd->bFroceEEPROMBuffer)
+        if(pAd->bForceEEPROMBuffer)
             NdisMoveMemory(&(pAd->EEPROMImage[EEPROM_TSSI_OVER_OFDM_54]), (PUCHAR)(&EEPData) ,2);
         else
             eFuseWrite(pAd, EEPROM_TSSI_OVER_OFDM_54, (PUCHAR)(&EEPData), 2);
@@ -5932,7 +5932,7 @@ INT RT335xATETssiCalibrationExtend(
 
     if(pAd->bUseEfuse)
     {
-        if(pAd->bFroceEEPROMBuffer)
+        if(pAd->bForceEEPROMBuffer)
             NdisMoveMemory(&(pAd->EEPROMImage[EEPROM_TX_POWER_OFFSET_OVER_CH_1-1]), (PUCHAR)(&EEPData), 2);
         else
             eFuseWrite(pAd, EEPROM_TX_POWER_OFFSET_OVER_CH_1-1, (PUCHAR)(&EEPData), 2);
@@ -5952,7 +5952,7 @@ INT RT335xATETssiCalibrationExtend(
 
         if(pAd->bUseEfuse)
         {
-            if(pAd->bFroceEEPROMBuffer)
+            if(pAd->bForceEEPROMBuffer)
                 NdisMoveMemory(&(pAd->EEPROMImage[(EEPROM_TX_POWER_OFFSET_OVER_CH_3 +((CurrentChannel-3)/2))]), (PUCHAR)(&EEPData), 2);
             else
                 eFuseWrite(pAd, (EEPROM_TX_POWER_OFFSET_OVER_CH_3 +((CurrentChannel-3)/2)), (PUCHAR)(&EEPData), 2);
@@ -5975,7 +5975,7 @@ INT RT335xATETssiCalibrationExtend(
 
     if(pAd->bUseEfuse)
     {
-        if(pAd->bFroceEEPROMBuffer)
+        if(pAd->bForceEEPROMBuffer)
             NdisMoveMemory(&(pAd->EEPROMImage[EEPROM_TSSI_ENABLE]), (PUCHAR)(&EEPData), 2);
         else
             eFuseWrite(pAd, EEPROM_TSSI_ENABLE, (PUCHAR)(&EEPData), 2);
@@ -5994,7 +5994,7 @@ INT RT335xATETssiCalibrationExtend(
 
     if(pAd->bUseEfuse)
     {
-        if(pAd->bFroceEEPROMBuffer)
+        if(pAd->bForceEEPROMBuffer)
             NdisMoveMemory(&(pAd->EEPROMImage[EEPROM_TSSI_MODE_EXTEND]), (PUCHAR)(&EEPData), 2);
         else
             eFuseWrite(pAd, EEPROM_TSSI_MODE_EXTEND, (PUCHAR)(&EEPData), 2);
@@ -6100,7 +6100,7 @@ NDIS_STATUS ChipStructAssign(
     if(IS_RT8592(pAd))
     {
         pATEInfo->pChipStruct = &RALINK85592;
-        DBGPRINT(RT_DEBUG_OFF, ("%s(): RALINK85592 hook !\n", __FUNCTION__));
+        DBGPRINT(RT_DEBUG_TRACE, ("%s(): RALINK85592 hook !\n", __FUNCTION__));
         return NDIS_STATUS_SUCCESS;
     }
 
@@ -6111,7 +6111,7 @@ NDIS_STATUS ChipStructAssign(
     if(IS_MT76x0(pAd))
     {
         pATEInfo->pChipStruct = &mt76x0ate;
-        DBGPRINT(RT_DEBUG_OFF, ("%s(): MT7650/30/10 hook !\n", __FUNCTION__));
+        DBGPRINT(RT_DEBUG_TRACE, ("%s(): MT7650/30/10 hook !\n", __FUNCTION__));
         return NDIS_STATUS_SUCCESS;
     }
 
@@ -6126,7 +6126,7 @@ NDIS_STATUS ChipStructAssign(
         	as (((_pAd)->MACVersion & 0xFFFF0000) == 0x53900000)
         */
         pATEInfo->pChipStruct = &RALINK6352;
-        DBGPRINT(RT_DEBUG_OFF, ("%s(): RALINK6352 hook !\n", __FUNCTION__));
+        DBGPRINT(RT_DEBUG_TRACE, ("%s(): RALINK6352 hook !\n", __FUNCTION__));
         return NDIS_STATUS_SUCCESS;
     }
 

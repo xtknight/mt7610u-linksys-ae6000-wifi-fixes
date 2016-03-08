@@ -49,7 +49,7 @@ VOID RT28xx_ch_tunning(RTMP_ADAPTER *pAd, INT bw)
         RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R73, 0x16);
     }
 
-    DBGPRINT(RT_DEBUG_TRACE, ("!!!rt2860C !!! \n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("!!!rt2860C !!!\n"));
 
 }
 
@@ -87,7 +87,7 @@ VOID RT28xx_ChipSwitchChannel(
 
     if(index == MAX_NUM_OF_CHANNELS)
     {
-        DBGPRINT(RT_DEBUG_ERROR, ("%s(): Can't find the Channel#%d \n", __FUNCTION__, Channel));
+        DBGPRINT(RT_DEBUG_ERROR, ("%s(): Can't find the Channel#%d\n", __FUNCTION__, Channel));
     }
 
     RFRegTable = RF2850RegTable;
@@ -135,7 +135,7 @@ VOID RT28xx_ChipSwitchChannel(
                         /* TxPwer is not possible larger than 15 */
 
                         R3 |= (TxPwer << 10);
-                        DBGPRINT(RT_DEBUG_TRACE, ("%s(): TxPwer=%d \n", __FUNCTION__, TxPwer));
+                        DBGPRINT(RT_DEBUG_TRACE, ("%s(): TxPwer=%d\n", __FUNCTION__, TxPwer));
                     }
                     else
                     {
@@ -149,7 +149,7 @@ VOID RT28xx_ChipSwitchChannel(
                         TxPwer2 = (7+TxPwer2);
 
                         R4 |= (TxPwer2 << 7);
-                        DBGPRINT(RT_DEBUG_TRACE, ("%s(): TxPwer2=%d \n", __FUNCTION__, TxPwer2));
+                        DBGPRINT(RT_DEBUG_TRACE, ("%s(): TxPwer2=%d\n", __FUNCTION__, TxPwer2));
                     }
                     else
                     {

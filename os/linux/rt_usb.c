@@ -441,7 +441,7 @@ static void rx_done_tasklet(unsigned long data)
                                   fRTMP_ADAPTER_NIC_NOT_EXIST))))
         {
 
-            DBGPRINT_RAW(RT_DEBUG_ERROR, ("Bulk In Failed. Status=%d, BIIdx=0x%x, BIRIdx=0x%x, actual_length= 0x%x\n",
+            DBGPRINT_RAW(RT_DEBUG_ERROR, ("mt7610u: bulk-in URB failed. Status=%d, BIIdx=0x%x, BIRIdx=0x%x, actual_length= 0x%x\n",
                                           Status, pAd->NextRxBulkInIndex, pAd->NextRxBulkInReadIndex, RTMP_USB_URB_LEN_GET(pRxContext->pUrb))); /*->actual_length)); */
 
             RTMP_SET_FLAG(pAd, fRTMP_ADAPTER_BULKIN_RESET);
@@ -892,7 +892,7 @@ static void rtusb_ate_ac0_dma_done_tasklet(unsigned long data)
     {
         pAd->BulkOutCompleteOther++;
 
-        DBGPRINT(RT_DEBUG_ERROR, ("BulkOutDataPacket Failed STATUS_OTHER = 0x%x . \n", Status));
+        DBGPRINT(RT_DEBUG_ERROR, ("BulkOutDataPacket Failed STATUS_OTHER = 0x%x .\n", Status));
         DBGPRINT(RT_DEBUG_ERROR, (">>BulkOutReq=0x%lx, BulkOutComplete=0x%lx\n", pAd->BulkOutReq, pAd->BulkOutComplete));
 
         if((!RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_RESET_IN_PROGRESS)) &&
@@ -949,7 +949,7 @@ static void rtusb_ate_ac0_dma_done_tasklet(unsigned long data)
             && (pAd->ate.Mode & ATE_TXFRAME))
     {
 #ifdef RELASE_EXCLUDE
-        DBGPRINT(RT_DEBUG_INFO, ("Continue to BulkOut ! \n"));
+        DBGPRINT(RT_DEBUG_INFO, ("Continue to BulkOut !\n"));
 #endif /* RELASE_EXCLUDE */
         RTUSB_SET_BULK_FLAG(pAd, fRTUSB_BULK_OUT_DATA_ATE);
     }

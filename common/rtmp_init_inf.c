@@ -117,6 +117,8 @@ int rt28xx_init(VOID *pAdSrc, PSTRING pDefaultMac, PSTRING pHostName)
     UINT index;
     NDIS_STATUS Status;
 
+    DBGPRINT(RT_DEBUG_INFO, ("rt28xx_init() begin\n"));
+
     if(pAd == NULL)
         return FALSE;
 
@@ -128,7 +130,7 @@ int rt28xx_init(VOID *pAdSrc, PSTRING pDefaultMac, PSTRING pHostName)
 #endif /* RT65xx */
 
 #ifdef RT3290
-    DBGPRINT(RT_DEBUG_OFF, ("MACVersion=0x%x\n", pAd->MACVersion));
+    DBGPRINT(RT_DEBUG_INFO, ("MACVersion=0x%x\n", pAd->MACVersion));
 
     if(IS_RT3290(pAd))
     {
@@ -181,7 +183,7 @@ int rt28xx_init(VOID *pAdSrc, PSTRING pDefaultMac, PSTRING pHostName)
 #ifdef PCIE_PS_SUPPORT
     IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
     {
-        /* If dirver doesn't wake up firmware here,*/
+        /* If driver doesn't wake up firmware here,*/
         /* NICLoadFirmware will hang forever when interface is up again.*/
         if(OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_DOZE) &&
                 OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_ADVANCE_POWER_SAVE_PCIE_DEVICE))
@@ -340,7 +342,7 @@ int rt28xx_init(VOID *pAdSrc, PSTRING pDefaultMac, PSTRING pHostName)
 #endif /* CREDENTIAL_STORE */
 #endif /* CONFIG_STA_SUPPORT */
 
-    DBGPRINT(RT_DEBUG_OFF, ("1. Phy Mode = %d\n", pAd->CommonCfg.PhyMode));
+    DBGPRINT(RT_DEBUG_INFO, ("1. Phy Mode = %d\n", pAd->CommonCfg.PhyMode));
 
     if(Status != NDIS_STATUS_SUCCESS)
     {
@@ -373,14 +375,14 @@ int rt28xx_init(VOID *pAdSrc, PSTRING pDefaultMac, PSTRING pHostName)
 
     /* after reading Registry, we now know if in AP mode or STA mode*/
 
-    DBGPRINT(RT_DEBUG_OFF, ("2. Phy Mode = %d\n", pAd->CommonCfg.PhyMode));
+    DBGPRINT(RT_DEBUG_INFO, ("2. Phy Mode = %d\n", pAd->CommonCfg.PhyMode));
 
     /* We should read EEPROM for all cases.  rt2860b*/
     NICReadEEPROMParameters(pAd, (PSTRING)pDefaultMac);
 #ifdef CONFIG_STA_SUPPORT
 #endif /* CONFIG_STA_SUPPORT */
 
-    DBGPRINT(RT_DEBUG_OFF, ("3. Phy Mode = %d\n", pAd->CommonCfg.PhyMode));
+    DBGPRINT(RT_DEBUG_INFO, ("3. Phy Mode = %d\n", pAd->CommonCfg.PhyMode));
 
 #ifdef LED_CONTROL_SUPPORT
     /* Send LED Setting to MCU */
@@ -407,7 +409,7 @@ int rt28xx_init(VOID *pAdSrc, PSTRING pDefaultMac, PSTRING pHostName)
 
 #ifdef RTMP_TEMPERATURE_COMPENSATION
     /* Temperature compensation, initialize the lookup table */
-    DBGPRINT(RT_DEBUG_OFF, ("bAutoTxAgcG = %d\n", pAd->bAutoTxAgcG));
+    DBGPRINT(RT_DEBUG_INFO, ("bAutoTxAgcG = %d\n", pAd->bAutoTxAgcG));
 
     if(pAd->chipCap.bTempCompTxALC && pAd->bAutoTxAgcG)
         InitLookupTable(pAd);
@@ -426,7 +428,7 @@ int rt28xx_init(VOID *pAdSrc, PSTRING pDefaultMac, PSTRING pHostName)
     }
 
 #ifdef DOT11_N_SUPPORT
-    DBGPRINT(RT_DEBUG_OFF, ("MCS Set = %02x %02x %02x %02x %02x\n", pAd->CommonCfg.HtCapability.MCSSet[0],
+    DBGPRINT(RT_DEBUG_TRACE, ("MCS Set = %02x %02x %02x %02x %02x\n", pAd->CommonCfg.HtCapability.MCSSet[0],
                             pAd->CommonCfg.HtCapability.MCSSet[1], pAd->CommonCfg.HtCapability.MCSSet[2],
                             pAd->CommonCfg.HtCapability.MCSSet[3], pAd->CommonCfg.HtCapability.MCSSet[4]));
 #endif /* DOT11_N_SUPPORT */
@@ -583,7 +585,7 @@ int rt28xx_init(VOID *pAdSrc, PSTRING pDefaultMac, PSTRING pHostName)
 
 #endif /* RT3290 */
 
-    DBGPRINT_S(Status, ("<==== rt28xx_init, Status=%x\n", Status));
+    DBGPRINT(RT_DEBUG_INFO, ("rt28xx_init() finished with status=%x\n", Status));
 
     return TRUE;
 
@@ -685,7 +687,7 @@ VOID RTMPDrvSTAOpen(
 #endif /* MT76x0 */
 
     RTMP_IO_READ32(pAd, 0x1300, &reg);  /* clear garbage interrupts*/
-    DBGPRINT(RT_DEBUG_OFF, ("0x1300 = %08x\n", reg));
+    DBGPRINT(RT_DEBUG_TRACE, ("Reg[0x1300] = %08x\n", reg));
 
 
 
@@ -742,7 +744,7 @@ VOID RTMPDrvSTAClose(
         RTMPPCIeLinkCtrlValueRestore(pAd, RESTORE_CLOSE);
 #endif /* PCIE_PS_SUPPORT */
 
-        /* If dirver doesn't wake up firmware here,*/
+        /* If driver doesn't wake up firmware here,*/
         /* NICLoadFirmware will hang forever when interface is up again.*/
         if(OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_DOZE))
         {

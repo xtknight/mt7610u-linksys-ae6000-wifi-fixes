@@ -47,8 +47,8 @@ INT RtmpChipOpsEepromHook(RTMP_ADAPTER *pAd, INT infType)
         pChipOps->eeinit = eFuse_init;
         pChipOps->eeread = rtmp_ee_efuse_read16;
         pChipOps->eewrite = rtmp_ee_efuse_write16;
-        DBGPRINT(RT_DEBUG_OFF, ("NVM is EFUSE\n"));
-        DBGPRINT(RT_DEBUG_TRACE, ("Efuse Size=0x%x [Range:%x-%x] \n",
+        DBGPRINT(RT_DEBUG_ERROR, ("mt7610u: NVM is EFUSE\n"));
+        DBGPRINT(RT_DEBUG_TRACE, ("Efuse Size=0x%x [Range:%x-%x]\n",
                                   pAd->chipCap.EFUSE_USAGE_MAP_SIZE,
                                   pAd->chipCap.EFUSE_USAGE_MAP_START,
                                   pAd->chipCap.EFUSE_USAGE_MAP_END));
@@ -57,8 +57,8 @@ INT RtmpChipOpsEepromHook(RTMP_ADAPTER *pAd, INT infType)
     }
     else
     {
-        pAd->bFroceEEPROMBuffer = FALSE;
-        DBGPRINT(RT_DEBUG_OFF, ("NVM is EEPROM\n"));
+        pAd->bForceEEPROMBuffer = FALSE;
+        DBGPRINT(RT_DEBUG_ERROR, ("mt7610u: NVM is EEPROM\n"));
     }
 
 #endif /* RTMP_EFUSE_SUPPORT */
@@ -73,13 +73,13 @@ INT RtmpChipOpsEepromHook(RTMP_ADAPTER *pAd, INT infType)
         pChipOps->eeinit = NULL;
         pChipOps->eeread = RTUSBReadEEPROM16;
         pChipOps->eewrite = RTUSBWriteEEPROM16;
-        DBGPRINT(RT_DEBUG_OFF, ("pChipOps->eeread = RTUSBReadEEPROM16\n"));
-        DBGPRINT(RT_DEBUG_OFF, ("pChipOps->eewrite = RTUSBWriteEEPROM16\n"));
+        DBGPRINT(RT_DEBUG_TRACE, ("pChipOps->eeread = RTUSBReadEEPROM16\n"));
+        DBGPRINT(RT_DEBUG_TRACE, ("pChipOps->eewrite = RTUSBWriteEEPROM16\n"));
         break;
 #endif /* RTMP_USB_SUPPORT */
 
     default:
-        DBGPRINT(RT_DEBUG_ERROR, ("RtmpChipOpsEepromHook() failed!\n"));
+        DBGPRINT(RT_DEBUG_ERROR, ("mt7610u: RtmpChipOpsEepromHook() failed!\n"));
         break;
     }
 

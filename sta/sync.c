@@ -206,7 +206,7 @@ VOID MlmeForceJoinReqAction(
         return;
     }
     else
-        DBGPRINT(RT_DEBUG_TRACE, ("MlmeJoinReqAction: autopm_resume do nothing \n"));
+        DBGPRINT(RT_DEBUG_TRACE, ("MlmeJoinReqAction: autopm_resume do nothing\n"));
 
 
 #endif /* USB_SUPPORT_SELECTIVE_SUSPEND */
@@ -517,7 +517,7 @@ VOID MlmeScanReqAction(
             AsicSendCommandToMcu(pAd, 0x31, PowerWakeCID, 0x00, 0x02, FALSE);
             AsicCheckCommanOk(pAd, PowerWakeCID);
             RTMP_CLEAR_FLAG(pAd, fRTMP_ADAPTER_IDLE_RADIO_OFF);
-            DBGPRINT(RT_DEBUG_TRACE, ("PSM - Issue Wake up command \n"));
+            DBGPRINT(RT_DEBUG_TRACE, ("PSM - Issue Wake up command\n"));
         }
         else
         {
@@ -667,7 +667,7 @@ VOID MlmeJoinReqAction(
         return;
     }
     else
-        DBGPRINT(RT_DEBUG_TRACE, ("MlmeJoinReqAction: autopm_resume do nothing \n"));
+        DBGPRINT(RT_DEBUG_TRACE, ("MlmeJoinReqAction: autopm_resume do nothing\n"));
 
 
 #endif /* USB_SUPPORT_SELECTIVE_SUSPEND */
@@ -902,7 +902,7 @@ VOID MlmeStartReqAction(
         RTMPCancelTimer(&pAd->MlmeAux.BeaconTimer, &TimerCancelled);
 
         /* Start a new IBSS. All IBSS parameters are decided now */
-        DBGPRINT(RT_DEBUG_TRACE, ("MlmeStartReqAction - Start a new IBSS. All IBSS parameters are decided now.... \n"));
+        DBGPRINT(RT_DEBUG_TRACE, ("MlmeStartReqAction - Start a new IBSS. All IBSS parameters are decided now....\n"));
         pAd->MlmeAux.BssType = BSS_ADHOC;
         NdisMoveMemory(pAd->MlmeAux.Ssid, Ssid, SsidLen);
         pAd->MlmeAux.SsidLen = SsidLen;
@@ -910,7 +910,7 @@ VOID MlmeStartReqAction(
         {
             /* generate a radom number as BSSID */
             MacAddrRandomBssid(pAd, pAd->MlmeAux.Bssid);
-            DBGPRINT(RT_DEBUG_TRACE, ("MlmeStartReqAction - generate a radom number as BSSID \n"));
+            DBGPRINT(RT_DEBUG_TRACE, ("MlmeStartReqAction - generate a radom number as BSSID\n"));
         }
 
         Privacy = (pAd->StaCfg.WepStatus == Ndis802_11Encryption1Enabled) ||
@@ -1739,7 +1739,7 @@ VOID PeerBeaconAtJoinAction(
                                                            &ie_list->AddHtInfo,
                                                            &ie_list->HtCapability);
 
-                    DBGPRINT(RT_DEBUG_OFF, ("%s(): HT-CtrlChannel=%d, CentralChannel=>%d\n",
+                    DBGPRINT(RT_DEBUG_INFO, ("%s(): HT-CtrlChannel=%d, CentralChannel=>%d\n",
                                             __FUNCTION__, ie_list->AddHtInfo.ControlChan, CentralChannel));
                 }
 
@@ -1765,7 +1765,7 @@ VOID PeerBeaconAtJoinAction(
                         pAd->StaActive.SupportedPhyInfo.vht_bw = VHT_BW_80;
                     }
 
-                    DBGPRINT(RT_DEBUG_OFF, ("%s(): VHT->center_freq_1=%d, CentralChannel=>%d, vht_cent_ch=%d\n",
+                    DBGPRINT(RT_DEBUG_INFO, ("%s(): VHT->center_freq_1=%d, CentralChannel=>%d, vht_cent_ch=%d\n",
                                             __FUNCTION__, vht_op->center_freq_1, CentralChannel, pAd->CommonCfg.vht_cent_ch));
                 }
 
@@ -1791,7 +1791,7 @@ VOID PeerBeaconAtJoinAction(
 
             pAd->hw_cfg.cent_ch = CentralChannel;
             pAd->MlmeAux.CentralChannel = CentralChannel;
-            DBGPRINT(RT_DEBUG_OFF, ("%s(): Set CentralChannel=%d\n", __FUNCTION__, pAd->MlmeAux.CentralChannel));
+            DBGPRINT(RT_DEBUG_INFO, ("%s(): Set CentralChannel=%d\n", __FUNCTION__, pAd->MlmeAux.CentralChannel));
 
             RTMPUpdateMlmeRate(pAd);
 
@@ -2853,7 +2853,7 @@ VOID InvalidStateWhenScan(
     if(Elem->MsgType != MT2_MLME_SCAN_REQ)
         DBGPRINT(RT_DEBUG_TRACE, ("AYNC - InvalidStateWhenScan(state=%ld). Reset SYNC machine\n", pAd->Mlme.SyncMachine.CurrState));
     else
-        DBGPRINT(RT_DEBUG_TRACE, ("AYNC - Already in scanning, do nothing here.(state=%ld). \n", pAd->Mlme.SyncMachine.CurrState));
+        DBGPRINT(RT_DEBUG_TRACE, ("AYNC - Already in scanning, do nothing here.(state=%ld).\n", pAd->Mlme.SyncMachine.CurrState));
 
     if(Elem->MsgType != MT2_MLME_SCAN_REQ)
     {
@@ -3019,14 +3019,14 @@ VOID BuildEffectedChannelList(
     }
     else
     {
-        DBGPRINT(RT_DEBUG_TRACE, ("LinkUP 20MHz . No Effected Channel \n"));
+        DBGPRINT(RT_DEBUG_TRACE, ("LinkUP 20MHz . No Effected Channel\n"));
         /* Now operating in 20MHz, doesn't find 40MHz effected channels */
         return;
     }
 
     DeleteEffectedChannelList(pAd);
 
-    DBGPRINT(RT_DEBUG_TRACE, ("BuildEffectedChannelList!LowerChannel ~ UpperChannel; %d ~ %d \n", LowerChannel, UpperChannel));
+    DBGPRINT(RT_DEBUG_TRACE, ("BuildEffectedChannelList!LowerChannel ~ UpperChannel; %d ~ %d\n", LowerChannel, UpperChannel));
 
     /* Find all channels that are below lower channel.. */
     if(LowerChannel > 1)
@@ -3136,10 +3136,10 @@ VOID CntlChannelWidth(
     INT32 ext_ch;
 
 
-    DBGPRINT(RT_DEBUG_TRACE, ("%s: PrimaryChannel[%d] \n",__FUNCTION__,prim_ch));
-    DBGPRINT(RT_DEBUG_TRACE, ("%s: CentralChannel[%d] \n",__FUNCTION__,cent_ch));
-    DBGPRINT(RT_DEBUG_TRACE, ("%s: ChannelWidth[%d] \n",__FUNCTION__,ch_bw));
-    DBGPRINT(RT_DEBUG_TRACE, ("%s: SecondaryChannelOffset[%d] \n",__FUNCTION__,sec_ch_offset));
+    DBGPRINT(RT_DEBUG_TRACE, ("%s: PrimaryChannel[%d]\n",__FUNCTION__,prim_ch));
+    DBGPRINT(RT_DEBUG_TRACE, ("%s: CentralChannel[%d]\n",__FUNCTION__,cent_ch));
+    DBGPRINT(RT_DEBUG_TRACE, ("%s: ChannelWidth[%d]\n",__FUNCTION__,ch_bw));
+    DBGPRINT(RT_DEBUG_TRACE, ("%s: SecondaryChannelOffset[%d]\n",__FUNCTION__,sec_ch_offset));
 
 #ifdef DOT11_N_SUPPORT
 
@@ -3182,7 +3182,7 @@ VOID CntlChannelWidth(
         RT28xx_ch_tunning(pAd, rf_bw);
 #endif /* RT28xx */
 
-        DBGPRINT(RT_DEBUG_TRACE, ("!!!40MHz Lower !!! Control Channel at Below. Central = %d \n", pAd->CommonCfg.CentralChannel));
+        DBGPRINT(RT_DEBUG_TRACE, ("!!!40MHz Lower !!! Control Channel at Below. Central = %d\n", pAd->CommonCfg.CentralChannel));
 
         rtmp_bbp_get_agc(pAd, &pAd->BbpTuning.R66CurrentValue, RX_CHAIN_0);
     }

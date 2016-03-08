@@ -232,7 +232,7 @@ VOID	RTMPFreeTxRxRingMemory(
     PTX_CONTEXT			pPsPollContext = &pAd->PsPollContext;
     PCMD_RSP_CONTEXT pCmdRspEventContext = &pAd->CmdRspEventContext;
 
-    DBGPRINT(RT_DEBUG_ERROR, ("---> RTMPFreeTxRxRingMemory\n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("RTMPFreeTxRxRingMemory()\n"));
 
     /* Free all resources for the RECEIVE buffer queue.*/
     for(i=0; i<(RX_RING_SIZE); i++)
@@ -316,7 +316,7 @@ VOID	RTMPFreeTxRxRingMemory(
         RELEASE_NDIS_PACKET(pAd, pAd->FragFrame.pFragPacket, NDIS_STATUS_SUCCESS);
 
 
-    DBGPRINT(RT_DEBUG_ERROR, ("<--- RTMPFreeTxRxRingMemory\n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("RTMPFreeTxRxRingMemory() finished\n"));
 }
 
 
@@ -481,7 +481,7 @@ NDIS_STATUS	NICInitTransmit(
 
             if(pMLMEContext->pUrb == NULL)
             {
-                DBGPRINT(RT_DEBUG_ERROR, ("<-- ERROR in Alloc TX MLMEContext[%d] urb!! \n", i));
+                DBGPRINT(RT_DEBUG_ERROR, ("<-- ERROR in Alloc TX MLMEContext[%d] urb!!\n", i));
                 Status = NDIS_STATUS_RESOURCES;
                 goto err;
             }
@@ -590,7 +590,7 @@ NDIS_STATUS	RTMPAllocTxRxRingMemory(
     PCMD_RSP_CONTEXT pCmdRspEventContext = &(pAd->CmdRspEventContext);
     INT i, acidx;
 
-    DBGPRINT(RT_DEBUG_TRACE, ("--> RTMPAllocTxRxRingMemory\n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("RTMPAllocTxRxRingMemory()\n"));
 
     do
     {
@@ -705,7 +705,7 @@ NDIS_STATUS	RTMPAllocTxRxRingMemory(
     }
     while(FALSE);
 
-    DBGPRINT_S(Status, ("<-- RTMPAllocTxRxRingMemory, Status=%x\n", Status));
+    DBGPRINT(RT_DEBUG_TRACE, ("RTMPAllocTxRxRingMemory() finished with status=%x\n", Status));
     return Status;
 
 err:
@@ -977,7 +977,7 @@ NDIS_STATUS	NICInitTransmit(
 
             if(pMLMEContext->pUrb == NULL)
             {
-                DBGPRINT(RT_DEBUG_ERROR, ("<-- ERROR in Alloc TX MLMEContext[%d] urb!! \n", i));
+                DBGPRINT(RT_DEBUG_ERROR, ("<-- ERROR in Alloc TX MLMEContext[%d] urb!!\n", i));
                 Status = NDIS_STATUS_RESOURCES;
                 goto err;
             }
@@ -1135,7 +1135,7 @@ NDIS_STATUS	RTMPAllocTxRxRingMemory(
     INT				num;
 
 
-    DBGPRINT(RT_DEBUG_TRACE, ("--> RTMPAllocTxRxRingMemory\n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("RTMPAllocTxRxRingMemory()\n"));
 
 
     do
@@ -1192,7 +1192,7 @@ NDIS_STATUS	RTMPAllocTxRxRingMemory(
     }
     while(FALSE);
 
-    DBGPRINT_S(Status, ("<-- RTMPAllocTxRxRingMemory, Status=%x\n", Status));
+    DBGPRINT(RT_DEBUG_TRACE, ("RTMPAllocTxRxRingMemory() finished with status=%x\n", Status));
     return Status;
 }
 
@@ -1222,7 +1222,7 @@ VOID	RTMPFreeTxRxRingMemory(
     PCMD_RSP_CONTEXT pCmdRspEventContext = &(pAd->CmdRspEventContext);
 
 
-    DBGPRINT(RT_DEBUG_ERROR, ("---> RTMPFreeTxRxRingMemory\n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("RTMPFreeTxRxRingMemory()\n"));
 
 
     /* Free all resources for the RxRing buffer queue.*/
@@ -1332,7 +1332,7 @@ VOID	RTMPFreeTxRxRingMemory(
         NdisFreeSpinLock(&pAd->TxContextQueueLock[i]);
     }
 
-    DBGPRINT(RT_DEBUG_ERROR, ("<--- RTMPFreeTxRxRingMemory\n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("RTMPFreeTxRxRingMemory() finished\n"));
 }
 
 #endif /* RESOURCE_PRE_ALLOC */
@@ -2025,9 +2025,9 @@ VOID RT28xxUsbAsicWOWEnable(
     Value &= 0x00FFFFFF;
     Value |= (pAd->WOW_Cfg.nHoldTime << 24);
     RTMP_IO_WRITE32(pAd, GPIO_HOLDTIME_OFFSET, Value);
-    DBGPRINT(RT_DEBUG_OFF, ("Send WOW enable cmd (%d/%d/%d)\n", pAd->WOW_Cfg.nDelay, pAd->WOW_Cfg.nSelectedGPIO, pAd->WOW_Cfg.nHoldTime));
+    DBGPRINT(RT_DEBUG_TRACE, ("Send WOW enable cmd (%d/%d/%d)\n", pAd->WOW_Cfg.nDelay, pAd->WOW_Cfg.nSelectedGPIO, pAd->WOW_Cfg.nHoldTime));
     RTMP_IO_READ32(pAd, GPIO_HOLDTIME_OFFSET, &Value);
-    DBGPRINT(RT_DEBUG_OFF, ("Hold time: 0x7020 ==> %x\n", Value));
+    DBGPRINT(RT_DEBUG_TRACE, ("Hold time: 0x7020 ==> %x\n", Value));
 }
 
 VOID RT28xxUsbAsicWOWDisable(
@@ -2041,7 +2041,7 @@ VOID RT28xxUsbAsicWOWDisable(
     Value &= ~0x2200;
     RTMP_IO_WRITE32(pAd, PBF_CFG, Value);
     //AsicSendCommandToMcu(pAd, 0x34, 0xff, 0x00, 0x00, FALSE);   /* send WOW disable command to MCU*/
-    DBGPRINT(RT_DEBUG_OFF, ("MCU back to normal mode (%d/%d)\n", pAd->WOW_Cfg.nDelay, pAd->WOW_Cfg.nSelectedGPIO));
+    DBGPRINT(RT_DEBUG_TRACE, ("MCU back to normal mode (%d/%d)\n", pAd->WOW_Cfg.nDelay, pAd->WOW_Cfg.nSelectedGPIO));
 }
 #endif /* WOW_SUPPORT */
 #endif /* RTMP_MAC_USB */

@@ -84,7 +84,7 @@
 /* */
 /*  Debug information verbosity: lower values indicate higher urgency */
 /* */
-#define RT_DEBUG_OFF        0
+#define RT_DEBUG_OFF        0       // this is no longer used
 #define RT_DEBUG_ERROR      1
 #define RT_DEBUG_WARN       2
 #define RT_DEBUG_TRACE      3

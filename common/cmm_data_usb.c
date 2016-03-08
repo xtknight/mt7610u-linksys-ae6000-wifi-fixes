@@ -1063,7 +1063,7 @@ int RtmpUSBMgmtKickOut(
     //+++Add by shiang for debug
     if(0)
     {
-        DBGPRINT(RT_DEBUG_OFF, ("-->%s():shiang-6590, QueIdx=%d, SrcBufLen=%d\n", __FUNCTION__, QueIdx, SrcBufLen));
+        DBGPRINT(RT_DEBUG_TRACE, ("-->%s():shiang-6590, QueIdx=%d, SrcBufLen=%d\n", __FUNCTION__, QueIdx, SrcBufLen));
         dump_txinfo(pAd, pTxInfo);
         dumpTxWI(pAd, (TXWI_STRUC *)(pSrcBufVA + TXINFO_SIZE));
     }

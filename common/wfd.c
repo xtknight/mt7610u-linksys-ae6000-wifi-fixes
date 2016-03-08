@@ -823,7 +823,7 @@ VOID WfdParseSubElmt(
                 }
 
                 default:
-                    DBGPRINT(RT_DEBUG_ERROR, (" SUBID_WFD_ unknown  Eid = %x \n", pWfdEid->Eid));
+                    DBGPRINT(RT_DEBUG_ERROR, (" SUBID_WFD_ unknown  Eid = %x\n", pWfdEid->Eid));
                     hex_dump("WfdParseSubElement::", Msg, MsgLen);
                     break;
                 }

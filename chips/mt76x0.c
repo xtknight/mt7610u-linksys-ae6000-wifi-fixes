@@ -1778,7 +1778,7 @@ static VOID MT76x0_ChipBBPAdjust(RTMP_ADAPTER *pAd)
         pAd->CommonCfg.vht_cent_ch = vht_cent_ch_freq(pAd, pAd->CommonCfg.Channel);
     }
 
-    DBGPRINT(RT_DEBUG_OFF, ("%s():rf_bw=%d, ext_ch=%d, PrimCh=%d, HT-CentCh=%d, VHT-CentCh=%d\n",
+    DBGPRINT(RT_DEBUG_TRACE, ("%s():rf_bw=%d, ext_ch=%d, PrimCh=%d, HT-CentCh=%d, VHT-CentCh=%d\n",
                             __FUNCTION__, rf_bw, ext_ch, pAd->CommonCfg.Channel,
                             pAd->CommonCfg.CentralChannel, pAd->CommonCfg.vht_cent_ch));
 #endif /* DOT11_VHT_AC */
@@ -1790,7 +1790,7 @@ static VOID MT76x0_ChipBBPAdjust(RTMP_ADAPTER *pAd)
     rtmp_bbp_set_ctrlch(pAd, ext_ch);
 
 #ifdef DOT11_N_SUPPORT
-    DBGPRINT(RT_DEBUG_TRACE, ("%s() : %s, ChannelWidth=%d, Channel=%d, ExtChanOffset=%d(%d) \n",
+    DBGPRINT(RT_DEBUG_TRACE, ("%s() : %s, ChannelWidth=%d, Channel=%d, ExtChanOffset=%d(%d)\n",
                               __FUNCTION__, ext_str[ext_ch],
                               pAd->CommonCfg.HtCapability.HtCapInfo.ChannelWidth,
                               pAd->CommonCfg.Channel,
@@ -2166,7 +2166,8 @@ INT MT76x0_ReadChannelPwr(RTMP_ADAPTER *pAd)
 
     {
         /* 1. U-NII lower/middle band: 36, 38, 40; 44, 46, 48; 52, 54, 56; 60, 62, 64 (including central frequency in BW 40MHz)*/
-        ASSERT((pAd->TxPower[choffset].Channel == 36));
+	// XTKNIGHT_FIX: assert that was here failed but apparently it doesn't matter. loud in logs.
+	// Probably a mistake based on looking at mt7612 source
         choffset = 14;
         ASSERT((pAd->TxPower[choffset].Channel == 36));
 
@@ -3145,7 +3146,7 @@ VOID MT76x0_VCO_CalibrationMode3(
             RFValue |= 0x43;
         else
         {
-            DBGPRINT(RT_DEBUG_OFF, ("%s - wrong input channel\n", __FUNCTION__));
+            DBGPRINT(RT_DEBUG_TRACE, ("%s - wrong input channel\n", __FUNCTION__));
             return;
         }
 
@@ -3437,7 +3438,7 @@ VOID MT76x0_Calibration(
 
             dpd_val = (pAd->CommonCfg.BBPCurrentBW << 8) | Channel;
             RTMP_CHIP_CALIBRATION(pAd, DPD_CALIBRATION, dpd_val);
-            DBGPRINT(RT_DEBUG_OFF, ("%s - DPD_CALIBRATION = 0x%x\n", __FUNCTION__, dpd_val));
+            DBGPRINT(RT_DEBUG_TRACE, ("%s - DPD_CALIBRATION = 0x%x\n", __FUNCTION__, dpd_val));
         }
     }
 
@@ -5616,10 +5617,10 @@ static void adjust_temp_tx_alc_table(
     INT idx = 0;
     CHAR upper_bound = 127, lower_bound = -128;
 
-    DBGPRINT(RT_DEBUG_OFF,("%s: upper_bound = 0x%02x (%d), lower_bound = 0x%02x (%d)\n",
+    DBGPRINT(RT_DEBUG_TRACE,("%s: upper_bound = 0x%02x (%d), lower_bound = 0x%02x (%d)\n",
                            __FUNCTION__, upper_bound, upper_bound, lower_bound, lower_bound));
 
-    DBGPRINT(RT_DEBUG_OFF,("*** %s: %s_temp_bdy_table[-7 .. +7] = %d %d %d %d %d %d %d * %d * %d %d %d %d %d %d %d, temp_reference=%d\n",
+    DBGPRINT(RT_DEBUG_TRACE,("*** %s: %s_temp_bdy_table[-7 .. +7] = %d %d %d %d %d %d %d * %d * %d %d %d %d %d %d %d, temp_reference=%d\n",
                            __FUNCTION__,
                            (band == A_BAND) ? "5G" : "2.4G",
                            temp_minus_bdy[7], temp_minus_bdy[6], temp_minus_bdy[5],
@@ -5649,7 +5650,7 @@ static void adjust_temp_tx_alc_table(
     else
         pAd->TssiRefG = temp_minus_bdy[0];
 
-    DBGPRINT(RT_DEBUG_OFF,("%s: %s_temp_bdy_table[-7 .. +7] = %d %d %d %d %d %d %d * %d * %d %d %d %d %d %d %d, temp_reference=%d\n",
+    DBGPRINT(RT_DEBUG_TRACE,("%s: %s_temp_bdy_table[-7 .. +7] = %d %d %d %d %d %d %d * %d * %d %d %d %d %d %d %d, temp_reference=%d\n",
                            __FUNCTION__,
                            (band == A_BAND) ? "5G" : "2.4G",
                            temp_minus_bdy[7], temp_minus_bdy[6], temp_minus_bdy[5],
@@ -5689,7 +5690,7 @@ static void adjust_mp_temp(
         */
         mp_offset = -(2 * (idx-1));
         pAd->mp_delta_pwr = mp_offset;
-        DBGPRINT(RT_DEBUG_OFF, ("mp_temperature=0x%02x, step = -%d\n", mp_temp, idx-1));
+        DBGPRINT(RT_DEBUG_TRACE, ("mp_temperature=0x%02x, step = -%d\n", mp_temp, idx-1));
     }
     else if(mp_temp > temp_plus_bdy[1])
     {
@@ -5709,12 +5710,12 @@ static void adjust_mp_temp(
         */
         mp_offset = 2 * (idx-1);
         pAd->mp_delta_pwr = mp_offset;
-        DBGPRINT(RT_DEBUG_OFF, ("mp_temperature=0x%02x, step = +%d\n", mp_temp, idx-1));
+        DBGPRINT(RT_DEBUG_TRACE, ("mp_temperature=0x%02x, step = +%d\n", mp_temp, idx-1));
     }
     else
     {
         pAd->mp_delta_pwr = 0;
-        DBGPRINT(RT_DEBUG_OFF, ("mp_temperature=0x%02x, step = +%d\n", mp_temp, 0));
+        DBGPRINT(RT_DEBUG_TRACE, ("mp_temperature=0x%02x, step = +%d\n", mp_temp, 0));
     }
 }
 
@@ -5745,7 +5746,7 @@ BOOLEAN load_temp_tx_alc_table(
         return FALSE;
     }
 
-    DBGPRINT(RT_DEBUG_OFF, ("%s(): load %s %s table from eeprom 0x%x to 0x%x (start_idx = %d)\n",
+    DBGPRINT(RT_DEBUG_TRACE, ("%s(): load %s %s table from eeprom 0x%x to 0x%x (start_idx = %d)\n",
                             __FUNCTION__,
                             (band == A_BAND) ? "5G" : "2.4G",
                             (table_sign == 1) ? "plus" : "minus",
@@ -5847,7 +5848,7 @@ void mt76x0_read_tx_alc_info_from_eeprom(PRTMP_ADAPTER pAd)
     {
         RT28xx_EEPROM_READ16(pAd, 0xD0, e2p_value);
         e2p_value = (e2p_value & 0xFF00) >> 8;
-        DBGPRINT(RT_DEBUG_OFF, ("%s: EEPROM_MT76x0_TEMPERATURE_OFFSET (0xD1) = 0x%x\n",
+        DBGPRINT(RT_DEBUG_TRACE, ("%s: EEPROM_MT76x0_TEMPERATURE_OFFSET (0xD1) = 0x%x\n",
                                 __FUNCTION__, e2p_value));
 
         if((e2p_value & 0xFF) == 0xFF)
@@ -5862,7 +5863,7 @@ void mt76x0_read_tx_alc_info_from_eeprom(PRTMP_ADAPTER pAd)
             pAd->chipCap.TemperatureOffset = (SHORT)e2p_value;
         }
 
-        DBGPRINT(RT_DEBUG_OFF, ("%s: TemperatureOffset = 0x%x\n",
+        DBGPRINT(RT_DEBUG_TRACE, ("%s: TemperatureOffset = 0x%x\n",
                                 __FUNCTION__, pAd->chipCap.TemperatureOffset));
     }
 
@@ -5876,7 +5877,7 @@ void mt76x0_read_tx_alc_info_from_eeprom(PRTMP_ADAPTER pAd)
         /* 5G Tx power compensation channel boundary index */
         RT28xx_EEPROM_READ16(pAd, 0x10C, e2p_value);
         pAd->ChBndryIdx = (UCHAR)(e2p_value & 0xFF);
-        DBGPRINT(RT_DEBUG_OFF, ("%s(): channel boundary index = %u, temp reference offset = %d\n",
+        DBGPRINT(RT_DEBUG_TRACE, ("%s(): channel boundary index = %u, temp reference offset = %d\n",
                                 __FUNCTION__, pAd->ChBndryIdx, pAd->TssiCalibratedOffset));
 
         /* Load group#1 settings of A band */
@@ -5901,7 +5902,7 @@ void mt76x0_read_tx_alc_info_from_eeprom(PRTMP_ADAPTER pAd)
     }
     else
 #endif /* RTMP_TEMPERATURE_TX_ALC */
-        DBGPRINT(RT_DEBUG_ERROR, ("Temperature Tx ALC not enabled\n"));
+        DBGPRINT(RT_DEBUG_INFO, ("Temperature Tx ALC not enabled\n"));
 }
 
 

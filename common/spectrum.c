@@ -885,7 +885,7 @@ VOID InsertChannelRepIE(
     {
         if(RegulatoryClass >= JP_REGULATORY_INFO_SIZE)
         {
-            DBGPRINT(RT_DEBUG_ERROR, ("%s: JP Unknow Requlatory class (%d)\n",
+            DBGPRINT(RT_DEBUG_ERROR, ("%s: JP Unknown Requlatory class (%d)\n",
                                       __FUNCTION__, RegulatoryClass));
             return;
         }
@@ -894,7 +894,7 @@ VOID InsertChannelRepIE(
     }
     else
     {
-        DBGPRINT(RT_DEBUG_ERROR, ("%s: Unknow Country (%s)\n",
+        DBGPRINT(RT_DEBUG_ERROR, ("%s: Unknown Country (%s)\n",
                                   __FUNCTION__, pCountry));
         return;
     }
@@ -1206,7 +1206,7 @@ VOID EnqueueMeasurementRep(
 
     if(NStatus != NDIS_STATUS_SUCCESS)
     {
-        DBGPRINT(RT_DEBUG_TRACE, ("%s() allocate memory failed \n", __FUNCTION__));
+        DBGPRINT(RT_DEBUG_TRACE, ("%s() allocate memory failed\n", __FUNCTION__));
         return;
     }
 
@@ -1262,7 +1262,7 @@ VOID EnqueueTPCReq(
 
     if(NStatus != NDIS_STATUS_SUCCESS)
     {
-        DBGPRINT(RT_DEBUG_TRACE, ("%s() allocate memory failed \n", __FUNCTION__));
+        DBGPRINT(RT_DEBUG_TRACE, ("%s() allocate memory failed\n", __FUNCTION__));
         return;
     }
 
@@ -1316,7 +1316,7 @@ VOID EnqueueTPCRep(
 
     if(NStatus != NDIS_STATUS_SUCCESS)
     {
-        DBGPRINT(RT_DEBUG_TRACE, ("%s() allocate memory failed \n", __FUNCTION__));
+        DBGPRINT(RT_DEBUG_TRACE, ("%s() allocate memory failed\n", __FUNCTION__));
         return;
     }
 
@@ -1416,7 +1416,7 @@ VOID EnqueueChSwAnn(
 
     if(NStatus != NDIS_STATUS_SUCCESS)
     {
-        DBGPRINT(RT_DEBUG_TRACE, ("%s() allocate memory failed \n", __FUNCTION__));
+        DBGPRINT(RT_DEBUG_TRACE, ("%s() allocate memory failed\n", __FUNCTION__));
         return;
     }
 
@@ -2269,7 +2269,7 @@ INT Set_MeasureReq_Proc(
 
     if(NStatus != NDIS_STATUS_SUCCESS)
     {
-        DBGPRINT(RT_DEBUG_TRACE, ("%s() allocate memory failed \n", __FUNCTION__));
+        DBGPRINT(RT_DEBUG_TRACE, ("%s() allocate memory failed\n", __FUNCTION__));
         goto END_OF_MEASURE_REQ;
     }
 

@@ -752,8 +752,8 @@ BOOLEAN CFG80211DRV_Connect(
     }
 
 
-    CFG80211DBG(RT_DEBUG_ERROR,
-                ("mt7610u: EncrypType = %d\n", pAd->StaCfg.WepStatus));
+    CFG80211DBG(RT_DEBUG_INFO,
+                ("mt7610u: Encryption type = %d\n", pAd->StaCfg.WepStatus));
 
 
     /* set channel: STATION will auto-scan */
@@ -1073,7 +1073,7 @@ VOID CFG80211_RegRuleApply(
                     else
                         DfsType = ChRegion[IdReg].DfsType;
 
-                    CFG80211DBG(RT_DEBUG_ERROR,
+                    CFG80211DBG(RT_DEBUG_INFO,
                                 ("mt7610u: crda: find region %c%c, DFS Type %d\n",
                                  pAlpha2[0], pAlpha2[1], DfsType));
                     break;
@@ -1095,11 +1095,11 @@ VOID CFG80211_RegRuleApply(
 
         if(IdBand == 0)
         {
-            CFG80211DBG(RT_DEBUG_ERROR, ("mt7610u: crda: reset chan/power for 2.4GHz\n"));
+            CFG80211DBG(RT_DEBUG_INFO, ("mt7610u: crda: reset chan/power for 2.4GHz\n"));
         }
         else
         {
-            CFG80211DBG(RT_DEBUG_ERROR, ("mt7610u: crda: reset chan/power for 5GHz\n"));
+            CFG80211DBG(RT_DEBUG_INFO, ("mt7610u: crda: reset chan/power for 5GHz\n"));
         } /* End of if */
 
         ChanNum = CFG80211OS_ChanNumGet(CFG80211CB, pWiphy, IdBand);
@@ -1157,7 +1157,7 @@ VOID CFG80211_RegRuleApply(
                     /* re-set DFS info. */
                     pAd->CommonCfg.RDDurRegion = DfsType;
 
-                    CFG80211DBG(RT_DEBUG_ERROR,
+                    CFG80211DBG(RT_DEBUG_INFO,
                                 ("Chan %03d:\tpower %d dBm, "
                                  "DFS %d, DFS Type %d\n",
                                  ChanId, Power,
@@ -1175,7 +1175,7 @@ VOID CFG80211_RegRuleApply(
     pAd->ChannelListNum = RecId;
     RTMP_IRQ_UNLOCK(&pAd->irq_lock, IrqFlags);
 
-    CFG80211DBG(RT_DEBUG_ERROR, ("mt7610u: crda: Number of channels = %d\n", RecId));
+    CFG80211DBG(RT_DEBUG_INFO, ("mt7610u: crda: number of channels = %d\n", RecId));
 } /* End of CFG80211_RegRuleApply */
 
 
@@ -1370,7 +1370,7 @@ BOOLEAN CFG80211_SupBandReInit(
     CFG80211_BAND BandInfo;
 
 
-    CFG80211DBG(RT_DEBUG_ERROR, ("mt7610u: re-init bands...\n"));
+    CFG80211DBG(RT_DEBUG_INFO, ("mt7610u: re-initialize bands...\n"));
 
     /* re-init bands */
     NdisZeroMemory(&BandInfo, sizeof(BandInfo));
@@ -1400,7 +1400,7 @@ VOID CFG80211_LostApInform(
     PRTMP_ADAPTER pAd = (PRTMP_ADAPTER)pAdCB;
     CFG80211_CB *p80211CB = pAd->pCfg80211_CB;
 
-    DBGPRINT(RT_DEBUG_TRACE, ("mt7610u: CFG80211_LostApInform ==> \n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("mt7610u: CFG80211_LostApInform ==>\n"));
     pAd->StaCfg.bAutoReconnect = FALSE;
 
     // TODO
@@ -1417,7 +1417,7 @@ VOID CFG80211_LostApInform(
 
     // Can't find a good way to determine if we're connected to AP or not.
     // Just call disconnected() no matter what.
-    DBGPRINT(RT_DEBUG_TRACE, ("mt7610u: CFG80211_LostApInform(): calling cfg80211_disconnected() \n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("mt7610u: CFG80211_LostApInform(): calling cfg80211_disconnected()\n"));
     // This is important to prevent the WARN_ON() that we are still connected to a BSS
     // (net/wireless/core.c: WARN_ON(wdev->current_bss))
 

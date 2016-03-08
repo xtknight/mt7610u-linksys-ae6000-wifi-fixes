@@ -209,11 +209,11 @@ NTSTATUS RTUSBFirmwareWrite(
 }
 
 
-NTSTATUS	RTUSBVenderReset(
+NTSTATUS	RTUSBVendorReset(
     IN	PRTMP_ADAPTER	pAd)
 {
     NTSTATUS	Status;
-    DBGPRINT_RAW(RT_DEBUG_ERROR, ("-->RTUSBVenderReset\n"));
+    DBGPRINT_RAW(RT_DEBUG_INFO, ("RTUSBVendorReset()\n"));
     Status = RTUSB_VendorRequest(
                  pAd,
                  USBD_TRANSFER_DIRECTION_OUT,
@@ -224,7 +224,7 @@ NTSTATUS	RTUSBVenderReset(
                  NULL,
                  0);
 
-    DBGPRINT_RAW(RT_DEBUG_ERROR, ("<--RTUSBVenderReset\n"));
+    DBGPRINT_RAW(RT_DEBUG_INFO, ("RTUSBVendorReset() ended\n"));
     return Status;
 }
 /*
@@ -1080,12 +1080,13 @@ NTSTATUS    RTUSB_VendorRequest(
 
     if(RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST))
     {
-        DBGPRINT(RT_DEBUG_ERROR, ("WIFI device has been disconnected\n"));
+        // Too loud
+        DBGPRINT(RT_DEBUG_INFO, ("mt7610u: device has been disconnected or module removed\n"));
         return NDIS_STATUS_FAILURE;
     }
     else if(RTMP_TEST_PSFLAG(pAd, fRTMP_PS_MCU_SLEEP))
     {
-        DBGPRINT(RT_DEBUG_ERROR, ("MCU has entered sleep mode\n"));
+        DBGPRINT(RT_DEBUG_ERROR, ("mt7610u: MCU has entered sleep mode\n"));
         return NDIS_STATUS_FAILURE;
     }
     else
@@ -1098,7 +1099,7 @@ NTSTATUS    RTUSB_VendorRequest(
 
         if(RET != 0)
         {
-            DBGPRINT(RT_DEBUG_ERROR, ("UsbVendorReq_semaphore get failed\n"));
+            DBGPRINT(RT_DEBUG_ERROR, ("mt7610u: UsbVendorReq_semaphore get failed\n"));
             return NDIS_STATUS_FAILURE;
         }
 
@@ -1111,7 +1112,7 @@ NTSTATUS    RTUSB_VendorRequest(
 
             if(RET < 0)
             {
-                DBGPRINT(RT_DEBUG_OFF, ("#\n"));
+                DBGPRINT(RT_DEBUG_TRACE, ("#\n"));
 
                 if(RET == RTMP_USB_CONTROL_MSG_ENODEV)
                 {

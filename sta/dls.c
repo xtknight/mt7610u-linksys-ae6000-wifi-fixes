@@ -105,14 +105,14 @@ VOID MlmeDlsReqAction(
     if(!MlmeDlsReqSanity(pAd, Elem->Msg, Elem->MsgLen, &pDLS, &reason))
         return;
 
-    DBGPRINT(RT_DEBUG_TRACE, ("DLS - MlmeDlsReqAction() \n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("DLS - MlmeDlsReqAction()\n"));
 
     NStatus = MlmeAllocateMemory(pAd, &pOutBuffer);	/*Get an unused nonpaged memory */
 
     if(NStatus != NDIS_STATUS_SUCCESS)
     {
         DBGPRINT(RT_DEBUG_ERROR,
-                 ("DLS - MlmeDlsReqAction() allocate memory failed \n"));
+                 ("DLS - MlmeDlsReqAction() allocate memory failed\n"));
         return;
     }
 
@@ -235,7 +235,7 @@ VOID PeerDlsReqAction(
     if(NStatus != NDIS_STATUS_SUCCESS)
     {
         DBGPRINT(RT_DEBUG_ERROR,
-                 ("DLS - PeerDlsReqAction() allocate memory failed \n"));
+                 ("DLS - PeerDlsReqAction() allocate memory failed\n"));
         return;
     }
 
@@ -293,7 +293,7 @@ VOID PeerDlsReqAction(
         if(i < 0)
         {
             DBGPRINT(RT_DEBUG_TRACE,
-                     ("DLS - PeerDlsReqAction() can not find same entry \n"));
+                     ("DLS - PeerDlsReqAction() can not find same entry\n"));
 
             for(i = (MAX_NUM_OF_DLS_ENTRY - 1);
                     i >= MAX_NUM_OF_INIT_DLS_ENTRY; i--)
@@ -355,7 +355,7 @@ VOID PeerDlsReqAction(
                         if(pAd->StaCfg.DesiredTransmitSetting.field.MCS != MCS_AUTO)
                         {
 
-                            DBGPRINT(RT_DEBUG_OFF,
+                            DBGPRINT(RT_DEBUG_TRACE,
                                      ("@@@ pAd->CommonCfg.RegTransmitSetting.field.MCS = %d\n",
                                       pAd->StaCfg.DesiredTransmitSetting.field.MCS));
                             set_ht_fixed_mcs(pAd, pEntry, pAd->StaCfg.DesiredTransmitSetting.field.MCS, pAd->StaCfg.HTPhyMode.field.MCS);
@@ -435,7 +435,7 @@ VOID PeerDlsReqAction(
         {
             StatusCode = MLME_QOS_UNSPECIFY;
             DBGPRINT(RT_DEBUG_ERROR,
-                     ("DLS - PeerDlsReqAction() DLSEntry table full(only can support %d DLS session) \n",
+                     ("DLS - PeerDlsReqAction() DLSEntry table full(only can support %d DLS session)\n",
                       MAX_NUM_OF_DLS_ENTRY -
                       MAX_NUM_OF_INIT_DLS_ENTRY));
         }
@@ -600,7 +600,7 @@ VOID PeerDlsRspAction(
                 /* If this Entry supports 802.11n, upgrade to HT rate. */
                 if((HtCapabilityLen != 0) && WMODE_CAP_N(pAd->CommonCfg.PhyMode))
                 {
-                    DBGPRINT(RT_DEBUG_OFF,
+                    DBGPRINT(RT_DEBUG_TRACE,
                              ("DLS - PeerDlsRspAction Receive Peer HT Capable STA from %02x:%02x:%02x:%02x:%02x:%02x\n",
                               PRINT_MAC(SA)));
 
@@ -695,7 +695,7 @@ VOID PeerDlsRspAction(
                         pAd->StaCfg.DLSEntry[i].Status =DLS_NONE;
                         pAd->StaCfg.DLSEntry[i].Valid =FALSE;
                         DBGPRINT(RT_DEBUG_ERROR,
-                                 ("DLS - PeerDlsRspAction failed when call RTMPSendSTAKeyRequest \n"));
+                                 ("DLS - PeerDlsRspAction failed when call RTMPSendSTAKeyRequest\n"));
                     }
                     else
                     {
@@ -729,7 +729,7 @@ VOID PeerDlsRspAction(
                 RTMPCancelTimer(&pAd->StaCfg.DLSEntry[i].Timer,
                                 &TimerCancelled);
                 DBGPRINT(RT_DEBUG_ERROR,
-                         ("DLS - PeerDlsRspAction failed with StatusCode=%d \n",
+                         ("DLS - PeerDlsRspAction failed with StatusCode=%d\n",
                           StatusCode));
             }
         }
@@ -738,7 +738,7 @@ VOID PeerDlsRspAction(
     if(i >= MAX_NUM_OF_INIT_DLS_ENTRY)
     {
         DBGPRINT(RT_DEBUG_TRACE,
-                 ("DLS - PeerDlsRspAction() update timeout value \n"));
+                 ("DLS - PeerDlsRspAction() update timeout value\n"));
 
         for(i = (MAX_NUM_OF_DLS_ENTRY - 1);
                 i >= MAX_NUM_OF_INIT_DLS_ENTRY; i--)
@@ -801,7 +801,7 @@ VOID PeerDlsRspAction(
 
                         if(pAd->StaCfg.DesiredTransmitSetting.field.MCS != MCS_AUTO)
                         {
-                            DBGPRINT(RT_DEBUG_OFF,
+                            DBGPRINT(RT_DEBUG_TRACE,
                                      ("@@@ pAd->CommonCfg.RegTransmitSetting.field.MCS = %d\n",
                                       pAd->StaCfg.DesiredTransmitSetting.field.MCS));
                             set_ht_fixed_mcs(pAd, pEntry, pAd->StaCfg.DesiredTransmitSetting.field.MCS, pAd->StaCfg.HTPhyMode.field.MCS);
@@ -891,7 +891,7 @@ VOID PeerDlsRspAction(
                             pAd->StaCfg.DLSEntry[i].Status = DLS_NONE;
                             pAd->StaCfg.DLSEntry[i].Valid = FALSE;
                             DBGPRINT(RT_DEBUG_ERROR,
-                                     ("DLS - PeerDlsRspAction failed when call RTMPSendSTAKeyRequest \n"));
+                                     ("DLS - PeerDlsRspAction failed when call RTMPSendSTAKeyRequest\n"));
                         }
                         else
                         {
@@ -923,7 +923,7 @@ VOID PeerDlsRspAction(
                     pAd->StaCfg.DLSEntry[i].Valid = FALSE;
                     RTMPCancelTimer(&pAd->StaCfg.DLSEntry[i].Timer, &TimerCancelled);
                     DBGPRINT(RT_DEBUG_ERROR,
-                             ("DLS - PeerDlsRspAction failed with StatusCode=%d \n",
+                             ("DLS - PeerDlsRspAction failed with StatusCode=%d\n",
                               StatusCode));
                 }
             }
@@ -958,7 +958,7 @@ VOID MlmeDlsTearDownAction(
         return;
 
     DBGPRINT(RT_DEBUG_TRACE,
-             ("DLS - MlmeDlsTearDownAction() with ReasonCode=%d \n",
+             ("DLS - MlmeDlsTearDownAction() with ReasonCode=%d\n",
               ReasonCode));
 
     NStatus = MlmeAllocateMemory(pAd, &pOutBuffer);	/*Get an unused nonpaged memory */
@@ -966,7 +966,7 @@ VOID MlmeDlsTearDownAction(
     if(NStatus != NDIS_STATUS_SUCCESS)
     {
         DBGPRINT(RT_DEBUG_ERROR,
-                 ("DLS - MlmeDlsTearDownAction() allocate memory failed \n"));
+                 ("DLS - MlmeDlsTearDownAction() allocate memory failed\n"));
         return;
     }
 
@@ -1310,12 +1310,12 @@ BOOLEAN RTMPRcvFrameDLSCheck(
             if(!NdisEqualMemory(OldMic, Mic, LEN_KEY_DESC_MIC))
             {
                 DBGPRINT(RT_DEBUG_ERROR,
-                         ("MIC Different in Msg1 of STAKey handshake! \n"));
+                         ("MIC Different in Msg1 of STAKey handshake!\n"));
                 return bSTAKeyFrame;
             }
             else
                 DBGPRINT(RT_DEBUG_TRACE,
-                         ("MIC VALID in Msg1 of STAKey handshake! \n"));
+                         ("MIC VALID in Msg1 of STAKey handshake!\n"));
 
             if((pEap->KeyDesc.KeyData[0] == 0xDD)
                     && (pEap->KeyDesc.KeyData[2] == 0x00)
@@ -1399,7 +1399,7 @@ BOOLEAN RTMPRcvFrameDLSCheck(
                                &PairwiseKey,
                                sizeof(CIPHER_KEY));
                 DBGPRINT(RT_DEBUG_TRACE,
-                         ("DLS - Receive STAKey Message-1 (Peer STA MAC Address STAKey) \n"));
+                         ("DLS - Receive STAKey Message-1 (Peer STA MAC Address STAKey)\n"));
 
                 RTMPSendSTAKeyHandShake(pAd, pAd->StaCfg.DLSEntry[i].MacAddr);
 
@@ -1596,14 +1596,14 @@ VOID RTMPSendDLSTearDownFrame(
             RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_HALT_IN_PROGRESS))
         return;
 
-    DBGPRINT(RT_DEBUG_TRACE, ("Send DLS TearDown Frame \n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("Send DLS TearDown Frame\n"));
 
     NStatus = MlmeAllocateMemory(pAd, &pOutBuffer);	/*Get an unused nonpaged memory */
 
     if(NStatus != NDIS_STATUS_SUCCESS)
     {
         DBGPRINT(RT_DEBUG_ERROR,
-                 ("ASSOC - RTMPSendDLSTearDownFrame() allocate memory failed \n"));
+                 ("ASSOC - RTMPSendDLSTearDownFrame() allocate memory failed\n"));
         return;
     }
 
@@ -1643,7 +1643,7 @@ VOID RTMPSendDLSTearDownFrame(
     }
 
     DBGPRINT(RT_DEBUG_TRACE,
-             ("Send DLS TearDown Frame and remove key in (i=%d) \n", i));
+             ("Send DLS TearDown Frame and remove key in (i=%d)\n", i));
 }
 
 /*
@@ -1818,7 +1818,7 @@ NDIS_STATUS RTMPSendSTAKeyHandShake(
     PUCHAR pOutBuffer = NULL;
     PNDIS_PACKET pNdisPacket;
     UCHAR temp[64];
-    UCHAR DlsPTK[80];	/* Due to dirver can not get PTK, use proprietary PTK */
+    UCHAR DlsPTK[80];	/* Due to driver can not get PTK, use proprietary PTK */
 
     DBGPRINT(RT_DEBUG_TRACE,
              ("DLS - RTMPSendSTAKeyHandShake() to %02x:%02x:%02x:%02x:%02x:%02x\n",
@@ -2153,7 +2153,7 @@ INT Set_DlsEntryInfo_Display_Proc(
 {
     INT i;
 
-    DBGPRINT(RT_DEBUG_OFF, ("\n%-19s%-8s\n", "MAC", "TIMEOUT\n"));
+    DBGPRINT(RT_DEBUG_ERROR, ("\n%-19s%-8s\n", "MAC", "TIMEOUT\n"));
 
     for(i = 0; i < MAX_NUM_OF_DLS_ENTRY; i++)
     {
@@ -2163,59 +2163,59 @@ INT Set_DlsEntryInfo_Display_Proc(
             PMAC_TABLE_ENTRY pEntry =
                 &pAd->MacTab.Content[pAd->StaCfg.DLSEntry[i].MacTabMatchWCID];
 
-            DBGPRINT(RT_DEBUG_OFF,
+            DBGPRINT(RT_DEBUG_ERROR,
                      ("%02x:%02x:%02x:%02x:%02x:%02x  ",
                       PRINT_MAC(pAd->StaCfg.DLSEntry[i].MacAddr)));
-            DBGPRINT(RT_DEBUG_OFF,
+            DBGPRINT(RT_DEBUG_ERROR,
                      ("%-8d\n", pAd->StaCfg.DLSEntry[i].TimeOut));
 
-            DBGPRINT(RT_DEBUG_OFF, ("\n"));
-            DBGPRINT(RT_DEBUG_OFF,
+            DBGPRINT(RT_DEBUG_ERROR, ("\n"));
+            DBGPRINT(RT_DEBUG_ERROR,
                      ("\n%-19s%-4s%-4s%-4s%-4s%-7s%-7s%-7s", "MAC",
                       "AID", "BSS", "PSM", "WMM", "RSSI0", "RSSI1",
                       "RSSI2"));
 #ifdef DOT11_N_SUPPORT
-            DBGPRINT(RT_DEBUG_OFF,
+            DBGPRINT(RT_DEBUG_ERROR,
                      ("%-8s%-10s%-6s%-6s%-6s%-6s", "MIMOPS", "PhMd",
                       "BW", "MCS", "SGI", "STBC"));
 #endif /* DOT11_N_SUPPORT */
-            DBGPRINT(RT_DEBUG_OFF,
+            DBGPRINT(RT_DEBUG_ERROR,
                      ("\n%02X:%02X:%02X:%02X:%02X:%02X  ",
                       pEntry->Addr[0], pEntry->Addr[1],
                       pEntry->Addr[2], pEntry->Addr[3],
                       pEntry->Addr[4], pEntry->Addr[5]));
-            DBGPRINT(RT_DEBUG_OFF, ("%-4d", (int)pEntry->Aid));
-            DBGPRINT(RT_DEBUG_OFF, ("%-4d", (int)pEntry->apidx));
-            DBGPRINT(RT_DEBUG_OFF, ("%-4d", (int)pEntry->PsMode));
-            DBGPRINT(RT_DEBUG_OFF,
+            DBGPRINT(RT_DEBUG_ERROR, ("%-4d", (int)pEntry->Aid));
+            DBGPRINT(RT_DEBUG_ERROR, ("%-4d", (int)pEntry->apidx));
+            DBGPRINT(RT_DEBUG_ERROR, ("%-4d", (int)pEntry->PsMode));
+            DBGPRINT(RT_DEBUG_ERROR,
                      ("%-4d",
                       (int)CLIENT_STATUS_TEST_FLAG(pEntry,
                                                    fCLIENT_STATUS_WMM_CAPABLE)));
-            DBGPRINT(RT_DEBUG_OFF,
+            DBGPRINT(RT_DEBUG_ERROR,
                      ("%-7d", pEntry->RssiSample.AvgRssi0));
-            DBGPRINT(RT_DEBUG_OFF,
+            DBGPRINT(RT_DEBUG_ERROR,
                      ("%-7d", pEntry->RssiSample.AvgRssi1));
-            DBGPRINT(RT_DEBUG_OFF,
+            DBGPRINT(RT_DEBUG_ERROR,
                      ("%-7d", pEntry->RssiSample.AvgRssi2));
 #ifdef DOT11_N_SUPPORT
-            DBGPRINT(RT_DEBUG_OFF, ("%-8d", (int)pEntry->MmpsMode));
-            DBGPRINT(RT_DEBUG_OFF,
+            DBGPRINT(RT_DEBUG_ERROR, ("%-8d", (int)pEntry->MmpsMode));
+            DBGPRINT(RT_DEBUG_ERROR,
                      ("%-10s",
                       get_phymode_str(pEntry->HTPhyMode.field.MODE)));
-            DBGPRINT(RT_DEBUG_OFF,
+            DBGPRINT(RT_DEBUG_ERROR,
                      ("%-6s", get_bw_str(pEntry->HTPhyMode.field.BW)));
-            DBGPRINT(RT_DEBUG_OFF,
+            DBGPRINT(RT_DEBUG_ERROR,
                      ("%-6d", pEntry->HTPhyMode.field.MCS));
-            DBGPRINT(RT_DEBUG_OFF,
+            DBGPRINT(RT_DEBUG_ERROR,
                      ("%-6d", pEntry->HTPhyMode.field.ShortGI));
-            DBGPRINT(RT_DEBUG_OFF,
+            DBGPRINT(RT_DEBUG_ERROR,
                      ("%-6d", pEntry->HTPhyMode.field.STBC));
 #endif /* DOT11_N_SUPPORT */
-            DBGPRINT(RT_DEBUG_OFF,
+            DBGPRINT(RT_DEBUG_ERROR,
                      ("%-10d, %d, %d%%\n", pEntry->DebugFIFOCount,
                       pEntry->DebugTxCount,
                       (pEntry->DebugTxCount) ? ((pEntry->DebugTxCount - pEntry->DebugFIFOCount) * 100 / pEntry->DebugTxCount) : 0));
-            DBGPRINT(RT_DEBUG_OFF, ("\n"));
+            DBGPRINT(RT_DEBUG_ERROR, ("\n"));
 
         }
     }
@@ -2258,7 +2258,7 @@ INT Set_DlsAddEntry_Proc(
         if(i != 6)
             return FALSE;
 
-        DBGPRINT(RT_DEBUG_OFF,
+        DBGPRINT(RT_DEBUG_TRACE,
                  ("\n%02x:%02x:%02x:%02x:%02x:%02x-%d", mac[0], mac[1],
                   mac[2], mac[3], mac[4], mac[5], (int)Timeout));
 
@@ -2301,7 +2301,7 @@ INT Set_DlsTearDownEntry_Proc(
         AtoH(value, &macAddr[i++], 2);
     }
 
-    DBGPRINT(RT_DEBUG_OFF, ("\n%02x:%02x:%02x:%02x:%02x:%02x", PRINT_MAC(macAddr)));
+    DBGPRINT(RT_DEBUG_TRACE, ("\n%02x:%02x:%02x:%02x:%02x:%02x", PRINT_MAC(macAddr)));
 
     NdisZeroMemory(&Dls, sizeof(RT_802_11_DLS));
     COPY_MAC_ADDR(Dls.MacAddr, macAddr);

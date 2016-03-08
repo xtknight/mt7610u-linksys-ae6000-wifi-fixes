@@ -139,7 +139,7 @@ loadfw_protect:
         goto error0;
     }
 
-    RTUSBVenderReset(ad);
+    RTUSBVendorReset(ad);
     RtmpOsMsDelay(5);
 
     /* Get FW information */
@@ -153,18 +153,18 @@ loadfw_protect:
 
     build_ver = (*(cap->FWImageName + 9) << 8) | (*(cap->FWImageName + 8));
 
-    DBGPRINT(RT_DEBUG_OFF, ("fw version:%d.%d.%02d ", (fw_ver & 0xf000) >> 8,
+    DBGPRINT(RT_DEBUG_ERROR, ("mt7610u: firmware version: %d.%d.%02d\n", (fw_ver & 0xf000) >> 8,
                             (fw_ver & 0x0f00) >> 8, fw_ver & 0x00ff));
-    DBGPRINT(RT_DEBUG_OFF, ("build:%x\n", build_ver));
-    DBGPRINT(RT_DEBUG_OFF, ("build time:"));
+    DBGPRINT(RT_DEBUG_ERROR, ("mt7610u: firmware build: %x\n", build_ver));
+    DBGPRINT(RT_DEBUG_INFO, ("mt7610u: firmware build time:"));
 
     for(loop = 0; loop < 16; loop++)
-        DBGPRINT(RT_DEBUG_OFF, ("%c", *(cap->FWImageName + 16 + loop)));
+        DBGPRINT(RT_DEBUG_INFO, ("%c", *(cap->FWImageName + 16 + loop)));
 
-    DBGPRINT(RT_DEBUG_OFF, ("\n"));
+    DBGPRINT(RT_DEBUG_INFO, ("\n"));
 
-    DBGPRINT(RT_DEBUG_OFF, ("ilm length = %d(bytes)\n", ilm_len));
-    DBGPRINT(RT_DEBUG_OFF, ("dlm length = %d(bytes)\n", dlm_len));
+    DBGPRINT(RT_DEBUG_INFO, ("mt7610u: ILM length = %d(bytes)\n", ilm_len));
+    DBGPRINT(RT_DEBUG_INFO, ("mt7610u: DLM length = %d(bytes)\n", dlm_len));
 
     /* Enable FCE */
     RTUSBWriteMACRegister(ad, FCE_PSE_CTRL, 0x01, FALSE);
@@ -213,7 +213,7 @@ loadfw_protect:
         goto error1;
     }
 
-    DBGPRINT(RT_DEBUG_OFF, ("loading fw"));
+    DBGPRINT(RT_DEBUG_INFO, ("loading fw"));
 
     RTMP_OS_INIT_COMPLETION(&load_fw_done);
 
@@ -337,7 +337,7 @@ loadfw_protect:
 
             if(ret)
             {
-                DBGPRINT(RT_DEBUG_ERROR, ("submit urb fail\n"));
+                DBGPRINT(RT_DEBUG_ERROR, ("submit urb failed\n"));
                 goto error2;
             }
 
@@ -351,7 +351,7 @@ loadfw_protect:
                 goto error2;
             }
 
-            DBGPRINT(RT_DEBUG_OFF, ("."));
+            DBGPRINT(RT_DEBUG_TRACE, ("."));
 
             RTUSBReadMACRegister(ad, TX_CPU_PORT_FROM_FCE_CPU_DESC_INDEX, &mac_value);
             mac_value++;
@@ -487,7 +487,7 @@ loadfw_protect:
 
             if(ret)
             {
-                DBGPRINT(RT_DEBUG_ERROR, ("submit urb fail\n"));
+                DBGPRINT(RT_DEBUG_ERROR, ("submit urb failed\n"));
                 goto error2;
             }
 
@@ -501,7 +501,7 @@ loadfw_protect:
                 goto error2;
             }
 
-            DBGPRINT(RT_DEBUG_OFF, ("."));
+            DBGPRINT(RT_DEBUG_TRACE, ("."));
 
             RTUSBReadMACRegister(ad, TX_CPU_PORT_FROM_FCE_CPU_DESC_INDEX, &mac_value);
             mac_value++;
@@ -518,7 +518,7 @@ loadfw_protect:
     RTMP_OS_EXIT_COMPLETION(&load_fw_done);
 
     /* Upload new 64 bytes interrupt vector or reset andes */
-    DBGPRINT(RT_DEBUG_OFF, ("\n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("\n"));
     usb_load_ivb(ad);
 
     /* Check MCU if ready */
@@ -970,7 +970,7 @@ static void usb_rx_cmd_msg_complete(PURB urb)
     {
         state = rx_receive_fail;
         andes_inc_error_count(ctl, error_rx_receive_fail);
-        DBGPRINT(RT_DEBUG_ERROR, ("receive cmd msg fail(%d)\n", RTMP_USB_URB_STATUS_GET(urb)));
+        DBGPRINT(RT_DEBUG_ERROR, ("mt7610u: receive cmd URB fail status(%d)\n", RTMP_USB_URB_STATUS_GET(urb)));
     }
 
     RTMP_SPIN_LOCK_IRQSAVE(&ctl->rx_doneq_lock, &flags);
@@ -1000,7 +1000,7 @@ static void usb_rx_cmd_msg_complete(PURB urb)
         {
             andes_unlink_cmd_msg(msg, &ctl->rxq);
             andes_inc_error_count(ctl, error_rx_receive_fail);
-            DBGPRINT(RT_DEBUG_ERROR, ("%s:submit urb fail(%d)\n", __FUNCTION__, ret));
+            DBGPRINT(RT_DEBUG_ERROR, ("%s: submit urb failed(%d)\n", __FUNCTION__, ret));
             andes_queue_tail_cmd_msg(&ctl->rx_doneq, msg, rx_receive_fail);
         }
 
@@ -1043,7 +1043,7 @@ int usb_rx_cmd_msg_submit(RTMP_ADAPTER *ad)
     {
         andes_unlink_cmd_msg(msg, &ctl->rxq);
         andes_inc_error_count(ctl, error_rx_receive_fail);
-        DBGPRINT(RT_DEBUG_ERROR, ("%s:submit urb fail(%d)\n", __FUNCTION__, ret));
+        DBGPRINT(RT_DEBUG_ERROR, ("%s: submit urb failed(%d)\n", __FUNCTION__, ret));
         andes_queue_tail_cmd_msg(&ctl->rx_doneq, msg, rx_receive_fail);
     }
 
@@ -1214,7 +1214,7 @@ int usb_kick_out_cmd_msg(PRTMP_ADAPTER ad, struct cmd_msg *msg)
             RTMP_OS_COMPLETE(&msg->ack_done);
         }
 
-        DBGPRINT(RT_DEBUG_ERROR, ("%s:submit urb fail(%d)\n", __FUNCTION__, ret));
+        DBGPRINT(RT_DEBUG_ERROR, ("%s: submit urb failed(%d)\n", __FUNCTION__, ret));
     }
 
     return ret;
@@ -1321,11 +1321,11 @@ void andes_ctrl_exit(RTMP_ADAPTER *ad)
     NdisFreeSpinLock(&ctl->tx_doneq_lock);
     andes_cleanup_cmd_msg(ad, &ctl->rx_doneq);
     NdisFreeSpinLock(&ctl->rx_doneq_lock);
-    DBGPRINT(RT_DEBUG_OFF, ("tx_kickout_fail_count = %ld\n", ctl->tx_kickout_fail_count));
-    DBGPRINT(RT_DEBUG_OFF, ("tx_timeout_fail_count = %ld\n", ctl->tx_timeout_fail_count));
-    DBGPRINT(RT_DEBUG_OFF, ("rx_receive_fail_count = %ld\n", ctl->rx_receive_fail_count));
-    DBGPRINT(RT_DEBUG_OFF, ("alloc_cmd_msg = %ld\n", ctl->alloc_cmd_msg));
-    DBGPRINT(RT_DEBUG_OFF, ("free_cmd_msg = %ld\n", ctl->free_cmd_msg));
+    DBGPRINT(RT_DEBUG_TRACE, ("tx_kickout_fail_count = %ld\n", ctl->tx_kickout_fail_count));
+    DBGPRINT(RT_DEBUG_TRACE, ("tx_timeout_fail_count = %ld\n", ctl->tx_timeout_fail_count));
+    DBGPRINT(RT_DEBUG_TRACE, ("rx_receive_fail_count = %ld\n", ctl->rx_receive_fail_count));
+    DBGPRINT(RT_DEBUG_TRACE, ("alloc_cmd_msg = %ld\n", ctl->alloc_cmd_msg));
+    DBGPRINT(RT_DEBUG_TRACE, ("free_cmd_msg = %ld\n", ctl->free_cmd_msg));
     RTMP_SEM_EVENT_UP(&(ad->mcu_atomic));
 }
 
@@ -2142,7 +2142,7 @@ int andes_calibration(RTMP_ADAPTER *ad, u32 cal_id, u32 param)
     u32 value;
     int ret = 0;
 
-    //DBGPRINT(RT_DEBUG_OFF, ("%s:cal_id(%d)\n", __FUNCTION__, cal_id));
+    //DBGPRINT(RT_DEBUG_TRACE, ("%s:cal_id(%d)\n", __FUNCTION__, cal_id));
 
     /* Calibration ID and Parameter */
     msg = andes_alloc_cmd_msg(ad, 8);

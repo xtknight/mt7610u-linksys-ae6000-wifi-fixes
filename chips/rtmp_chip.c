@@ -587,7 +587,7 @@ static VOID ChipBBPAdjust(RTMP_ADAPTER *pAd)
         RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R73, 0x10);
     }
 
-    DBGPRINT(RT_DEBUG_TRACE, ("%s(): BW_%s, ChannelWidth=%d, Channel=%d, ExtChanOffset=%d(%d) \n",
+    DBGPRINT(RT_DEBUG_TRACE, ("%s(): BW_%s, ChannelWidth=%d, Channel=%d, ExtChanOffset=%d(%d)\n",
                               __FUNCTION__, (rf_bw == BW_40 ? "40" : "20"),
                               pAd->CommonCfg.HtCapability.HtCapInfo.ChannelWidth,
                               pAd->CommonCfg.Channel,
@@ -817,7 +817,7 @@ INT AsicGetMacVersion(
     if(WaitForAsicReady(pAd) == TRUE)
     {
         RTMP_IO_READ32(pAd, reg, &pAd->MACVersion);
-        DBGPRINT(RT_DEBUG_OFF, ("MACVersion[Ver:Rev]=0x%08x : 0x%08x\n",
+        DBGPRINT(RT_DEBUG_INFO, ("MACVersion[Ver:Rev]=0x%08x : 0x%08x\n",
                                 pAd->MACVersion, pAd->MacIcVersion));
         return TRUE;
     }

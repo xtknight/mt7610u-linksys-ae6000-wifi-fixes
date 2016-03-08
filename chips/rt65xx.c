@@ -75,7 +75,7 @@ VOID ral_wlan_chip_onoff(
 #endif /* RTMP_MAC_USB */
 
     RTMP_IO_READ32(pAd, WLAN_FUN_CTRL, &WlanFunCtrl.word);
-    DBGPRINT(RT_DEBUG_OFF, ("==>%s(): OnOff:%d, pAd->WlanFunCtrl:0x%x, Reg-WlanFunCtrl=0x%x\n",
+    DBGPRINT(RT_DEBUG_TRACE, ("==>%s(): OnOff:%d, pAd->WlanFunCtrl:0x%x, Reg-WlanFunCtrl=0x%x\n",
                             __FUNCTION__, bOn, pAd->WlanFunCtrl.word, WlanFunCtrl.word));
 
     if(bResetWLAN == TRUE)
@@ -553,7 +553,7 @@ VOID RT65xx_WLAN_ChipOnOff(
 #endif /* RTMP_MAC_USB */
 
     RTMP_IO_READ32(pAd, WLAN_FUN_CTRL, &WlanFunCtrl.word);
-    DBGPRINT(RT_DEBUG_OFF, ("==>%s(): OnOff:%d, Reset= %d, pAd->WlanFunCtrl:0x%x, Reg-WlanFunCtrl=0x%x\n",
+    DBGPRINT(RT_DEBUG_TRACE, ("==>%s(): OnOff:%d, Reset= %d, pAd->WlanFunCtrl:0x%x, Reg-WlanFunCtrl=0x%x\n",
                             __FUNCTION__, bOn, bResetWLAN, pAd->WlanFunCtrl.word, WlanFunCtrl.word));
 
     if(bResetWLAN == TRUE)

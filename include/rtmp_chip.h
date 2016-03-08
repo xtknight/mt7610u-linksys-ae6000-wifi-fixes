@@ -1049,7 +1049,7 @@ do {	\
 		else	\
 		{	\
 			BBP_CSR_CFG_STRUC	BbpCsr;	\
-			DBGPRINT(RT_DEBUG_INFO, ("Reset BBP Agent busy bit.!! \n"));	\
+			DBGPRINT(RT_DEBUG_INFO, ("Reset BBP Agent busy bit.!!\n"));	\
 			RTMP_IO_READ32(__pAd, H2M_BBP_AGENT, &BbpCsr.word);	\
 			BbpCsr.field.Busy = 0;	\
 			RTMP_IO_WRITE32(__pAd, H2M_BBP_AGENT, BbpCsr.word);	\

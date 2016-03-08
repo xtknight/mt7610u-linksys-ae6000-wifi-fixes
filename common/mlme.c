@@ -861,7 +861,7 @@ VOID MlmePeriodicExec(
                     if((temperature_diff > 20) ||
                             (temperature_diff < (-20)))
                     {
-                        DBGPRINT(RT_DEBUG_OFF, ("%s - Do VCORecalibration again!(LastTemperatureforVCO=%d, NowTemperature = %d)\n",
+                        DBGPRINT(RT_DEBUG_TRACE, ("%s - Do VCORecalibration again!(LastTemperatureforVCO=%d, NowTemperature = %d)\n",
                                                 __FUNCTION__, pAd->chipCap.LastTemperatureforVCO, pAd->chipCap.NowTemperature));
                         pAd->chipCap.LastTemperatureforVCO = pAd->chipCap.NowTemperature;
                         MT76x0_VCO_CalibrationMode3(pAd, pAd->hw_cfg.cent_ch);
@@ -912,7 +912,7 @@ VOID MlmePeriodicExec(
                     if(MacReg)
                         RTMP_IO_WRITE32(pAd, MAC_SYS_CTRL, MacReg);
 
-                    DBGPRINT(RT_DEBUG_WARN,("Warning, MAC specific condition occurs \n"));
+                    DBGPRINT(RT_DEBUG_WARN,("Warning, MAC specific condition occurs\n"));
                 }
             }
         }
@@ -1198,7 +1198,7 @@ VOID STAMlmePeriodicExec(
 
         ScanParmFill(pAd, &ScanReq, pAd->MlmeAux.Ssid, pAd->MlmeAux.SsidLen, BSS_ANY, SCAN_ACTIVE);
         MlmeEnqueue(pAd, SYNC_STATE_MACHINE, MT2_MLME_SCAN_REQ, sizeof(MLME_SCAN_REQ_STRUCT), &ScanReq, 0);
-        DBGPRINT(RT_DEBUG_WARN, ("bImprovedScan ............. Resume for bImprovedScan, SCAN_PENDING .............. \n"));
+        DBGPRINT(RT_DEBUG_WARN, ("bImprovedScan ............. Resume for bImprovedScan, SCAN_PENDING ..............\n"));
     }
 
     if(INFRA_ON(pAd))
@@ -1248,7 +1248,7 @@ VOID STAMlmePeriodicExec(
         {
             printk("pAd->PendingRx = %d\n", pAd->PendingRx);
             RTMPSetAGCInitValue(pAd, BW_20);
-            DBGPRINT(RT_DEBUG_TRACE, ("MMCHK - No BEACON. restore R66 to the low bound(%d) \n", (0x2E + GET_LNA_GAIN(pAd))));
+            DBGPRINT(RT_DEBUG_TRACE, ("MMCHK - No BEACON. restore R66 to the low bound(%d)\n", (0x2E + GET_LNA_GAIN(pAd))));
         }
 
 
@@ -1563,7 +1563,7 @@ SKIP_AUTO_SCAN_CONN:
             (pAd->CommonCfg.Dot11BssWidthTriggerScanInt != 0) &&
             ((pAd->Mlme.OneSecPeriodicRound % pAd->CommonCfg.Dot11BssWidthTriggerScanInt) == (pAd->CommonCfg.Dot11BssWidthTriggerScanInt-1)))
     {
-        DBGPRINT(RT_DEBUG_TRACE, ("MMCHK - LastOneSecTotalTxCount/LastOneSecRxOkDataCnt  = %d/%d \n",
+        DBGPRINT(RT_DEBUG_TRACE, ("MMCHK - LastOneSecTotalTxCount/LastOneSecRxOkDataCnt  = %d/%d\n",
                                   pAd->RalinkCounters.LastOneSecTotalTxCount,
                                   pAd->RalinkCounters.LastOneSecRxOkDataCnt));
 
@@ -1583,7 +1583,7 @@ SKIP_AUTO_SCAN_CONN:
             RTMP_MLME_HANDLER(pAd);
         }
 
-        DBGPRINT(RT_DEBUG_TRACE, (" LastOneSecTotalTxCount/LastOneSecRxOkDataCnt  = %d/%d \n",
+        DBGPRINT(RT_DEBUG_TRACE, (" LastOneSecTotalTxCount/LastOneSecRxOkDataCnt  = %d/%d\n",
                                   pAd->RalinkCounters.LastOneSecTotalTxCount,
                                   pAd->RalinkCounters.LastOneSecRxOkDataCnt));
     }
@@ -2681,7 +2681,7 @@ VOID MlmeUpdateHtTxRates(
     PHTTRANSMIT_SETTING pMinHtPhy = NULL;
     BOOLEAN *auto_rate_cur_p;
 
-    DBGPRINT(RT_DEBUG_TRACE,("%s()===> \n", __FUNCTION__));
+    DBGPRINT(RT_DEBUG_TRACE,("%s()===>\n", __FUNCTION__));
 
     auto_rate_cur_p = NULL;
 
@@ -2816,10 +2816,10 @@ VOID MlmeUpdateHtTxRates(
     else
         *auto_rate_cur_p = TRUE;
 
-    DBGPRINT(RT_DEBUG_TRACE, (" %s():<---.AMsduSize = %d  \n", __FUNCTION__, pAd->CommonCfg.DesiredHtPhy.AmsduSize));
-    DBGPRINT(RT_DEBUG_TRACE,("TX: MCS[0] = %x (choose %d), BW = %d, ShortGI = %d, MODE = %d,  \n", pActiveHtPhy->MCSSet[0],pHtPhy->field.MCS,
+    DBGPRINT(RT_DEBUG_TRACE, (" %s():<---.AMsduSize = %d \n", __FUNCTION__, pAd->CommonCfg.DesiredHtPhy.AmsduSize));
+    DBGPRINT(RT_DEBUG_TRACE,("TX: MCS[0] = %x (choose %d), BW = %d, ShortGI = %d, MODE = %d, \n", pActiveHtPhy->MCSSet[0],pHtPhy->field.MCS,
                              pHtPhy->field.BW, pHtPhy->field.ShortGI, pHtPhy->field.MODE));
-    DBGPRINT(RT_DEBUG_TRACE,("%s():<=== \n", __FUNCTION__));
+    DBGPRINT(RT_DEBUG_TRACE,("%s():<===\n", __FUNCTION__));
 }
 
 
@@ -4384,7 +4384,7 @@ BOOLEAN MlmeEnqueue(
     /* First check the size, it MUST not exceed the mlme queue size*/
     if(MsgLen > MGMT_DMA_BUFFER_SIZE)
     {
-        DBGPRINT_ERR(("MlmeEnqueue: msg too large, size = %ld \n", MsgLen));
+        DBGPRINT_ERR(("MlmeEnqueue: msg too large, size = %ld\n", MsgLen));
         return FALSE;
     }
 
@@ -4470,7 +4470,7 @@ BOOLEAN MlmeEnqueueForRecv(
     /* First check the size, it MUST not exceed the mlme queue size*/
     if(MsgLen > MGMT_DMA_BUFFER_SIZE)
     {
-        DBGPRINT_ERR(("MlmeEnqueueForRecv: frame too large, size = %ld \n", MsgLen));
+        DBGPRINT_ERR(("MlmeEnqueueForRecv: frame too large, size = %ld\n", MsgLen));
         return FALSE;
     }
 
@@ -4567,7 +4567,7 @@ VOID	MlmeRestartStateMachine(
     BOOLEAN				Cancelled;
 #endif /* CONFIG_STA_SUPPORT */
 
-    DBGPRINT(RT_DEBUG_TRACE, ("MlmeRestartStateMachine \n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("MlmeRestartStateMachine\n"));
 
 
 #ifdef CONFIG_STA_SUPPORT
@@ -5175,7 +5175,7 @@ BOOLEAN RTMPCheckHt(
         }
     }
 
-    DBGPRINT(RT_DEBUG_TRACE, ("RTMPCheckHt:: HtCapInfo.ChannelWidth=%d, RecomWidth=%d, DesiredHtPhy.ChannelWidth=%d, BW40MAvailForA/G=%d/%d, PhyMode=%d \n",
+    DBGPRINT(RT_DEBUG_TRACE, ("RTMPCheckHt:: HtCapInfo.ChannelWidth=%d, RecomWidth=%d, DesiredHtPhy.ChannelWidth=%d, BW40MAvailForA/G=%d/%d, PhyMode=%d\n",
                               pAd->MlmeAux.HtCapability.HtCapInfo.ChannelWidth, pAddHtInfo->AddHtInfo.RecomWidth, pAd->CommonCfg.DesiredHtPhy.ChannelWidth,
                               pAd->NicConfig2.field.BW40MAvailForA, pAd->NicConfig2.field.BW40MAvailForG, pAd->CommonCfg.PhyMode));
 
@@ -5446,7 +5446,7 @@ VOID RTMPUpdateMlmeRate(
         pAd->MacTab.Content[BSS0Mcast_WCID].HTPhyMode.field.MCS = pAd->CommonCfg.MlmeRate;
     }
 
-    DBGPRINT(RT_DEBUG_TRACE, ("RTMPUpdateMlmeRate ==>   MlmeTransmit = 0x%x  \n" , pAd->CommonCfg.MlmeTransmit.word));
+    DBGPRINT(RT_DEBUG_TRACE, ("RTMPUpdateMlmeRate ==>   MlmeTransmit = 0x%x \n" , pAd->CommonCfg.MlmeTransmit.word));
 }
 
 
@@ -5895,12 +5895,12 @@ VOID RTMPUpdateLegacyTxSetting(
     if(pEntry->HTPhyMode.field.MODE >= TransmitSetting.field.MODE)
     {
         pEntry->HTPhyMode.word = TransmitSetting.word;
-        DBGPRINT(RT_DEBUG_TRACE, ("RTMPUpdateLegacyTxSetting : wcid-%d, MODE=%s, MCS=%d \n",
+        DBGPRINT(RT_DEBUG_TRACE, ("RTMPUpdateLegacyTxSetting : wcid-%d, MODE=%s, MCS=%d\n",
                                   pEntry->Aid, get_phymode_str(pEntry->HTPhyMode.field.MODE), pEntry->HTPhyMode.field.MCS));
     }
     else
     {
-        DBGPRINT(RT_DEBUG_ERROR, ("%s : the fixed TxMode is invalid \n", __FUNCTION__));
+        DBGPRINT(RT_DEBUG_ERROR, ("%s : the fixed TxMode is invalid\n", __FUNCTION__));
     }
 }
 

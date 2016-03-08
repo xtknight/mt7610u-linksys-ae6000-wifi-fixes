@@ -224,7 +224,7 @@ NDIS_STATUS	RTMPAllocAdapterBlock(
         }
 
         pAd->BeaconBuf = pBeaconBuf;
-        DBGPRINT(RT_DEBUG_OFF, ("\n\n=== pAd = %p, size = %d ===\n\n", pAd, (UINT32)sizeof(RTMP_ADAPTER)));
+        DBGPRINT(RT_DEBUG_TRACE, ("\n\n=== pAd = %p, size = %d ===\n\n", pAd, (UINT32)sizeof(RTMP_ADAPTER)));
 
         if(RtmpOsStatsAlloc(&pAd->stats, &pAd->iw_stats) == FALSE)
         {
@@ -309,7 +309,7 @@ NDIS_STATUS	RTMPAllocAdapterBlock(
             pAd->ProbeRespIE[index].pIe = NULL;
     }
 
-    DBGPRINT_S(Status, ("<-- RTMPAllocAdapterBlock, Status=%x\n", Status));
+    DBGPRINT(RT_DEBUG_TRACE, ("RTMPAllocAdapterBlock() finished with status=%x\n", Status));
     return Status;
 }
 
@@ -358,9 +358,9 @@ VOID NICReadEEPROMParameters(RTMP_ADAPTER *pAd, PSTRING mac_addr)
         pAd->chipOps.eeinit(pAd);
 #ifdef RTMP_EFUSE_SUPPORT
 
-        if(!pAd->bFroceEEPROMBuffer && pAd->bEEPROMFile)
+        if(!pAd->bForceEEPROMBuffer && pAd->bEEPROMFile)
         {
-            DBGPRINT(RT_DEBUG_OFF, ("--> NICReadEEPROMParameters::(Efuse)Load to EEPROM Buffer Mode\n"));
+            DBGPRINT(RT_DEBUG_TRACE, ("--> NICReadEEPROMParameters::(Efuse)Load to EEPROM Buffer Mode\n"));
             eFuseLoadEEPROM(pAd);
         }
 
@@ -368,7 +368,7 @@ VOID NICReadEEPROMParameters(RTMP_ADAPTER *pAd, PSTRING mac_addr)
     }
 
     /* Read MAC setting from EEPROM and record as permanent MAC address */
-    DBGPRINT(RT_DEBUG_TRACE, ("Initialize MAC Address from E2PROM \n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("Initialize MAC Address from E2PROM\n"));
 
     RT28xx_EEPROM_READ16(pAd, 0x04, Addr01);
     RT28xx_EEPROM_READ16(pAd, 0x06, Addr23);
@@ -391,7 +391,7 @@ VOID NICReadEEPROMParameters(RTMP_ADAPTER *pAd, PSTRING mac_addr)
     /* Assign the actually working MAC Address */
     if(pAd->bLocalAdminMAC)
     {
-        DBGPRINT(RT_DEBUG_TRACE, ("Use the MAC address what is assigned from Configuration file(.dat). \n"));
+        DBGPRINT(RT_DEBUG_TRACE, ("Use the MAC address what is assigned from Configuration file(.dat).\n"));
     }
     else if(mac_addr &&
             strlen((PSTRING)mac_addr) == 17 &&
@@ -408,12 +408,12 @@ VOID NICReadEEPROMParameters(RTMP_ADAPTER *pAd, PSTRING mac_addr)
             macptr=macptr+3;
         }
 
-        DBGPRINT(RT_DEBUG_TRACE, ("Use the MAC address what is assigned from Moudle Parameter. \n"));
+        DBGPRINT(RT_DEBUG_TRACE, ("Use the MAC address what is assigned from Moudle Parameter.\n"));
     }
     else
     {
         COPY_MAC_ADDR(pAd->CurrentAddress, pAd->PermanentAddress);
-        DBGPRINT(RT_DEBUG_TRACE, ("Use the MAC address what is assigned from EEPROM. \n"));
+        DBGPRINT(RT_DEBUG_TRACE, ("Use the MAC address what is assigned from EEPROM.\n"));
     }
 
     /* Set the current MAC to ASIC */
@@ -529,7 +529,7 @@ VOID NICReadEEPROMParameters(RTMP_ADAPTER *pAd, PSTRING mac_addr)
 
     if(IS_RT8592(pAd))
     {
-        DBGPRINT(RT_DEBUG_OFF, ("RT85592: Antenna.RfIcType=%d, TxPath=%d, RxPath=%d\n",
+        DBGPRINT(RT_DEBUG_TRACE, ("RT85592: Antenna.RfIcType=%d, TxPath=%d, RxPath=%d\n",
                                 Antenna.field.RfIcType, Antenna.field.TxPath, Antenna.field.RxPath));
         // TODO: fix me!!
         Antenna.word = 0;
@@ -550,7 +550,7 @@ VOID NICReadEEPROMParameters(RTMP_ADAPTER *pAd, PSTRING mac_addr)
     if(((Antenna.word & 0xFF00) != 0xFF00) && (Antenna.word & 0x2000))
     {
         pAd->chipCap.bTxRxSwAntDiv = TRUE;		/* for GPIO switch */
-        DBGPRINT(RT_DEBUG_OFF, ("\x1b[mAntenna word %X/%d, AntDiv %d\x1b[m\n",
+        DBGPRINT(RT_DEBUG_TRACE, ("\x1b[mAntenna word %X/%d, AntDiv %d\x1b[m\n",
                                 Antenna.word, Antenna.field.BoardType, pAd->NicConfig2.field.AntDiversity));
     }
 
@@ -766,7 +766,7 @@ VOID NICReadEEPROMParameters(RTMP_ADAPTER *pAd, PSTRING mac_addr)
         pAd->RfFreqOffset = 0;
 
 
-    DBGPRINT(RT_DEBUG_TRACE, ("E2PROM: RF FreqOffset=0x%lx \n", pAd->RfFreqOffset));
+    DBGPRINT(RT_DEBUG_TRACE, ("E2PROM: RF FreqOffset=0x%lx\n", pAd->RfFreqOffset));
 
     /*CountryRegion byte offset (38h)*/
     {
@@ -888,7 +888,7 @@ VOID NICReadEEPROMParameters(RTMP_ADAPTER *pAd, PSTRING mac_addr)
     if(pAd->CommonCfg.ModuleTxpower > 0)
         pAd->CommonCfg.DefineMaxTxPwr = pAd->CommonCfg.ModuleTxpower;
 
-    DBGPRINT(RT_DEBUG_TRACE, ("TX Power set for SINGLE SKU MODE is : 0x%04x \n", pAd->CommonCfg.DefineMaxTxPwr));
+    DBGPRINT(RT_DEBUG_TRACE, ("TX Power set for SINGLE SKU MODE is : 0x%04x\n", pAd->CommonCfg.DefineMaxTxPwr));
 
     pAd->CommonCfg.bSKUMode = FALSE;
 
@@ -993,7 +993,7 @@ VOID NICReadEEPROMParameters(RTMP_ADAPTER *pAd, PSTRING mac_addr)
         else
             pAd->chipCap.bInternalTxALC = FALSE;
 
-        DBGPRINT(RT_DEBUG_OFF, ("TXALC> bInternalTxALC = %d\n", pAd->chipCap.bInternalTxALC));
+        DBGPRINT(RT_DEBUG_TRACE, ("TXALC> bInternalTxALC = %d\n", pAd->chipCap.bInternalTxALC));
 
         if(pAd->chipCap.bInternalTxALC)
         {
@@ -1001,84 +1001,84 @@ VOID NICReadEEPROMParameters(RTMP_ADAPTER *pAd, PSTRING mac_addr)
             pAd->chipCap.tssi_2G_target_power = value & 0x00ff;
             RT28xx_EEPROM_READ16(pAd, EEPROM_MT76x0_5G_TARGET_POWER, value);
             pAd->chipCap.tssi_5G_target_power = value & 0x00ff;
-            DBGPRINT(RT_DEBUG_OFF, ("%s: tssi_2G_target_power = %d, tssi_5G_target_power = %d\n",
+            DBGPRINT(RT_DEBUG_TRACE, ("%s: tssi_2G_target_power = %d, tssi_5G_target_power = %d\n",
                                     __FUNCTION__, pAd->chipCap.tssi_2G_target_power, pAd->chipCap.tssi_5G_target_power));
 
             RT28xx_EEPROM_READ16(pAd, EEPROM_MT76x0_2G_SLOPE_OFFSET, value);
             pAd->chipCap.tssi_slope_2G = value & 0x00ff;
             pAd->chipCap.tssi_offset_2G = (value >> 8);
-            DBGPRINT(RT_DEBUG_OFF, ("%s: tssi_slope_2G = 0x%x, tssi_offset_2G = 0x%x\n",
+            DBGPRINT(RT_DEBUG_TRACE, ("%s: tssi_slope_2G = 0x%x, tssi_offset_2G = 0x%x\n",
                                     __FUNCTION__, pAd->chipCap.tssi_slope_2G, pAd->chipCap.tssi_offset_2G));
 
             RT28xx_EEPROM_READ16(pAd, EEPROM_MT76x0_5G_SLOPE_OFFSET, value);
             pAd->chipCap.tssi_slope_5G[0] = value & 0x00ff;
             pAd->chipCap.tssi_offset_5G[0] = (value >> 8);
-            DBGPRINT(RT_DEBUG_OFF, ("%s: tssi_slope_5G_Group_1 = 0x%x, tssi_offset_5G_Group_1 = 0x%x\n",
+            DBGPRINT(RT_DEBUG_TRACE, ("%s: tssi_slope_5G_Group_1 = 0x%x, tssi_offset_5G_Group_1 = 0x%x\n",
                                     __FUNCTION__, pAd->chipCap.tssi_slope_5G[0], pAd->chipCap.tssi_offset_5G[0]));
 
             RT28xx_EEPROM_READ16(pAd, EEPROM_MT76x0_5G_SLOPE_OFFSET+2, value);
             pAd->chipCap.tssi_slope_5G[1] = value & 0x00ff;
             pAd->chipCap.tssi_offset_5G[1] = (value >> 8);
-            DBGPRINT(RT_DEBUG_OFF, ("%s: tssi_slope_5G_Group_2 = 0x%x, tssi_offset_5G_Group_2 = 0x%x\n",
+            DBGPRINT(RT_DEBUG_TRACE, ("%s: tssi_slope_5G_Group_2 = 0x%x, tssi_offset_5G_Group_2 = 0x%x\n",
                                     __FUNCTION__, pAd->chipCap.tssi_slope_5G[1], pAd->chipCap.tssi_offset_5G[1]));
 
             RT28xx_EEPROM_READ16(pAd, EEPROM_MT76x0_5G_SLOPE_OFFSET+4, value);
             pAd->chipCap.tssi_slope_5G[2] = value & 0x00ff;
             pAd->chipCap.tssi_offset_5G[2] = (value >> 8);
-            DBGPRINT(RT_DEBUG_OFF, ("%s: tssi_slope_5G_Group_3 = 0x%x, tssi_offset_5G_Group_3 = 0x%x\n",
+            DBGPRINT(RT_DEBUG_TRACE, ("%s: tssi_slope_5G_Group_3 = 0x%x, tssi_offset_5G_Group_3 = 0x%x\n",
                                     __FUNCTION__, pAd->chipCap.tssi_slope_5G[2], pAd->chipCap.tssi_offset_5G[2]));
 
             RT28xx_EEPROM_READ16(pAd, EEPROM_MT76x0_5G_SLOPE_OFFSET+6, value);
             pAd->chipCap.tssi_slope_5G[3] = value & 0x00ff;
             pAd->chipCap.tssi_offset_5G[3] = (value >> 8);
-            DBGPRINT(RT_DEBUG_OFF, ("%s: tssi_slope_5G_Group_4 = 0x%x, tssi_offset_5G_Group_4 = 0x%x\n",
+            DBGPRINT(RT_DEBUG_TRACE, ("%s: tssi_slope_5G_Group_4 = 0x%x, tssi_offset_5G_Group_4 = 0x%x\n",
                                     __FUNCTION__, pAd->chipCap.tssi_slope_5G[3], pAd->chipCap.tssi_offset_5G[3]));
 
             RT28xx_EEPROM_READ16(pAd, EEPROM_MT76x0_5G_SLOPE_OFFSET+8, value);
             pAd->chipCap.tssi_slope_5G[4] = value & 0x00ff;
             pAd->chipCap.tssi_offset_5G[4] = (value >> 8);
-            DBGPRINT(RT_DEBUG_OFF, ("%s: tssi_slope_5G_Group_5 = 0x%x, tssi_offset_5G_Group_5 = 0x%x\n",
+            DBGPRINT(RT_DEBUG_TRACE, ("%s: tssi_slope_5G_Group_5 = 0x%x, tssi_offset_5G_Group_5 = 0x%x\n",
                                     __FUNCTION__, pAd->chipCap.tssi_slope_5G[4], pAd->chipCap.tssi_offset_5G[4]));
 
             RT28xx_EEPROM_READ16(pAd, EEPROM_MT76x0_5G_SLOPE_OFFSET+10, value);
             pAd->chipCap.tssi_slope_5G[5] = value & 0x00ff;
             pAd->chipCap.tssi_offset_5G[5] = (value >> 8);
-            DBGPRINT(RT_DEBUG_OFF, ("%s: tssi_slope_5G_Group_6 = 0x%x, tssi_offset_5G_Group_6 = 0x%x\n",
+            DBGPRINT(RT_DEBUG_TRACE, ("%s: tssi_slope_5G_Group_6 = 0x%x, tssi_offset_5G_Group_6 = 0x%x\n",
                                     __FUNCTION__, pAd->chipCap.tssi_slope_5G[5], pAd->chipCap.tssi_offset_5G[5]));
 
             RT28xx_EEPROM_READ16(pAd, EEPROM_MT76x0_5G_SLOPE_OFFSET+12, value);
             pAd->chipCap.tssi_slope_5G[6] = value & 0x00ff;
             pAd->chipCap.tssi_offset_5G[6] = (value >> 8);
-            DBGPRINT(RT_DEBUG_OFF, ("%s: tssi_slope_5G_Group_7 = 0x%x, tssi_offset_5G_Group_7 = 0x%x\n",
+            DBGPRINT(RT_DEBUG_TRACE, ("%s: tssi_slope_5G_Group_7 = 0x%x, tssi_offset_5G_Group_7 = 0x%x\n",
                                     __FUNCTION__, pAd->chipCap.tssi_slope_5G[6], pAd->chipCap.tssi_offset_5G[6]));
 
             RT28xx_EEPROM_READ16(pAd, EEPROM_MT76x0_5G_SLOPE_OFFSET+14, value);
             pAd->chipCap.tssi_slope_5G[7] = value & 0x00ff;
             pAd->chipCap.tssi_offset_5G[7] = (value >> 8);
-            DBGPRINT(RT_DEBUG_OFF, ("%s: tssi_slope_5G_Group_8 = 0x%x, tssi_offset_5G_Group_8 = 0x%x\n",
+            DBGPRINT(RT_DEBUG_TRACE, ("%s: tssi_slope_5G_Group_8 = 0x%x, tssi_offset_5G_Group_8 = 0x%x\n",
                                     __FUNCTION__, pAd->chipCap.tssi_slope_5G[7], pAd->chipCap.tssi_offset_5G[7]));
 
             RT28xx_EEPROM_READ16(pAd, EEPROM_MT76x0_5G_CHANNEL_BOUNDARY, value);
             pAd->chipCap.tssi_5G_channel_boundary[0] = value & 0x00ff;
             pAd->chipCap.tssi_5G_channel_boundary[1] = (value >> 8);
-            DBGPRINT(RT_DEBUG_OFF, ("%s: tssi_5G_channel_boundary_1 = %d, tssi_5G_channel_boundary_2 = %d\n",
+            DBGPRINT(RT_DEBUG_TRACE, ("%s: tssi_5G_channel_boundary_1 = %d, tssi_5G_channel_boundary_2 = %d\n",
                                     __FUNCTION__, pAd->chipCap.tssi_5G_channel_boundary[0], pAd->chipCap.tssi_5G_channel_boundary[1]));
 
             RT28xx_EEPROM_READ16(pAd, EEPROM_MT76x0_5G_CHANNEL_BOUNDARY+2, value);
             pAd->chipCap.tssi_5G_channel_boundary[2] = value & 0x00ff;
             pAd->chipCap.tssi_5G_channel_boundary[3] = (value >> 8);
-            DBGPRINT(RT_DEBUG_OFF, ("%s: tssi_5G_channel_boundary_3 = %d, tssi_5G_channel_boundary_4 = %d\n",
+            DBGPRINT(RT_DEBUG_TRACE, ("%s: tssi_5G_channel_boundary_3 = %d, tssi_5G_channel_boundary_4 = %d\n",
                                     __FUNCTION__, pAd->chipCap.tssi_5G_channel_boundary[2], pAd->chipCap.tssi_5G_channel_boundary[3]));
 
             RT28xx_EEPROM_READ16(pAd, EEPROM_MT76x0_5G_CHANNEL_BOUNDARY+4, value);
             pAd->chipCap.tssi_5G_channel_boundary[4] = value & 0x00ff;
             pAd->chipCap.tssi_5G_channel_boundary[5] = (value >> 8);
-            DBGPRINT(RT_DEBUG_OFF, ("%s: tssi_5G_channel_boundary_5 = %d, tssi_5G_channel_boundary_6 = %d\n",
+            DBGPRINT(RT_DEBUG_TRACE, ("%s: tssi_5G_channel_boundary_5 = %d, tssi_5G_channel_boundary_6 = %d\n",
                                     __FUNCTION__, pAd->chipCap.tssi_5G_channel_boundary[4], pAd->chipCap.tssi_5G_channel_boundary[5]));
 
             RT28xx_EEPROM_READ16(pAd, EEPROM_MT76x0_5G_CHANNEL_BOUNDARY+6, value);
             pAd->chipCap.tssi_5G_channel_boundary[6] = value & 0x00ff;
-            DBGPRINT(RT_DEBUG_OFF, ("%s: tssi_5G_channel_boundary_7 = %d\n",
+            DBGPRINT(RT_DEBUG_TRACE, ("%s: tssi_5G_channel_boundary_7 = %d\n",
                                     __FUNCTION__, pAd->chipCap.tssi_5G_channel_boundary[6]));
         }
 
@@ -1529,7 +1529,7 @@ NDIS_STATUS	NICInitializeAsic(
 #ifdef RTMP_MAC
     RTMP_IO_WRITE32(pAd, MAC_SYS_CTRL, 0x3);
     USB_CFG_WRITE(pAd, 0x0);
-    RTUSBVenderReset(pAd);
+    RTUSBVendorReset(pAd);
     RTMPusecDelay(1000);
     RTMP_IO_WRITE32(pAd, MAC_SYS_CTRL, 0x0);
 #endif /* RTMP_MAC */
@@ -3075,7 +3075,7 @@ VOID UserCfgInit(RTMP_ADAPTER *pAd)
     pAd->WOW_Cfg.nSelectedGPIO = 1;
     pAd->WOW_Cfg.nDelay = 3; /* (3+1)*3 = 12 sec */
     pAd->WOW_Cfg.nHoldTime = 1; /* 1*10 = 10 ms */
-    DBGPRINT(RT_DEBUG_OFF, ("WOW Enable %d, WOWFirmware %d\n", pAd->WOW_Cfg.bEnable, pAd->WOW_Cfg.bWOWFirmware));
+    DBGPRINT(RT_DEBUG_TRACE, ("WOW Enable %d, WOWFirmware %d\n", pAd->WOW_Cfg.bEnable, pAd->WOW_Cfg.bWOWFirmware));
 #endif /* RTMP_MAC_USB */
 #endif /* WOW_SUPPORT */
 
@@ -3609,7 +3609,7 @@ static INT RtmpChipOpsRegister(
         return ret;
     }
 
-    DBGPRINT(RT_DEBUG_OFF, ("MCUType = %d\n", pAd->chipCap.MCUType));
+    DBGPRINT(RT_DEBUG_TRACE, ("MCUType = %d\n", pAd->chipCap.MCUType));
     ChipOpsMCUHook(pAd, pAd->chipCap.MCUType);
 
     /* set eeprom related hook functions */
@@ -3627,7 +3627,7 @@ BOOLEAN PairEP(RTMP_ADAPTER *pAd, UINT8 EP)
 
     if(EP == pChipCap->CommandBulkOutAddr)
     {
-        DBGPRINT(RT_DEBUG_OFF, ("Endpoint(%x) is for In-band Command\n", EP));
+        DBGPRINT(RT_DEBUG_TRACE, ("Endpoint(%x) is for In-band Command\n", EP));
         found = 1;
     }
 
@@ -3635,32 +3635,32 @@ BOOLEAN PairEP(RTMP_ADAPTER *pAd, UINT8 EP)
     {
         if(EP == pChipCap->WMM0ACBulkOutAddr[i])
         {
-            DBGPRINT(RT_DEBUG_OFF, ("Endpoint(%x) is for WMM0 AC%d\n", EP, i));
+            DBGPRINT(RT_DEBUG_TRACE, ("Endpoint(%x) is for WMM0 AC%d\n", EP, i));
             found = 1;
         }
     }
 
     if(EP == pChipCap->WMM1ACBulkOutAddr)
     {
-        DBGPRINT(RT_DEBUG_OFF, ("Endpoint(%x) is for WMM1 AC0\n", EP));
+        DBGPRINT(RT_DEBUG_TRACE, ("Endpoint(%x) is for WMM1 AC0\n", EP));
         found = 1;
     }
 
     if(EP == pChipCap->DataBulkInAddr)
     {
-        DBGPRINT(RT_DEBUG_OFF, ("Endpoint(%x) is for Data-In\n", EP));
+        DBGPRINT(RT_DEBUG_TRACE, ("Endpoint(%x) is for Data-In\n", EP));
         found = 1;
     }
 
     if(EP == pChipCap->CommandRspBulkInAddr)
     {
-        DBGPRINT(RT_DEBUG_OFF, ("Endpoint(%x) is for Command Rsp\n", EP));
+        DBGPRINT(RT_DEBUG_TRACE, ("Endpoint(%x) is for Command Rsp\n", EP));
         found = 1;
     }
 
     if(!found)
     {
-        DBGPRINT(RT_DEBUG_OFF, ("Endpoint(%x) do not pair\n", EP));
+        DBGPRINT(RT_DEBUG_TRACE, ("Endpoint(%x) do not pair\n", EP));
         return FALSE;
     }
     else
@@ -3914,11 +3914,11 @@ VOID AntCfgInit(
 
 #ifdef TXRX_SW_ANTDIV_SUPPORT
     /* EEPROM 0x34[15:12] = 0xF is invalid, 0x2~0x3 is TX/RX SW AntDiv */
-    DBGPRINT(RT_DEBUG_OFF, ("%s: bTxRxSwAntDiv %d\n", __FUNCTION__, pAd->chipCap.bTxRxSwAntDiv));
+    DBGPRINT(RT_DEBUG_TRACE, ("%s: bTxRxSwAntDiv %d\n", __FUNCTION__, pAd->chipCap.bTxRxSwAntDiv));
 
     if(pAd->chipCap.bTxRxSwAntDiv)
     {
-        DBGPRINT(RT_DEBUG_OFF, ("Antenna word %X/%d, AntDiv %d\n",
+        DBGPRINT(RT_DEBUG_TRACE, ("Antenna word %X/%d, AntDiv %d\n",
                                 pAd->Antenna.word, pAd->Antenna.field.BoardType, pAd->NicConfig2.field.AntDiversity));
     }
 
@@ -3951,7 +3951,7 @@ VOID AntCfgInit(
         }
     }
 
-    DBGPRINT(RT_DEBUG_OFF, ("%s: primary/secondary ant %d/%d\n",
+    DBGPRINT(RT_DEBUG_TRACE, ("%s: primary/secondary ant %d/%d\n",
                             __FUNCTION__,
                             pAd->RxAnt.Pair1PrimaryRxAnt,
                             pAd->RxAnt.Pair1SecondaryRxAnt));

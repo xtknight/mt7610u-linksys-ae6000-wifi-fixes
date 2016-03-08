@@ -242,8 +242,8 @@ static int CFG80211_OpsChannelSet(
 
     /* get channel number */
     ChanId = ieee80211_frequency_to_channel(pChan->center_freq);
-    CFG80211DBG(RT_DEBUG_ERROR, ("mt7610u: Channel = %d\n", ChanId));
-    CFG80211DBG(RT_DEBUG_ERROR, ("mt7610u: ChannelType = %d\n", ChannelType));
+    CFG80211DBG(RT_DEBUG_TRACE, ("mt7610u: Channel = %d\n", ChanId));
+    CFG80211DBG(RT_DEBUG_TRACE, ("mt7610u: ChannelType = %d\n", ChannelType));
 
     /* init */
     memset(&ChanInfo, 0, sizeof(ChanInfo));
@@ -328,7 +328,7 @@ static int CFG80211_OpsVirtualInfChg(
     CFG80211DBG(RT_DEBUG_TRACE, ("mt7610u: %s()\n", __FUNCTION__));
     MAC80211_PAD_GET(pAd, pWiphy);
 
-    CFG80211DBG(RT_DEBUG_ERROR, ("mt7610u: Type = %d\n", Type));
+    CFG80211DBG(RT_DEBUG_TRACE, ("mt7610u: Type = %d\n", Type));
 
     /* sanity check */
 #ifdef CONFIG_STA_SUPPORT
@@ -448,7 +448,7 @@ static int CFG80211_OpsScan(
     /* Do nothing if the driver is halting */
     if(RTMP_TEST_FLAG(((PRTMP_ADAPTER)pAd), fRTMP_ADAPTER_HALT_IN_PROGRESS | fRTMP_ADAPTER_NIC_NOT_EXIST))
     {
-        CFG80211DBG(RT_DEBUG_ERROR, ("mt7610u: %s adapter halting. exiting. \n", __FUNCTION__));
+        CFG80211DBG(RT_DEBUG_ERROR, ("mt7610u: %s adapter halting. exiting.\n", __FUNCTION__));
         return;
     }
 
@@ -545,9 +545,9 @@ static int CFG80211_OpsIbssJoin(
     CFG80211DBG(RT_DEBUG_TRACE, ("mt7610u: %s()\n", __FUNCTION__));
     MAC80211_PAD_GET(pAd, pWiphy);
 
-    CFG80211DBG(RT_DEBUG_ERROR, ("mt7610u: SSID = %s\n",
+    CFG80211DBG(RT_DEBUG_INFO, ("mt7610u: SSID = %s\n",
                                  pParams->ssid));
-    CFG80211DBG(RT_DEBUG_ERROR, ("mt7610u: Beacon Interval = %d\n",
+    CFG80211DBG(RT_DEBUG_INFO, ("mt7610u: Beacon Interval = %d\n",
                                  pParams->beacon_interval));
 
     /* init */
@@ -728,7 +728,7 @@ static int CFG80211_OpsStaGet(
     /* Do nothing if the driver is halting */
     if(RTMP_TEST_FLAG(((PRTMP_ADAPTER)pAd), fRTMP_ADAPTER_HALT_IN_PROGRESS | fRTMP_ADAPTER_NIC_NOT_EXIST))
     {
-        CFG80211DBG(RT_DEBUG_ERROR, ("mt7610u: %s adapter halting. exiting. \n", __FUNCTION__));
+        CFG80211DBG(RT_DEBUG_ERROR, ("mt7610u: %s adapter halting. exiting.\n", __FUNCTION__));
         return;
     }
 
@@ -930,7 +930,6 @@ static int CFG80211_OpsKeyAdd(
     hex_dump("KeyBuf=", (UINT8 *)pParams->key, pParams->key_len);
 #endif /* RT_CFG80211_DEBUG */
 
-    //CFG80211DBG(RT_DEBUG_ERROR, ("mt7610u: KeyIdx = %d\n", KeyIdx));
     CFG80211DBG(RT_DEBUG_TRACE, ("mt7610u: KeyIdx = %d, pParams->cipher=%x\n", KeyIdx,pParams->cipher));
 
     if(pParams->key_len >= sizeof(KeyInfo.KeyBuf))
@@ -949,19 +948,6 @@ static int CFG80211_OpsKeyAdd(
     KeyInfo.bPairwise = Pairwise;
 #endif
     KeyInfo.KeyLen = pParams->key_len;
-
-    /*if ((pParams->cipher == WLAN_CIPHER_SUITE_WEP40) ||
-    	(pParams->cipher == WLAN_CIPHER_SUITE_WEP104))
-    {
-    	KeyInfo.KeyType = RT_CMD_80211_KEY_WEP;
-    }
-    else if ((pParams->cipher == WLAN_CIPHER_SUITE_TKIP) ||
-    	(pParams->cipher == WLAN_CIPHER_SUITE_CCMP))
-    {
-    	KeyInfo.KeyType = RT_CMD_80211_KEY_WPA;
-    }
-    else
-    	return -ENOTSUPP;*/
 
     if((pParams->cipher == WLAN_CIPHER_SUITE_WEP40))
     {
@@ -1193,11 +1179,10 @@ static int CFG80211_OpsConnect(
     INT32 Pairwise = 0;
     INT32 Groupwise = 0;
     INT32 Keymgmt = 0;
-    //	INT32 WpaVersion = NL80211_WPA_VERSION_2;
     INT32 WpaVersion = 0;
     INT32 Chan = -1, Idx;
 
-    CFG80211DBG(RT_DEBUG_ERROR, ("80211 [CONNECT TEST]> %s()\n", __FUNCTION__));
+    CFG80211DBG(RT_DEBUG_TRACE, ("mt7610u: %s()\n", __FUNCTION__));
 
     /* init */
     MAC80211_PAD_GET(pAd, pWiphy);
@@ -1205,17 +1190,11 @@ static int CFG80211_OpsConnect(
     if(pChannel != NULL)
         Chan = ieee80211_frequency_to_channel(pChannel->center_freq);
 
-    /*Groupwise = pSme->crypto.cipher_group;
-    for(Idx=0; Idx<pSme->crypto.n_ciphers_pairwise; Idx++)
-    	Pairwise |= pSme->crypto.ciphers_pairwise[Idx];*/
-    /* End of for */
-
-    CFG80211DBG(RT_DEBUG_ERROR, ("Groupwise: %x\n", pSme->crypto.cipher_group));
+    CFG80211DBG(RT_DEBUG_INFO, ("Groupwise: %x\n", pSme->crypto.cipher_group));
     Groupwise = pSme->crypto.cipher_group;
-    //for(Idx=0; Idx<pSme->crypto.n_ciphers_pairwise; Idx++)
     Pairwise |= pSme->crypto.ciphers_pairwise[0];
 
-    CFG80211DBG(RT_DEBUG_ERROR, ("Pairwise %x\n", pSme->crypto.ciphers_pairwise[0]));
+    CFG80211DBG(RT_DEBUG_INFO, ("Pairwise %x\n", pSme->crypto.ciphers_pairwise[0]));
 
     for(Idx=0; Idx<pSme->crypto.n_akm_suites; Idx++)
         Keymgmt |= pSme->crypto.akm_suites[Idx];
@@ -1223,48 +1202,12 @@ static int CFG80211_OpsConnect(
     /* End of for */
 
     WpaVersion = pSme->crypto.wpa_versions;
-    CFG80211DBG(RT_DEBUG_ERROR, ("Wpa_versions %x\n", WpaVersion));
+    CFG80211DBG(RT_DEBUG_INFO, ("wpa_versions=%x (WPA1: %s, WPA2: %s)\n", WpaVersion,
+                                 (WpaVersion & NL80211_WPA_VERSION_1) ? "on" : "off",
+                                 (WpaVersion & NL80211_WPA_VERSION_2) ? "on" : "off"));
 
     memset(&ConnInfo, 0, sizeof(ConnInfo));
     ConnInfo.WpaVer = 0;
-
-    /*	if (WpaVersion & NL80211_WPA_VERSION_2)
-    		ConnInfo.WpaVer = 2;
-    	else if (WpaVersion & NL80211_WPA_VERSION_1)
-    		ConnInfo.WpaVer = 1;
-    	else
-    		ConnInfo.WpaVer = 0;
-
-    	if (Keymgmt & WLAN_AKM_SUITE_8021X)
-    		ConnInfo.FlgIs8021x = TRUE;
-    	else
-    		ConnInfo.FlgIs8021x = FALSE;
-
-    	if (pSme->auth_type == NL80211_AUTHTYPE_SHARED_KEY)
-    		ConnInfo.FlgIsAuthOpen = FALSE;
-    	else
-    		ConnInfo.FlgIsAuthOpen = TRUE;
-
-    	if (Pairwise & WLAN_CIPHER_SUITE_CCMP)
-    		ConnInfo.PairwiseEncrypType |= RT_CMD_80211_CONN_ENCRYPT_CCMP;
-    	else if (Pairwise & WLAN_CIPHER_SUITE_TKIP)
-    		ConnInfo.PairwiseEncrypType |= RT_CMD_80211_CONN_ENCRYPT_TKIP;
-    	else if ((Pairwise & WLAN_CIPHER_SUITE_WEP40) ||
-    			(Pairwise & WLAN_CIPHER_SUITE_WEP104))
-    	{
-    		ConnInfo.PairwiseEncrypType |= RT_CMD_80211_CONN_ENCRYPT_WEP;
-    	}
-    	else
-    		ConnInfo.PairwiseEncrypType |= RT_CMD_80211_CONN_ENCRYPT_NONE;
-
-    	if (Groupwise & WLAN_CIPHER_SUITE_CCMP)
-    		ConnInfo.GroupwiseEncrypType |= RT_CMD_80211_CONN_ENCRYPT_CCMP;
-    	else if (Groupwise & WLAN_CIPHER_SUITE_TKIP)
-    		ConnInfo.GroupwiseEncrypType |= RT_CMD_80211_CONN_ENCRYPT_TKIP;
-    	else
-    		ConnInfo.GroupwiseEncrypType |= RT_CMD_80211_CONN_ENCRYPT_NONE;
-    	*/
-
 
     if(WpaVersion & NL80211_WPA_VERSION_1)
     {
@@ -1276,14 +1219,14 @@ static int CFG80211_OpsConnect(
         ConnInfo.WpaVer = 2;
     }
 
-    CFG80211DBG(RT_DEBUG_ERROR, ("Keymgmt %x\n", Keymgmt));
+    CFG80211DBG(RT_DEBUG_INFO, ("Keymgmt %x\n", Keymgmt));
 
     if(Keymgmt ==  WLAN_AKM_SUITE_8021X)
         ConnInfo.FlgIs8021x = TRUE;
     else
         ConnInfo.FlgIs8021x = FALSE;
 
-    CFG80211DBG(RT_DEBUG_ERROR, ("Auth_type %x\n", pSme->auth_type));
+    CFG80211DBG(RT_DEBUG_INFO, ("Auth_type %x\n", pSme->auth_type));
 
     if(pSme->auth_type == NL80211_AUTHTYPE_SHARED_KEY)
         ConnInfo.AuthType = Ndis802_11AuthModeShared;
@@ -1294,23 +1237,23 @@ static int CFG80211_OpsConnect(
 
     if(Pairwise == WLAN_CIPHER_SUITE_CCMP)
     {
-        CFG80211DBG(RT_DEBUG_ERROR, ("Encryption type: WLAN_CIPHER_SUITE_CCMP\n"));
+        CFG80211DBG(RT_DEBUG_INFO, ("Encryption type: WLAN_CIPHER_SUITE_CCMP\n"));
         ConnInfo.PairwiseEncrypType |= RT_CMD_80211_CONN_ENCRYPT_CCMP;
     }
     else if(Pairwise == WLAN_CIPHER_SUITE_TKIP)
     {
-        CFG80211DBG(RT_DEBUG_ERROR, ("Encryption type: WLAN_CIPHER_SUITE_TKIP\n"));
+        CFG80211DBG(RT_DEBUG_INFO, ("Encryption type: WLAN_CIPHER_SUITE_TKIP\n"));
         ConnInfo.PairwiseEncrypType |= RT_CMD_80211_CONN_ENCRYPT_TKIP;
     }
     else if((Pairwise == WLAN_CIPHER_SUITE_WEP40) ||
             (Pairwise & WLAN_CIPHER_SUITE_WEP104))
     {
-        CFG80211DBG(RT_DEBUG_ERROR, ("Encryption type: WLAN_CIPHER_SUITE_WEP\n"));
+        CFG80211DBG(RT_DEBUG_INFO, ("Encryption type: WLAN_CIPHER_SUITE_WEP\n"));
         ConnInfo.PairwiseEncrypType |= RT_CMD_80211_CONN_ENCRYPT_WEP;
     }
     else
     {
-        CFG80211DBG(RT_DEBUG_ERROR, ("Encryption type: NONE\n"));
+        CFG80211DBG(RT_DEBUG_INFO, ("Encryption type: NONE\n"));
         ConnInfo.PairwiseEncrypType |= RT_CMD_80211_CONN_ENCRYPT_NONE;
     }
 
@@ -1327,8 +1270,8 @@ static int CFG80211_OpsConnect(
         ConnInfo.GroupwiseEncrypType |= RT_CMD_80211_CONN_ENCRYPT_NONE;
     }
 
-    CFG80211DBG(RT_DEBUG_TRACE, ("ConnInfo.KeyLen ===> %d\n", pSme->key_len));
-    CFG80211DBG(RT_DEBUG_TRACE, ("ConnInfo.KeyIdx ===> %d\n", pSme->key_idx));
+    CFG80211DBG(RT_DEBUG_INFO, ("ConnInfo.KeyLen ===> %d\n", pSme->key_len));
+    CFG80211DBG(RT_DEBUG_INFO, ("ConnInfo.KeyIdx ===> %d\n", pSme->key_idx));
 
     ConnInfo.pKey = (UINT8 *)(pSme->key);
     ConnInfo.KeyLen = pSme->key_len;
@@ -1358,7 +1301,7 @@ static int CFG80211_OpsConnect(
     /* %NULL if not specified (auto-select based on scan)*/
     if(pSme->bssid != NULL)
     {
-        CFG80211DBG(RT_DEBUG_ERROR, ("Connect to BSSID %02x:%02x:%02x:%02x:%02x:%02x\n",
+        CFG80211DBG(RT_DEBUG_INFO, ("Connect to BSSID %02x:%02x:%02x:%02x:%02x:%02x\n",
                                      PRINT_MAC(pSme->bssid)));
         ConnInfo.pBssid = pSme->bssid;
     }
@@ -1656,16 +1599,16 @@ static int CFG80211_OpsSetBeacon(
 
     hex_dump("Beacon head", info->head, info->head_len);
     hex_dump("Beacon tail", info->tail, info->tail_len);
-    CFG80211DBG(RT_DEBUG_TRACE, ("mt7610u:dtim_period = %d \n", info->dtim_period));
-    CFG80211DBG(RT_DEBUG_TRACE, ("mt7610u:interval = %d \n", info->interval));
+    CFG80211DBG(RT_DEBUG_TRACE, ("mt7610u:dtim_period = %d\n", info->dtim_period));
+    CFG80211DBG(RT_DEBUG_TRACE, ("mt7610u:interval = %d\n", info->interval));
 
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,2,0))
-    CFG80211DBG(RT_DEBUG_TRACE, ("mt7610u:ssid = %s \n", info->ssid));
-    CFG80211DBG(RT_DEBUG_TRACE, ("mt7610u:ssid_len = %s \n", info->ssid_len));
+    CFG80211DBG(RT_DEBUG_TRACE, ("mt7610u:ssid = %s\n", info->ssid));
+    CFG80211DBG(RT_DEBUG_TRACE, ("mt7610u:ssid_len = %s\n", info->ssid_len));
 
-    CFG80211DBG(RT_DEBUG_TRACE, ("mt7610u:beacon_ies_len = %d \n", info->beacon_ies_len));
-    CFG80211DBG(RT_DEBUG_TRACE, ("mt7610u:proberesp_ies_len = %d \n", info->proberesp_ies_len));
-    CFG80211DBG(RT_DEBUG_TRACE, ("mt7610u:assocresp_ies_len = %d \n", info->assocresp_ies_len));
+    CFG80211DBG(RT_DEBUG_TRACE, ("mt7610u:beacon_ies_len = %d\n", info->beacon_ies_len));
+    CFG80211DBG(RT_DEBUG_TRACE, ("mt7610u:proberesp_ies_len = %d\n", info->proberesp_ies_len));
+    CFG80211DBG(RT_DEBUG_TRACE, ("mt7610u:assocresp_ies_len = %d\n", info->assocresp_ies_len));
 
     if(info->proberesp_ies_len > 0 && info->proberesp_ies)
         RTMP_DRIVER_80211_AP_PROBE_RSP(pAd, info->proberesp_ies, info->proberesp_ies_len);
@@ -1714,16 +1657,16 @@ static int CFG80211_OpsAddBeacon(
 
     hex_dump("Beacon head", info->head, info->head_len);
     hex_dump("Beacon tail", info->tail, info->tail_len);
-    CFG80211DBG(RT_DEBUG_TRACE, ("mt7610u:dtim_period = %d \n", info->dtim_period));
-    CFG80211DBG(RT_DEBUG_TRACE, ("mt7610u:interval = %d \n", info->interval));
+    CFG80211DBG(RT_DEBUG_TRACE, ("mt7610u:dtim_period = %d\n", info->dtim_period));
+    CFG80211DBG(RT_DEBUG_TRACE, ("mt7610u:interval = %d\n", info->interval));
 
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,2,0))
-    CFG80211DBG(RT_DEBUG_TRACE, ("mt7610u:ssid = %s \n", info->ssid));
-    CFG80211DBG(RT_DEBUG_TRACE, ("mt7610u:ssid_len = %s \n", info->ssid_len));
+    CFG80211DBG(RT_DEBUG_TRACE, ("mt7610u:ssid = %s\n", info->ssid));
+    CFG80211DBG(RT_DEBUG_TRACE, ("mt7610u:ssid_len = %s\n", info->ssid_len));
 
-    CFG80211DBG(RT_DEBUG_TRACE, ("mt7610u:beacon_ies_len = %d \n", info->beacon_ies_len));
-    CFG80211DBG(RT_DEBUG_TRACE, ("mt7610u:proberesp_ies_len = %d \n", info->proberesp_ies_len));
-    CFG80211DBG(RT_DEBUG_TRACE, ("mt7610u:assocresp_ies_len = %d \n", info->assocresp_ies_len));
+    CFG80211DBG(RT_DEBUG_TRACE, ("mt7610u:beacon_ies_len = %d\n", info->beacon_ies_len));
+    CFG80211DBG(RT_DEBUG_TRACE, ("mt7610u:proberesp_ies_len = %d\n", info->proberesp_ies_len));
+    CFG80211DBG(RT_DEBUG_TRACE, ("mt7610u:assocresp_ies_len = %d\n", info->assocresp_ies_len));
 
     if(info->proberesp_ies_len > 0 && info->proberesp_ies)
         RTMP_DRIVER_80211_AP_PROBE_RSP(pAd, info->proberesp_ies, info->proberesp_ies_len);
@@ -1765,7 +1708,7 @@ static int CFG80211_OpsDelBeacon(
     VOID *pAd;
     MAC80211_PAD_GET(pAd, pWiphy);
 
-    CFG80211DBG(RT_DEBUG_OFF, ("mt7610u: %s()\n", __FUNCTION__));
+    CFG80211DBG(RT_DEBUG_TRACE, ("mt7610u: %s()\n", __FUNCTION__));
 
     RTMP_DRIVER_80211_BEACON_DEL(pAd);
     return 0;
@@ -1862,7 +1805,7 @@ static int CFG80211_OpsStopAp(
     VOID *pAd;
     MAC80211_PAD_GET(pAd, pWiphy);
 
-    CFG80211DBG(RT_DEBUG_OFF, ("mt7610u: %s()\n", __FUNCTION__));
+    CFG80211DBG(RT_DEBUG_TRACE, ("mt7610u: %s()\n", __FUNCTION__));
 
     RTMP_DRIVER_80211_BEACON_DEL(pAd);
     return 0;
@@ -1874,15 +1817,6 @@ static int CFG80211_OpsStopAp(
 
 struct cfg80211_ops CFG80211_Ops =
 {
-    // TODO: ? https://github.com/coolshou/mt7610u/pull/1/files
-    // https://git.kernel.org/cgit/linux/kernel/git/stable/linux-stable.git/tree/include/net/cfg80211.h?h=linux-3.5.y
-    // https://git.kernel.org/cgit/linux/kernel/git/stable/linux-stable.git/tree/include/net/cfg80211.h?h=linux-3.6.y
-    // https://git.kernel.org/cgit/linux/kernel/git/stable/linux-stable.git/commit/include/net/cfg80211.h?h=linux-3.6.y&id=e8c9bd5b8d807cfe6c923265969a523b1ba1e6c2
-    // https://git.kernel.org/cgit/linux/kernel/git/stable/linux-stable.git/commit/?h=linux-3.6.y&id=aa430da41019c1694f6a8e3b8bef1d12ed52b0ad
-    // https://sourceforge.net/p/wive-ng/wive-ng-mt/ci/6a56315baeea4f5f955c4c0753f436896d8d15db/
-    // Goto page 5 and scroll down all the way for ajax to load. search for OpsChannelSet
-    // Diffing the MediaTek-provided MT7610 and MT7612 drivers themselves provides insight into changes for kernel 3.6
-
     /* set channel for a given wireless interface */
 #if (LINUX_VERSION_CODE < KERNEL_VERSION(3,6,0))
     .set_channel				= CFG80211_OpsChannelSet,
@@ -2163,7 +2097,7 @@ BOOLEAN CFG80211_Register(
 
     RTMP_DRIVER_80211_CB_SET(pAd, pCfg80211_CB);
 
-    CFG80211DBG(RT_DEBUG_ERROR, ("mt7610u: CFG80211_Register\n"));
+    CFG80211DBG(RT_DEBUG_INFO, ("mt7610u: CFG80211_Register() finished\n"));
     return TRUE;
 } /* End of CFG80211_Register */
 
@@ -2247,7 +2181,7 @@ static INT32 CFG80211_RegNotifier(
         /*
         	Core queried CRDA for a dynamic world regulatory domain.
         */
-        CFG80211DBG(RT_DEBUG_ERROR, ("mt7610u: crda: requlation requestion by core: "));
+        CFG80211DBG(RT_DEBUG_INFO, ("mt7610u: crda: regulation request by core: "));
         break;
 
     case NL80211_REGDOM_SET_BY_USER:
@@ -2255,7 +2189,7 @@ static INT32 CFG80211_RegNotifier(
         	User asked the wireless core to set the regulatory domain.
         	(when iw, network manager, wpa supplicant, etc.)
         */
-        CFG80211DBG(RT_DEBUG_ERROR, ("mt7610u: crda: requlation requestion by user: "));
+        CFG80211DBG(RT_DEBUG_INFO, ("mt7610u: crda: regulation request by user: "));
         break;
 
     case NL80211_REGDOM_SET_BY_DRIVER:
@@ -2264,7 +2198,7 @@ static INT32 CFG80211_RegNotifier(
         	its knows the regulatory domain we should be in.
         	(when driver initialization, calling regulatory_hint)
         */
-        CFG80211DBG(RT_DEBUG_ERROR, ("mt7610u: crda: requlation requestion by driver: "));
+        CFG80211DBG(RT_DEBUG_INFO, ("mt7610u: crda: regulation request by driver: "));
         break;
 
     case NL80211_REGDOM_SET_BY_COUNTRY_IE:
@@ -2273,11 +2207,11 @@ static INT32 CFG80211_RegNotifier(
         	element with regulatory information it thinks we should consider.
         	(when beacon receive, calling regulatory_hint_11d)
         */
-        CFG80211DBG(RT_DEBUG_ERROR, ("mt7610u: crda: requlation requestion by country IE: "));
+        CFG80211DBG(RT_DEBUG_INFO, ("mt7610u: crda: regulation request by country IE: "));
         break;
     } /* End of switch */
 
-    CFG80211DBG(RT_DEBUG_ERROR,
+    CFG80211DBG(RT_DEBUG_INFO,
                 ("%c%c\n", pRequest->alpha2[0], pRequest->alpha2[1]));
 
     /* only follow rules from user */
@@ -2356,7 +2290,7 @@ static INT32 CFG80211_RegNotifier(
         /*
         	Core queried CRDA for a dynamic world regulatory domain.
         */
-        CFG80211DBG(RT_DEBUG_ERROR, ("mt7610u: crda: requlation requestion by core: "));
+        CFG80211DBG(RT_DEBUG_INFO, ("mt7610u: crda: regulation request by core: "));
         break;
 
     case REGDOM_SET_BY_USER:
@@ -2364,7 +2298,7 @@ static INT32 CFG80211_RegNotifier(
         	User asked the wireless core to set the regulatory domain.
         	(when iw, network manager, wpa supplicant, etc.)
         */
-        CFG80211DBG(RT_DEBUG_ERROR, ("mt7610u: crda: requlation requestion by user: "));
+        CFG80211DBG(RT_DEBUG_INFO, ("mt7610u: crda: regulation request by user: "));
         break;
 
     case REGDOM_SET_BY_DRIVER:
@@ -2373,7 +2307,7 @@ static INT32 CFG80211_RegNotifier(
         	its knows the regulatory domain we should be in.
         	(when driver initialization, calling regulatory_hint)
         */
-        CFG80211DBG(RT_DEBUG_ERROR, ("mt7610u: crda: requlation requestion by driver: "));
+        CFG80211DBG(RT_DEBUG_INFO, ("mt7610u: crda: regulation request by driver: "));
         break;
 
     case REGDOM_SET_BY_COUNTRY_IE:
@@ -2382,11 +2316,11 @@ static INT32 CFG80211_RegNotifier(
         	element with regulatory information it thinks we should consider.
         	(when beacon receive, calling regulatory_hint_11d)
         */
-        CFG80211DBG(RT_DEBUG_ERROR, ("mt7610u: crda: requlation requestion by country IE: "));
+        CFG80211DBG(RT_DEBUG_INFO, ("mt7610u: crda: regulation request by country IE: "));
         break;
     } /* End of switch */
 
-    DBGPRINT(RT_DEBUG_ERROR, ("00\n"));
+    DBGPRINT(RT_DEBUG_INFO, ("00\n"));
 
     /* only follow rules from user */
     if(ReqType == REGDOM_SET_BY_USER)

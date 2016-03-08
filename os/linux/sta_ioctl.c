@@ -528,13 +528,13 @@ int rt_ioctl_giwpriv(
     {
         //Turn on Wi-Fi hardware
         //OK if successful
-        printk("sSTART Turn on Wi-Fi hardware \n");
+        printk("sSTART Turn on Wi-Fi hardware\n");
         kfree(ext);
         return -1;
     }
     else if(strcasecmp(ext,"STOP") == 0)
     {
-        printk("STOP Turn off  Wi-Fi hardware \n");
+        printk("STOP Turn off  Wi-Fi hardware\n");
         kfree(ext);
         return -1;
     }
@@ -2094,7 +2094,7 @@ int rt_ioctl_siwencodeext(struct net_device *dev,
         pIoctlSec->Alg = RT_CMD_STA_IOCTL_SECURITY_ALG_CCMP;
     else
     {
-        DBGPRINT(RT_DEBUG_WARN, ("Warning: Security type is not supported. (alg = %d) \n", alg));
+        DBGPRINT(RT_DEBUG_WARN, ("Warning: Security type is not supported. (alg = %d)\n", alg));
         pIoctlSec->Alg = alg;
         return -EOPNOTSUPP;
     }

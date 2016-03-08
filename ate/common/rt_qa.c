@@ -504,7 +504,7 @@ BOOLEAN SyncTxRxConfig(PRTMP_ADAPTER pAd, USHORT offset, UCHAR value)
             break;
 
         default:
-            DBGPRINT_ERR(("%s -- Sth. wrong!  : return FALSE; \n", __FUNCTION__));
+            DBGPRINT_ERR(("%s -- something wrong!  : return FALSE;\n", __FUNCTION__));
             return FALSE;
         }
 
@@ -552,14 +552,14 @@ BOOLEAN SyncTxRxConfig(PRTMP_ADAPTER pAd, USHORT offset, UCHAR value)
             break;
 
         default:
-            DBGPRINT_ERR(("%s -- Impossible!  : return FALSE; \n", __FUNCTION__));
+            DBGPRINT_ERR(("%s -- impossible condition!  : return FALSE;\n", __FUNCTION__));
             return FALSE;
         }
 
         break;/* case BBP_R3 */
 
     default:
-        DBGPRINT_ERR(("%s -- Sth. wrong!  : return FALSE; \n", __FUNCTION__));
+        DBGPRINT_ERR(("%s -- something wrong!  : return FALSE;\n", __FUNCTION__));
         return FALSE;
 
     }
@@ -2847,10 +2847,10 @@ INT Set_EERead_Proc(
 
     for(offset = 0; offset < (EEPROM_SIZE >> 1); offset++)
     {
-        DBGPRINT(RT_DEBUG_OFF, ("%4.4x ", *p));
+        DBGPRINT(RT_DEBUG_TRACE, ("%4.4x ", *p));
 
         if(((offset+1) % 16) == 0)
-            DBGPRINT(RT_DEBUG_OFF, ("\n"));
+            DBGPRINT(RT_DEBUG_TRACE, ("\n"));
 
         p++;
     }
@@ -2903,7 +2903,7 @@ INT Set_BBPRead_Proc(
 
     ATE_BBPRead(pAd, offset, &value);
 
-    DBGPRINT(RT_DEBUG_OFF, ("%x\n", value));
+    DBGPRINT(RT_DEBUG_TRACE, ("%x\n", value));
 
     return TRUE;
 }

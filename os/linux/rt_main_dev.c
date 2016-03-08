@@ -218,7 +218,7 @@ int rt28xx_close(VOID *dev)
 
     GET_PAD_FROM_NET_DEV(pAd, net_dev);
 
-    DBGPRINT(RT_DEBUG_ERROR, ("===> rt28xx_close\n"));
+    DBGPRINT(RT_DEBUG_INFO, ("rt28xx_close()\n"));
 
     if(pAd == NULL)
         return 0; /* close ok */
@@ -233,7 +233,7 @@ int rt28xx_close(VOID *dev)
     printk("Number of Packet Freed in open = %lu\n", OS_NumOfPktFree);
 #endif /* VENDOR_FEATURE2_SUPPORT */
 
-    DBGPRINT(RT_DEBUG_ERROR, ("<=== rt28xx_close\n"));
+    DBGPRINT(RT_DEBUG_INFO, ("rt28xx_close() ended\n"));
     return 0;
 }
 

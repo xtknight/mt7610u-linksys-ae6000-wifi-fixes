@@ -688,7 +688,7 @@ VOID RTMPUpdateHTIE(
     pAddHtInfo->AddHtInfo2.NonGfPresent = pRtHt->NonGfPresent;
     RTMPMoveMemory(pAddHtInfo->MCSSet, /*pRtHt->MCSSet*/pMcsSet, 4); /* rt2860 only support MCS max=32, no need to copy all 16 uchar.*/
 
-    DBGPRINT(RT_DEBUG_TRACE,("RTMPUpdateHTIE <== \n"));
+    DBGPRINT(RT_DEBUG_TRACE,("RTMPUpdateHTIE <==\n"));
 }
 
 #endif /* DOT11_N_SUPPORT */

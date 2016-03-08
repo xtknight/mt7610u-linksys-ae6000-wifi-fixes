@@ -105,35 +105,35 @@ VOID dump_vht_cap(RTMP_ADAPTER *pAd, VHT_CAP_IE *vht_ie)
     VHT_CAP_INFO *vht_cap = &vht_ie->vht_cap;
     VHT_MCS_SET *vht_mcs = &vht_ie->mcs_set;
 
-    DBGPRINT(RT_DEBUG_OFF, ("Dump VHT_CAP IE\n"));
+    DBGPRINT(RT_DEBUG_ERROR, ("Dump VHT_CAP IE\n"));
     hex_dump("VHT CAP IE Raw Data", (UCHAR *)vht_ie, sizeof(VHT_CAP_IE));
 
-    DBGPRINT(RT_DEBUG_OFF, ("VHT Capabilities Info Field\n"));
-    DBGPRINT(RT_DEBUG_OFF, ("\tMaximum MPDU Length=%d\n", vht_cap->max_mpdu_len));
-    DBGPRINT(RT_DEBUG_OFF, ("\tSupported Channel Width=%d\n", vht_cap->ch_width));
-    DBGPRINT(RT_DEBUG_OFF, ("\tRxLDPC=%d\n", vht_cap->rx_ldpc));
-    DBGPRINT(RT_DEBUG_OFF, ("\tShortGI_80M=%d\n", vht_cap->sgi_80M));
-    DBGPRINT(RT_DEBUG_OFF, ("\tShortGI_160M=%d\n", vht_cap->sgi_160M));
-    DBGPRINT(RT_DEBUG_OFF, ("\tTxSTBC=%d\n", vht_cap->tx_stbc));
-    DBGPRINT(RT_DEBUG_OFF, ("\tRxSTBC=%d\n", vht_cap->rx_stbc));
-    DBGPRINT(RT_DEBUG_OFF, ("\tSU BeamformerCap=%d\n", vht_cap->bfer_cap_su));
-    DBGPRINT(RT_DEBUG_OFF, ("\tSU BeamformeeCap=%d\n", vht_cap->bfee_cap_su));
-    DBGPRINT(RT_DEBUG_OFF, ("\tCompressedSteeringNumOfBeamformerAnt=%d\n", vht_cap->cmp_st_num_bfer));
-    DBGPRINT(RT_DEBUG_OFF, ("\tNumber of Sounding Dimensions=%d\n", vht_cap->num_snd_dimension));
-    DBGPRINT(RT_DEBUG_OFF, ("\tMU BeamformerCap=%d\n", vht_cap->bfer_cap_mu));
-    DBGPRINT(RT_DEBUG_OFF, ("\tMU BeamformeeCap=%d\n", vht_cap->bfee_cap_mu));
-    DBGPRINT(RT_DEBUG_OFF, ("\tVHT TXOP PS=%d\n", vht_cap->vht_txop_ps));
-    DBGPRINT(RT_DEBUG_OFF, ("\t+HTC-VHT Capable=%d\n", vht_cap->htc_vht_cap));
-    DBGPRINT(RT_DEBUG_OFF, ("\tMaximum A-MPDU Length Exponent=%d\n", vht_cap->max_ampdu_exp));
-    DBGPRINT(RT_DEBUG_OFF, ("\tVHT LinkAdaptation Capable=%d\n", vht_cap->vht_link_adapt));
+    DBGPRINT(RT_DEBUG_ERROR, ("VHT Capabilities Info Field\n"));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tMaximum MPDU Length=%d\n", vht_cap->max_mpdu_len));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tSupported Channel Width=%d\n", vht_cap->ch_width));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tRxLDPC=%d\n", vht_cap->rx_ldpc));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tShortGI_80M=%d\n", vht_cap->sgi_80M));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tShortGI_160M=%d\n", vht_cap->sgi_160M));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tTxSTBC=%d\n", vht_cap->tx_stbc));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tRxSTBC=%d\n", vht_cap->rx_stbc));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tSU BeamformerCap=%d\n", vht_cap->bfer_cap_su));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tSU BeamformeeCap=%d\n", vht_cap->bfee_cap_su));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tCompressedSteeringNumOfBeamformerAnt=%d\n", vht_cap->cmp_st_num_bfer));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tNumber of Sounding Dimensions=%d\n", vht_cap->num_snd_dimension));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tMU BeamformerCap=%d\n", vht_cap->bfer_cap_mu));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tMU BeamformeeCap=%d\n", vht_cap->bfee_cap_mu));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tVHT TXOP PS=%d\n", vht_cap->vht_txop_ps));
+    DBGPRINT(RT_DEBUG_ERROR, ("\t+HTC-VHT Capable=%d\n", vht_cap->htc_vht_cap));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tMaximum A-MPDU Length Exponent=%d\n", vht_cap->max_ampdu_exp));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tVHT LinkAdaptation Capable=%d\n", vht_cap->vht_link_adapt));
 
-    DBGPRINT(RT_DEBUG_OFF, ("VHT Supported MCS Set Field\n"));
-    DBGPRINT(RT_DEBUG_OFF, ("\tRx Highest SupDataRate=%d\n", vht_mcs->rx_high_rate));
-    DBGPRINT(RT_DEBUG_OFF, ("\tRxMCS Map_1SS=%d\n", vht_mcs->rx_mcs_map.mcs_ss1));
-    DBGPRINT(RT_DEBUG_OFF, ("\tRxMCS Map_2SS=%d\n", vht_mcs->rx_mcs_map.mcs_ss2));
-    DBGPRINT(RT_DEBUG_OFF, ("\tTx Highest SupDataRate=%d\n", vht_mcs->tx_high_rate));
-    DBGPRINT(RT_DEBUG_OFF, ("\tTxMCS Map_1SS=%d\n", vht_mcs->tx_mcs_map.mcs_ss1));
-    DBGPRINT(RT_DEBUG_OFF, ("\tTxMCS Map_2SS=%d\n", vht_mcs->tx_mcs_map.mcs_ss2));
+    DBGPRINT(RT_DEBUG_ERROR, ("VHT Supported MCS Set Field\n"));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tRx Highest SupDataRate=%d\n", vht_mcs->rx_high_rate));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tRxMCS Map_1SS=%d\n", vht_mcs->rx_mcs_map.mcs_ss1));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tRxMCS Map_2SS=%d\n", vht_mcs->rx_mcs_map.mcs_ss2));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tTx Highest SupDataRate=%d\n", vht_mcs->tx_high_rate));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tTxMCS Map_1SS=%d\n", vht_mcs->tx_mcs_map.mcs_ss1));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tTxMCS Map_2SS=%d\n", vht_mcs->tx_mcs_map.mcs_ss2));
 }
 
 
@@ -142,17 +142,17 @@ VOID dump_vht_op(RTMP_ADAPTER *pAd, VHT_OP_IE *vht_ie)
     VHT_OP_INFO *vht_op = &vht_ie->vht_op_info;
     VHT_MCS_MAP *vht_mcs = &vht_ie->basic_mcs_set;
 
-    DBGPRINT(RT_DEBUG_OFF, ("Dump VHT_OP IE\n"));
+    DBGPRINT(RT_DEBUG_ERROR, ("Dump VHT_OP IE\n"));
     hex_dump("VHT OP IE Raw Data", (UCHAR *)vht_ie, sizeof(VHT_OP_IE));
 
-    DBGPRINT(RT_DEBUG_OFF, ("VHT Operation Info Field\n"));
-    DBGPRINT(RT_DEBUG_OFF, ("\tChannelWidth=%d\n", vht_op->ch_width));
-    DBGPRINT(RT_DEBUG_OFF, ("\tChannelCenterFrequency Seg 1=%d\n", vht_op->center_freq_1));
-    DBGPRINT(RT_DEBUG_OFF, ("\tChannelCenterFrequency Seg 1=%d\n", vht_op->center_freq_2));
+    DBGPRINT(RT_DEBUG_ERROR, ("VHT Operation Info Field\n"));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tChannelWidth=%d\n", vht_op->ch_width));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tChannelCenterFrequency Seg 1=%d\n", vht_op->center_freq_1));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tChannelCenterFrequency Seg 1=%d\n", vht_op->center_freq_2));
 
-    DBGPRINT(RT_DEBUG_OFF, ("VHT Basic MCS Set Field\n"));
-    DBGPRINT(RT_DEBUG_OFF, ("\tRxMCS Map_1SS=%d\n", vht_mcs->mcs_ss1));
-    DBGPRINT(RT_DEBUG_OFF, ("\tRxMCS Map_2SS=%d\n", vht_mcs->mcs_ss2));
+    DBGPRINT(RT_DEBUG_ERROR, ("VHT Basic MCS Set Field\n"));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tRxMCS Map_1SS=%d\n", vht_mcs->mcs_ss1));
+    DBGPRINT(RT_DEBUG_ERROR, ("\tRxMCS Map_2SS=%d\n", vht_mcs->mcs_ss2));
 }
 
 

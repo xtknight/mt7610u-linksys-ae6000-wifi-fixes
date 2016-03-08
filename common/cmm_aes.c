@@ -790,7 +790,7 @@ VOID RTMPConstructCCMPNonce(
     NdisMoveMemory(&nonce_hdr[n_offset], pHdr + 10, MAC_ADDR_LEN);
     n_offset += MAC_ADDR_LEN;
 
-    /* Fill in the PN. The PN field occupies octets 7¡V12.
+    /* Fill in the PN. The PN field occupies octets 7ï¿½V12.
     	The octets of PN shall be ordered so that PN0 is at octet index 12
     	and PN5 is at octet index 7. */
     for(i = 0; i < 6; i++)
@@ -1091,7 +1091,7 @@ VOID CCMP_test_vector(
     UINT8 res_buf[100];
     UINT res_len = 0;
 
-    printk("== CCMP test vector == \n");
+    printk("== CCMP test vector ==\n");
 
     /* Check AAD */
     NdisZeroMemory(res_buf, 100);
@@ -1173,7 +1173,7 @@ VOID CCMP_test_vector(
         }
     }
 
-    printk("== CCMP test vector == \n");
+    printk("== CCMP test vector ==\n");
 
 }
 

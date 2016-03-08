@@ -1394,7 +1394,7 @@ VOID AsicForceWakeup(
     IN PRTMP_ADAPTER pAd,
     IN BOOLEAN    bFromTx)
 {
-    DBGPRINT(RT_DEBUG_INFO, ("--> AsicForceWakeup \n"));
+    DBGPRINT(RT_DEBUG_INFO, ("--> AsicForceWakeup\n"));
     RTMP_STA_FORCE_WAKEUP(pAd, bFromTx);
 }
 #endif /* CONFIG_STA_SUPPORT */
@@ -2147,7 +2147,7 @@ VOID AsicAddSharedKeyEntry(
 
     /* Update cipher algorithm. WSTA always use BSS0*/
     RTMP_IO_READ32(pAd, SharedKeyModeBase+4*(BssIndex/2), &csr1.word);
-    DBGPRINT(RT_DEBUG_TRACE,("Read: SHARED_KEY_MODE_BASE at this Bss[%d] KeyIdx[%d]= 0x%x \n", BssIndex,KeyIdx, csr1.word));
+    DBGPRINT(RT_DEBUG_TRACE,("Read: SHARED_KEY_MODE_BASE at this Bss[%d] KeyIdx[%d]= 0x%x\n", BssIndex,KeyIdx, csr1.word));
 
     if((BssIndex%2) == 0)
     {
@@ -2172,7 +2172,7 @@ VOID AsicAddSharedKeyEntry(
             csr1.field.Bss1Key3CipherAlg = CipherAlg;
     }
 
-    DBGPRINT(RT_DEBUG_TRACE,("Write: SHARED_KEY_MODE_BASE at this Bss[%d] = 0x%x \n", BssIndex, csr1.word));
+    DBGPRINT(RT_DEBUG_TRACE,("Write: SHARED_KEY_MODE_BASE at this Bss[%d] = 0x%x\n", BssIndex, csr1.word));
     RTMP_IO_WRITE32(pAd, SharedKeyModeBase+4*(BssIndex/2), csr1.word);
 
 }
@@ -2187,7 +2187,7 @@ VOID AsicRemoveSharedKeyEntry(
     SHAREDKEY_MODE_STRUC csr1;
     UINT16 SharedKeyTableBase, SharedKeyModeBase;
 
-    DBGPRINT(RT_DEBUG_TRACE,("AsicRemoveSharedKeyEntry: #%d \n", BssIndex*4 + KeyIdx));
+    DBGPRINT(RT_DEBUG_TRACE,("AsicRemoveSharedKeyEntry: #%d\n", BssIndex*4 + KeyIdx));
 
     if(BssIndex >= 8)
     {
@@ -2226,7 +2226,7 @@ VOID AsicRemoveSharedKeyEntry(
             csr1.field.Bss1Key3CipherAlg = 0;
     }
 
-    DBGPRINT(RT_DEBUG_TRACE,("Write: SHARED_KEY_MODE_BASE at this Bss[%d] = 0x%x \n", BssIndex, csr1.word));
+    DBGPRINT(RT_DEBUG_TRACE,("Write: SHARED_KEY_MODE_BASE at this Bss[%d] = 0x%x\n", BssIndex, csr1.word));
     RTMP_IO_WRITE32(pAd, SharedKeyModeBase+4*(BssIndex/2), csr1.word);
     ASSERT(BssIndex < 4);
     ASSERT(KeyIdx < 4);
@@ -2246,7 +2246,7 @@ VOID AsicUpdateWCIDIVEIV(
     RTMP_IO_WRITE32(pAd, offset, uIV);
     RTMP_IO_WRITE32(pAd, offset + 4, uEIV);
 
-    DBGPRINT(RT_DEBUG_TRACE, ("%s: wcid(%d) 0x%08lx, 0x%08lx \n",
+    DBGPRINT(RT_DEBUG_TRACE, ("%s: wcid(%d) 0x%08lx, 0x%08lx\n",
                               __FUNCTION__, WCID, uIV, uEIV));
 }
 
@@ -2301,7 +2301,7 @@ VOID	AsicUpdateWcidAttributeEntry(
     /* The limitation of HW WCID table */
     if(/*Wcid < 1 ||*/ Wcid > 254)
     {
-        DBGPRINT(RT_DEBUG_WARN, ("%s: Wcid is invalid (%d). \n",
+        DBGPRINT(RT_DEBUG_WARN, ("%s: Wcid is invalid (%d).\n",
                                  __FUNCTION__, Wcid));
         return;
     }
@@ -2325,7 +2325,7 @@ VOID	AsicUpdateWcidAttributeEntry(
     RTMP_IO_WRITE32(pAd, offset, WCIDAttri.word);
 
     DBGPRINT(RT_DEBUG_TRACE, ("%s : WCID #%d, KeyIndex #%d, Alg=%s\n", __FUNCTION__, Wcid, KeyIdx, CipherName[CipherAlg]));
-    DBGPRINT(RT_DEBUG_TRACE, ("		WCIDAttri = 0x%x \n", WCIDAttri.word));
+    DBGPRINT(RT_DEBUG_TRACE, ("		WCIDAttri = 0x%x\n", WCIDAttri.word));
 
 }
 
@@ -2473,7 +2473,7 @@ VOID AsicRemovePairwiseKeyEntry(
                                  Wcid,
                                  PAIRWISEKEYTABLE);
 
-    DBGPRINT(RT_DEBUG_TRACE, ("%s : Wcid #%d \n", __FUNCTION__, Wcid));
+    DBGPRINT(RT_DEBUG_TRACE, ("%s : Wcid #%d\n", __FUNCTION__, Wcid));
 }
 
 BOOLEAN AsicSendCommandToMcu(
@@ -2590,11 +2590,11 @@ VOID AsicTurnOffRFClk(
                     {
                         RTMP_RF_IO_WRITE32(pAd, R3);
 
-                        DBGPRINT(RT_DEBUG_TRACE, ("AsicTurnOffRFClk#%d(RF=%d, ) , R2=0x%08x,  R3 = 0x%08x \n",
+                        DBGPRINT(RT_DEBUG_TRACE, ("AsicTurnOffRFClk#%d(RF=%d, ) , R2=0x%08x,  R3 = 0x%08x\n",
                                                   Channel, pAd->RfIcType, R2, R3));
                     }
                     else
-                        DBGPRINT(RT_DEBUG_TRACE, ("AsicTurnOffRFClk#%d(RF=%d, ) , R2=0x%08x \n",
+                        DBGPRINT(RT_DEBUG_TRACE, ("AsicTurnOffRFClk#%d(RF=%d, ) , R2=0x%08x\n",
                                                   Channel, pAd->RfIcType, R2));
 
                     break;
@@ -2813,29 +2813,29 @@ VOID AsicWOWSendNullFrame(
     NullFrame = (PUCHAR)&pAd->NullFrame;
     packet_len = TxWI->TxWIMPDUByteCnt;
 
-    DBGPRINT(RT_DEBUG_OFF, ("TxWI:\n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("TxWI:\n"));
     /* copy TxWI to MCU memory */
     ptr = (PUCHAR)TxWI;
 
     for(offset = 0; offset < TXWISize; offset += 4)
     {
         RTMPMoveMemory(&Value, ptr+offset, 4);
-        DBGPRINT(RT_DEBUG_OFF, ("offset: %02d %08x\n", offset, Value));
+        DBGPRINT(RT_DEBUG_TRACE, ("offset: %02d %08x\n", offset, Value));
         RTMP_IO_WRITE32(pAd, HW_NULL2_BASE + offset, Value);
     }
 
-    DBGPRINT(RT_DEBUG_OFF, ("802.11 header:\n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("802.11 header:\n"));
     /* copy 802.11 header to memory */
     ptr = (PUCHAR)NullFrame;
 
     for(offset = 0; offset < packet_len; offset += 4)
     {
         RTMPMoveMemory(&Value, ptr+offset, 4);
-        DBGPRINT(RT_DEBUG_OFF, ("offset: %02d %08x\n", offset, Value));
+        DBGPRINT(RT_DEBUG_TRACE, ("offset: %02d %08x\n", offset, Value));
         RTMP_IO_WRITE32(pAd, HW_NULL2_BASE + TXWISize + offset, Value);
     }
 
-    DBGPRINT(RT_DEBUG_OFF, ("Write GroupCipher Mode: %d\n", pAd->StaCfg.GroupCipher));
+    DBGPRINT(RT_DEBUG_TRACE, ("Write GroupCipher Mode: %d\n", pAd->StaCfg.GroupCipher));
 
     RTMP_IO_READ32(pAd, SHARED_KEY_MODE_BASE, &Value);
 

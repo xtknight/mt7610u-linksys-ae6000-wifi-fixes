@@ -151,7 +151,7 @@ VOID MlmeDynamicTxRateSwitching(
 #endif /* RT3290 */
 
             DBGPRINT(RT_DEBUG_INFO | DBG_FUNC_RA,
-                     ("DRS:Aid=%d, TxSuccess=%ld, TxRetransmit=%ld, TxFailCount=%ld \n",
+                     ("DRS:Aid=%d, TxSuccess=%ld, TxRetransmit=%ld, TxFailCount=%ld\n",
                       pEntry->Aid, TxSuccess, TxRetransmit, TxFailCount));
 
 #ifdef AGS_SUPPORT
@@ -925,7 +925,7 @@ VOID StaQuickResponeForRateUpExec(
             /* if rate-up happen, clear all bad history of all TX rates */
             if(pEntry->LastSecTxRateChangeAction == RATE_DOWN)
             {
-                /* DBGPRINT_RAW(RT_DEBUG_INFO,("   QuickDRS: ++TX rate from %d to %d \n", CurrRateIdx, pEntry->CurrTxRateIndex)); */
+                /* DBGPRINT_RAW(RT_DEBUG_INFO,("   QuickDRS: ++TX rate from %d to %d\n", CurrRateIdx, pEntry->CurrTxRateIndex)); */
 
                 pEntry->TxRateUpPenalty = 0;
 
@@ -935,7 +935,7 @@ VOID StaQuickResponeForRateUpExec(
             /* if rate-down happen, only clear DownRate's bad history */
             else if(pEntry->LastSecTxRateChangeAction == RATE_UP)
             {
-                /* DBGPRINT_RAW(RT_DEBUG_INFO,("   QuickDRS: --TX rate from %d to %d \n", CurrRateIdx, pEntry->CurrTxRateIndex)); */
+                /* DBGPRINT_RAW(RT_DEBUG_INFO,("   QuickDRS: --TX rate from %d to %d\n", CurrRateIdx, pEntry->CurrTxRateIndex)); */
 
                 pEntry->TxRateUpPenalty = 0;           /* no penalty */
                 MlmeSetTxQuality(pEntry, pEntry->CurrTxRateIndex, 0);
@@ -1006,7 +1006,7 @@ VOID MlmeOldRateAdapt(
             pEntry->CurrTxRateIndex = pEntry->lastNonBfRate;
             pEntry->phyETxBf = pEntry->phyITxBf = FALSE;
             MlmeNewTxRate(pAd, pEntry);
-            DBGPRINT_RAW(RT_DEBUG_INFO | DBG_FUNC_RA,("DRS: --TX rate from %d to %d \n", CurrRateIdx, pEntry->CurrTxRateIndex));
+            DBGPRINT_RAW(RT_DEBUG_INFO | DBG_FUNC_RA,("DRS: --TX rate from %d to %d\n", CurrRateIdx, pEntry->CurrTxRateIndex));
             return;
         }
         else

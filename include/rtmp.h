@@ -3345,7 +3345,7 @@ struct _RTMP_ADAPTER
 #ifdef RTMP_EFUSE_SUPPORT
     BOOLEAN bUseEfuse;
     BOOLEAN bEEPROMFile;
-    BOOLEAN bFroceEEPROMBuffer;
+    BOOLEAN bForceEEPROMBuffer;
     UCHAR EEPROMImage[1024];
 #endif /* RTMP_EFUSE_SUPPORT */
 
@@ -7474,7 +7474,7 @@ NTSTATUS RTUSBFirmwareWrite(
     IN PUCHAR		pFwImage,
     IN ULONG		FwLen);
 
-NTSTATUS	RTUSBVenderReset(
+NTSTATUS	RTUSBVendorReset(
     IN	PRTMP_ADAPTER	pAd);
 
 NDIS_STATUS RTUSBSetHardWareRegister(

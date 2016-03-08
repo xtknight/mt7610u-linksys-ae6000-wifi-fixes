@@ -70,7 +70,7 @@ RTMP_DECLARE_DRV_OPS_FUNCTION(usb);
 #else
 
 #ifdef RTMP_MAC_USB
-#define RTMP_DRV_NAME	"rt2870"
+#define RTMP_DRV_NAME	"mt7610u"
 #ifdef HE_SUPPORT
 #define RTMP_DRV_NAME   "rtsta"
 #endif

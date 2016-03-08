@@ -83,7 +83,7 @@ VOID TxSwQDepthAdjust(IN RTMP_ADAPTER *pAd, IN UINT32 qLen)
 
     RTMP_IRQ_UNLOCK(&pAd->irq_lock, IrqFlags);
 
-    DBGPRINT(RT_DEBUG_OFF, ("%s():Set TxSwQMaxLen as %d\n",
+    DBGPRINT(RT_DEBUG_TRACE, ("%s():Set TxSwQMaxLen as %d\n",
                             __FUNCTION__, pAd->TxSwQMaxLen));
 }
 

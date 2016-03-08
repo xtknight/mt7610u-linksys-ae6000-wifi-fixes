@@ -147,7 +147,7 @@ VOID WpaEAPOLStartAction(
 #ifdef CONFIG_STA_SUPPORT
 #endif /* CONFIG_STA_SUPPORT */
 
-    DBGPRINT(RT_DEBUG_TRACE, ("WpaEAPOLStartAction ===> \n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("WpaEAPOLStartAction ===>\n"));
 
     pHeader = (PHEADER_802_11)Elem->Msg;
 
@@ -161,7 +161,7 @@ VOID WpaEAPOLStartAction(
 
     if(pEntry)
     {
-        DBGPRINT(RT_DEBUG_TRACE, (" PortSecured(%d), WpaState(%d), AuthMode(%d), PMKID_CacheIdx(%d) \n", pEntry->PortSecured, pEntry->WpaState, pEntry->AuthMode, pEntry->PMKID_CacheIdx));
+        DBGPRINT(RT_DEBUG_TRACE, (" PortSecured(%d), WpaState(%d), AuthMode(%d), PMKID_CacheIdx(%d)\n", pEntry->PortSecured, pEntry->WpaState, pEntry->AuthMode, pEntry->PMKID_CacheIdx));
 
         if((pEntry->PortSecured == WPA_802_1X_PORT_NOT_SECURED)
                 && (pEntry->WpaState < AS_PTKSTART)
@@ -230,7 +230,7 @@ VOID WpaEAPOLKeyAction(
 
         if(eapol_len > Elem->MsgLen - LENGTH_802_11 - LENGTH_802_1_H)
         {
-            DBGPRINT(RT_DEBUG_ERROR, ("The length of EAPoL packet is invalid \n"));
+            DBGPRINT(RT_DEBUG_ERROR, ("The length of EAPoL packet is invalid\n"));
             break;
         }
 
@@ -245,7 +245,7 @@ VOID WpaEAPOLKeyAction(
         /* neither the group nor pairwise ciphers are CCMP for Key Descriptor 1.*/
         if((pEntry->WepStatus == Ndis802_11Encryption2Enabled) && (peerKeyInfo.KeyDescVer != KEY_DESC_TKIP))
         {
-            DBGPRINT(RT_DEBUG_ERROR, ("Key descripter version not match(TKIP) \n"));
+            DBGPRINT(RT_DEBUG_ERROR, ("Key descripter version not match(TKIP)\n"));
             break;
         }
         /* The value 2 shall be used for all EAPOL-Key frames to and from a STA when */
@@ -487,7 +487,7 @@ BOOLEAN PeerWpaMessageSanity(
     /* 0. Check MsgType*/
     if((MsgType > EAPOL_GROUP_MSG_2) || (MsgType < EAPOL_PAIR_MSG_1))
     {
-        DBGPRINT(RT_DEBUG_ERROR, ("The message type is invalid(%d)! \n", MsgType));
+        DBGPRINT(RT_DEBUG_ERROR, ("The message type is invalid(%d)!\n", MsgType));
         goto LabelErr;
     }
 
@@ -746,7 +746,7 @@ VOID WPAStart4WayHS(
 
     os_free_mem(NULL, mpool);
 
-    DBGPRINT(RT_DEBUG_TRACE, ("<=== WPAStart4WayHS: send Msg1 of 4-way \n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("<=== WPAStart4WayHS: send Msg1 of 4-way\n"));
 
 }
 
@@ -784,7 +784,7 @@ VOID PeerPairMsg1Action(
     PUINT8				rsnie_ptr = NULL;
     UCHAR				rsnie_len = 0;
 
-    DBGPRINT(RT_DEBUG_TRACE, ("===> PeerPairMsg1Action \n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("===> PeerPairMsg1Action\n"));
 
     if((!pEntry) || (!IS_ENTRY_CLIENT(pEntry) && !IS_ENTRY_APCLI(pEntry)))
         return;
@@ -877,7 +877,7 @@ VOID PeerPairMsg1Action(
 
     os_free_mem(NULL, mpool);
 
-    DBGPRINT(RT_DEBUG_TRACE, ("<=== PeerPairMsg1Action: send Msg2 of 4-way \n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("<=== PeerPairMsg1Action: send Msg2 of 4-way\n"));
 }
 
 
@@ -910,7 +910,7 @@ VOID PeerPairMsg2Action(
     PUINT8				rsnie_ptr = NULL;
     UCHAR				rsnie_len = 0;
 
-    DBGPRINT(RT_DEBUG_TRACE, ("===> PeerPairMsg2Action \n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("===> PeerPairMsg2Action\n"));
 
     if((!pEntry) || !IS_ENTRY_CLIENT(pEntry))
         return;
@@ -1012,7 +1012,7 @@ VOID PeerPairMsg2Action(
     }
     while(FALSE);
 
-    DBGPRINT(RT_DEBUG_TRACE, ("<=== PeerPairMsg2Action: send Msg3 of 4-way \n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("<=== PeerPairMsg2Action: send Msg3 of 4-way\n"));
 }
 
 /*
@@ -1046,7 +1046,7 @@ VOID PeerPairMsg3Action(
     PUINT8				pCurrentAddr = NULL;
     UCHAR				group_cipher = Ndis802_11WEPDisabled;
 
-    DBGPRINT(RT_DEBUG_TRACE, ("===> PeerPairMsg3Action \n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("===> PeerPairMsg3Action\n"));
 
     if((!pEntry) || (!IS_ENTRY_CLIENT(pEntry) && !IS_ENTRY_APCLI(pEntry)))
         return;
@@ -1137,7 +1137,7 @@ VOID PeerPairMsg3Action(
 #ifdef CONFIG_STA_SUPPORT
         STA_PORT_SECURED(pAd);
 #endif /* CONFIG_STA_SUPPORT */
-        DBGPRINT(RT_DEBUG_TRACE, ("PeerPairMsg3Action: AuthMode(%s) PairwiseCipher(%s) GroupCipher(%s) \n",
+        DBGPRINT(RT_DEBUG_TRACE, ("PeerPairMsg3Action: AuthMode(%s) PairwiseCipher(%s) GroupCipher(%s)\n",
                                   GetAuthMode(pEntry->AuthMode),
                                   GetEncryptType(pEntry->WepStatus),
                                   GetEncryptType(group_cipher)));
@@ -1156,7 +1156,7 @@ VOID PeerPairMsg3Action(
     os_free_mem(NULL, mpool);
 
 
-    DBGPRINT(RT_DEBUG_TRACE, ("<=== PeerPairMsg3Action: send Msg4 of 4-way \n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("<=== PeerPairMsg3Action: send Msg4 of 4-way\n"));
 }
 
 /*
@@ -1222,7 +1222,7 @@ VOID PeerPairMsg4Action(
             /* send wireless event - for set key done WPA2*/
             RTMPSendWirelessEvent(pAd, IW_SET_KEY_DONE_WPA2_EVENT_FLAG, pEntry->Addr, pEntry->apidx, 0);
 
-            DBGPRINT(RT_DEBUG_OFF, ("AP SETKEYS DONE - WPA2, AuthMode(%d)=%s, WepStatus(%d)=%s, GroupWepStatus(%d)=%s\n",
+            DBGPRINT(RT_DEBUG_TRACE, ("AP SETKEYS DONE - WPA2, AuthMode(%d)=%s, WepStatus(%d)=%s, GroupWepStatus(%d)=%s\n",
                                     pEntry->AuthMode, GetAuthMode(pEntry->AuthMode),
                                     pEntry->WepStatus, GetEncryptType(pEntry->WepStatus),
                                     group_cipher,
@@ -1311,7 +1311,7 @@ VOID WPAStart2WayGroupHS(
 
     os_free_mem(NULL, mpool);
 
-    DBGPRINT(RT_DEBUG_TRACE, ("<=== WPAStart2WayGroupHS : send out Group Message 1 \n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("<=== WPAStart2WayGroupHS : send out Group Message 1\n"));
 
     return;
 }
@@ -1350,7 +1350,7 @@ VOID	PeerGroupMsg1Action(
     BOOLEAN             Cancelled;
 #endif /* APCLI_SUPPORT */
 
-    DBGPRINT(RT_DEBUG_TRACE, ("===> PeerGroupMsg1Action \n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("===> PeerGroupMsg1Action\n"));
 
     if((!pEntry) || (!IS_ENTRY_CLIENT(pEntry) && !IS_ENTRY_APCLI(pEntry)))
         return;
@@ -1413,7 +1413,7 @@ VOID	PeerGroupMsg1Action(
     STA_PORT_SECURED(pAd);
 #endif /* CONFIG_STA_SUPPORT */
 
-    DBGPRINT(RT_DEBUG_TRACE, ("PeerGroupMsg1Action: AuthMode(%s) PairwiseCipher(%s) GroupCipher(%s) \n",
+    DBGPRINT(RT_DEBUG_TRACE, ("PeerGroupMsg1Action: AuthMode(%s) PairwiseCipher(%s) GroupCipher(%s)\n",
                               GetAuthMode(pEntry->AuthMode),
                               GetEncryptType(pEntry->WepStatus),
                               GetEncryptType(group_cipher)));
@@ -1462,7 +1462,7 @@ VOID EnqueueStartForPSKExec(
         switch(pEntry->EnqueueEapolStartTimerRunning)
         {
         case EAPOL_START_PSK:
-            DBGPRINT(RT_DEBUG_TRACE, ("Enqueue EAPoL-Start-PSK for sta(%02x:%02x:%02x:%02x:%02x:%02x) \n", PRINT_MAC(pEntry->Addr)));
+            DBGPRINT(RT_DEBUG_TRACE, ("Enqueue EAPoL-Start-PSK for sta(%02x:%02x:%02x:%02x:%02x:%02x)\n", PRINT_MAC(pEntry->Addr)));
 
             MlmeEnqueue(pAd, WPA_STATE_MACHINE, MT2_EAPOLStart, 6, &pEntry->Addr, 0);
             break;
@@ -1500,7 +1500,7 @@ VOID MlmeDeAuthAction(
         /* send wireless event - for send disassication */
         RTMPSendWirelessEvent(pAd, IW_DEAUTH_EVENT_FLAG, pEntry->Addr, pEntry->apidx, 0);
 
-        DBGPRINT(RT_DEBUG_TRACE, ("Send DEAUTH frame with ReasonCode(%d) to %02x:%02x:%02x:%02x:%02x:%02x \n",Reason, PRINT_MAC(pEntry->Addr)));
+        DBGPRINT(RT_DEBUG_TRACE, ("Send DEAUTH frame with ReasonCode(%d) to %02x:%02x:%02x:%02x:%02x:%02x\n",Reason, PRINT_MAC(pEntry->Addr)));
 
 #ifdef CONFIG_STA_SUPPORT
         IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
@@ -1547,7 +1547,7 @@ VOID PeerGroupMsg2Action(
     PEAPOL_PACKET       pMsg2;
     UCHAR				group_cipher = Ndis802_11WEPDisabled;
 
-    DBGPRINT(RT_DEBUG_TRACE, ("===> PeerGroupMsg2Action \n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("===> PeerGroupMsg2Action\n"));
 
     if((!pEntry) || !IS_ENTRY_CLIENT(pEntry))
         return;
@@ -1581,7 +1581,7 @@ VOID PeerGroupMsg2Action(
             /* send wireless event - for set key done WPA2*/
             RTMPSendWirelessEvent(pAd, IW_SET_KEY_DONE_WPA2_EVENT_FLAG, pEntry->Addr, pEntry->apidx, 0);
 
-            DBGPRINT(RT_DEBUG_OFF, ("AP SETKEYS DONE - WPA2, AuthMode(%d)=%s, WepStatus(%d)=%s, GroupWepStatus(%d)=%s\n",
+            DBGPRINT(RT_DEBUG_TRACE, ("AP SETKEYS DONE - WPA2, AuthMode(%d)=%s, WepStatus(%d)=%s, GroupWepStatus(%d)=%s\n",
                                     pEntry->AuthMode, GetAuthMode(pEntry->AuthMode),
                                     pEntry->WepStatus, GetEncryptType(pEntry->WepStatus),
                                     group_cipher, GetEncryptType(group_cipher)));
@@ -1591,7 +1591,7 @@ VOID PeerGroupMsg2Action(
             /* send wireless event - for set key done WPA*/
             RTMPSendWirelessEvent(pAd, IW_SET_KEY_DONE_WPA1_EVENT_FLAG, pEntry->Addr, pEntry->apidx, 0);
 
-            DBGPRINT(RT_DEBUG_OFF, ("AP SETKEYS DONE - WPA1, AuthMode(%d)=%s, WepStatus(%d)=%s, GroupWepStatus(%d)=%s\n",
+            DBGPRINT(RT_DEBUG_TRACE, ("AP SETKEYS DONE - WPA1, AuthMode(%d)=%s, WepStatus(%d)=%s, GroupWepStatus(%d)=%s\n",
                                     pEntry->AuthMode, GetAuthMode(pEntry->AuthMode),
                                     pEntry->WepStatus, GetEncryptType(pEntry->WepStatus),
                                     group_cipher, GetEncryptType(group_cipher)));
@@ -2731,11 +2731,11 @@ BOOLEAN RTMPCheckWPAframe(
         break;
 
     case EAPOLStart:
-        DBGPRINT(RT_DEBUG_TRACE, ("Receive EAPOL-Start frame, TYPE = 1 \n"));
+        DBGPRINT(RT_DEBUG_TRACE, ("Receive EAPOL-Start frame, TYPE = 1\n"));
 
         if(pEntry->EnqueueEapolStartTimerRunning != EAPOL_START_DISABLE)
         {
-            DBGPRINT(RT_DEBUG_TRACE, ("Cancel the EnqueueEapolStartTimerRunning \n"));
+            DBGPRINT(RT_DEBUG_TRACE, ("Cancel the EnqueueEapolStartTimerRunning\n"));
             RTMPCancelTimer(&pEntry->EnqueueStartForPSKTimer, &Cancelled);
             pEntry->EnqueueEapolStartTimerRunning = EAPOL_START_DISABLE;
         }
@@ -2743,7 +2743,7 @@ BOOLEAN RTMPCheckWPAframe(
         break;
 
     case EAPOLLogoff:
-        DBGPRINT(RT_DEBUG_TRACE, ("Receive EAPOLLogoff frame, TYPE = 2 \n"));
+        DBGPRINT(RT_DEBUG_TRACE, ("Receive EAPOLLogoff frame, TYPE = 2\n"));
         break;
 
     case EAPOLKey:
@@ -2752,7 +2752,7 @@ BOOLEAN RTMPCheckWPAframe(
         break;
 
     case EAPOLASFAlert:
-        DBGPRINT(RT_DEBUG_TRACE, ("Receive EAPOLASFAlert frame, TYPE = 4 \n"));
+        DBGPRINT(RT_DEBUG_TRACE, ("Receive EAPOLASFAlert frame, TYPE = 4\n"));
         break;
 
     default:
@@ -2805,11 +2805,11 @@ BOOLEAN RTMPCheckWPAframe_Hdr_Trns(
         break;
 
     case EAPOLStart:
-        DBGPRINT(RT_DEBUG_TRACE, ("Receive EAPOL-Start frame, TYPE = 1 \n"));
+        DBGPRINT(RT_DEBUG_TRACE, ("Receive EAPOL-Start frame, TYPE = 1\n"));
 
         if(pEntry->EnqueueEapolStartTimerRunning != EAPOL_START_DISABLE)
         {
-            DBGPRINT(RT_DEBUG_TRACE, ("Cancel the EnqueueEapolStartTimerRunning \n"));
+            DBGPRINT(RT_DEBUG_TRACE, ("Cancel the EnqueueEapolStartTimerRunning\n"));
             RTMPCancelTimer(&pEntry->EnqueueStartForPSKTimer, &Cancelled);
             pEntry->EnqueueEapolStartTimerRunning = EAPOL_START_DISABLE;
         }
@@ -2817,7 +2817,7 @@ BOOLEAN RTMPCheckWPAframe_Hdr_Trns(
         break;
 
     case EAPOLLogoff:
-        DBGPRINT(RT_DEBUG_TRACE, ("Receive EAPOLLogoff frame, TYPE = 2 \n"));
+        DBGPRINT(RT_DEBUG_TRACE, ("Receive EAPOLLogoff frame, TYPE = 2\n"));
         break;
 
     case EAPOLKey:
@@ -2826,7 +2826,7 @@ BOOLEAN RTMPCheckWPAframe_Hdr_Trns(
         break;
 
     case EAPOLASFAlert:
-        DBGPRINT(RT_DEBUG_TRACE, ("Receive EAPOLASFAlert frame, TYPE = 4 \n"));
+        DBGPRINT(RT_DEBUG_TRACE, ("Receive EAPOLASFAlert frame, TYPE = 4\n"));
         break;
 
     default:
@@ -2996,14 +2996,14 @@ BOOLEAN RTMPParseEapolKeyData(
                 /* skip RSN IE*/
                 pMyKeyData += skip_offset;
                 KeyDataLength -= skip_offset;
-                DBGPRINT(RT_DEBUG_TRACE, ("RTMPParseEapolKeyData ==> WPA2/WPA2PSK RSN IE matched in Msg 3, Length(%d) \n", skip_offset));
+                DBGPRINT(RT_DEBUG_TRACE, ("RTMPParseEapolKeyData ==> WPA2/WPA2PSK RSN IE matched in Msg 3, Length(%d)\n", skip_offset));
             }
             else
                 return TRUE;
         }
     }
 
-    DBGPRINT(RT_DEBUG_TRACE,("RTMPParseEapolKeyData ==> KeyDataLength %d without RSN_IE \n", KeyDataLength));
+    DBGPRINT(RT_DEBUG_TRACE,("RTMPParseEapolKeyData ==> KeyDataLength %d without RSN_IE\n", KeyDataLength));
     /*hex_dump("remain data", pMyKeyData, KeyDataLength);*/
 
 
@@ -3039,12 +3039,12 @@ BOOLEAN RTMPParseEapolKeyData(
 
                         if(GTKLEN < LEN_WEP64)
                         {
-                            DBGPRINT(RT_DEBUG_ERROR, ("ERROR: GTK Key length is too short (%d) \n", GTKLEN));
+                            DBGPRINT(RT_DEBUG_ERROR, ("ERROR: GTK Key length is too short (%d)\n", GTKLEN));
                             return FALSE;
                         }
 
                         NdisMoveMemory(GTK, pKdeGtk->GTK, GTKLEN);
-                        DBGPRINT(RT_DEBUG_TRACE, ("GTK in KDE format ,DefaultKeyID=%d, KeyLen=%d \n", DefaultIdx, GTKLEN));
+                        DBGPRINT(RT_DEBUG_TRACE, ("GTK in KDE format ,DefaultKeyID=%d, KeyLen=%d\n", DefaultIdx, GTKLEN));
                     }
                 }
             }
@@ -3064,13 +3064,13 @@ BOOLEAN RTMPParseEapolKeyData(
         DefaultIdx = GroupKeyIndex;
         GTKLEN = KeyDataLength;
         NdisMoveMemory(GTK, pMyKeyData, KeyDataLength);
-        DBGPRINT(RT_DEBUG_TRACE, ("GTK without KDE, DefaultKeyID=%d, KeyLen=%d \n", DefaultIdx, GTKLEN));
+        DBGPRINT(RT_DEBUG_TRACE, ("GTK without KDE, DefaultKeyID=%d, KeyLen=%d\n", DefaultIdx, GTKLEN));
     }
 
     /* Sanity check - shared key index must be 0 ~ 3*/
     if(DefaultIdx > 3)
     {
-        DBGPRINT(RT_DEBUG_ERROR, ("ERROR: GTK Key index(%d) is invalid in %s %s \n", DefaultIdx, ((bWPA2) ? "WPA2" : "WPA"), GetEapolMsgType(MsgType)));
+        DBGPRINT(RT_DEBUG_ERROR, ("ERROR: GTK Key index(%d) is invalid in %s %s\n", DefaultIdx, ((bWPA2) ? "WPA2" : "WPA"), GetEapolMsgType(MsgType)));
         return FALSE;
     }
 
@@ -3344,8 +3344,8 @@ VOID	ConstructEapolMsg(
     }
 
     DBGPRINT(RT_DEBUG_TRACE, ("===> ConstructEapolMsg for %s %s\n", ((bWPA2) ? "WPA2" : "WPA"), GetEapolMsgType(MsgType)));
-    DBGPRINT(RT_DEBUG_TRACE, ("	     Body length = %d \n", CONV_ARRARY_TO_UINT16(pMsg->Body_Len)));
-    DBGPRINT(RT_DEBUG_TRACE, ("	     Key length  = %d \n", CONV_ARRARY_TO_UINT16(pMsg->KeyDesc.KeyLength)));
+    DBGPRINT(RT_DEBUG_TRACE, ("	     Body length = %d\n", CONV_ARRARY_TO_UINT16(pMsg->Body_Len)));
+    DBGPRINT(RT_DEBUG_TRACE, ("	     Key length  = %d\n", CONV_ARRARY_TO_UINT16(pMsg->KeyDesc.KeyLength)));
 
 
 }
@@ -3859,7 +3859,7 @@ PUINT8	WPA_ExtractSuiteFromRSNIE(
 
             if(len < offset)
             {
-                DBGPRINT(RT_DEBUG_ERROR, ("%s : The expected lenght(%d) exceed the remaining length(%d) for WPA-RSN \n",
+                DBGPRINT(RT_DEBUG_ERROR, ("%s : The expected lenght(%d) exceed the remaining length(%d) for WPA-RSN\n",
                                           __FUNCTION__, offset, len));
                 goto out;
             }
@@ -3900,7 +3900,7 @@ PUINT8	WPA_ExtractSuiteFromRSNIE(
 
             if(len < offset)
             {
-                DBGPRINT(RT_DEBUG_ERROR, ("%s : The expected lenght(%d) exceed the remaining length(%d) for WPA2-RSN \n",
+                DBGPRINT(RT_DEBUG_ERROR, ("%s : The expected lenght(%d) exceed the remaining length(%d) for WPA2-RSN\n",
                                           __FUNCTION__, offset, len));
                 goto out;
             }
@@ -3951,7 +3951,7 @@ PUINT8	WPA_ExtractSuiteFromRSNIE(
 
         if(len < offset)
         {
-            DBGPRINT(RT_DEBUG_ERROR, ("%s : The expected lenght(%d) exceed the remaining length(%d) for AKM \n",
+            DBGPRINT(RT_DEBUG_ERROR, ("%s : The expected lenght(%d) exceed the remaining length(%d) for AKM\n",
                                       __FUNCTION__, offset, len));
             goto out;
         }
@@ -4027,7 +4027,7 @@ PUINT8	WPA_ExtractSuiteFromRSNIE(
             /* sanity check about the length of PMKID-List field */
             if(len < offset)
             {
-                DBGPRINT(RT_DEBUG_ERROR, ("%s : The expected lenght(%d) exceed the remaining length(%d) in PMKID-field \n",
+                DBGPRINT(RT_DEBUG_ERROR, ("%s : The expected lenght(%d) exceed the remaining length(%d) in PMKID-field\n",
                                           __FUNCTION__, offset, len));
                 goto out;
             }
@@ -4214,7 +4214,7 @@ VOID WPAInstallPairwiseKey(
 
     if(CLIENT_STATUS_TEST_FLAG(pEntry, fCLIENT_STATUS_SOFTWARE_ENCRYPT))
     {
-        DBGPRINT(RT_DEBUG_TRACE, ("===> SW_ENC ON(wcid=%d) \n", pEntry->Aid));
+        DBGPRINT(RT_DEBUG_TRACE, ("===> SW_ENC ON(wcid=%d)\n", pEntry->Aid));
         NdisZeroMemory(pEntry->PairwiseKey.TxTsc, LEN_WPA_TSC);
         NdisZeroMemory(pEntry->PairwiseKey.RxTsc, LEN_WPA_TSC);
     }
@@ -4251,7 +4251,7 @@ VOID WPAInstallSharedKey(
 
     if(BssIdx >= MAX_MBSSID_NUM(pAd))
     {
-        DBGPRINT(RT_DEBUG_ERROR, ("%s : The BSS-index(%d) is out of range for MBSSID link. \n",
+        DBGPRINT(RT_DEBUG_ERROR, ("%s : The BSS-index(%d) is out of range for MBSSID link.\n",
                                   __FUNCTION__, BssIdx));
         return;
     }
@@ -4270,7 +4270,7 @@ VOID WPAInstallSharedKey(
         pSharedKey->CipherAlg = CIPHER_AES;
     else
     {
-        DBGPRINT(RT_DEBUG_ERROR, ("%s : fails (IF/ra%d) \n",
+        DBGPRINT(RT_DEBUG_ERROR, ("%s : fails (IF/ra%d)\n",
                                   __FUNCTION__, BssIdx));
         return;
     }
@@ -4282,7 +4282,7 @@ VOID WPAInstallSharedKey(
         /* Sanity check the length */
         if((GtkLen != LEN_WEP64) && (GtkLen != LEN_WEP128))
         {
-            DBGPRINT(RT_DEBUG_ERROR, ("%s : (IF/ra%d) WEP key invlaid(%d) \n",
+            DBGPRINT(RT_DEBUG_ERROR, ("%s : (IF/ra%d) WEP key invlaid(%d)\n",
                                       __FUNCTION__, BssIdx, GtkLen));
             return;
         }
@@ -4295,7 +4295,7 @@ VOID WPAInstallSharedKey(
         /* Sanity check the length */
         if(GtkLen < LEN_TK)
         {
-            DBGPRINT(RT_DEBUG_ERROR, ("%s : (IF/ra%d) WPA key invlaid(%d) \n",
+            DBGPRINT(RT_DEBUG_ERROR, ("%s : (IF/ra%d) WPA key invlaid(%d)\n",
                                       __FUNCTION__, BssIdx, GtkLen));
             return;
         }
@@ -4379,7 +4379,7 @@ VOID RTMPSetWcidSecurityInfo(
     }
     else
     {
-        DBGPRINT(RT_DEBUG_ERROR, ("%s : Unsupport cipher Alg (%d) for Wcid-%d \n",
+        DBGPRINT(RT_DEBUG_ERROR, ("%s : Unsupport cipher Alg (%d) for Wcid-%d\n",
                                   __FUNCTION__, CipherAlg, Wcid));
         return;
     }

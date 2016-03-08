@@ -141,7 +141,7 @@ static BOOLEAN USBDevConfigInit(
             pConfig->BulkInMaxPacketSize = endpoint[i].wMaxPacketSize;
 
             DBGPRINT_RAW(RT_DEBUG_TRACE, ("BULK IN MaximumPacketSize = %d\n", pConfig->BulkInMaxPacketSize));
-            DBGPRINT_RAW(RT_DEBUG_TRACE, ("EP address = 0x%2x  \n", endpoint[i].bEndpointAddress));
+            DBGPRINT_RAW(RT_DEBUG_TRACE, ("EP address = 0x%2x \n", endpoint[i].bEndpointAddress));
         }
         else if((endpoint[i].bmAttributes == USB_ENDPOINT_XFER_BULK) &&
                 ((endpoint[i].bEndpointAddress & USB_ENDPOINT_DIR_MASK) == USB_DIR_OUT))
@@ -152,7 +152,7 @@ static BOOLEAN USBDevConfigInit(
             pConfig->BulkOutMaxPacketSize = endpoint[i].wMaxPacketSize;
 
             DBGPRINT_RAW(RT_DEBUG_TRACE, ("BULK OUT MaximumPacketSize = %d\n", pConfig->BulkOutMaxPacketSize));
-            DBGPRINT_RAW(RT_DEBUG_TRACE, ("EP address = 0x%2x  \n", endpoint[i].bEndpointAddress));
+            DBGPRINT_RAW(RT_DEBUG_TRACE, ("EP address = 0x%2x \n", endpoint[i].bEndpointAddress));
         }
     }
 
@@ -279,7 +279,7 @@ static BOOLEAN USBDevConfigInit(
 #endif
 
                 DBGPRINT_RAW(RT_DEBUG_TRACE, ("BULK OUT MaxPacketSize = %d\n", pConfig->BulkOutMaxPacketSize));
-                DBGPRINT_RAW(RT_DEBUG_TRACE, ("EP address = 0x%2x  \n", iface_desc->endpoint[i].desc.bEndpointAddress));
+                DBGPRINT_RAW(RT_DEBUG_TRACE, ("EP address = 0x%2x \n", iface_desc->endpoint[i].desc.bEndpointAddress));
             }
             else
             {
@@ -344,7 +344,7 @@ static void rtusb_disconnect(struct usb_interface *intf)
     struct usb_device   *dev = interface_to_usbdev(intf);
     VOID				*pAd;
 
-    printk("rtusb_disconnect ENTER\n");
+    DBGPRINT(RT_DEBUG_TRACE, ("rtusb_disconnect()\n"));
 
     pAd = usb_get_intfdata(intf);
 #ifdef IFUP_IN_PROBE
@@ -356,12 +356,12 @@ static void rtusb_disconnect(struct usb_interface *intf)
 
 #ifdef CONFIG_PM
 #ifdef USB_SUPPORT_SELECTIVE_SUSPEND
-    printk("rtusb_disconnect usb_autopm_put_interface \n");
+    DBGPRINT(RT_DEBUG_TRACE, ("rtusb_disconnect(): usb_autopm_put_interface\n"));
     usb_autopm_put_interface(intf);
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,32)
-    printk(" ^^rt2870_disconnect ====> pm_usage_cnt %d \n", atomic_read(&intf->pm_usage_cnt));
+    printk(" ^^rt2870_disconnect ====> pm_usage_cnt %d\n", atomic_read(&intf->pm_usage_cnt));
 #else
-    printk(" rt2870_disconnect ====> pm_usage_cnt %d \n", intf->pm_usage_cnt);
+    printk(" rt2870_disconnect ====> pm_usage_cnt %d\n", intf->pm_usage_cnt);
 #endif
 #endif /* USB_SUPPORT_SELECTIVE_SUSPEND */
 #endif /* CONFIG_PM */
@@ -514,16 +514,16 @@ static int rt2870_resume(
 /* Init driver module */
 INT __init rtusb_init(void)
 {
-    printk("rtusb init %s --->\n", RTMP_DRV_NAME);
+    printk("RTUSB init %s\n", RTMP_DRV_NAME);
     return usb_register(&rtusb_driver);
 }
 
 /* Deinit driver module */
 VOID __exit rtusb_exit(void)
 {
-    printk("---> rtusb exit\n");
+    printk("RTUSB exit\n");
     usb_deregister(&rtusb_driver);
-    printk("<--- rtusb exit\n");
+    printk("RTUSB exit: usb deregistered\n");
 }
 
 module_init(rtusb_init);
@@ -566,12 +566,12 @@ static void rt2870_disconnect(struct usb_device *dev, VOID *pAd)
     // Or else, we'll get a WARN_ON() under unregister_netdev()
     // Calls LinkDown() which informs CFG80211 of no AP (via LostApInform)
 
-    printk("rt2870_disconnect(): CMD_RTPRIV_IOCTL_STA_SIOCSIWAP(00:00:00:00:00:00)\n");
+    DBGPRINT(RT_DEBUG_TRACE, ("rtusb_disconnect(): set AP to null\n"));
     RTMP_STA_IoctlHandle(pAd, NULL, CMD_RTPRIV_IOCTL_STA_SIOCSIWAP, 0,
                          (VOID *)(&ZERO_MAC_ADDR[0]), 0, RT_DEV_PRIV_FLAGS_GET(net_dev));
 #endif
 
-    DBGPRINT(RT_DEBUG_ERROR, ("rtusb_disconnect: unregister usbnet usb-%s-%s\n",
+    DBGPRINT(RT_DEBUG_TRACE, ("rtusb_disconnect(): unregister usbnet usb-%s-%s\n",
                               dev->bus->bus_name, dev->devpath));
 
     if(!pAd)
@@ -587,7 +587,7 @@ static void rt2870_disconnect(struct usb_device *dev, VOID *pAd)
         usb_put_dev(dev);
 #endif /* LINUX_VERSION_CODE */
 
-        printk("rtusb_disconnect: pAd == NULL!\n");
+        DBGPRINT(RT_DEBUG_TRACE, ("rtusb_disconnect(): pAd == NULL\n"));
         return;
     }
 
@@ -649,7 +649,7 @@ static void rt2870_disconnect(struct usb_device *dev, VOID *pAd)
 #endif /* LINUX_VERSION_CODE */
     udelay(1);
 
-    DBGPRINT(RT_DEBUG_ERROR, (" RTUSB disconnect successfully\n"));
+    DBGPRINT(RT_DEBUG_INFO, ("RTUSB disconnect ended successfully\n"));
 }
 
 
@@ -689,10 +689,10 @@ static int rt2870_probe(
 
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,32)
     atomic_set(&intf->pm_usage_cnt, 1);
-    printk(" rt2870_probe ====> pm_usage_cnt %d \n", atomic_read(&intf->pm_usage_cnt));
+    printk(" rt2870_probe ====> pm_usage_cnt %d\n", atomic_read(&intf->pm_usage_cnt));
 #else
     intf->pm_usage_cnt = 1;
-    printk(" rt2870_probe ====> pm_usage_cnt %d \n", intf->pm_usage_cnt);
+    printk(" rt2870_probe ====> pm_usage_cnt %d\n", intf->pm_usage_cnt);
 #endif
 
 

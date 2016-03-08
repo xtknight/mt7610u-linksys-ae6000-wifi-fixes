@@ -1025,7 +1025,7 @@ VOID MlmeNewRateAdapt(
     {
         if(pEntry->LastSecTxRateChangeAction!=RATE_NO_CHANGE)
         {
-            DBGPRINT_RAW(RT_DEBUG_INFO,("DRS: %sTX rate from %d to %d \n",
+            DBGPRINT_RAW(RT_DEBUG_INFO,("DRS: %sTX rate from %d to %d\n",
                                         pEntry->LastSecTxRateChangeAction==RATE_UP? "++": "--", CurrRateIdx, pEntry->CurrTxRateIndex));
         }
 
@@ -1131,7 +1131,7 @@ VOID StaQuickResponeForRateUpExecAdapt(
     {
         pEntry->fLastChangeAccordingMfb = FALSE;
         pEntry->LastSecTxRateChangeAction = RATE_NO_CHANGE;
-        DBGPRINT(RT_DEBUG_INFO | DBG_FUNC_RA,("DRS: MCS is according to MFB, and ignore tuning this sec \n"));
+        DBGPRINT(RT_DEBUG_INFO | DBG_FUNC_RA,("DRS: MCS is according to MFB, and ignore tuning this sec\n"));
 
         /* reset all OneSecTx counters */
         RESET_ONE_SEC_TX_CNT(pEntry);
@@ -1179,7 +1179,7 @@ VOID StaQuickResponeForRateUpExecAdapt(
     {
         /* Go back to the original rate */
         MlmeRestoreLastRate(pEntry);
-        DBGPRINT(RT_DEBUG_INFO | DBG_FUNC_RA,("   QuickDRS: TxTotalCnt <= 12, back to original rate \n"));
+        DBGPRINT(RT_DEBUG_INFO | DBG_FUNC_RA,("   QuickDRS: TxTotalCnt <= 12, back to original rate\n"));
 
         MlmeNewTxRate(pAd, pEntry);
 
@@ -1463,7 +1463,7 @@ VOID MlmeDynamicTxRateSwitchingAdapt(
     {
         pEntry->fLastChangeAccordingMfb = FALSE;
         pEntry->LastSecTxRateChangeAction = RATE_NO_CHANGE;
-        DBGPRINT_RAW(RT_DEBUG_TRACE,("DRS: MCS is according to MFB, and ignore tuning this sec \n"));
+        DBGPRINT_RAW(RT_DEBUG_TRACE,("DRS: MCS is according to MFB, and ignore tuning this sec\n"));
 
         /* reset all OneSecTx counters */
         RESET_ONE_SEC_TX_CNT(pEntry);
@@ -1570,7 +1570,7 @@ VOID MlmeDynamicTxRateSwitchingAdapt(
     {
         pEntry->fLastSecAccordingRSSI = FALSE;
         pEntry->LastSecTxRateChangeAction = RATE_NO_CHANGE;
-        /* DBGPRINT_RAW(RT_DEBUG_TRACE,("DRS: MCS is according to RSSI, and ignore tuning this sec \n")); */
+        /* DBGPRINT_RAW(RT_DEBUG_TRACE,("DRS: MCS is according to RSSI, and ignore tuning this sec\n")); */
 
         /* reset all OneSecTx counters */
         RESET_ONE_SEC_TX_CNT(pEntry);
@@ -1655,7 +1655,7 @@ INT Set_RateTable_Proc(RTMP_ADAPTER *pAd, PSTRING arg)
     /* If no addtional parameters then print the entry */
     if(*arg != ':')
     {
-        DBGPRINT(RT_DEBUG_OFF, ("Set_RateTable_Proc::%d\n", itemNo));
+        DBGPRINT(RT_DEBUG_TRACE, ("Set_RateTable_Proc::%d\n", itemNo));
     }
     else
     {
@@ -1676,10 +1676,10 @@ INT Set_RateTable_Proc(RTMP_ADAPTER *pAd, PSTRING arg)
 
         value = simple_strtol(arg, &arg, 10);
         pRateEntry[rtIndex] = value;
-        DBGPRINT(RT_DEBUG_OFF, ("Set_RateTable_Proc::%d:%d:%d\n", itemNo, rtIndex, value));
+        DBGPRINT(RT_DEBUG_TRACE, ("Set_RateTable_Proc::%d:%d:%d\n", itemNo, rtIndex, value));
     }
 
-    DBGPRINT(RT_DEBUG_OFF, ("%d, 0x%02x, %d, %d, %d, %d, %d, %d, %d, %d\n",
+    DBGPRINT(RT_DEBUG_TRACE, ("%d, 0x%02x, %d, %d, %d, %d, %d, %d, %d, %d\n",
                             pRateEntry[0], pRateEntry[1], pRateEntry[2], pRateEntry[3], pRateEntry[4],
                             pRateEntry[5], pRateEntry[6], pRateEntry[7], pRateEntry[8], pRateEntry[9]));
 

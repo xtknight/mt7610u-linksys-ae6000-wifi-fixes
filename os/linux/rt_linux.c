@@ -2827,7 +2827,7 @@ BOOLEAN CFG80211_SupBandInit(
     if(pBandInfo->RFICType == 0)
         pBandInfo->RFICType = RFIC_24GHZ | RFIC_5GHZ;
 
-    CFG80211DBG(RT_DEBUG_ERROR, ("mt7610u: RFICType = %d\n",
+    CFG80211DBG(RT_DEBUG_INFO, ("mt7610u: RFICType = %d\n",
                                  pBandInfo->RFICType));
 
     /* init */
@@ -2852,7 +2852,7 @@ BOOLEAN CFG80211_SupBandInit(
         }
     }
 
-    CFG80211DBG(RT_DEBUG_ERROR, ("mt7610u: Number of channel = %zu\n",
+    CFG80211DBG(RT_DEBUG_INFO, ("mt7610u: number of channels = %zu\n",
                                  CFG80211_NUM_OF_CHAN_5GHZ));
 
     if(pRates == NULL)
@@ -2867,7 +2867,7 @@ BOOLEAN CFG80211_SupBandInit(
         }
     }
 
-    CFG80211DBG(RT_DEBUG_ERROR, ("mt7610u: Number of rate = %d\n", NumOfRate));
+    CFG80211DBG(RT_DEBUG_INFO, ("mt7610u: number of rates = %d\n", NumOfRate));
 
     /* get TX power */
 #ifdef SINGLE_SKU
@@ -2876,7 +2876,7 @@ BOOLEAN CFG80211_SupBandInit(
     CurTxPower = 0; /* unknown */
 #endif /* SINGLE_SKU */
 
-    CFG80211DBG(RT_DEBUG_ERROR, ("mt7610u: CurTxPower = %d dBm\n", CurTxPower));
+    CFG80211DBG(RT_DEBUG_TRACE, ("mt7610u: CurTxPower = %d dBm\n", CurTxPower));
 
     /* init channel */
     for(IdLoop=0; IdLoop<NumOfChan; IdLoop++)
@@ -2929,7 +2929,7 @@ BOOLEAN CFG80211_SupBandInit(
         pBand->ht_cap.ampdu_density = pBandInfo->MpduDensity;
 
         memset(&pBand->ht_cap.mcs, 0, sizeof(pBand->ht_cap.mcs));
-        CFG80211DBG(RT_DEBUG_ERROR,
+        CFG80211DBG(RT_DEBUG_INFO,
                     ("mt7610u: TxStream = %d\n", pBandInfo->TxStream));
 
         switch(pBandInfo->TxStream)
@@ -3057,7 +3057,7 @@ BOOLEAN CFG80211OS_SupBandReInit(
 
     if(pWiphy != NULL)
     {
-        CFG80211DBG(RT_DEBUG_ERROR, ("mt7610u: re-init bands...\n"));
+        CFG80211DBG(RT_DEBUG_INFO, ("mt7610u: re-initialize bands...\n"));
 
         /* re-init bands */
         CFG80211_SupBandInit(pCfg80211_CB, pBandInfo, pWiphy,
@@ -3248,7 +3248,7 @@ BOOLEAN CFG80211OS_ChanInfoGet(
 
     if(pChan->flags & IEEE80211_CHAN_DISABLED)
     {
-        CFG80211DBG(RT_DEBUG_ERROR,
+        CFG80211DBG(RT_DEBUG_INFO,
                     ("Chan %03d (frq %d):\tnot allowed!\n",
                      (*pChanId), pChan->center_freq));
         return FALSE;

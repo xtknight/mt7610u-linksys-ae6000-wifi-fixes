@@ -537,7 +537,7 @@ VOID GetSingleSkuDeltaPower(
 
     RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R1, BbpR1);
 
-    DBGPRINT(RT_DEBUG_TRACE, ("%s: <After BBP R1> TotalDeltaPower = %d dBm, BbpR1 = 0x%02X \n", __FUNCTION__, *pTotalDeltaPower, BbpR1));
+    DBGPRINT(RT_DEBUG_TRACE, ("%s: <After BBP R1> TotalDeltaPower = %d dBm, BbpR1 = 0x%02X\n", __FUNCTION__, *pTotalDeltaPower, BbpR1));
 }
 #endif /* SINGLE_SKU */
 
@@ -647,7 +647,7 @@ VOID AsicCompensatePowerViaBBP(
         BbpR1 |= mdsm_drop_pwr;
         RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R1, BbpR1);
 
-        DBGPRINT(RT_DEBUG_INFO, ("%s: <After BBP R1> TotalDeltaPower = %d dBm, BbpR1 = 0x%02X \n", __FUNCTION__, *pTotalDeltaPower, BbpR1));
+        DBGPRINT(RT_DEBUG_INFO, ("%s: <After BBP R1> TotalDeltaPower = %d dBm, BbpR1 = 0x%02X\n", __FUNCTION__, *pTotalDeltaPower, BbpR1));
     }
 }
 
@@ -957,7 +957,7 @@ VOID RTMPReadTxPwrPerRate(RTMP_ADAPTER *pAd)
             if(data != 0xffffffff)
                 RTMP_IO_WRITE32(pAd, TX_PWR_CFG_0 + i*4, data);
 
-            DBGPRINT_RAW(RT_DEBUG_TRACE, ("20MHz BW, 2.4G band-%lx,  Adata = %lx,  Gdata = %lx \n", data, Adata, Gdata));
+            DBGPRINT_RAW(RT_DEBUG_TRACE, ("20MHz BW, 2.4G band-%lx,  Adata = %lx,  Gdata = %lx\n", data, Adata, Gdata));
         }
     }
 }

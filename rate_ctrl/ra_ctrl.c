@@ -728,7 +728,7 @@ VOID asic_mcs_lut_update(RTMP_ADAPTER *pAd, MAC_TABLE_ENTRY *pEntry)
         DBGPRINT(RT_DEBUG_INFO, ("%s():MCS_LUT update, write to MAC=0x%08x, Value=0x%04x, WCID=%d\n",
                                  __FUNCTION__, wcid_offset, pEntry->HTPhyMode.word, pEntry->Aid));
 
-        DBGPRINT_RAW(RT_DEBUG_INFO, ("\tAid=%d, APMlmeSetTxRate - CurrTxRateIdx=%d, MCS=%d, STBC=%d, ShortGI=%d, Mode=%d, BW=%d \n\n",
+        DBGPRINT_RAW(RT_DEBUG_INFO, ("\tAid=%d, APMlmeSetTxRate - CurrTxRateIdx=%d, MCS=%d, STBC=%d, ShortGI=%d, Mode=%d, BW=%d\n\n",
                                      pEntry->Aid,
                                      pEntry->CurrTxRateIndex,
                                      pEntry->HTPhyMode.field.MCS,
@@ -1438,12 +1438,12 @@ VOID MlmeSelectTxRateTable(
                     if(pAd->CommonCfg.TxStream == 1)
                     {
                         *ppTable = RateSwitchTable11N1S;
-                        DBGPRINT_RAW(RT_DEBUG_ERROR,("DRS: unkown mode,default use 11N 1S AP \n"));
+                        DBGPRINT_RAW(RT_DEBUG_ERROR,("DRS: unkown mode,default use 11N 1S AP\n"));
                     }
                     else if(pAd->CommonCfg.TxStream == 2)
                     {
                         *ppTable = RateSwitchTable11N2S;
-                        DBGPRINT_RAW(RT_DEBUG_ERROR,("DRS: unkown mode,default use 11N 2S AP \n"));
+                        DBGPRINT_RAW(RT_DEBUG_ERROR,("DRS: unkown mode,default use 11N 2S AP\n"));
                     }
                     else
                     {
@@ -1466,12 +1466,12 @@ VOID MlmeSelectTxRateTable(
                     if(pAd->CommonCfg.TxStream == 1)
                     {
                         *ppTable = RateSwitchTable11N1S;
-                        DBGPRINT_RAW(RT_DEBUG_ERROR,("DRS: unkown mode,default use 11N 1S AP \n"));
+                        DBGPRINT_RAW(RT_DEBUG_ERROR,("DRS: unkown mode,default use 11N 1S AP\n"));
                     }
                     else if(pAd->CommonCfg.TxStream == 2)
                     {
                         *ppTable = RateSwitchTable11N2S;
-                        DBGPRINT_RAW(RT_DEBUG_ERROR,("DRS: unkown mode,default use 11N 2S AP \n"));
+                        DBGPRINT_RAW(RT_DEBUG_ERROR,("DRS: unkown mode,default use 11N 2S AP\n"));
                     }
                     else
                     {

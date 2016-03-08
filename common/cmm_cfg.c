@@ -47,7 +47,7 @@ void DisplayTxAgg(RTMP_ADAPTER *pAd)
     if(totalCount > 0)
         for(i=0; i<MAX_AGG_CNT; i++)
         {
-            DBGPRINT(RT_DEBUG_OFF, ("\t%d MPDU=%ld (%ld%%)\n", i+1, aggCnt[i+2], aggCnt[i+2]*100/totalCount));
+            DBGPRINT(RT_DEBUG_TRACE, ("\t%d MPDU=%ld (%ld%%)\n", i+1, aggCnt[i+2], aggCnt[i+2]*100/totalCount));
         }
 
     printk("====================\n");
@@ -157,7 +157,7 @@ INT RT_CfgSetCountryRegion(
     */
     if(RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_INTERRUPT_IN_USE) && (*pCountryRegion & EEPROM_IS_PROGRAMMED))
     {
-        DBGPRINT(RT_DEBUG_ERROR, ("CfgSetCountryRegion():CountryRegion in eeprom was programmed\n"));
+        DBGPRINT(RT_DEBUG_INFO, ("CfgSetCountryRegion(): cannot set CountryRegion because it was programmed in EEPROM\n"));
         return FALSE;
     }
 
@@ -171,7 +171,7 @@ INT RT_CfgSetCountryRegion(
     }
     else
     {
-        DBGPRINT(RT_DEBUG_ERROR, ("CfgSetCountryRegion():region(%ld) out of range!\n", region));
+        DBGPRINT(RT_DEBUG_ERROR, ("CfgSetCountryRegion(): region(%ld) out of range!\n", region));
         return FALSE;
     }
 
@@ -249,7 +249,7 @@ UCHAR *wmode_2_str(UCHAR wmode)
 
 UCHAR cfgmode_2_wmode(UCHAR cfg_mode)
 {
-    DBGPRINT(RT_DEBUG_OFF, ("cfg_mode=%d\n", cfg_mode));
+    DBGPRINT(RT_DEBUG_INFO, ("cfg_mode=%d\n", cfg_mode));
 
     if(cfg_mode >= PHY_MODE_MAX)
         cfg_mode =  PHY_MODE_MAX;
@@ -329,9 +329,9 @@ INT RT_CfgSetWirelessMode(RTMP_ADAPTER *pAd, PSTRING arg)
     }
 
     if(wmode_band_equal(pAd->CommonCfg.PhyMode, wmode) == TRUE)
-        DBGPRINT(RT_DEBUG_OFF, ("wmode_band_equal(): Band Equal!\n"));
+        DBGPRINT(RT_DEBUG_TRACE, ("wmode_band_equal(): Band Equal!\n"));
     else
-        DBGPRINT(RT_DEBUG_OFF, ("wmode_band_equal(): Band Not Equal!\n"));
+        DBGPRINT(RT_DEBUG_TRACE, ("wmode_band_equal(): Band Not Equal!\n"));
 
     pAd->CommonCfg.PhyMode = wmode;
     pAd->CommonCfg.cfg_wmode = wmode;
@@ -552,7 +552,7 @@ INT	RT_CfgSetMacAddress(
 
     if(strcmp(arg, "00:00:00:00:00:00") == 0)
     {
-        DBGPRINT(RT_DEBUG_ERROR, ("%s : invalid mac setting \n", __FUNCTION__));
+        DBGPRINT(RT_DEBUG_ERROR, ("%s : invalid mac setting\n", __FUNCTION__));
         return FALSE;
     }
 
@@ -1291,7 +1291,7 @@ INT	Set_Antenna_Proc(
 {
     ANT_DIVERSITY_TYPE UsedAnt;
     int i;
-    DBGPRINT(RT_DEBUG_OFF, ("==> Set_Antenna_Proc *******************\n"));
+    DBGPRINT(RT_DEBUG_TRACE, ("==> Set_Antenna_Proc *******************\n"));
 
     for(i = 0; i < strlen(arg); i++)
         if(!isdigit(arg[i]))
@@ -1304,14 +1304,14 @@ INT	Set_Antenna_Proc(
     /* 2: Fix in the PHY Antenna CON1*/
     case ANT_FIX_ANT0:
         AsicSetRxAnt(pAd, 0);
-        DBGPRINT(RT_DEBUG_OFF, ("<== Set_Antenna_Proc(Fix in Ant CON1), (%d,%d)\n",
+        DBGPRINT(RT_DEBUG_TRACE, ("<== Set_Antenna_Proc(Fix in Ant CON1), (%d,%d)\n",
                                 pAd->RxAnt.Pair1PrimaryRxAnt, pAd->RxAnt.Pair1SecondaryRxAnt));
         break;
 
     /* 3: Fix in the PHY Antenna CON2*/
     case ANT_FIX_ANT1:
         AsicSetRxAnt(pAd, 1);
-        DBGPRINT(RT_DEBUG_OFF, ("<== %s(Fix in Ant CON2), (%d,%d)\n",
+        DBGPRINT(RT_DEBUG_TRACE, ("<== %s(Fix in Ant CON2), (%d,%d)\n",
                                 __FUNCTION__, pAd->RxAnt.Pair1PrimaryRxAnt, pAd->RxAnt.Pair1SecondaryRxAnt));
         break;
 
@@ -1341,7 +1341,7 @@ INT set_temp_sensor_proc(
     else
         pAd->chipCap.bDoTemperatureSensor = TRUE;
 
-    DBGPRINT(RT_DEBUG_OFF, ("%s:: bDoTemperatureSensor = %d \n", __FUNCTION__, pAd->chipCap.bDoTemperatureSensor));
+    DBGPRINT(RT_DEBUG_TRACE, ("%s:: bDoTemperatureSensor = %d\n", __FUNCTION__, pAd->chipCap.bDoTemperatureSensor));
 
     return TRUE;
 }

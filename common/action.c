@@ -114,7 +114,7 @@ VOID MlmeADDBAAction(
 
         if(NStatus != NDIS_STATUS_SUCCESS)
         {
-            DBGPRINT(RT_DEBUG_TRACE,("BA - MlmeADDBAAction() allocate memory failed \n"));
+            DBGPRINT(RT_DEBUG_TRACE,("BA - MlmeADDBAAction() allocate memory failed\n"));
             return;
         }
 
@@ -124,7 +124,7 @@ VOID MlmeADDBAAction(
         if(Idx == 0)
         {
             MlmeFreeMemory(pAd, pOutBuffer);
-            DBGPRINT(RT_DEBUG_ERROR,("BA - MlmeADDBAAction() can't find BAOriEntry \n"));
+            DBGPRINT(RT_DEBUG_ERROR,("BA - MlmeADDBAAction() can't find BAOriEntry\n"));
             return;
         }
         else
@@ -211,7 +211,7 @@ VOID MlmeDELBAAction(
     pInfo = (MLME_DELBA_REQ_STRUCT *)Elem->Msg;
     /* must send back DELBA */
     NdisZeroMemory(&Frame, sizeof(FRAME_DELBA_REQ));
-    DBGPRINT(RT_DEBUG_TRACE, ("==> MlmeDELBAAction(), Initiator(%d) \n", pInfo->Initiator));
+    DBGPRINT(RT_DEBUG_TRACE, ("==> MlmeDELBAAction(), Initiator(%d)\n", pInfo->Initiator));
 
     if(MlmeDelBAReqSanity(pAd, Elem->Msg, Elem->MsgLen) &&
             VALID_WCID(pInfo->Wcid))
@@ -220,7 +220,7 @@ VOID MlmeDELBAAction(
 
         if(NStatus != NDIS_STATUS_SUCCESS)
         {
-            DBGPRINT(RT_DEBUG_ERROR,("BA - MlmeDELBAAction() allocate memory failed 1. \n"));
+            DBGPRINT(RT_DEBUG_ERROR,("BA - MlmeDELBAAction() allocate memory failed 1.\n"));
             return;
         }
 
@@ -229,7 +229,7 @@ VOID MlmeDELBAAction(
         if(NStatus != NDIS_STATUS_SUCCESS)
         {
             MlmeFreeMemory(pAd, pOutBuffer);
-            DBGPRINT(RT_DEBUG_ERROR, ("BA - MlmeDELBAAction() allocate memory failed 2. \n"));
+            DBGPRINT(RT_DEBUG_ERROR, ("BA - MlmeDELBAAction() allocate memory failed 2.\n"));
             return;
         }
 
@@ -253,7 +253,7 @@ VOID MlmeDELBAAction(
                           END_OF_ARGS);
         MiniportMMRequest(pAd, QID_AC_BE, pOutBuffer2, FrameLen);
         MlmeFreeMemory(pAd, pOutBuffer2);
-        DBGPRINT(RT_DEBUG_TRACE,("BA - MlmeDELBAAction() . Send BAR to refresh peer reordering buffer \n"));
+        DBGPRINT(RT_DEBUG_TRACE,("BA - MlmeDELBAAction() . Send BAR to refresh peer reordering buffer\n"));
 
         /* SEND DELBA FRAME*/
         FrameLen = 0;
@@ -451,7 +451,7 @@ ULONG BuildIntolerantChannelRep(
                     pAd->CommonCfg.TriggerEventTab.EventA[i].bValid = FALSE;
                 }
 
-                DBGPRINT(RT_DEBUG_TRACE,("ACT - BuildIntolerantChannelRep , Total Channel number = %d \n", idx));
+                DBGPRINT(RT_DEBUG_TRACE,("ACT - BuildIntolerantChannelRep , Total Channel number = %d\n", idx));
             }
         }
 
@@ -492,7 +492,7 @@ VOID Update2040CoexistFrameAndNotify(
 {
     BSS_2040_COEXIST_IE		OldValue;
 
-    DBGPRINT(RT_DEBUG_TRACE,("ACT - Update2040CoexistFrameAndNotify. BSSCoexist2040 = %x. EventANo = %d. \n", pAd->CommonCfg.BSSCoexist2040.word, pAd->CommonCfg.TriggerEventTab.EventANo));
+    DBGPRINT(RT_DEBUG_TRACE,("ACT - Update2040CoexistFrameAndNotify. BSSCoexist2040 = %x. EventANo = %d.\n", pAd->CommonCfg.BSSCoexist2040.word, pAd->CommonCfg.TriggerEventTab.EventANo));
     OldValue.word = pAd->CommonCfg.BSSCoexist2040.word;
     /* Reset value.*/
     pAd->CommonCfg.BSSCoexist2040.word = 0;
@@ -529,7 +529,7 @@ VOID Send2040CoexistAction(
 
     if(NStatus != NDIS_STATUS_SUCCESS)
     {
-        DBGPRINT(RT_DEBUG_ERROR,("ACT - Send2040CoexistAction() allocate memory failed \n"));
+        DBGPRINT(RT_DEBUG_ERROR,("ACT - Send2040CoexistAction() allocate memory failed\n"));
         return;
     }
 
@@ -558,7 +558,7 @@ VOID Send2040CoexistAction(
 
     MlmeFreeMemory(pAd, pOutBuffer);
 
-    DBGPRINT(RT_DEBUG_TRACE,("ACT - Send2040CoexistAction( BSSCoexist2040 = 0x%x )  \n", pAd->CommonCfg.BSSCoexist2040.word));
+    DBGPRINT(RT_DEBUG_TRACE,("ACT - Send2040CoexistAction( BSSCoexist2040 = 0x%x ) \n", pAd->CommonCfg.BSSCoexist2040.word));
 }
 
 VOID UpdateBssScanParm(
@@ -570,7 +570,7 @@ VOID UpdateBssScanParm(
     /* out of range defined in MIB... So fall back to default value.*/
     if((pAd->CommonCfg.Dot11BssWidthChanTranDelayFactor <5) || (pAd->CommonCfg.Dot11BssWidthChanTranDelayFactor > 100))
     {
-        /*DBGPRINT(RT_DEBUG_ERROR,("ACT - UpdateBssScanParm( Dot11BssWidthChanTranDelayFactor out of range !!!!)  \n"));*/
+        /*DBGPRINT(RT_DEBUG_ERROR,("ACT - UpdateBssScanParm( Dot11BssWidthChanTranDelayFactor out of range !!!!) \n"));*/
         pAd->CommonCfg.Dot11BssWidthChanTranDelayFactor = 5;
     }
 
@@ -579,7 +579,7 @@ VOID UpdateBssScanParm(
     /* out of range defined in MIB... So fall back to default value.*/
     if((pAd->CommonCfg.Dot11BssWidthTriggerScanInt < 10) ||(pAd->CommonCfg.Dot11BssWidthTriggerScanInt > 900))
     {
-        /*DBGPRINT(RT_DEBUG_ERROR,("ACT - UpdateBssScanParm( Dot11BssWidthTriggerScanInt out of range !!!!)  \n"));*/
+        /*DBGPRINT(RT_DEBUG_ERROR,("ACT - UpdateBssScanParm( Dot11BssWidthTriggerScanInt out of range !!!!) \n"));*/
         pAd->CommonCfg.Dot11BssWidthTriggerScanInt = 900;
     }
 
@@ -588,7 +588,7 @@ VOID UpdateBssScanParm(
     /* out of range defined in MIB... So fall back to default value.*/
     if((pAd->CommonCfg.Dot11OBssScanPassiveDwell < 5) ||(pAd->CommonCfg.Dot11OBssScanPassiveDwell > 1000))
     {
-        /*DBGPRINT(RT_DEBUG_ERROR,("ACT - UpdateBssScanParm( Dot11OBssScanPassiveDwell out of range !!!!)  \n"));*/
+        /*DBGPRINT(RT_DEBUG_ERROR,("ACT - UpdateBssScanParm( Dot11OBssScanPassiveDwell out of range !!!!) \n"));*/
         pAd->CommonCfg.Dot11OBssScanPassiveDwell = 20;
     }
 
@@ -597,7 +597,7 @@ VOID UpdateBssScanParm(
     /* out of range defined in MIB... So fall back to default value.*/
     if((pAd->CommonCfg.Dot11OBssScanActiveDwell < 10) ||(pAd->CommonCfg.Dot11OBssScanActiveDwell > 1000))
     {
-        /*DBGPRINT(RT_DEBUG_ERROR,("ACT - UpdateBssScanParm( Dot11OBssScanActiveDwell out of range !!!!)  \n"));*/
+        /*DBGPRINT(RT_DEBUG_ERROR,("ACT - UpdateBssScanParm( Dot11OBssScanActiveDwell out of range !!!!) \n"));*/
         pAd->CommonCfg.Dot11OBssScanActiveDwell = 10;
     }
 
@@ -606,7 +606,7 @@ VOID UpdateBssScanParm(
     /* out of range defined in MIB... So fall back to default value.*/
     if((pAd->CommonCfg.Dot11OBssScanPassiveTotalPerChannel < 200) ||(pAd->CommonCfg.Dot11OBssScanPassiveTotalPerChannel > 10000))
     {
-        /*DBGPRINT(RT_DEBUG_ERROR,("ACT - UpdateBssScanParm( Dot11OBssScanPassiveTotalPerChannel out of range !!!!)  \n"));*/
+        /*DBGPRINT(RT_DEBUG_ERROR,("ACT - UpdateBssScanParm( Dot11OBssScanPassiveTotalPerChannel out of range !!!!) \n"));*/
         pAd->CommonCfg.Dot11OBssScanPassiveTotalPerChannel = 200;
     }
 
@@ -615,7 +615,7 @@ VOID UpdateBssScanParm(
     /* out of range defined in MIB... So fall back to default value.*/
     if((pAd->CommonCfg.Dot11OBssScanActiveTotalPerChannel < 20) ||(pAd->CommonCfg.Dot11OBssScanActiveTotalPerChannel > 10000))
     {
-        /*DBGPRINT(RT_DEBUG_ERROR,("ACT - UpdateBssScanParm( Dot11OBssScanActiveTotalPerChannel out of range !!!!)  \n"));*/
+        /*DBGPRINT(RT_DEBUG_ERROR,("ACT - UpdateBssScanParm( Dot11OBssScanActiveTotalPerChannel out of range !!!!) \n"));*/
         pAd->CommonCfg.Dot11OBssScanActiveTotalPerChannel = 20;
     }
 
@@ -624,12 +624,12 @@ VOID UpdateBssScanParm(
     /* out of range defined in MIB... So fall back to default value.*/
     if(pAd->CommonCfg.Dot11OBssScanActivityThre > 100)
     {
-        /*DBGPRINT(RT_DEBUG_ERROR,("ACT - UpdateBssScanParm( Dot11OBssScanActivityThre out of range !!!!)  \n"));*/
+        /*DBGPRINT(RT_DEBUG_ERROR,("ACT - UpdateBssScanParm( Dot11OBssScanActivityThre out of range !!!!) \n"));*/
         pAd->CommonCfg.Dot11OBssScanActivityThre = 25;
     }
 
     pAd->CommonCfg.Dot11BssWidthChanTranDelay = (pAd->CommonCfg.Dot11BssWidthTriggerScanInt * pAd->CommonCfg.Dot11BssWidthChanTranDelayFactor);
-    /*DBGPRINT(RT_DEBUG_LOUD,("ACT - UpdateBssScanParm( Dot11BssWidthTriggerScanInt = %d )  \n", pAd->CommonCfg.Dot11BssWidthTriggerScanInt));*/
+    /*DBGPRINT(RT_DEBUG_LOUD,("ACT - UpdateBssScanParm( Dot11BssWidthTriggerScanInt = %d ) \n", pAd->CommonCfg.Dot11BssWidthTriggerScanInt));*/
 }
 
 #endif /* CONFIG_STA_SUPPORT */
@@ -715,7 +715,7 @@ VOID ChannelSwitchAction(
     {
         AsicSetChannel(pAd, rf_channel, rf_bw, Secondary, FALSE);
 
-        DBGPRINT(RT_DEBUG_TRACE, ("%s(): %dMHz LINK UP, CtrlChannel=%d,  CentralChannel= %d \n",
+        DBGPRINT(RT_DEBUG_TRACE, ("%s(): %dMHz LINK UP, CtrlChannel=%d,  CentralChannel= %d\n",
                                   __FUNCTION__, (rf_bw == BW_40 ? 40 : 20),
                                   pAd->CommonCfg.Channel,
                                   pAd->CommonCfg.CentralChannel));
@@ -753,7 +753,7 @@ VOID PeerPublicAction(
             break;
         }
 
-        DBGPRINT(RT_DEBUG_TRACE, ("ACTION - 20/40 BSS Coexistence Management action----> \n"));
+        DBGPRINT(RT_DEBUG_TRACE, ("ACTION - 20/40 BSS Coexistence Management action---->\n"));
         hex_dump("CoexistenceMgmtFrame", Elem->Msg, Elem->MsgLen);
 
 
@@ -844,7 +844,7 @@ static VOID respond_ht_information_exchange_action(
 
     if(NStatus != NDIS_STATUS_SUCCESS)
     {
-        DBGPRINT(RT_DEBUG_TRACE,("ACTION - respond_ht_information_exchange_action() allocate memory failed \n"));
+        DBGPRINT(RT_DEBUG_TRACE,("ACTION - respond_ht_information_exchange_action() allocate memory failed\n"));
         return;
     }
 
@@ -896,7 +896,7 @@ VOID PeerHTAction(
     switch(Action)
     {
     case NOTIFY_BW_ACTION:
-        DBGPRINT(RT_DEBUG_TRACE,("ACTION - HT Notify Channel bandwidth action----> \n"));
+        DBGPRINT(RT_DEBUG_TRACE,("ACTION - HT Notify Channel bandwidth action---->\n"));
 #ifdef CONFIG_STA_SUPPORT
 
         if(pAd->StaActive.SupportedPhyInfo.bHtEnable == FALSE)
@@ -904,7 +904,7 @@ VOID PeerHTAction(
             /* Note, this is to patch DIR-1353 AP. When the AP set to Wep, it will use legacy mode. But AP still keeps */
             /* sending BW_Notify Action frame, and cause us to linkup and linkdown. */
             /* In legacy mode, don't need to parse HT action frame.*/
-            DBGPRINT(RT_DEBUG_TRACE,("ACTION -Ignore HT Notify Channel BW when link as legacy mode. BW = %d---> \n",
+            DBGPRINT(RT_DEBUG_TRACE,("ACTION -Ignore HT Notify Channel BW when link as legacy mode. BW = %d--->\n",
                                      Elem->Msg[LENGTH_802_11+2]));
             break;
         }
@@ -923,7 +923,7 @@ VOID PeerHTAction(
 
     case SMPS_ACTION:
         /* 7.3.1.25*/
-        DBGPRINT(RT_DEBUG_TRACE,("ACTION - SMPS action----> \n"));
+        DBGPRINT(RT_DEBUG_TRACE,("ACTION - SMPS action---->\n"));
 
         if(((Elem->Msg[LENGTH_802_11+2] & 0x1) == 0))
             pEntry->MmpsMode = MMPS_ENABLE;
@@ -948,7 +948,7 @@ VOID PeerHTAction(
 
         pHT_info = (HT_INFORMATION_OCTET *) &Elem->Msg[LENGTH_802_11+2];
         /* 7.4.8.10*/
-        DBGPRINT(RT_DEBUG_TRACE,("ACTION - HT Information Exchange action----> \n"));
+        DBGPRINT(RT_DEBUG_TRACE,("ACTION - HT Information Exchange action---->\n"));
 
         if(pHT_info->Request)
         {
@@ -1044,7 +1044,7 @@ VOID SendRefreshBAR(
 
             if(NStatus != NDIS_STATUS_SUCCESS)
             {
-                DBGPRINT(RT_DEBUG_ERROR,("BA - MlmeADDBAAction() allocate memory failed \n"));
+                DBGPRINT(RT_DEBUG_ERROR,("BA - MlmeADDBAAction() allocate memory failed\n"));
                 return;
             }
 

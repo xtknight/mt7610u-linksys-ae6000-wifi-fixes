@@ -60,7 +60,7 @@
 #define EFUSE_TAG				0x2fe
 
 #ifdef RT_BIG_ENDIAN
-typedef	union	_EFUSE_CTRL_STRUC
+typedef	union	_EFUSE_CTRL_STRUCT
 {
     struct
     {
@@ -74,9 +74,9 @@ typedef	union	_EFUSE_CTRL_STRUC
         UINT32            EFSROM_AOUT:6;
     }	field;
     UINT32			word;
-}	EFUSE_CTRL_STRUC, *PEFUSE_CTRL_STRUC;
+}	EFUSE_CTRL_STRUCT, *PEFUSE_CTRL_STRUCT;
 #else
-typedef	union	_EFUSE_CTRL_STRUC
+typedef	union	_EFUSE_CTRL_STRUCT
 {
     struct
     {
@@ -90,7 +90,7 @@ typedef	union	_EFUSE_CTRL_STRUC
         UINT32            SEL_EFUSE:1;
     }	field;
     UINT32			word;
-}	EFUSE_CTRL_STRUC, *PEFUSE_CTRL_STRUC;
+}	EFUSE_CTRL_STRUCT, *PEFUSE_CTRL_STRUCT;
 #endif /* RT_BIG_ENDIAN */
 
 static UCHAR eFuseReadRegisters(
@@ -152,7 +152,7 @@ UCHAR eFuseReadRegisters(
     IN	USHORT Length,
     OUT	USHORT *pData)
 {
-    EFUSE_CTRL_STRUC		eFuseCtrlStruc;
+    EFUSE_CTRL_STRUCT		eFuseCtrlStruct;
     int	i;
     USHORT	efuseDataOffset;
     UINT32	data;
@@ -165,19 +165,19 @@ UCHAR eFuseReadRegisters(
 
 #endif /* defined(RT3290) || defined(RT65xx) */
 
-    RTMP_IO_READ32(pAd, efuse_ctrl_reg, &eFuseCtrlStruc.word);
+    RTMP_IO_READ32(pAd, efuse_ctrl_reg, &eFuseCtrlStruct.word);
 
     /*Step0. Write 10-bit of address to EFSROM_AIN (0x580, bit25:bit16). The address must be 16-byte alignment.*/
     /*Use the eeprom logical address and covert to address to block number*/
-    eFuseCtrlStruc.field.EFSROM_AIN = Offset & 0xfff0;
+    eFuseCtrlStruct.field.EFSROM_AIN = Offset & 0xfff0;
 
     /*Step1. Write EFSROM_MODE (0x580, bit7:bit6) to 0.*/
-    eFuseCtrlStruc.field.EFSROM_MODE = 0;
+    eFuseCtrlStruct.field.EFSROM_MODE = 0;
 
     /*Step2. Write EFSROM_KICK (0x580, bit30) to 1 to kick-off physical read procedure.*/
-    eFuseCtrlStruc.field.EFSROM_KICK = 1;
+    eFuseCtrlStruct.field.EFSROM_KICK = 1;
 
-    NdisMoveMemory(&data, &eFuseCtrlStruc, 4);
+    NdisMoveMemory(&data, &eFuseCtrlStruct, 4);
     RTMP_IO_WRITE32(pAd, efuse_ctrl_reg, data);
 
     /*Step3. Polling EFSROM_KICK(0x580, bit30) until it become 0 again.*/
@@ -188,10 +188,10 @@ UCHAR eFuseReadRegisters(
         if(RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST))
             return 0;
 
-        /*rtmp.HwMemoryReadDword(EFUSE_CTRL, (DWORD *) &eFuseCtrlStruc, 4);*/
-        RTMP_IO_READ32(pAd, efuse_ctrl_reg, &eFuseCtrlStruc.word);
+        /*rtmp.HwMemoryReadDword(EFUSE_CTRL, (DWORD *) &eFuseCtrlStruct, 4);*/
+        RTMP_IO_READ32(pAd, efuse_ctrl_reg, &eFuseCtrlStruct.word);
 
-        if(eFuseCtrlStruc.field.EFSROM_KICK == 0)
+        if(eFuseCtrlStruct.field.EFSROM_KICK == 0)
         {
             break;
         }
@@ -201,7 +201,7 @@ UCHAR eFuseReadRegisters(
     }
 
     /*if EFSROM_AOUT is not found in physical address, write 0xffff*/
-    if(eFuseCtrlStruc.field.EFSROM_AOUT == 0x3f)
+    if(eFuseCtrlStruct.field.EFSROM_AOUT == 0x3f)
     {
         for(i=0; i<Length/2; i++)
             *(pData+2*i) = 0xffff;
@@ -237,7 +237,7 @@ UCHAR eFuseReadRegisters(
         NdisMoveMemory(pData, &data, Length);
     }
 
-    return (UCHAR) eFuseCtrlStruc.field.EFSROM_AOUT;
+    return (UCHAR) eFuseCtrlStruct.field.EFSROM_AOUT;
 
 }
 
@@ -260,7 +260,7 @@ VOID eFusePhysicalReadRegisters(
     IN	USHORT Length,
     OUT	USHORT *pData)
 {
-    EFUSE_CTRL_STRUC		eFuseCtrlStruc;
+    EFUSE_CTRL_STRUCT		eFuseCtrlStruct;
     int	i;
     USHORT	efuseDataOffset;
     UINT32	data;
@@ -273,19 +273,19 @@ VOID eFusePhysicalReadRegisters(
 
 #endif /* defined(RT3290) || defined(RT65xx) */
 
-    RTMP_IO_READ32(pAd, efuse_ctrl_reg, &eFuseCtrlStruc.word);
+    RTMP_IO_READ32(pAd, efuse_ctrl_reg, &eFuseCtrlStruct.word);
 
     /*Step0. Write 10-bit of address to EFSROM_AIN (0x580, bit25:bit16). The address must be 16-byte alignment.*/
-    eFuseCtrlStruc.field.EFSROM_AIN = Offset & 0xfff0;
+    eFuseCtrlStruct.field.EFSROM_AIN = Offset & 0xfff0;
 
     /*Step1. Write EFSROM_MODE (0x580, bit7:bit6) to 1.*/
     /*Read in physical view*/
-    eFuseCtrlStruc.field.EFSROM_MODE = 1;
+    eFuseCtrlStruct.field.EFSROM_MODE = 1;
 
     /*Step2. Write EFSROM_KICK (0x580, bit30) to 1 to kick-off physical read procedure.*/
-    eFuseCtrlStruc.field.EFSROM_KICK = 1;
+    eFuseCtrlStruct.field.EFSROM_KICK = 1;
 
-    NdisMoveMemory(&data, &eFuseCtrlStruc, 4);
+    NdisMoveMemory(&data, &eFuseCtrlStruct, 4);
     RTMP_IO_WRITE32(pAd, efuse_ctrl_reg, data);
 
     /*Step3. Polling EFSROM_KICK(0x580, bit30) until it become 0 again.*/
@@ -296,9 +296,9 @@ VOID eFusePhysicalReadRegisters(
         if(RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST))
             return;
 
-        RTMP_IO_READ32(pAd, EFUSE_CTRL, &eFuseCtrlStruc.word);
+        RTMP_IO_READ32(pAd, EFUSE_CTRL, &eFuseCtrlStruct.word);
 
-        if(eFuseCtrlStruc.field.EFSROM_KICK == 0)
+        if(eFuseCtrlStruct.field.EFSROM_KICK == 0)
             break;
 
         RTMPusecDelay(2);
@@ -417,7 +417,7 @@ static VOID eFusePhysicalWriteRegisters(
     IN	USHORT Length,
     OUT	USHORT *pData)
 {
-    EFUSE_CTRL_STRUC		eFuseCtrlStruc;
+    EFUSE_CTRL_STRUCT		eFuseCtrlStruct;
     int	i;
     USHORT	efuseDataOffset;
     UINT32	data, eFuseDataBuffer[4];
@@ -444,18 +444,18 @@ static VOID eFusePhysicalWriteRegisters(
     /*Step0. Write 16-byte of data to EFUSE_DATA0-3 (0x590-0x59C), where EFUSE_DATA0 is the LSB DW, EFUSE_DATA3 is the MSB DW.*/
 
     /*read current values of 16-byte block	*/
-    RTMP_IO_READ32(pAd, efuse_ctrl_reg,  &eFuseCtrlStruc.word);
+    RTMP_IO_READ32(pAd, efuse_ctrl_reg,  &eFuseCtrlStruct.word);
 
     /*Step0. Write 10-bit of address to EFSROM_AIN (0x580, bit25:bit16). The address must be 16-byte alignment.*/
-    eFuseCtrlStruc.field.EFSROM_AIN = Offset & 0xfff0;
+    eFuseCtrlStruct.field.EFSROM_AIN = Offset & 0xfff0;
 
     /*Step1. Write EFSROM_MODE (0x580, bit7:bit6) to 1.*/
-    eFuseCtrlStruc.field.EFSROM_MODE = 1;
+    eFuseCtrlStruct.field.EFSROM_MODE = 1;
 
     /*Step2. Write EFSROM_KICK (0x580, bit30) to 1 to kick-off physical read procedure.*/
-    eFuseCtrlStruc.field.EFSROM_KICK = 1;
+    eFuseCtrlStruct.field.EFSROM_KICK = 1;
 
-    NdisMoveMemory(&data, &eFuseCtrlStruc, 4);
+    NdisMoveMemory(&data, &eFuseCtrlStruct, 4);
     RTMP_IO_WRITE32(pAd, efuse_ctrl_reg, data);
 
     /*Step3. Polling EFSROM_KICK(0x580, bit30) until it become 0 again.*/
@@ -463,9 +463,9 @@ static VOID eFusePhysicalWriteRegisters(
 
     while(i < 500)
     {
-        RTMP_IO_READ32(pAd, efuse_ctrl_reg, &eFuseCtrlStruc.word);
+        RTMP_IO_READ32(pAd, efuse_ctrl_reg, &eFuseCtrlStruct.word);
 
-        if(eFuseCtrlStruc.field.EFSROM_KICK == 0)
+        if(eFuseCtrlStruct.field.EFSROM_KICK == 0)
             break;
 
         RTMPusecDelay(2);
@@ -517,27 +517,27 @@ static VOID eFusePhysicalWriteRegisters(
 
     /*Step1. Write 10-bit of address to EFSROM_AIN (0x580, bit25:bit16). The address must be 16-byte alignment.*/
     // TODO: shiang, for below line, windows driver didn't have this read, why we have ??
-    RTMP_IO_READ32(pAd, efuse_ctrl_reg, &eFuseCtrlStruc.word);
+    RTMP_IO_READ32(pAd, efuse_ctrl_reg, &eFuseCtrlStruct.word);
 
-    eFuseCtrlStruc.field.EFSROM_AIN = Offset & 0xfff0;
+    eFuseCtrlStruct.field.EFSROM_AIN = Offset & 0xfff0;
 
     /*Step2. Write EFSROM_MODE (0x580, bit7:bit6) to 3.*/
-    eFuseCtrlStruc.field.EFSROM_MODE = 3;
+    eFuseCtrlStruct.field.EFSROM_MODE = 3;
 
     /*Step3. Write EFSROM_KICK (0x580, bit30) to 1 to kick-off physical write procedure.*/
-    eFuseCtrlStruc.field.EFSROM_KICK = 1;
+    eFuseCtrlStruct.field.EFSROM_KICK = 1;
 
-    NdisMoveMemory(&data, &eFuseCtrlStruc, 4);
+    NdisMoveMemory(&data, &eFuseCtrlStruct, 4);
     RTMP_IO_WRITE32(pAd, efuse_ctrl_reg, data);
 
-    /*Step4. Polling EFSROM_KICK(0x580, bit30) until it become 0 again. It¡¦s done.*/
+    /*Step4. Polling EFSROM_KICK(0x580, bit30) until it become 0 again. It\A1\A6s done.*/
     i = 0;
 
     while(i < 500)
     {
-        RTMP_IO_READ32(pAd, efuse_ctrl_reg, &eFuseCtrlStruc.word);
+        RTMP_IO_READ32(pAd, efuse_ctrl_reg, &eFuseCtrlStruct.word);
 
-        if(eFuseCtrlStruc.field.EFSROM_KICK == 0)
+        if(eFuseCtrlStruct.field.EFSROM_KICK == 0)
             break;
 
         RTMPusecDelay(2);
@@ -645,7 +645,7 @@ static NTSTATUS eFuseWriteRegisters(
         BlkNum = EFSROM_AOUT;
     }
 
-    DBGPRINT(RT_DEBUG_TRACE, ("eFuseWriteRegisters BlkNum = %d \n", BlkNum));
+    DBGPRINT(RT_DEBUG_TRACE, ("eFuseWriteRegisters BlkNum = %d\n", BlkNum));
 
     if(BlkNum == 0xffff)
     {
@@ -830,7 +830,7 @@ static NTSTATUS eFuseWriteRegisters(
     while(!bWriteSuccess&&Loop<2);
 
     if(!bWriteSuccess)
-        DBGPRINT(RT_DEBUG_ERROR,("Efsue Write Failed!!\n"));
+        DBGPRINT(RT_DEBUG_ERROR, ("Efuse Write Failed!!\n"));
 
     return TRUE;
 }
@@ -964,7 +964,7 @@ INT set_eFuseGetFreeBlockCount_Proc(
 {
     UINT efusefreenum=0;
 
-    if(pAd->bUseEfuse == FALSE && pAd->bFroceEEPROMBuffer == FALSE)
+    if(pAd->bUseEfuse == FALSE && pAd->bForceEEPROMBuffer == FALSE)
         return FALSE;
 
     eFuseGetFreeBlockCount(pAd,&efusefreenum);
@@ -980,7 +980,7 @@ INT set_eFusedump_Proc(
     USHORT InBuf[3];
     INT i=0;
 
-    if(pAd->bUseEfuse == FALSE && pAd->bFroceEEPROMBuffer == FALSE)
+    if(pAd->bUseEfuse == FALSE && pAd->bForceEEPROMBuffer == FALSE)
         return FALSE;
 
     for(i =0; i<pAd->chipCap.EFUSE_USAGE_MAP_END/2; i++)
@@ -1031,7 +1031,7 @@ INT	set_eFuseLoadFromBin_Proc(
     else
         NdisMoveMemory(src, EFUSE_EEPROM_DEFULT_FILE, strlen(EFUSE_EEPROM_DEFULT_FILE));
 
-    DBGPRINT(RT_DEBUG_OFF, ("FileName=%s\n",src));
+    DBGPRINT(RT_DEBUG_ERROR, ("eFuse FileName=%s\n",src));
 
     RtmpOSFSInfoChange(&osfsInfo, TRUE);
 
@@ -1135,7 +1135,7 @@ static NTSTATUS eFuseWriteRegistersFromBin(
     USHORT	eFuseData;
     USHORT	LogicalAddress, BlkNum = 0xffff;
     UCHAR	EFSROM_AOUT,Loop=0;
-    EFUSE_CTRL_STRUC		eFuseCtrlStruc;
+    EFUSE_CTRL_STRUCT		eFuseCtrlStruct;
     USHORT	efuseDataOffset;
     UINT32	data,tempbuffer;
     USHORT addr,tmpaddr, InBuf[3], tmpOffset;
@@ -1214,7 +1214,7 @@ static NTSTATUS eFuseWriteRegistersFromBin(
             BlkNum = EFSROM_AOUT;
         }
 
-        DBGPRINT(RT_DEBUG_TRACE, ("eFuseWriteRegisters BlkNum = %d \n", BlkNum));
+        DBGPRINT(RT_DEBUG_TRACE, ("eFuseWriteRegisters BlkNum = %d\n", BlkNum));
 
         if(BlkNum == 0xffff)
         {
@@ -1246,27 +1246,27 @@ static NTSTATUS eFuseWriteRegistersFromBin(
             }
 
             /*Step1.1.1. Write 10-bit of address to EFSROM_AIN (0x580, bit25:bit16). The address must be 16-byte alignment.*/
-            RTMP_IO_READ32(pAd, EFUSE_CTRL, &eFuseCtrlStruc.word);
-            eFuseCtrlStruc.field.EFSROM_AIN = BlkNum* 0x10 ;
+            RTMP_IO_READ32(pAd, EFUSE_CTRL, &eFuseCtrlStruct.word);
+            eFuseCtrlStruct.field.EFSROM_AIN = BlkNum* 0x10 ;
 
             /*Step1.1.2. Write EFSROM_MODE (0x580, bit7:bit6) to 3.*/
-            eFuseCtrlStruc.field.EFSROM_MODE = 3;
+            eFuseCtrlStruct.field.EFSROM_MODE = 3;
 
             /*Step1.1.3. Write EFSROM_KICK (0x580, bit30) to 1 to kick-off physical write procedure.*/
-            eFuseCtrlStruc.field.EFSROM_KICK = 1;
+            eFuseCtrlStruct.field.EFSROM_KICK = 1;
 
-            NdisMoveMemory(&data, &eFuseCtrlStruc, 4);
+            NdisMoveMemory(&data, &eFuseCtrlStruct, 4);
 
             RTMP_IO_WRITE32(pAd, EFUSE_CTRL, data);
 
-            /*Step1.1.4. Polling EFSROM_KICK(0x580, bit30) until it become 0 again. It¡¦s done.*/
+            /*Step1.1.4. Polling EFSROM_KICK(0x580, bit30) until it become 0 again. It\A1\A6s done.*/
             i = 0;
 
             while(i < 100)
             {
-                RTMP_IO_READ32(pAd, EFUSE_CTRL, (PUINT32) &eFuseCtrlStruc);
+                RTMP_IO_READ32(pAd, EFUSE_CTRL, (PUINT32) &eFuseCtrlStruct);
 
-                if(eFuseCtrlStruc.field.EFSROM_KICK == 0)
+                if(eFuseCtrlStruct.field.EFSROM_KICK == 0)
                     break;
 
                 RTMPusecDelay(2);
@@ -1280,18 +1280,18 @@ static NTSTATUS eFuseWriteRegistersFromBin(
             /*If the same logical number is existing, check if the writting data and the data */
             /*saving in this block are the same.*/
             /*read current values of 16-byte block	*/
-            RTMP_IO_READ32(pAd, EFUSE_CTRL, &eFuseCtrlStruc.word);
+            RTMP_IO_READ32(pAd, EFUSE_CTRL, &eFuseCtrlStruct.word);
 
             /*Step1.2.0. Write 10-bit of address to EFSROM_AIN (0x580, bit25:bit16). The address must be 16-byte alignment.*/
-            eFuseCtrlStruc.field.EFSROM_AIN = Offset & 0xfff0;
+            eFuseCtrlStruct.field.EFSROM_AIN = Offset & 0xfff0;
 
             /*Step1.2.1. Write EFSROM_MODE (0x580, bit7:bit6) to 1.*/
-            eFuseCtrlStruc.field.EFSROM_MODE = 0;
+            eFuseCtrlStruct.field.EFSROM_MODE = 0;
 
             /*Step1.2.2. Write EFSROM_KICK (0x580, bit30) to 1 to kick-off physical read procedure.*/
-            eFuseCtrlStruc.field.EFSROM_KICK = 1;
+            eFuseCtrlStruct.field.EFSROM_KICK = 1;
 
-            NdisMoveMemory(&data, &eFuseCtrlStruc, 4);
+            NdisMoveMemory(&data, &eFuseCtrlStruct, 4);
             RTMP_IO_WRITE32(pAd, EFUSE_CTRL, data);
 
             /*Step1.2.3. Polling EFSROM_KICK(0x580, bit30) until it become 0 again.*/
@@ -1299,9 +1299,9 @@ static NTSTATUS eFuseWriteRegistersFromBin(
 
             while(i < 500)
             {
-                RTMP_IO_READ32(pAd, EFUSE_CTRL, (PUINT32) &eFuseCtrlStruc);
+                RTMP_IO_READ32(pAd, EFUSE_CTRL, (PUINT32) &eFuseCtrlStruct);
 
-                if(eFuseCtrlStruc.field.EFSROM_KICK == 0)
+                if(eFuseCtrlStruct.field.EFSROM_KICK == 0)
                     break;
 
                 RTMPusecDelay(2);
@@ -1502,7 +1502,7 @@ int rtmp_ee_efuse_read16(
     IN USHORT Offset,
     OUT USHORT *pValue)
 {
-    if(pAd->bFroceEEPROMBuffer || pAd->bEEPROMFile)
+    if(pAd->bForceEEPROMBuffer || pAd->bEEPROMFile)
     {
         DBGPRINT(RT_DEBUG_TRACE, ("Read from EEPROM Buffer\n"));
         NdisMoveMemory(pValue, &(pAd->EEPROMImage[Offset]), 2);
@@ -1520,7 +1520,7 @@ int rtmp_ee_efuse_write16(
     IN USHORT Offset,
     IN USHORT data)
 {
-    if(pAd->bFroceEEPROMBuffer || pAd->bEEPROMFile)
+    if(pAd->bForceEEPROMBuffer || pAd->bEEPROMFile)
     {
         data = le2cpu16(data);
         DBGPRINT(RT_DEBUG_TRACE, ("Write to EEPROM Buffer\n"));
@@ -1827,32 +1827,32 @@ VOID eFuseGetFreeBlockCount(IN PRTMP_ADAPTER pAd,
 INT eFuse_init(RTMP_ADAPTER *pAd)
 {
     UINT EfuseFreeBlock=0;
-    EFUSE_CTRL_STRUC eFuseCtrlStruc;
+    EFUSE_CTRL_STRUCT eFuseCtrlStruct;
     UINT32 efuse_ctrl_reg = EFUSE_CTRL;
 
     /*RT3572 means 3062/3562/3572*/
     /*3593 means 3593*/
-    DBGPRINT(RT_DEBUG_ERROR, ("NVM is Efuse and its size =%x[%x-%x] \n",pAd->chipCap.EFUSE_USAGE_MAP_SIZE,pAd->chipCap.EFUSE_USAGE_MAP_START,pAd->chipCap.EFUSE_USAGE_MAP_END));
+    DBGPRINT(RT_DEBUG_INFO, ("NVM is Efuse and its size is %x[%x-%x]\n",pAd->chipCap.EFUSE_USAGE_MAP_SIZE,pAd->chipCap.EFUSE_USAGE_MAP_START,pAd->chipCap.EFUSE_USAGE_MAP_END));
     eFuseGetFreeBlockCount(pAd, &EfuseFreeBlock);
     /*If the used block of efuse is less than 5. We assume the default value*/
     /* of this efuse is empty and change to the buffer mode in odrder to */
     /*bring up interfaces successfully.*/
 
-    RTMP_IO_READ32(pAd, efuse_ctrl_reg, &eFuseCtrlStruc.word);
+    RTMP_IO_READ32(pAd, efuse_ctrl_reg, &eFuseCtrlStruct.word);
 
-    DBGPRINT(RT_DEBUG_TRACE, ("EFUSE_CTRL=0x%x:: (0x%x) on_time = %d, off_time = %d \n",
-                              efuse_ctrl_reg, eFuseCtrlStruc.word, eFuseCtrlStruc.field.EFSROM_LDO_ON_TIME, eFuseCtrlStruc.field.EFSROM_LDO_OFF_TIME));
+    DBGPRINT(RT_DEBUG_TRACE, ("EFUSE_CTRL=0x%x:: (0x%x) on_time = %d, off_time = %d\n",
+                              efuse_ctrl_reg, eFuseCtrlStruct.word, eFuseCtrlStruct.field.EFSROM_LDO_ON_TIME, eFuseCtrlStruct.field.EFSROM_LDO_OFF_TIME));
 
     if(EfuseFreeBlock > (pAd->chipCap.EFUSE_USAGE_MAP_SIZE-5))
     {
-        DBGPRINT(RT_DEBUG_ERROR, ("NVM is Efuse and the information is too less to bring up interface. Force to use EEPROM Buffer Mode\n"));
-        pAd->bFroceEEPROMBuffer = TRUE;
+        DBGPRINT(RT_DEBUG_INFO, ("NVM is Efuse and the information is insufficient to bring up interface. Force to use EEPROM Buffer Mode\n"));
+        pAd->bForceEEPROMBuffer = TRUE;
         eFuseLoadEEPROM(pAd);
     }
     else
-        pAd->bFroceEEPROMBuffer = FALSE;
+        pAd->bForceEEPROMBuffer = FALSE;
 
-    DBGPRINT(RT_DEBUG_TRACE, ("NVM is Efuse and force to use EEPROM Buffer Mode=%x\n",pAd->bFroceEEPROMBuffer));
+    DBGPRINT(RT_DEBUG_INFO, ("NVM is Efuse and force to use EEPROM Buffer Mode=%x\n",pAd->bForceEEPROMBuffer));
 
     return 0;
 }

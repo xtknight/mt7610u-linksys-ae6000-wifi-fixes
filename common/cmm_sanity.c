@@ -178,7 +178,7 @@ BOOLEAN PeerAddBAReqActionSanity(
     if(pAddFrame->BaParm.BAPolicy != IMMED_BA)
     {
         DBGPRINT(RT_DEBUG_ERROR,("PeerAddBAReqActionSanity: ADDBA Request Ba Policy[%d] not support\n", pAddFrame->BaParm.BAPolicy));
-        DBGPRINT(RT_DEBUG_ERROR,("ADDBA Request. tid=%x, Bufsize=%x, AMSDUSupported=%x \n", pAddFrame->BaParm.TID, pAddFrame->BaParm.BufSize, pAddFrame->BaParm.AMSDUSupported));
+        DBGPRINT(RT_DEBUG_ERROR,("ADDBA Request. tid=%x, Bufsize=%x, AMSDUSupported=%x\n", pAddFrame->BaParm.TID, pAddFrame->BaParm.BufSize, pAddFrame->BaParm.AMSDUSupported));
         return FALSE;
     }
 
@@ -509,7 +509,7 @@ BOOLEAN PeerBeaconAndProbeRspSanity_Old(
             }
             else
             {
-                DBGPRINT(RT_DEBUG_WARN, ("%s() - wrong IE_ADD_HT. \n", __FUNCTION__));
+                DBGPRINT(RT_DEBUG_WARN, ("%s() - wrong IE_ADD_HT.\n", __FUNCTION__));
             }
 
             break;
@@ -521,13 +521,13 @@ BOOLEAN PeerBeaconAndProbeRspSanity_Old(
             }
             else
             {
-                DBGPRINT(RT_DEBUG_WARN, ("%s() - wrong IE_SECONDARY_CH_OFFSET. \n", __FUNCTION__));
+                DBGPRINT(RT_DEBUG_WARN, ("%s() - wrong IE_SECONDARY_CH_OFFSET.\n", __FUNCTION__));
             }
 
             break;
 
         case IE_FH_PARM:
-            DBGPRINT(RT_DEBUG_TRACE, ("%s(IE_FH_PARM) \n", __FUNCTION__));
+            DBGPRINT(RT_DEBUG_TRACE, ("%s(IE_FH_PARM)\n", __FUNCTION__));
             break;
 
         case IE_DS_PARM:
@@ -1106,7 +1106,7 @@ BOOLEAN PeerBeaconAndProbeRspSanity(
             }
             else
             {
-                DBGPRINT(RT_DEBUG_WARN, ("%s() - wrong IE_ADD_HT. \n", __FUNCTION__));
+                DBGPRINT(RT_DEBUG_WARN, ("%s() - wrong IE_ADD_HT.\n", __FUNCTION__));
             }
 
             break;
@@ -1116,13 +1116,13 @@ BOOLEAN PeerBeaconAndProbeRspSanity(
                 ie_list->NewExtChannelOffset = pEid->Octet[0];
             else
             {
-                DBGPRINT(RT_DEBUG_WARN, ("%s() - wrong IE_SECONDARY_CH_OFFSET. \n", __FUNCTION__));
+                DBGPRINT(RT_DEBUG_WARN, ("%s() - wrong IE_SECONDARY_CH_OFFSET.\n", __FUNCTION__));
             }
 
             break;
 
         case IE_FH_PARM:
-            DBGPRINT(RT_DEBUG_TRACE, ("%s(IE_FH_PARM) \n", __FUNCTION__));
+            DBGPRINT(RT_DEBUG_TRACE, ("%s(IE_FH_PARM)\n", __FUNCTION__));
             break;
 
         case IE_DS_PARM:

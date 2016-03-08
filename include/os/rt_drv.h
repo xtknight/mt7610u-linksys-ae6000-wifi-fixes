@@ -341,7 +341,6 @@ do{                                   \
 
 #define DBGPRINT_ERR(Fmt)           \
 {                                   \
-    printk("ERROR!!! ");          \
     printk Fmt;                  \
 }
 
@@ -362,7 +361,7 @@ do{                                   \
 {                                                                               \
     if (!(x))                                                                   \
     {                                                                           \
-        printk(__FILE__ ":%d assert " #x "failed\n", __LINE__);    \
+        printk(__FILE__ ": %d assert " #x "failed\n", __LINE__);    \
     }                                                                           \
 }
 #else

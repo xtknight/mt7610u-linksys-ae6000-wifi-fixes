@@ -40,7 +40,7 @@ int bin2h(char *infname, char *outfname, char *fw_name)
 
     if(infile == (FILE *) NULL)
     {
-        printf("Can't read file %s \n",infname);
+        printf("Can't read file %s\n",infname);
         return -1;
     }
 
@@ -48,12 +48,12 @@ int bin2h(char *infname, char *outfname, char *fw_name)
 
     if(outfile == (FILE *) NULL)
     {
-        printf("Can't open write file %s \n",outfname);
+        printf("Can't open write file %s\n",outfname);
         return -1;
     }
 
-    fputs("/* AUTO GEN PLEASE DO NOT MODIFY IT */ \n",outfile);
-    fputs("/* AUTO GEN PLEASE DO NOT MODIFY IT */ \n",outfile);
+    fputs("/* AUTO GEN PLEASE DO NOT MODIFY IT */\n",outfile);
+    fputs("/* AUTO GEN PLEASE DO NOT MODIFY IT */\n",outfile);
     fputs("\n",outfile);
     fputs("\n",outfile);
 
@@ -106,13 +106,13 @@ int main(int argc ,char *argv[])
 
     if(!rt28xxdir)
     {
-        printf("Environment value \"RT28xx_DIR\" not export \n");
+        printf("Environment value \"RT28xx_DIR\" not export\n");
         return -1;
     }
 
     if(!chipset)
     {
-        printf("Environment value \"CHIPSET\" not export \n");
+        printf("Environment value \"CHIPSET\" not export\n");
         return -1;
     }
 

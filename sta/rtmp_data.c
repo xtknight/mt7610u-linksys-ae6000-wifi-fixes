@@ -411,7 +411,7 @@ VOID STAHandleRxDataFrame(
     //+++Add by shiang for debug
     if(0 /*!(pRxInfo->Mcast || pRxInfo->Bcast)*/)
     {
-        DBGPRINT(RT_DEBUG_OFF, ("-->%s(%d): Dump Related Info!\n", __FUNCTION__, __LINE__));
+        DBGPRINT(RT_DEBUG_TRACE, ("-->%s(%d): Dump Related Info!\n", __FUNCTION__, __LINE__));
         dump_rxinfo(pAd, pRxInfo);
         hex_dump("DataFrameHeader", (UCHAR *)pHeader, sizeof(HEADER_802_11));
         hex_dump("DataFramePayload", pRxBlk->pData , pRxBlk->DataSize);
@@ -965,7 +965,7 @@ VOID STAHandleRxDataFrame_Hdr_Trns(
     //+++Add by shiang for debug
     if(0 /*!(pRxInfo->Mcast || pRxInfo->Bcast)*/)
     {
-        DBGPRINT(RT_DEBUG_OFF, ("-->%s(%d): Dump Related Info!\n", __FUNCTION__, __LINE__));
+        DBGPRINT(RT_DEBUG_TRACE, ("-->%s(%d): Dump Related Info!\n", __FUNCTION__, __LINE__));
         hex_dump("DataFrameHeader", pHeader, 36);
         hex_dump("DataFramePayload", pRxBlk->pTransData , pRxBlk->TransDataSize);
     }
@@ -1544,7 +1544,7 @@ VOID STAHandleRxMgmtFrame(
         /* First check the size, it MUST not exceed the mlme queue size */
         if(pRxWI->RxWIMPDUByteCnt > MGMT_DMA_BUFFER_SIZE)
         {
-            DBGPRINT_ERR(("STAHandleRxMgmtFrame: frame too large, size = %d \n", pRxWI->RxWIMPDUByteCnt));
+            DBGPRINT_ERR(("STAHandleRxMgmtFrame: frame too large, size = %d\n", pRxWI->RxWIMPDUByteCnt));
             break;
         }
 
@@ -1708,7 +1708,7 @@ BOOLEAN STARxDoneInterruptHandle(RTMP_ADAPTER *pAd, BOOLEAN argc)
         // TODO: shiang-6590, handle packet from other ports
         if((pFceInfo->info_type != 0) || (pFceInfo->pkt_80211 != 1))
         {
-            DBGPRINT(RT_DEBUG_OFF, ("==>%s(): GetFrameFromOtherPorts!\n", __FUNCTION__));
+            DBGPRINT(RT_DEBUG_TRACE, ("==>%s(): GetFrameFromOtherPorts!\n", __FUNCTION__));
             hex_dump("hw_rx_info", &RxBlk.hw_rx_info[0], sizeof(RxBlk.hw_rx_info));
             DBGPRINT(RT_DEBUG_TRACE, ("Dump the RxD, RxFCEInfo and RxInfo:\n"));
             hex_dump("RxD", (UCHAR *)pRxD, sizeof(RXD_STRUC));
@@ -1717,7 +1717,7 @@ BOOLEAN STARxDoneInterruptHandle(RTMP_ADAPTER *pAd, BOOLEAN argc)
 #endif /* RLT_MAC */
             dump_rxinfo(pAd, pRxInfo);
             hex_dump("RxFrame", (UCHAR *)pData, (pFceInfo->pkt_len));
-            DBGPRINT(RT_DEBUG_OFF, ("<==\n"));
+            DBGPRINT(RT_DEBUG_TRACE, ("<==\n"));
             RELEASE_NDIS_PACKET(pAd, pRxPacket, NDIS_STATUS_SUCCESS);
             continue;
         }
