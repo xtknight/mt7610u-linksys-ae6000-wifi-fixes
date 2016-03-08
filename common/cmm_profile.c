@@ -337,6 +337,7 @@ PSTRING RTMPFindSection(
     STRING temp_buf[32];
     PSTRING  ptr;
 
+    // XTKNIGHT_FIXME: ? don't know what the use of this is.
     strcpy(temp_buf, "Default");
 
     if((ptr = rtstrstr(buffer, temp_buf)) != NULL)
@@ -666,6 +667,24 @@ static void rtmp_read_key_parms_from_file(IN  PRTMP_ADAPTER pAd, PSTRING tmpbuf,
 }
 
 
+static void rtmp_key_set_default_parms(IN  PRTMP_ADAPTER pAd)
+{
+	ULONG		KeyIdx;
+
+#ifdef CONFIG_STA_SUPPORT
+	// DefaultKeyID=1
+	IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
+	{
+		KeyIdx = 1;
+		RTMPSetSTADefKeyId(pAd, KeyIdx);
+		DBGPRINT(RT_DEBUG_TRACE, ("Default DefaultKeyID(0~3)=%d\n", pAd->StaCfg.DefaultKeyId));
+	}
+#endif /* CONFIG_STA_SUPPORT */
+
+	// Unnecessary to set KeyType[] or KeyStr[]... its default is Key{1,4}{Type,Str} is Invalid key length(0) or Type(0), which does nothing
+}
+
+
 
 #ifdef CONFIG_STA_SUPPORT
 static void rtmp_read_sta_wmm_parms_from_file(IN  PRTMP_ADAPTER pAd, char *tmpbuf, char *buffer)
@@ -766,6 +785,58 @@ static void rtmp_read_sta_wmm_parms_from_file(IN  PRTMP_ADAPTER pAd, char *tmpbu
 #endif /* UAPSD_SUPPORT */
 }
 
+static void rtmp_sta_wmm_set_default_parms(IN  PRTMP_ADAPTER pAd)
+{				
+	INT i=0;
+	
+	// WmmCapable=0
+	pAd->CommonCfg.bWmmCapable = FALSE;
+	DBGPRINT(RT_DEBUG_TRACE, ("Default WmmCapable=%d\n", pAd->CommonCfg.bWmmCapable));
+
+#ifdef QOS_DLS_SUPPORT
+	/*DLSCapable*/
+	// Not set in config file: not setting here either
+#endif /* QOS_DLS_SUPPORT */
+
+	// AckPolicy=0;0;0;0
+	/*AckPolicy for AC_BK, AC_BE, AC_VI, AC_VO*/
+	for (i = 0; i < 4; i++)
+	{
+		pAd->CommonCfg.AckPolicy[i] = (UCHAR)0;
+		DBGPRINT(RT_DEBUG_TRACE, ("Default AckPolicy[%d]=%d\n", i, pAd->CommonCfg.AckPolicy[i]));
+	}
+
+#ifdef UAPSD_SUPPORT
+	if (bWmmEnable)
+	{
+		// APSDCapable=0
+		pAd->StaCfg.UapsdInfo.bAPSDCapable = FALSE;
+		DBGPRINT(RT_DEBUG_TRACE, ("Default APSDCapable=%d\n", pAd->StaCfg.UapsdInfo.bAPSDCapable));
+
+		/*MaxSPLength*/
+		// Not set in config file: not setting here either
+
+		// APSDAC=0;0;0;0
+		/*APSDAC for AC_BE, AC_BK, AC_VI, AC_VO*/
+		for (i = 0; i < 4; i++)
+		{
+			apsd_ac[i] = FALSE;
+			DBGPRINT(RT_DEBUG_TRACE, ("Default APSDAC[%d]=%d\n", i, apsd_ac[i]));
+		}
+				
+		pAd->CommonCfg.bAPSDAC_BE = apsd_ac[0];
+		pAd->CommonCfg.bAPSDAC_BK = apsd_ac[1];
+		pAd->CommonCfg.bAPSDAC_VI = apsd_ac[2];
+		pAd->CommonCfg.bAPSDAC_VO = apsd_ac[3];
+
+		pAd->CommonCfg.bACMAPSDTr[0] = apsd_ac[0];
+		pAd->CommonCfg.bACMAPSDTr[1] = apsd_ac[1];
+		pAd->CommonCfg.bACMAPSDTr[2] = apsd_ac[2];
+		pAd->CommonCfg.bACMAPSDTr[3] = apsd_ac[3];
+	}
+#endif /* UAPSD_SUPPORT */
+}
+
 #ifdef XLINK_SUPPORT
 static void rtmp_get_psp_xlink_mode_from_file(IN  PRTMP_ADAPTER pAd, char *tmpbuf, char *buffer)
 {
@@ -792,6 +863,23 @@ static void rtmp_get_psp_xlink_mode_from_file(IN  PRTMP_ADAPTER pAd, char *tmpbu
 
 		DBGPRINT(RT_DEBUG_TRACE, ("PSP_XLINK_MODE=%d\n", pAd->StaCfg.PSPXlink));
 	}
+}
+
+static void rtmp_psp_xlink_mode_set_default_parms(IN  PRTMP_ADAPTER pAd)
+{
+	UINT32 Value = 0;
+
+	// PSP_XLINK_MODE=0
+	pAd->StaCfg.PSPXlink = FALSE;
+
+	if (pAd->StaCfg.PSPXlink)
+		Value = PSPXLINK;
+	else
+		Value = STANORMAL;
+
+	RTMP_IO_WRITE32(pAd, RX_FILTR_CFG, Value);
+
+	DBGPRINT(RT_DEBUG_TRACE, ("Default PSP_XLINK_MODE=%d\n", pAd->StaCfg.PSPXlink));
 }
 #endif /* XLINK_SUPPORT */
 #endif /* CONFIG_STA_SUPPORT */
@@ -854,6 +942,29 @@ static void VHTParametersHook(
 			pAd->CommonCfg.vht_bw_signal = 0;
 		DBGPRINT(RT_DEBUG_TRACE, ("VHT: BW SIGNALING = %d\n", pAd->CommonCfg.vht_bw_signal));
 	}	
+}
+
+static void VHTParametersHookDefaultValues(
+	IN RTMP_ADAPTER *pAd)
+{
+	// This function should follow a similar layout to VHTParametersHook
+
+	// VHT_BW=1 (Channel Width: 0: 20/40, 1: 80, 2: 160, 3: 80/80?)
+	pAd->CommonCfg.vht_bw = VHT_BW_80;
+	DBGPRINT(RT_DEBUG_TRACE, ("Default VHT: Channel Width = %s\n",
+		(pAd->CommonCfg.vht_bw == VHT_BW_80) ? "80 MHz" : "20/40 MHz" ));
+
+	// VHT_SGI=1 (GI_400)
+	pAd->CommonCfg.vht_sgi_80 = GI_400;
+	DBGPRINT(RT_DEBUG_TRACE, ("Default VHT: Short GI for 80Mhz  = %s\n",
+				(pAd->CommonCfg.vht_sgi_80==GI_800) ? "Disabled" : "Enable" ));
+
+	// VHT_STBC=0 (STBC_NONE)
+	pAd->CommonCfg.vht_stbc = STBC_NONE;
+	DBGPRINT(RT_DEBUG_TRACE, ("Default VHT: STBC = %d\n",
+				pAd->CommonCfg.vht_stbc));
+
+	// VHT_BW_SIGNAL (bandwidth signaling) (missing)
 }
 
 #endif /* DOT11_VHT_AC */
@@ -1349,6 +1460,157 @@ static void HTParametersHook(
 		pAd->CommonCfg.bRalinkBurstMode = ((Value == 1) ? 1 : 0);
 		DBGPRINT(RT_DEBUG_TRACE, ("HT: RaBurstMode= %d\n", pAd->CommonCfg.bRalinkBurstMode));
 	}
+#endif /* DOT11_N_SUPPORT */
+
+}
+
+static void HTParametersHookDefaultValues(
+	IN	PRTMP_ADAPTER pAd)
+{
+	long Value;
+
+	// This function should follow a similar layout to HTParametersHook
+
+	// HT_PROTECT (missing)
+
+	// HT_MIMOPSMode=3
+        Value = 3;
+        if (Value > MMPS_ENABLE)
+        {
+		pAd->CommonCfg.BACapability.field.MMPSmode = MMPS_ENABLE;
+        }
+        else
+        {
+		/*TODO: add mimo power saving mechanism*/
+		pAd->CommonCfg.BACapability.field.MMPSmode = MMPS_ENABLE;
+		/*pAd->CommonCfg.BACapability.field.MMPSmode = Value;*/
+        }
+        DBGPRINT(RT_DEBUG_TRACE, ("Default HT: MIMOPS Mode  = %d\n", (INT) pAd->CommonCfg.BACapability.field.MMPSmode));
+
+	// HT_BADecline=0
+	pAd->CommonCfg.bBADecline = FALSE;
+        DBGPRINT(RT_DEBUG_TRACE, ("Default HT: BA Decline  = %s\n", (pAd->CommonCfg.bBADecline==0) ? "Disable" : "Enable"));
+
+	// HT_AutoBA=1
+        Value = 1;
+        if (Value == 0)
+        {
+		pAd->CommonCfg.BACapability.field.AutoBA = FALSE;
+		pAd->CommonCfg.BACapability.field.Policy = BA_NOTUSE;
+        }
+        else
+        {
+		pAd->CommonCfg.BACapability.field.AutoBA = TRUE;
+		pAd->CommonCfg.BACapability.field.Policy = IMMED_BA;
+        }
+	pAd->CommonCfg.REGBACapability.field.AutoBA = pAd->CommonCfg.BACapability.field.AutoBA;
+	pAd->CommonCfg.REGBACapability.field.Policy = pAd->CommonCfg.BACapability.field.Policy;
+	DBGPRINT(RT_DEBUG_TRACE, ("Default HT: Auto BA  = %s\n", (Value==0) ? "Disable" : "Enable"));
+
+	// HT_HTC (missing)
+
+	// HT_RDG=1 (Reverse Direction Mechanism)
+	Value = 1;
+	if (Value == 0)
+	{			
+		pAd->CommonCfg.bRdg = FALSE;
+	}
+	else
+	{
+		pAd->HTCEnable = TRUE;
+		pAd->CommonCfg.bRdg = TRUE;
+	}
+	DBGPRINT(RT_DEBUG_TRACE, ("Default HT: RDG = %s\n", (Value==0) ? "Disable" : "Enable(+HTC)"));
+
+	// HT_AMSDU=0 (Tx A-MSDU ?)
+	pAd->CommonCfg.BACapability.field.AmsduEnable = FALSE;
+	DBGPRINT(RT_DEBUG_TRACE, ("Default HT: Tx A-MSDU = %s\n", (pAd->CommonCfg.BACapability.field.AmsduEnable==0) ? "Disable" : "Enable"));
+
+	// HT_MpduDensity=4
+	pAd->CommonCfg.BACapability.field.MpduDensity = 4;
+	DBGPRINT(RT_DEBUG_TRACE, ("Default HT: MPDU Density = %d\n", pAd->CommonCfg.BACapability.field.MpduDensity));
+
+	// HT_BAWinSize=64 (Max Rx BA Window Size)
+	pAd->CommonCfg.REGBACapability.field.RxBAWinLimit = 64;
+	pAd->CommonCfg.BACapability.field.RxBAWinLimit = 64;
+	DBGPRINT(RT_DEBUG_TRACE, ("Default HT: BA Window Size = %d\n", (INT) pAd->CommonCfg.REGBACapability.field.RxBAWinLimit));
+
+	// HT_GI=1 (Guard Interval)
+	Value = GI_400; // 1
+	if (Value == GI_400)
+	{
+		pAd->CommonCfg.RegTransmitSetting.field.ShortGI = GI_400;
+	}
+	else
+	{
+		pAd->CommonCfg.RegTransmitSetting.field.ShortGI = GI_800;
+	}	
+	DBGPRINT(RT_DEBUG_TRACE, ("Default HT: Guard Interval = %s\n", (Value==GI_400) ? "400" : "800" ));
+
+	// HT_OpMode=0 (HighThroughput Operation Mode: Mixed Mode, Greenfield)
+	pAd->CommonCfg.RegTransmitSetting.field.HTMODE = HTMODE_MM; // 0: Mixed Mode
+	DBGPRINT(RT_DEBUG_TRACE, ("Default HT: Operation Mode = %s\n", (pAd->CommonCfg.RegTransmitSetting.field.HTMODE==HTMODE_GF) ? "Greenfield" : "Mixed Mode" ));
+
+	// FixedTxMode (missing)
+
+	// HT_BW=1 (Channel Width: 0: 20 MHz, 1: 40 MHz)
+	pAd->CommonCfg.RegTransmitSetting.field.BW = BW_40;
+
+#ifdef MCAST_RATE_SPECIFIC
+	pAd->CommonCfg.MCastPhyMode.field.BW = pAd->CommonCfg.RegTransmitSetting.field.BW;
+#endif /* MCAST_RATE_SPECIFIC */
+
+	DBGPRINT(RT_DEBUG_TRACE, ("Default HT: Channel Width = %s\n", (pAd->CommonCfg.RegTransmitSetting.field.BW==BW_40) ? "40 MHz" : "20 MHz" ));
+
+	// HT_EXTCHA=0 (External Channel during 40 MHz operation)
+	pAd->CommonCfg.RegTransmitSetting.field.EXTCHA = EXTCHA_BELOW;
+	DBGPRINT(RT_DEBUG_TRACE, ("Default HT: Ext Channel = %s\n", (pAd->CommonCfg.RegTransmitSetting.field.EXTCHA==0) ? "BELOW" : "ABOVE" ));
+
+#ifdef CONFIG_STA_SUPPORT 
+	// HT_MCS=33	
+	IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
+	{
+		Value = 33;
+		if ((Value >= 0 && Value <= 23) || (Value == 32))
+		{
+			pAd->StaCfg.DesiredTransmitSetting.field.MCS  = Value;
+			pAd->StaCfg.bAutoTxRateSwitch = FALSE;
+			DBGPRINT(RT_DEBUG_TRACE, ("Default HT: MCS = %d\n", pAd->StaCfg.DesiredTransmitSetting.field.MCS));
+		}
+		else
+		{
+			pAd->StaCfg.DesiredTransmitSetting.field.MCS  = MCS_AUTO;
+			pAd->StaCfg.bAutoTxRateSwitch = TRUE;
+			DBGPRINT(RT_DEBUG_TRACE, ("Default HT: MCS = AUTO\n"));
+		}
+	}
+#endif /* CONFIG_STA_SUPPORT */	
+
+	// HT_STBC=0 (STBC_NONE)
+	pAd->CommonCfg.RegTransmitSetting.field.STBC = STBC_NONE;
+	DBGPRINT(RT_DEBUG_TRACE, ("Default HT: STBC = %d\n", pAd->CommonCfg.RegTransmitSetting.field.STBC));
+
+	// HT_40MHZ_INTOLERANT (missing)
+
+	// HT_TxStream (missing)
+
+	// HT_RxStream (missing)
+
+	// HT_DisallowTKIP=1
+	pAd->CommonCfg.HT_DisallowTKIP = TRUE;
+	DBGPRINT(RT_DEBUG_TRACE, ("Default HT: Disallow TKIP mode = %s\n", (pAd->CommonCfg.HT_DisallowTKIP == TRUE) ? "ON" : "OFF" ));
+
+#ifdef DOT11_N_SUPPORT
+#ifdef DOT11N_DRAFT3
+	// OBSSScanParam (missing)
+
+	// HT_BSSCoexistence (missing)
+
+	// HT_BSSCoexApCntThr (missing)
+
+#endif /* DOT11N_DRAFT3 */
+
+	// BurstMode (missing)
 #endif /* DOT11_N_SUPPORT */
 
 }
@@ -2333,6 +2595,342 @@ NDIS_STATUS	RTMPSetProfileParameters(
 	return NDIS_STATUS_SUCCESS;
 }
 
+NDIS_STATUS	RTMPSetDefaultProfileParameters(
+	IN RTMP_ADAPTER *pAd)
+{
+	INT	retval;
+	long	lInfo;
+	PSTRING	tmpbuf;
+
+	// We still need to use tmpbuf even though we're not reading a file.
+	// If we pass string literals to these functions, we cause a kernel panic,
+	// so we need to load it into tmpbuf temporarily
+	os_alloc_mem(NULL, (UCHAR **)&tmpbuf, MAX_PARAM_BUFFER_SIZE);
+	if(tmpbuf == NULL)
+		return NDIS_STATUS_FAILURE;
+	tmpbuf[0] = 0;
+
+	DBGPRINT(RT_DEBUG_ERROR, ("Loading default parameter profile\n"));
+
+	do
+	{
+		// CountryRegion=5 {5: channels 1 ~ 14}
+		retval = RT_CfgSetCountryRegion(pAd, "5", BAND_24G);
+		DBGPRINT(RT_DEBUG_TRACE, ("Default CountryRegion=%d\n", pAd->CommonCfg.CountryRegion));
+
+		// CountryRegionABand=7 {7: use 36, 40, 44, 48, 52, 56, 60, 64, 100, 104, 108, 112, 116, 120, 124, 128, 132, 136, 140, 149, 153, 157, 161, 165 Channel}
+		retval = RT_CfgSetCountryRegion(pAd, "7", BAND_5G);
+		DBGPRINT(RT_DEBUG_TRACE, ("Default CountryRegionABand=%d\n", pAd->CommonCfg.CountryRegionForABand));
+
+#ifdef RTMP_EFUSE_SUPPORT
+		// EfuseBufferMode (not sure why this is EEPROMFile in the other function, but we'll follow that)
+		pAd->bEEPROMFile = (UCHAR) 0;
+#endif
+
+		// CountryCode=(unset)
+		tmpbuf[0] = 0;
+		tmpbuf[1] = 0;
+		tmpbuf[2] = 0;
+		RTMPSetCountryCode(pAd, tmpbuf);
+		DBGPRINT(RT_DEBUG_TRACE, ("Default CountryCode=\n"));
+
+		// ChannelGeography=2(BOTH)
+		// WARNING: after config file is read, it may change this default to BOTH if the variable is not specified. (???) That's why we set the value to BOTH here anyway.
+		// See RTMPSetProfileParameters()
+#ifdef EXT_BUILD_CHANNEL_LIST
+		pAd->CommonCfg.Geography = BOTH;
+		// Unsure what this is supposed to do
+		pAd->CommonCfg.CountryCode[2] = ' ';
+#endif /* EXT_BUILD_CHANNEL_LIST */
+		DBGPRINT(RT_DEBUG_TRACE, ("Default ChannelGeography=2\n"));
+
+		// SSID="11n-AP"
+#ifdef CONFIG_STA_SUPPORT
+		IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
+		{
+			RTMPSetSTASSID(pAd, "11n-AP");
+			DBGPRINT(RT_DEBUG_TRACE, ("Default SSID=11n-AP\n"));
+		}
+#endif
+
+		// NetworkType="Infra"
+#ifdef CONFIG_STA_SUPPORT
+		IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
+		{
+			pAd->bConfigChanged = TRUE;
+			/*Default Infrastructure mode*/
+			pAd->StaCfg.BssType = BSS_INFRA;
+			/* Reset Ralink supplicant to not use, it will be set to start when UI set PMK key*/
+			pAd->StaCfg.WpaState = SS_NOTUSE;
+			DBGPRINT(RT_DEBUG_TRACE, ("Default NetworkType=Infra\n"));
+		}
+#endif /* CONFIG_STA_SUPPORT */		
+	
+		// Channel=0
+		pAd->CommonCfg.Channel = (UCHAR) 0;
+		DBGPRINT(RT_DEBUG_TRACE, ("Default Channel=0\n"));
+	
+#ifdef DOT11_VHT_AC
+		// WirelessMode=12 (B/G/GN/A/AN/AC mixed)
+		RT_CfgSetWirelessMode(pAd, "12");
+		DBGPRINT(RT_DEBUG_TRACE, ("Default WirelessMode=12 (B/G/GN/A/AN/AC mixed)\n"));
+#else
+		// WirelessMode=5 (A/B/G/GN/AN mixed)
+		RT_CfgSetWirelessMode(pAd, "5");
+		DBGPRINT(RT_DEBUG_TRACE, ("Default WirelessMode=5 (A/B/G/GN/AN mixed)\n"));
+#endif /* DOT11_VHT_AC */
+
+		// BeaconPeriod=100ms
+		pAd->CommonCfg.BeaconPeriod = (USHORT) 100;
+		DBGPRINT(RT_DEBUG_TRACE, ("Default BeaconPeriod=100\n"));
+
+		// TxPower=100
+		pAd->CommonCfg.TxPowerPercentage = (ULONG) 100;
+#ifdef CONFIG_STA_SUPPORT
+		IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
+			pAd->CommonCfg.TxPowerDefault = pAd->CommonCfg.TxPowerPercentage;
+#endif /* CONFIG_STA_SUPPORT */
+		DBGPRINT(RT_DEBUG_TRACE, ("Default TxPower=100\n"));
+
+		// BGProtection=0 (auto)
+		pAd->CommonCfg.UseBGProtection = 0;
+		DBGPRINT(RT_DEBUG_TRACE, ("Default BGProtection=0 (auto)\n"));
+
+		// TxPreamble=0 (Rt802_11PreambleLong)
+		pAd->CommonCfg.TxPreamble = Rt802_11PreambleLong;
+		DBGPRINT(RT_DEBUG_TRACE, ("Default TxPreamble=%ld\n", pAd->CommonCfg.TxPreamble));
+
+		// RTSThreshold=2347
+		pAd->CommonCfg.RtsThreshold = (USHORT) 2347;
+		DBGPRINT(RT_DEBUG_TRACE, ("Default RTSThreshold=%d\n", pAd->CommonCfg.RtsThreshold));
+
+		// FragThreshold=2346
+		// NOTE: MUST BE EVEN VALUE.
+		pAd->CommonCfg.bUseZeroToDisableFragment = FALSE;
+		pAd->CommonCfg.FragmentThreshold = (USHORT) 2346;
+		DBGPRINT(RT_DEBUG_TRACE, ("Default FragThreshold=%d\n", pAd->CommonCfg.FragmentThreshold));
+	
+		// TxBurst=1
+		pAd->CommonCfg.bEnableTxBurst = TRUE;
+		DBGPRINT(RT_DEBUG_TRACE, ("Default TxBurst=%d\n", pAd->CommonCfg.bEnableTxBurst));
+
+		// PktAggregate=0
+#ifdef AGGREGATION_SUPPORT
+		pAd->CommonCfg.bAggregationCapable = FALSE;
+#ifdef PIGGYBACK_SUPPORT
+		pAd->CommonCfg.bPiggyBackCapable = pAd->CommonCfg.bAggregationCapable;
+#endif /* PIGGYBACK_SUPPORT */
+#else
+		pAd->CommonCfg.bAggregationCapable = FALSE;
+		pAd->CommonCfg.bPiggyBackCapable = FALSE;
+#endif /* AGGREGATION_SUPPORT */
+
+		DBGPRINT(RT_DEBUG_TRACE, ("Default PktAggregate=%d\n", pAd->CommonCfg.bAggregationCapable));
+
+		// Wmm and PSP XLINK related params
+#ifdef CONFIG_STA_SUPPORT
+		IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
+		{
+			rtmp_sta_wmm_set_default_parms(pAd);
+#ifdef XLINK_SUPPORT
+			rtmp_psp_xlink_mode_set_default_parms(pAd);
+#endif /* XLINK_SUPPORT */
+		}
+#endif /* CONFIG_STA_SUPPORT */
+
+		// ShortSlot
+		// Missing from config file: not setting here
+
+#ifdef TXBF_SUPPORT
+		if (pAd->chipCap.FlgHwTxBfCap)
+		{
+#if defined(CONFIG_AP_SUPPORT) || defined(STA_ITXBF_SUPPORT)
+			// ITxBfEn (missing)
+			// ITxBfTimeout (missing)
+#endif /* defined(CONFIG_AP_SUPPORT) || defined(STA_ITXBF_SUPPORT) */
+			// ETxBfEnCond (missing)
+			// ETxBfTimeout	(missing)
+			// ETxBfNoncompress (missing)
+			// ETxBfIncapable (missing)
+		}
+#endif /* TXBF_SUPPORT */
+
+#ifdef PRE_ANT_SWITCH
+		// PreAntSwitch (missing)
+#endif /* PRE_ANT_SWITCH */
+
+#ifdef STREAM_MODE_SUPPORT
+		// StreamMode
+		if (pAd->chipCap.FlgHwStreamMode)
+		{
+			// StreamMode (missing)
+			// StreamModeMac (missing)
+
+			// ?? (happens regardless of config)
+			if (NdisEqualMemory(ZERO_MAC_ADDR, &pAd->CommonCfg.StreamModeMac[0][0], MAC_ADDR_LEN))
+			{
+				/* set default broadcast mac to entry 0 if user not set it */
+				NdisMoveMemory(&pAd->CommonCfg.StreamModeMac[0][0], BROADCAST_ADDR, MAC_ADDR_LEN);
+			}
+		}
+#endif /* STREAM_MODE_SUPPORT */
+
+#ifdef DBG_CTRL_SUPPORT
+		// DebugFlags (missing)
+#endif /* DBG_CTRL_SUPPORT */
+
+		// IEEE80211H=0
+		pAd->CommonCfg.bIEEE80211H = FALSE;
+		DBGPRINT(RT_DEBUG_TRACE, ("Default IEEE80211H=%d\n", pAd->CommonCfg.bIEEE80211H));
+	
+#ifdef DFS_SUPPORT
+		// CSPeriod (missing)
+#endif /* DFS_SUPPORT */
+
+		// RDRegion (missing, but default vals defined in 'else' clause)
+		pAd->CommonCfg.RDDurRegion = CE;
+		/*pRadarDetect->DfsSessionTime = 13;*/
+		DBGPRINT(RT_DEBUG_TRACE, ("Default RDRegion=%d\n", pAd->CommonCfg.RDDurRegion));
+
+#ifdef SYSTEM_LOG_SUPPORT
+		// WirelessEvent=0
+		RtmpOsWlanEventSet(pAd, &pAd->CommonCfg.bWirelessEvent, FALSE);
+		DBGPRINT(RT_DEBUG_TRACE, ("Default WirelessEvent=%d\n", pAd->CommonCfg.bWirelessEvent));
+#endif /* SYSTEM_LOG_SUPPORT */
+
+#ifdef CONFIG_STA_SUPPORT
+		// AuthMode="OPEN"
+		IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
+		{
+			pAd->StaCfg.AuthMode = Ndis802_11AuthModeOpen;
+			pAd->StaCfg.PortSecured = WPA_802_1X_PORT_NOT_SECURED;
+			DBGPRINT(RT_DEBUG_TRACE, ("Default AuthMode=OPEN\n"));
+		}
+#endif /* CONFIG_STA_SUPPORT */
+
+#ifdef CONFIG_STA_SUPPORT
+		// EncrypType="NONE"
+		IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
+		{
+			pAd->StaCfg.WepStatus = Ndis802_11WEPDisabled;
+			RTMPSetSTACipherSuites(pAd, pAd->StaCfg.WepStatus);
+			/*RTMPMakeRSNIE(pAd, pAd->StaCfg.AuthMode, pAd->StaCfg.WepStatus, 0);*/
+			DBGPRINT(RT_DEBUG_TRACE, ("Default EncrypType=NONE\n"));
+		}
+#endif /* CONFIG_STA_SUPPORT */
+
+#ifdef CONFIG_STA_SUPPORT
+		// WPAPSK=""
+		IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
+		{
+			tmpbuf[0] = 0;
+			RTMPSetSTAPassPhrase(pAd, tmpbuf);
+			DBGPRINT(RT_DEBUG_TRACE, ("Default WPAPSK=\n"));
+		}
+#endif /* CONFIG_STA_SUPPORT */
+	
+		// DefaultKeyID=1
+		rtmp_key_set_default_parms(pAd);
+	
+		// 802.11n HT(High Throughput) related parameters
+#ifdef DOT11_N_SUPPORT
+		HTParametersHookDefaultValues(pAd);
+#endif /* DOT11_N_SUPPORT */
+
+		// 802.11ac VHT(Very? High Throughput) related parameters
+#ifdef DOT11_VHT_AC
+		VHTParametersHookDefaultValues(pAd);
+#endif /* DOT11_VHT_AC */
+
+
+#ifdef CONFIG_FPGA_MODE
+#ifdef CAPTURE_MODE
+		// cap_support (missing)
+#endif /* CAPTURE_MODE */
+#endif /* CONFIG_FPGA_MODE */
+
+
+#ifdef CARRIER_DETECTION_SUPPORT
+		// CarrierDetect=0 (reset in DAT file reading method anyway if doesn't exist in file)
+		pAd->CommonCfg.CarrierDetect.Enable = FALSE;
+		DBGPRINT(RT_DEBUG_TRACE, ("Default CarrierDetect.Enable=%d\n", pAd->CommonCfg.CarrierDetect.Enable));
+#endif /* CARRIER_DETECTION_SUPPORT */
+	
+
+
+#ifdef CONFIG_STA_SUPPORT
+		IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
+		{
+			// PSMode="CAM"
+			if (pAd->StaCfg.BssType == BSS_INFRA)
+			{
+				{ /*Default Ndis802_11PowerModeCAM*/
+					/* clear PSM bit immediately*/
+					RTMP_SET_PSM_BIT(pAd, PWR_ACTIVE);
+					OPSTATUS_SET_FLAG(pAd, fOP_STATUS_RECEIVE_DTIM);
+					if (pAd->StaCfg.bWindowsACCAMEnable == FALSE)
+						pAd->StaCfg.WindowsPowerMode = Ndis802_11PowerModeCAM;
+					pAd->StaCfg.WindowsBatteryPowerMode = Ndis802_11PowerModeCAM;
+				}
+				DBGPRINT(RT_DEBUG_TRACE, ("Default PSMode=%ld\n", pAd->StaCfg.WindowsPowerMode));
+			}
+
+			// AutoRoaming=0
+			pAd->StaCfg.bAutoRoaming = FALSE;
+			DBGPRINT(RT_DEBUG_TRACE, ("Default AutoRoaming=%d\n", pAd->StaCfg.bAutoRoaming));
+		
+			// RoamThreshold=70
+			lInfo = 70;
+
+			if (lInfo > 90 || lInfo < 60)
+				pAd->StaCfg.dBmToRoam = -70;
+			else    
+				pAd->StaCfg.dBmToRoam = (CHAR)(-1)*lInfo;
+
+			DBGPRINT(RT_DEBUG_TRACE, ("Default RoamThreshold=%d  dBm\n", pAd->StaCfg.dBmToRoam));
+
+			// TGnWifiTest=0
+			pAd->StaCfg.bTGnWifiTest = FALSE;
+			DBGPRINT(RT_DEBUG_TRACE, ("Default TGnWifiTest=%d\n", pAd->StaCfg.bTGnWifiTest));
+
+			// BeaconLostTime=4
+			lInfo = 4;
+			if ((lInfo != 0) && (lInfo <= 60))
+				pAd->StaCfg.BeaconLostTime = (lInfo * OS_HZ);
+			DBGPRINT(RT_DEBUG_TRACE, ("Default BeaconLostTime=%ld\n", pAd->StaCfg.BeaconLostTime));
+
+			// AutoConnect (missing)
+
+			// FastConnect (missing)
+		}
+#endif /* CONFIG_STA_SUPPORT */
+
+
+#ifdef SINGLE_SKU
+		// AntGain (missing)
+
+		// BandedgeDelta (missing)
+#endif /* SINGLE_SKU */
+
+
+#ifdef WOW_SUPPORT
+#ifdef RTMP_MAC_USB	
+			// WOW_GPIO (missing)
+
+			// WOW_Enable (missing)
+
+			// WOW_Delay (missing)
+
+			// WOW_Hold (missing)
+#endif /* RTMP_MAC_USB */
+#endif /* WOW_SUPPORT */
+
+	}while(0); // do {
+
+	os_free_mem(NULL, tmpbuf);
+
+	return NDIS_STATUS_SUCCESS;
+}
 
 #ifdef MULTIPLE_CARD_SUPPORT
 /* record whether the card in the card list is used in the card file*/
