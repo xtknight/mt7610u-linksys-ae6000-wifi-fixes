@@ -728,7 +728,7 @@ INT RTMP_COM_IoctlHandle(
     case CMD_RTPRIV_IOCTL_USB_INTF_GET:
         /* get USB INTF */
     {
-        VOID **ppINTF = (VOID **)pData;
+        //VOID **ppINTF = (VOID **)pData;
         //*ppINTF = (VOID *)(pObj->intf);
     }
     break;
