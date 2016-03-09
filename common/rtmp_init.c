@@ -342,7 +342,7 @@ VOID NICReadEEPROMParameters(RTMP_ADAPTER *pAd, PSTRING mac_addr)
     USHORT  Addr01,Addr23,Addr45 ;
     MAC_DW0_STRUC csr2;
     MAC_DW1_STRUC csr3;
-
+    UINT k;
 
     DBGPRINT(RT_DEBUG_TRACE, ("--> NICReadEEPROMParameters\n"));
 
@@ -748,11 +748,14 @@ VOID NICReadEEPROMParameters(RTMP_ADAPTER *pAd, PSTRING mac_addr)
         {
         }
 
-        DBGPRINT(RT_DEBUG_TRACE,("E2PROM: A Tssi[-4 .. +4] = %d %d %d %d - %d -%d %d %d %d, step=%d, tuning=%d\n",
-                                 pAd->TssiMinusBoundaryA[4], pAd->TssiMinusBoundaryA[3], pAd->TssiMinusBoundaryA[2], pAd->TssiMinusBoundaryA[1],
-                                 pAd->TssiRefA,
-                                 pAd->TssiPlusBoundaryA[1], pAd->TssiPlusBoundaryA[2], pAd->TssiPlusBoundaryA[3], pAd->TssiPlusBoundaryA[4],
-                                 pAd->TxAgcStepA, pAd->bAutoTxAgcA));
+        for(k = 0; k < 2; k++)
+        {
+            DBGPRINT(RT_DEBUG_TRACE,("E2PROM: A Tssi[-4 .. +4] = %d %d %d %d - %d -%d %d %d %d, step=%d, tuning=%d\n",
+                                     pAd->TssiMinusBoundaryA[k][4], pAd->TssiMinusBoundaryA[k][3], pAd->TssiMinusBoundaryA[k][2], pAd->TssiMinusBoundaryA[k][1],
+                                     pAd->TssiRefA,
+                                     pAd->TssiPlusBoundaryA[k][1], pAd->TssiPlusBoundaryA[k][2], pAd->TssiPlusBoundaryA[k][3], pAd->TssiPlusBoundaryA[k][4],
+                                     pAd->TxAgcStepA, pAd->bAutoTxAgcA));
+        }
     }
 
     pAd->BbpRssiToDbmDelta = 0x0;
@@ -1115,7 +1118,6 @@ VOID	NICInitAsicFromEEPROM(
 #ifdef CONFIG_STA_SUPPORT
     UINT32 data = 0;
 #endif /* CONFIG_STA_SUPPORT */
-    USHORT i;
 #ifdef RALINK_ATE
     USHORT value;
 #endif /* RALINK_ATE */
@@ -1124,19 +1126,20 @@ VOID	NICInitAsicFromEEPROM(
     DBGPRINT(RT_DEBUG_TRACE, ("--> NICInitAsicFromEEPROM\n"));
 
 #ifndef RT65xx
-
-    for(i = EEPROM_BBP_ARRAY_OFFSET; i < NUM_EEPROM_BBP_PARMS; i++)
     {
-        UCHAR BbpRegIdx, BbpValue;
-
-        if((pAd->EEPROMDefaultValue[i] != 0xFFFF) && (pAd->EEPROMDefaultValue[i] != 0))
+        USHORT i;
+        for(i = EEPROM_BBP_ARRAY_OFFSET; i < NUM_EEPROM_BBP_PARMS; i++)
         {
-            BbpRegIdx = (UCHAR)(pAd->EEPROMDefaultValue[i] >> 8);
-            BbpValue  = (UCHAR)(pAd->EEPROMDefaultValue[i] & 0xff);
-            RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, BbpRegIdx, BbpValue);
+            UCHAR BbpRegIdx, BbpValue;
+
+            if((pAd->EEPROMDefaultValue[i] != 0xFFFF) && (pAd->EEPROMDefaultValue[i] != 0))
+            {
+                BbpRegIdx = (UCHAR)(pAd->EEPROMDefaultValue[i] >> 8);
+                BbpValue  = (UCHAR)(pAd->EEPROMDefaultValue[i] & 0xff);
+                RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, BbpRegIdx, BbpValue);
+            }
         }
     }
-
 #endif /* !RT65xx */
 
     NicConfig2.word = pAd->NicConfig2.word;

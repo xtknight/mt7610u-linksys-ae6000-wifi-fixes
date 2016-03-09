@@ -1805,11 +1805,10 @@ static VOID MT76x0_ChipSwitchChannel(
     BOOLEAN bScan)
 {
     CHAR TxPwer = 0; /* Bbp94 = BBPR94_DEFAULT, TxPwer2 = DEFAULT_RF_TX_POWER; */
-    UCHAR RFValue = 0;
     UINT32 RegValue = 0;
     UINT32 Index;
     UINT32 rf_phy_mode, rf_bw = RF_BW_20;
-    UCHAR bbp_ch_idx, delta_pwr;
+    UCHAR bbp_ch_idx;
     UINT32 ret;
     ULONG Old, New, Diff;
 #ifndef MT76x0_TSSI_CAL_COMPENSATION
@@ -1872,7 +1871,10 @@ static VOID MT76x0_ChipSwitchChannel(
         }
 
 #ifdef MT76x0_TSSI_CAL_COMPENSATION
-        delta_pwr = pAd->chipCap.delta_tw_pwr_bw80;
+        {
+            UCHAR delta_pwr;
+            delta_pwr = pAd->chipCap.delta_tw_pwr_bw80;
+        }
 #endif /* MT76x0_TSSI_CAL_COMPENSATION */
     }
     else if(pAd->CommonCfg.BBPCurrentBW == BW_40)
@@ -1885,11 +1887,13 @@ static VOID MT76x0_ChipSwitchChannel(
             RegValue |= 0x2e1;
 
 #ifdef MT76x0_TSSI_CAL_COMPENSATION
-
-        if(Channel > 14)
-            delta_pwr = pAd->chipCap.delta_tw_pwr_bw40_5G;
-        else
-            delta_pwr = pAd->chipCap.delta_tw_pwr_bw40_2G;
+        {
+            UCHAR delta_pwr;
+            if(Channel > 14)
+                delta_pwr = pAd->chipCap.delta_tw_pwr_bw40_5G;
+            else
+                delta_pwr = pAd->chipCap.delta_tw_pwr_bw40_2G;
+        }
 
 #endif /* MT76x0_TSSI_CAL_COMPENSATION */
     }
@@ -2397,7 +2401,7 @@ VOID mt76x0_read_per_rate_tx_pwr(
     IN PRTMP_ADAPTER pAd)
 {
     UINT32 data;
-    USHORT e2p_val = 0, e2p_val2 = 0;;
+    USHORT e2p_val = 0, e2p_val2 = 0;
     UCHAR bw40_gband_delta = 0, bw40_aband_delta = 0, bw80_aband_delta = 0;
     CHAR t1 = 0, t2 = 0, t3 = 0, t4 = 0;
     BOOLEAN dec_aband_bw40_delta = FALSE, dec_aband_bw80_delta = FALSE, dec_gband_bw40_delta = FALSE;
@@ -2442,7 +2446,9 @@ VOID mt76x0_read_per_rate_tx_pwr(
     */
     // TODO: check if any document to describe this ?
     RT28xx_EEPROM_READ16(pAd, EEPROM_VHT_BW80_TX_POWER_DELTA - 1, e2p_val);
-    pAd->chipCap.delta_tw_pwr_bw80 = (e2p_val & 0xFF00) == 0xFF00 ? 0 : (e2p_val & 0xFF00);
+
+    pAd->chipCap.delta_tw_pwr_bw80 = \
+            (e2p_val & 0xFF) == 0xFF ? 0 : (e2p_val & 0xFF);
 
     if((e2p_val & 0xFF00) != 0xFF00)
     {
@@ -5841,7 +5847,6 @@ void mt76x0_temp_tx_alc_init(PRTMP_ADAPTER pAd)
 
 void mt76x0_read_tx_alc_info_from_eeprom(PRTMP_ADAPTER pAd)
 {
-    BOOLEAN status = TRUE;
     USHORT e2p_value = 0;
 
     if(IS_MT76x0(pAd))

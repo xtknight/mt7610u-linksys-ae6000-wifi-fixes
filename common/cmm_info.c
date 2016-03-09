@@ -6344,7 +6344,7 @@ INT set_rf(RTMP_ADAPTER *pAd, PSTRING arg)
 
     if(arg)
     {
-        rv = sscanf(arg, "%d-%d-%x", &(bank_id), &(rf_id), &(rf_val));
+        rv = sscanf(arg, "%d-%d-%hhx", &(bank_id), &(rf_id), &(rf_val));
         DBGPRINT(RT_DEBUG_TRACE, ("%s():rv = %d, bank_id = %d, rf_id = %d, rf_val = 0x%02x\n", __FUNCTION__, rv, bank_id, rf_id, rf_val));
 
         if(rv == 3)

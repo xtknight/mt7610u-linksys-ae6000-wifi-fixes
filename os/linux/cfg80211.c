@@ -236,8 +236,8 @@ static int CFG80211_OpsChannelSet(
     MAC80211_PAD_GET(pAd, pWiphy);
 
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,6,0))
-    struct net_device *dev = NULL;
-    RTMP_DRIVER_NET_DEV_GET(pAd, &dev);
+    //struct net_device *dev = NULL;
+    //RTMP_DRIVER_NET_DEV_GET(pAd, &dev);
 #endif /* LINUX_VERSION_CODE: 3.6.0 */
 
     /* get channel number */
@@ -449,7 +449,7 @@ static int CFG80211_OpsScan(
     if(RTMP_TEST_FLAG(((PRTMP_ADAPTER)pAd), fRTMP_ADAPTER_HALT_IN_PROGRESS | fRTMP_ADAPTER_NIC_NOT_EXIST))
     {
         CFG80211DBG(RT_DEBUG_ERROR, ("mt7610u: %s adapter halting. exiting.\n", __FUNCTION__));
-        return;
+        return -ENETDOWN;
     }
 
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,6,0))
@@ -729,7 +729,7 @@ static int CFG80211_OpsStaGet(
     if(RTMP_TEST_FLAG(((PRTMP_ADAPTER)pAd), fRTMP_ADAPTER_HALT_IN_PROGRESS | fRTMP_ADAPTER_NIC_NOT_EXIST))
     {
         CFG80211DBG(RT_DEBUG_ERROR, ("mt7610u: %s adapter halting. exiting.\n", __FUNCTION__));
-        return;
+        return -ENETDOWN;
     }
 
     /* init */
@@ -1275,7 +1275,7 @@ static int CFG80211_OpsConnect(
 
     ConnInfo.pKey = (UINT8 *)(pSme->key);
     ConnInfo.KeyLen = pSme->key_len;
-    ConnInfo.pSsid = pSme->ssid;
+    ConnInfo.pSsid = (UINT8 *)(pSme->ssid);
     ConnInfo.SsidLen = pSme->ssid_len;
     ConnInfo.KeyIdx = pSme->key_idx;
     /* YF@20120328: Reset to default */
