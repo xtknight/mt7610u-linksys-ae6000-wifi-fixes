@@ -3760,7 +3760,7 @@ INT Set_LongRetryLimit_Proc(
     IN	PRTMP_ADAPTER	pAdapter,
     IN	PSTRING			arg)
 {
-    TX_RTY_CFG_STRUC	tx_rty_cfg;
+    TX_RTY_CFG_STRUCT	tx_rty_cfg;
     UCHAR				LongRetryLimit = (UCHAR)simple_strtol(arg, 0, 10);
 
     RTMP_IO_READ32(pAdapter, TX_RTY_CFG, &tx_rty_cfg.word);
@@ -3774,7 +3774,7 @@ INT Set_ShortRetryLimit_Proc(
     IN	PRTMP_ADAPTER	pAdapter,
     IN	PSTRING			arg)
 {
-    TX_RTY_CFG_STRUC	tx_rty_cfg;
+    TX_RTY_CFG_STRUCT	tx_rty_cfg;
     UCHAR				ShortRetryLimit = (UCHAR)simple_strtol(arg, 0, 10);
 
     RTMP_IO_READ32(pAdapter, TX_RTY_CFG, &tx_rty_cfg.word);
@@ -5240,7 +5240,7 @@ INT Set_ETxBfCodebook_Proc(
     IN  PRTMP_ADAPTER   pAd,
     IN  PSTRING         arg)
 {
-    TX_TXBF_CFG_0_STRUC regValue;
+    TX_TXBF_CFG_0_STRUCT regValue;
     ULONG t = simple_strtol(arg, 0, 10);
 
     if(t > 3)
@@ -5264,7 +5264,7 @@ INT Set_ETxBfCoefficient_Proc(
     IN  PRTMP_ADAPTER   pAd,
     IN  PSTRING         arg)
 {
-    TX_TXBF_CFG_0_STRUC regValue;
+    TX_TXBF_CFG_0_STRUCT regValue;
     ULONG t = simple_strtol(arg, 0, 10);
 
     if(t > 3)
@@ -5288,7 +5288,7 @@ INT Set_ETxBfGrouping_Proc(
     IN  PRTMP_ADAPTER   pAd,
     IN  PSTRING         arg)
 {
-    TX_TXBF_CFG_0_STRUC regValue;
+    TX_TXBF_CFG_0_STRUCT regValue;
     ULONG t = simple_strtol(arg, 0, 10);
 
     if(t > 2)

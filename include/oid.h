@@ -1162,7 +1162,7 @@ typedef struct _RT_802_11_STA_CONFIG
 /* */
 /*  For OID Query or Set about BA structure */
 /* */
-typedef struct _OID_BACAP_STRUC
+typedef struct _OID_BACAP_STRUCT
 {
     UCHAR RxBAWinLimit;
     UCHAR TxBAWinLimit;
@@ -1172,7 +1172,7 @@ typedef struct _OID_BACAP_STRUC
     UCHAR AmsduSize;	/* 0:3839, 1:7935 bytes. UINT  MSDUSizeToBytes[]        = { 3839, 7935}; */
     UCHAR MMPSmode;		/* MIMO power save more, 0:static, 1:dynamic, 2:rsv, 3:mimo enable */
     BOOLEAN AutoBA;		/* Auto BA will automatically */
-} OID_BACAP_STRUC, *POID_BACAP_STRUC;
+} OID_BACAP_STRUCT, *POID_BACAP_STRUCT;
 
 typedef struct _RT_802_11_ACL_ENTRY
 {

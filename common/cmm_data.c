@@ -41,9 +41,9 @@ UCHAR MapUserPriorityToAccessCategory[8] = {QID_AC_BE, QID_AC_BK, QID_AC_BK, QID
 
 
 
-VOID dump_rxinfo(RTMP_ADAPTER *pAd, RXINFO_STRUC *pRxInfo)
+VOID dump_rxinfo(RTMP_ADAPTER *pAd, RXINFO_STRUCT *pRxInfo)
 {
-    hex_dump("RxInfo Raw Data", (UCHAR *)pRxInfo, sizeof(RXINFO_STRUC));
+    hex_dump("RxInfo Raw Data", (UCHAR *)pRxInfo, sizeof(RXINFO_STRUCT));
 
     DBGPRINT(RT_DEBUG_ERROR, ("RxInfo Fields:\n"));
 
@@ -108,9 +108,9 @@ VOID dumpRxFCEInfo(RTMP_ADAPTER *pAd, RXFCE_INFO *pRxFceInfo)
 static UCHAR *txwi_txop_str[]= {"HT_TXOP", "PIFS", "SIFS", "BACKOFF", "Invalid"};
 #define TXWI_TXOP_STR(_x)	((_x) <= 3 ? txwi_txop_str[(_x)]: txwi_txop_str[4])
 
-VOID dumpTxWI(RTMP_ADAPTER *pAd, TXWI_STRUC *pTxWI)
+VOID dumpTxWI(RTMP_ADAPTER *pAd, TXWI_STRUCT *pTxWI)
 {
-    hex_dump("TxWI Raw Data: ", (UCHAR *)pTxWI, sizeof(TXWI_STRUC));
+    hex_dump("TxWI Raw Data: ", (UCHAR *)pTxWI, sizeof(TXWI_STRUCT));
 
     DBGPRINT(RT_DEBUG_ERROR, ("TxWI Fields:\n"));
     DBGPRINT(RT_DEBUG_ERROR, ("\tPHYMODE=%d(%s)\n", pTxWI->TxWIPHYMODE,  get_phymode_str(pTxWI->TxWIPHYMODE)));
@@ -137,9 +137,9 @@ VOID dumpTxWI(RTMP_ADAPTER *pAd, TXWI_STRUC *pTxWI)
 }
 
 
-VOID dump_rxwi(RTMP_ADAPTER *pAd, RXWI_STRUC *pRxWI)
+VOID dump_rxwi(RTMP_ADAPTER *pAd, RXWI_STRUCT *pRxWI)
 {
-    hex_dump("RxWI Raw Data", (UCHAR *)pRxWI, sizeof(RXWI_STRUC));
+    hex_dump("RxWI Raw Data", (UCHAR *)pRxWI, sizeof(RXWI_STRUCT));
 
     DBGPRINT(RT_DEBUG_ERROR, ("RxWI Fields:\n"));
     DBGPRINT(RT_DEBUG_ERROR, ("\tWCID=%d\n", pRxWI->RxWIWirelessCliID));
@@ -171,9 +171,9 @@ static UCHAR *txinfo_que_str[]= {"MGMT", "HCCA", "EDCA_1", "EDCA_2", "Invalid"};
 #define TXINFO_DPORT_STR(_x)	((_x) <= 6 ? txinfo_d_port_str[_x]: txinfo_d_port_str[7])
 #define TXINFO_QUE_STR(_x)		((_x) <= 3 ? txinfo_que_str[_x]: txinfo_que_str[4])
 
-VOID dump_txinfo(RTMP_ADAPTER *pAd, TXINFO_STRUC *pTxInfo)
+VOID dump_txinfo(RTMP_ADAPTER *pAd, TXINFO_STRUCT *pTxInfo)
 {
-    hex_dump("TxInfo Raw Data: ", (UCHAR *)pTxInfo, sizeof(TXINFO_STRUC));
+    hex_dump("TxInfo Raw Data: ", (UCHAR *)pTxInfo, sizeof(TXINFO_STRUCT));
 
     DBGPRINT(RT_DEBUG_ERROR, ("TxInfo Fields:\n"));
 
@@ -447,7 +447,7 @@ NDIS_STATUS MlmeHardTransmitMgmtRing(
     HEADER_802_11 *pHeader_802_11;
     BOOLEAN bAckRequired, bInsertTimestamp;
     UCHAR MlmeRate;
-    TXWI_STRUC *pFirstTxWI;
+    TXWI_STRUCT *pFirstTxWI;
     MAC_TABLE_ENTRY *pMacEntry = NULL;
     UCHAR PID;
     UINT8 TXWISize = pAd->chipCap.TXWISize;
@@ -474,7 +474,7 @@ NDIS_STATUS MlmeHardTransmitMgmtRing(
     }
 #endif /* CONFIG_STA_SUPPORT */
 
-    pFirstTxWI = (TXWI_STRUC *)(pSrcBufVA +  TXINFO_SIZE);
+    pFirstTxWI = (TXWI_STRUCT *)(pSrcBufVA +  TXINFO_SIZE);
     pHeader_802_11 = (PHEADER_802_11)(pSrcBufVA + TXINFO_SIZE + TSO_SIZE + TXWISize);
 
     if(pHeader_802_11->Addr1[0] & 0x01)
@@ -1829,7 +1829,7 @@ BOOLEAN RTMPCheckEtherType(
 VOID Update_Rssi_Sample(
     IN RTMP_ADAPTER *pAd,
     IN RSSI_SAMPLE *pRssi,
-    IN RXWI_STRUC *pRxWI)
+    IN RXWI_STRUCT *pRxWI)
 {
     CHAR rssi[3];
     UCHAR snr[3];
@@ -2473,7 +2473,7 @@ VOID ReSyncBeaconTime(
     */
     if(Offset == (BCN_TBTT_OFFSET-2))
     {
-        BCN_TIME_CFG_STRUC csr;
+        BCN_TIME_CFG_STRUCT csr;
         RTMP_IO_READ32(pAd, BCN_TIME_CFG, &csr.word);
         csr.field.BeaconInterval = (pAd->CommonCfg.BeaconPeriod << 4) - 1 ;	/* ASIC register in units of 1/16 TU = 64us*/
         RTMP_IO_WRITE32(pAd, BCN_TIME_CFG, csr.word);
@@ -2482,7 +2482,7 @@ VOID ReSyncBeaconTime(
     {
         if(Offset == (BCN_TBTT_OFFSET-1))
         {
-            BCN_TIME_CFG_STRUC csr;
+            BCN_TIME_CFG_STRUCT csr;
 
             RTMP_IO_READ32(pAd, BCN_TIME_CFG, &csr.word);
             csr.field.BeaconInterval = (pAd->CommonCfg.BeaconPeriod) << 4; /* ASIC register in units of 1/16 TU*/

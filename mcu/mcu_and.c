@@ -88,11 +88,11 @@ NDIS_STATUS andes_usb_loadfw(RTMP_ADAPTER *ad)
     u16 value;
     int ret = 0;
     RTMP_CHIP_CAP *cap = &ad->chipCap;
-    USB_DMA_CFG_STRUC cfg;
+    USB_DMA_CFG_STRUCT cfg;
     u32 ilm_len = 0, dlm_len = 0;
     u16 fw_ver, build_ver;
     RTMP_OS_COMPLETION load_fw_done;
-    USB_DMA_CFG_STRUC UsbCfg;
+    USB_DMA_CFG_STRUCT UsbCfg;
 
     RtmpOsMsDelay(5);
 

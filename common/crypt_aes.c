@@ -229,10 +229,10 @@ Routine Description:
 Arguments:
     Key              Cipher key, it may be 16, 24, or 32 bytes (128, 192, or 256 bits)
     KeyLength        The length of cipher key in bytes
-    paes_ctx         Pointer to AES_CTX_STRUC
+    paes_ctx         Pointer to AES_CTX_STRUCT
 
 Return Value:
-    paes_ctx         Retrun the KeyWordExpansion of AES_CTX_STRUC
+    paes_ctx         Retrun the KeyWordExpansion of AES_CTX_STRUCT
 
 Note:
     Pseudo code for key expansion
@@ -260,7 +260,7 @@ Note:
 VOID RT_AES_KeyExpansion(
     IN UINT8 Key[],
     IN UINT KeyLength,
-    INOUT AES_CTX_STRUC *paes_ctx)
+    INOUT AES_CTX_STRUCT *paes_ctx)
 {
     UINT KeyIndex = 0;
     UINT NumberOfWordOfKey, NumberOfWordOfKeyExpansion;
@@ -363,9 +363,9 @@ VOID RT_AES_Encrypt(
     OUT UINT8 CipherBlock[],
     INOUT UINT *CipherBlockSize)
 {
-    /*    AES_CTX_STRUC aes_ctx;
+    /*    AES_CTX_STRUCT aes_ctx;
     */
-    AES_CTX_STRUC *paes_ctx = NULL;
+    AES_CTX_STRUCT *paes_ctx = NULL;
     UINT RowIndex, ColumnIndex;
     UINT RoundIndex, NumberOfRound = 0;
     UINT8 Temp, Row0, Row1, Row2, Row3;
@@ -395,7 +395,7 @@ VOID RT_AES_Encrypt(
     }
 
     /* allocate memory */
-    os_alloc_mem(NULL, (UCHAR **)&paes_ctx, sizeof(AES_CTX_STRUC));
+    os_alloc_mem(NULL, (UCHAR **)&paes_ctx, sizeof(AES_CTX_STRUCT));
 
     if(paes_ctx == NULL)
     {
@@ -558,9 +558,9 @@ VOID RT_AES_Decrypt(
     OUT UINT8 PlainBlock[],
     INOUT UINT *PlainBlockSize)
 {
-    /*    AES_CTX_STRUC aes_ctx;
+    /*    AES_CTX_STRUCT aes_ctx;
     */
-    AES_CTX_STRUC *paes_ctx = NULL;
+    AES_CTX_STRUCT *paes_ctx = NULL;
     UINT RowIndex, ColumnIndex;
     UINT RoundIndex, NumberOfRound = 0;
     UINT8 Temp, Row0, Row1, Row2, Row3;
@@ -590,7 +590,7 @@ VOID RT_AES_Decrypt(
     }
 
     /* allocate memory */
-    os_alloc_mem(NULL, (UCHAR **)&paes_ctx, sizeof(AES_CTX_STRUC));
+    os_alloc_mem(NULL, (UCHAR **)&paes_ctx, sizeof(AES_CTX_STRUCT));
 
     if(paes_ctx == NULL)
     {

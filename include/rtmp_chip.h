@@ -457,7 +457,7 @@ enum RXWI_FRQ_OFFSET_FIELD
 
 
 #ifdef RT_BIG_ENDIAN
-typedef union _EEPROM_ANTENNA_STRUC
+typedef union _EEPROM_ANTENNA_STRUCT
 {
     struct
     {
@@ -469,9 +469,9 @@ typedef union _EEPROM_ANTENNA_STRUC
         USHORT RxPath:4;			/* 1: 1R, 2: 2R, 3: 3R */
     } field;
     USHORT word;
-} EEPROM_ANTENNA_STRUC, *PEEPROM_ANTENNA_STRUC;
+} EEPROM_ANTENNA_STRUCT, *PEEPROM_ANTENNA_STRUCT;
 #else
-typedef union _EEPROM_ANTENNA_STRUC
+typedef union _EEPROM_ANTENNA_STRUCT
 {
     struct
     {
@@ -483,7 +483,7 @@ typedef union _EEPROM_ANTENNA_STRUC
         USHORT RssiIndicationMode:1; 	/* RSSI indication mode */
     } field;
     USHORT word;
-} EEPROM_ANTENNA_STRUC, *PEEPROM_ANTENNA_STRUC;
+} EEPROM_ANTENNA_STRUCT, *PEEPROM_ANTENNA_STRUCT;
 #endif
 
 
@@ -857,7 +857,7 @@ struct _RTMP_CHIP_OP_
     VOID (*AsicExtraPowerOverMAC)(struct _RTMP_ADAPTER *pAd);
 
     /* Antenna */
-    VOID (*AsicAntennaDefaultReset)(struct _RTMP_ADAPTER *pAd, union _EEPROM_ANTENNA_STRUC *pAntenna);
+    VOID (*AsicAntennaDefaultReset)(struct _RTMP_ADAPTER *pAd, union _EEPROM_ANTENNA_STRUCT *pAntenna);
     VOID (*SetRxAnt)(struct _RTMP_ADAPTER *pAd, UCHAR Ant);
 
     /* EEPROM */
@@ -1048,7 +1048,7 @@ do {	\
 			__pAd->chipOps.AsicResetBbpAgent(__pAd);	\
 		else	\
 		{	\
-			BBP_CSR_CFG_STRUC	BbpCsr;	\
+			BBP_CSR_CFG_STRUCT	BbpCsr;	\
 			DBGPRINT(RT_DEBUG_INFO, ("Reset BBP Agent busy bit.!!\n"));	\
 			RTMP_IO_READ32(__pAd, H2M_BBP_AGENT, &BbpCsr.word);	\
 			BbpCsr.field.Busy = 0;	\

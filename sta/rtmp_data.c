@@ -33,7 +33,7 @@ VOID STARxEAPOLFrameIndicate(
     IN RX_BLK *pRxBlk,
     IN UCHAR FromWhichBSSID)
 {
-    RXWI_STRUC *pRxWI = pRxBlk->pRxWI;
+    RXWI_STRUCT *pRxWI = pRxBlk->pRxWI;
     UCHAR *pTmpBuf;
 
 
@@ -399,8 +399,8 @@ VOID STAHandleRxDataFrame(
     IN PRTMP_ADAPTER pAd,
     IN RX_BLK *pRxBlk)
 {
-    RXWI_STRUC *pRxWI = pRxBlk->pRxWI;
-    RXINFO_STRUC *pRxInfo = pRxBlk->pRxInfo;
+    RXWI_STRUCT *pRxWI = pRxBlk->pRxWI;
+    RXINFO_STRUCT *pRxInfo = pRxBlk->pRxInfo;
     PHEADER_802_11 pHeader = pRxBlk->pHeader;
     PNDIS_PACKET pRxPacket = pRxBlk->pRxPacket;
     BOOLEAN bFragment = FALSE;
@@ -949,11 +949,11 @@ VOID STAHandleRxDataFrame_Hdr_Trns(
     IN PRTMP_ADAPTER pAd,
     IN RX_BLK *pRxBlk)
 {
-    RXWI_STRUC *pRxWI = pRxBlk->pRxWI;
+    RXWI_STRUCT *pRxWI = pRxBlk->pRxWI;
 #ifdef RLT_MAC
     RXFCE_INFO *pRxFceInfo = pRxBlk->pRxFceInfo;
 #endif /* RLT_MAC */
-    RXINFO_STRUC *pRxInfo = pRxBlk->pRxInfo;
+    RXINFO_STRUCT *pRxInfo = pRxBlk->pRxInfo;
     PHEADER_802_11 pHeader = pRxBlk->pHeader;
     PNDIS_PACKET pRxPacket = pRxBlk->pRxPacket;
     BOOLEAN bFragment = FALSE;
@@ -1490,7 +1490,7 @@ VOID STAHandleRxMgmtFrame(
     IN PRTMP_ADAPTER pAd,
     IN RX_BLK *pRxBlk)
 {
-    RXWI_STRUC *pRxWI = pRxBlk->pRxWI;
+    RXWI_STRUCT *pRxWI = pRxBlk->pRxWI;
     PHEADER_802_11 pHeader = pRxBlk->pHeader;
     PNDIS_PACKET pRxPacket = pRxBlk->pRxPacket;
     UCHAR MinSNR = 0;
@@ -1593,7 +1593,7 @@ VOID STAHandleRxControlFrame(
     IN RX_BLK *pRxBlk)
 {
 #ifdef DOT11_N_SUPPORT
-    RXWI_STRUC *pRxWI = pRxBlk->pRxWI;
+    RXWI_STRUCT *pRxWI = pRxBlk->pRxWI;
 #endif /* DOT11_N_SUPPORT */
     PHEADER_802_11 pHeader = pRxBlk->pHeader;
     PNDIS_PACKET pRxPacket = pRxBlk->pRxPacket;
@@ -1645,9 +1645,9 @@ BOOLEAN STARxDoneInterruptHandle(RTMP_ADAPTER *pAd, BOOLEAN argc)
     NDIS_STATUS Status;
     UINT32 RxProcessed, RxPending;
     BOOLEAN bReschedule = FALSE;
-    RXD_STRUC *pRxD;
-    RXWI_STRUC *pRxWI;
-    RXINFO_STRUC *pRxInfo;
+    RXD_STRUCT *pRxD;
+    RXWI_STRUCT *pRxWI;
+    RXINFO_STRUCT *pRxInfo;
     PNDIS_PACKET pRxPacket;
     HEADER_802_11 *pHeader;
     UCHAR *pData;
@@ -1693,13 +1693,13 @@ BOOLEAN STARxDoneInterruptHandle(RTMP_ADAPTER *pAd, BOOLEAN argc)
             continue;
 
         /* get rx descriptor and buffer */
-        pRxD = (RXD_STRUC *)(&RxBlk.hw_rx_info[0]);
+        pRxD = (RXD_STRUCT *)(&RxBlk.hw_rx_info[0]);
 #ifdef RLT_MAC
         pFceInfo = RxBlk.pRxFceInfo;
 #endif /* RLT_MAC */
         pRxInfo = RxBlk.pRxInfo;
         pData = GET_OS_PKT_DATAPTR(pRxPacket);
-        pRxWI = (RXWI_STRUC *)pData;
+        pRxWI = (RXWI_STRUCT *)pData;
         pHeader = (PHEADER_802_11)(pData + RXWISize);
 
 #ifndef HDR_TRANS_SUPPORT
@@ -1711,7 +1711,7 @@ BOOLEAN STARxDoneInterruptHandle(RTMP_ADAPTER *pAd, BOOLEAN argc)
             DBGPRINT(RT_DEBUG_TRACE, ("==>%s(): GetFrameFromOtherPorts!\n", __FUNCTION__));
             hex_dump("hw_rx_info", &RxBlk.hw_rx_info[0], sizeof(RxBlk.hw_rx_info));
             DBGPRINT(RT_DEBUG_TRACE, ("Dump the RxD, RxFCEInfo and RxInfo:\n"));
-            hex_dump("RxD", (UCHAR *)pRxD, sizeof(RXD_STRUC));
+            hex_dump("RxD", (UCHAR *)pRxD, sizeof(RXD_STRUCT));
 #ifdef RLT_MAC
             dumpRxFCEInfo(pAd, pFceInfo);
 #endif /* RLT_MAC */
@@ -1751,7 +1751,7 @@ BOOLEAN STARxDoneInterruptHandle(RTMP_ADAPTER *pAd, BOOLEAN argc)
         {
             hex_dump("hw_rx_info", &RxBlk.hw_rx_info[0], sizeof(RxBlk.hw_rx_info));
             DBGPRINT(RT_DEBUG_TRACE, ("==>%s():Dump the RxD, RxFCEInfo and RxInfo:\n", __FUNCTION__));
-            hex_dump("RxD", (UCHAR *)pRxD, sizeof(RXD_STRUC));
+            hex_dump("RxD", (UCHAR *)pRxD, sizeof(RXD_STRUCT));
 #ifdef RLT_MAC
             dumpRxFCEInfo(pAd, pFceInfo);
 #endif /* RLT_MAC */
@@ -1937,15 +1937,15 @@ BOOLEAN STAHandleRxDonePacket(
     IN PNDIS_PACKET pRxPacket,
     IN RX_BLK *pRxBlk)
 {
-    RXD_STRUC *pRxD;
-    RXWI_STRUC *pRxWI;
-    RXINFO_STRUC *pRxInfo;
+    RXD_STRUCT *pRxD;
+    RXWI_STRUCT *pRxWI;
+    RXINFO_STRUCT *pRxInfo;
     PHEADER_802_11 pHeader;
     BOOLEAN bReschedule = FALSE;
     NDIS_STATUS Status;
 
     pRxWI = pRxBlk->pRxWI;
-    pRxD = (RXD_STRUC *)&pRxBlk->hw_rx_info[0];
+    pRxD = (RXD_STRUCT *)&pRxBlk->hw_rx_info[0];
     pRxInfo = pRxBlk->pRxInfo;
     pHeader = pRxBlk->pHeader;
     SET_PKT_OPMODE_STA(pRxBlk);
@@ -2732,7 +2732,7 @@ VOID STABuildWifiInfo(
     IN PRTMP_ADAPTER pAd,
     IN TX_BLK *pTxBlk)
 {
-    PWIFI_INFO_STRUC pWI;
+    PWIFI_INFO_STRUCT pWI;
 #ifdef QOS_DLS_SUPPORT
     BOOLEAN bDLSFrame = FALSE;
     INT DlsEntryIndex = 0;
@@ -2742,7 +2742,7 @@ VOID STABuildWifiInfo(
     pTxBlk->MpduHeaderLen = WIFI_INFO_SIZE;
 
     pWI =
-        (WIFI_INFO_STRUC *) & pTxBlk->HeaderBuf[TXINFO_SIZE + TXWISize];
+        (WIFI_INFO_STRUCT *) & pTxBlk->HeaderBuf[TXINFO_SIZE + TXWISize];
 
     NdisZeroMemory(pWI, WIFI_INFO_SIZE);
 
@@ -2819,10 +2819,10 @@ VOID STABuildCacheWifiInfo(
     IN TX_BLK *pTxBlk,
     IN UCHAR *pWiInfo)
 {
-    PWIFI_INFO_STRUC pWI;
+    PWIFI_INFO_STRUCT pWI;
     MAC_TABLE_ENTRY *pMacEntry;
 
-    pWI = (PWIFI_INFO_STRUC)pWiInfo;
+    pWI = (PWIFI_INFO_STRUCT)pWiInfo;
     pMacEntry = pTxBlk->pMacEntry;
 
     pTxBlk->MpduHeaderLen = WIFI_INFO_SIZE;
@@ -3563,11 +3563,11 @@ VOID STA_AMPDU_Frame_Tx(
 #endif // TXBF_SUPPORT //
           )
         {
-            RTMPWriteTxWI_Cache(pAd, (TXWI_STRUC *)(&pTxBlk->HeaderBuf[TXINFO_SIZE]), pTxBlk);
+            RTMPWriteTxWI_Cache(pAd, (TXWI_STRUCT *)(&pTxBlk->HeaderBuf[TXINFO_SIZE]), pTxBlk);
         }
         else
         {
-            RTMPWriteTxWI_Data(pAd, (TXWI_STRUC *)(&pTxBlk->HeaderBuf[TXINFO_SIZE]), pTxBlk);
+            RTMPWriteTxWI_Data(pAd, (TXWI_STRUCT *)(&pTxBlk->HeaderBuf[TXINFO_SIZE]), pTxBlk);
 
             NdisZeroMemory((PUCHAR)(&pMacEntry->CachedBuf[0]), sizeof(pMacEntry->CachedBuf));
             NdisMoveMemory((PUCHAR)(&pMacEntry->CachedBuf[0]), (PUCHAR)(&pTxBlk->HeaderBuf[TXINFO_SIZE]), (pHeaderBufPtr -(PUCHAR)(&pTxBlk->HeaderBuf[TXINFO_SIZE])));
@@ -3634,7 +3634,7 @@ VOID STA_AMPDU_Frame_Tx_Hdr_Trns(
     PQUEUE_ENTRY pQEntry;
     BOOLEAN			bHTCPlus;
     UINT8 TXWISize = pAd->chipCap.TXWISize;
-    PWIFI_INFO_STRUC pWI;
+    PWIFI_INFO_STRUCT pWI;
 
     ASSERT(pTxBlk);
 
@@ -3676,7 +3676,7 @@ VOID STA_AMPDU_Frame_Tx_Hdr_Trns(
             pWiBufPtr = &pTxBlk->HeaderBuf[TXINFO_SIZE + TXWISize];
         }
 
-        pWI = (PWIFI_INFO_STRUC)pWiBufPtr;
+        pWI = (PWIFI_INFO_STRUCT)pWiBufPtr;
 
         pTxBlk->pSrcBufData = pTxBlk->pSrcBufHeader;
 
@@ -3711,13 +3711,13 @@ VOID STA_AMPDU_Frame_Tx_Hdr_Trns(
         if((pMacEntry->isCached))
         {
             RTMPWriteTxWI_Cache(pAd,
-                                (TXWI_STRUC *)(&pTxBlk->HeaderBuf[TXINFO_SIZE]),
+                                (TXWI_STRUCT *)(&pTxBlk->HeaderBuf[TXINFO_SIZE]),
                                 pTxBlk);
         }
         else
         {
             RTMPWriteTxWI_Data(pAd,
-                               (TXWI_STRUC *)(&pTxBlk->HeaderBuf[TXINFO_SIZE]),
+                               (TXWI_STRUCT *)(&pTxBlk->HeaderBuf[TXINFO_SIZE]),
                                pTxBlk);
 
             NdisZeroMemory((PUCHAR)(&pMacEntry->CachedBuf[0]),
@@ -3815,7 +3815,7 @@ VOID STA_AMSDU_Frame_Tx(
             pHeaderBufPtr = STA_Build_AMSDU_Frame_Header(pAd, pTxBlk);
 
             /* NOTE: TxWI->TxWIMPDUByteCnt will be updated after final frame was handled. */
-            RTMPWriteTxWI_Data(pAd, (TXWI_STRUC *)(&pTxBlk->HeaderBuf[TXINFO_SIZE]), pTxBlk);
+            RTMPWriteTxWI_Data(pAd, (TXWI_STRUCT *)(&pTxBlk->HeaderBuf[TXINFO_SIZE]), pTxBlk);
         }
         else
         {
@@ -4080,7 +4080,7 @@ VOID STA_Legacy_Frame_Tx(RTMP_ADAPTER *pAd, TX_BLK *pTxBlk)
        use Wcid as Key Index
      */
 
-    RTMPWriteTxWI_Data(pAd, (TXWI_STRUC *)(&pTxBlk->HeaderBuf[TXINFO_SIZE]), pTxBlk);
+    RTMPWriteTxWI_Data(pAd, (TXWI_STRUCT *)(&pTxBlk->HeaderBuf[TXINFO_SIZE]), pTxBlk);
 
     HAL_WriteTxResource(pAd, pTxBlk, TRUE, &FreeNumber);
 
@@ -4117,7 +4117,7 @@ VOID STA_Legacy_Frame_Tx_Hdr_Trns(
     BOOLEAN bVLANPkt;
     PQUEUE_ENTRY pQEntry;
     UINT8 TXWISize = pAd->chipCap.TXWISize;
-    PWIFI_INFO_STRUC pWI;
+    PWIFI_INFO_STRUCT pWI;
 
     ASSERT(pTxBlk);
 
@@ -4157,9 +4157,9 @@ VOID STA_Legacy_Frame_Tx_Hdr_Trns(
 
     pHeaderBufPtr = &pTxBlk->HeaderBuf[TXINFO_SIZE + TXWISize];
 
-    pWI = (PWIFI_INFO_STRUC)pHeaderBufPtr;
+    pWI = (PWIFI_INFO_STRUCT)pHeaderBufPtr;
 
-    //hex_dump("wifi info:", pWI, sizeof(WIFI_INFO_STRUC));
+    //hex_dump("wifi info:", pWI, sizeof(WIFI_INFO_STRUCT));
 
     pTxBlk->pSrcBufData = pTxBlk->pSrcBufHeader;
 
@@ -4177,7 +4177,7 @@ VOID STA_Legacy_Frame_Tx_Hdr_Trns(
        use Wcid as Key Index
      */
 
-    RTMPWriteTxWI_Data(pAd, (TXWI_STRUC *)(&pTxBlk->HeaderBuf[TXINFO_SIZE]), pTxBlk);
+    RTMPWriteTxWI_Data(pAd, (TXWI_STRUCT *)(&pTxBlk->HeaderBuf[TXINFO_SIZE]), pTxBlk);
 
     pTxBlk->NeedTrans = TRUE;
     HAL_WriteTxResource(pAd, pTxBlk, TRUE, &FreeNumber);
@@ -4259,7 +4259,7 @@ VOID STA_ARalink_Frame_Tx(
                It's ok write the TxWI here, because the TxWI->TxWIMPDUByteCnt
                will be updated after final frame was handled.
              */
-            RTMPWriteTxWI_Data(pAd, (TXWI_STRUC *)(&pTxBlk->HeaderBuf[TXINFO_SIZE]), pTxBlk);
+            RTMPWriteTxWI_Data(pAd, (TXWI_STRUCT *)(&pTxBlk->HeaderBuf[TXINFO_SIZE]), pTxBlk);
 
 
             /*
@@ -4658,7 +4658,7 @@ VOID STA_Fragment_Frame_Tx(
 
 #endif /* SOFT_ENCRYPT */
 
-        RTMPWriteTxWI_Data(pAd, (TXWI_STRUC *)(&pTxBlk->HeaderBuf[TXINFO_SIZE]), pTxBlk);
+        RTMPWriteTxWI_Data(pAd, (TXWI_STRUCT *)(&pTxBlk->HeaderBuf[TXINFO_SIZE]), pTxBlk);
         HAL_WriteFragTxResource(pAd, pTxBlk, fragNum, &freeCnt);
 
 #ifdef DBG_CTRL_SUPPORT

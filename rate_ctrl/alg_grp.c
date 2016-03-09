@@ -1103,8 +1103,8 @@ VOID StaQuickResponeForRateUpExecAdapt(
 
     if(pAd->MacTab.Size == 1)
     {
-        TX_STA_CNT1_STRUC		StaTx1;
-        TX_STA_CNT0_STRUC		TxStaCnt0;
+        TX_STA_CNT1_STRUCT		StaTx1;
+        TX_STA_CNT0_STRUCT		TxStaCnt0;
 
         /* Update statistic counter */
         NicGetTxRawCounters(pAd, &TxStaCnt0, &StaTx1);
@@ -1394,7 +1394,7 @@ VOID MlmeDynamicTxRateSwitchingAdapt(
 
         if(pEntry->Aid >= 1 && pEntry->Aid <= 8)
         {
-            WCID_TX_CNT_STRUC wcidTxCnt;
+            WCID_TX_CNT_STRUCT wcidTxCnt;
             UINT32 regAddr, offset;
             ULONG HwTxCnt, HwErrRatio = 0;
 

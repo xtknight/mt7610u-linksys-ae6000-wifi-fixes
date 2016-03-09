@@ -562,7 +562,7 @@ VOID MlmeHalt(
         RTMPSetSignalLED(pAd, -100);	/* Force signal strength Led to be turned off, firmware is not done it.*/
 #ifdef RTMP_MAC_USB
         {
-            LED_CFG_STRUC LedCfg;
+            LED_CFG_STRUCT LedCfg;
             RTMP_IO_READ32(pAd, LED_CFG, &LedCfg.word);
             LedCfg.field.LedPolar = 0;
             LedCfg.field.RLedMode = 0;
@@ -1083,7 +1083,7 @@ VOID STAMlmePeriodicExec(
     {
         if((pAd->RalinkCounters.LastOneSecTotalTxCount + pAd->RalinkCounters.LastOneSecRxOkDataCnt) >= 2000)
         {
-            WLAN_FUN_CTRL_STRUC     WlanFunCtrl = {.word = 0};
+            WLAN_FUN_CTRL_STRUCT     WlanFunCtrl = {.word = 0};
             RTMP_IO_READ32(pAd, WLAN_FUN_CTRL, &WlanFunCtrl.word);
 
             if((WlanFunCtrl.field.WLAN_EN == TRUE) && (WlanFunCtrl.field.PCIE_APP0_CLK_REQ == FALSE))
@@ -1094,7 +1094,7 @@ VOID STAMlmePeriodicExec(
         }
         else if((pAd->RalinkCounters.LastOneSecTotalTxCount + pAd->RalinkCounters.LastOneSecRxOkDataCnt) <= 500)
         {
-            WLAN_FUN_CTRL_STRUC     WlanFunCtrl = {.word = 0};
+            WLAN_FUN_CTRL_STRUCT     WlanFunCtrl = {.word = 0};
             RTMP_IO_READ32(pAd, WLAN_FUN_CTRL, &WlanFunCtrl.word);
 
             if((WlanFunCtrl.field.WLAN_EN == TRUE) && (WlanFunCtrl.field.PCIE_APP0_CLK_REQ == TRUE))
@@ -1110,7 +1110,7 @@ VOID STAMlmePeriodicExec(
             ((pAd->NicConfig3.word != 0xFFFF) && (pAd->NicConfig3.field.CoexAnt == TRUE)) &&
             ((pAd->Mlme.OneSecPeriodicRound % 5) == 4))
     {
-        WLAN_FUN_CTRL_STRUC	WlanFunCtrl = {.word = 0};
+        WLAN_FUN_CTRL_STRUCT	WlanFunCtrl = {.word = 0};
         ULONG				MacRegValue;
 
         DBGPRINT(RT_DEBUG_INFO, ("!!! BBP_R150 = %d, BT_EN = %d\n",pAd->BbpWriteLatch[BBP_R150], pAd->BtFunCtrl.field.BT_EN));
@@ -1268,8 +1268,8 @@ VOID STAMlmePeriodicExec(
 #endif /* RT3290 */
               )
             {
-                EDCA_AC_CFG_STRUC	Ac0Cfg;
-                EDCA_AC_CFG_STRUC	Ac2Cfg;
+                EDCA_AC_CFG_STRUCT	Ac0Cfg;
+                EDCA_AC_CFG_STRUCT	Ac2Cfg;
                 RTUSBReadMACRegister(pAd, EDCA_AC2_CFG, &Ac2Cfg.word);
                 RTUSBReadMACRegister(pAd, EDCA_AC0_CFG, &Ac0Cfg.word);
 
@@ -2045,7 +2045,7 @@ VOID MlmeSetTxPreamble(
     IN PRTMP_ADAPTER pAd,
     IN USHORT TxPreamble)
 {
-    AUTO_RSP_CFG_STRUC csr4;
+    AUTO_RSP_CFG_STRUCT csr4;
 
 
     /* Always use Long preamble before verifiation short preamble functionality works well.*/
@@ -5746,7 +5746,7 @@ VOID RTMPSetPiggyBack(
     IN PRTMP_ADAPTER    pAd,
     IN BOOLEAN          bPiggyBack)
 {
-    TX_LINK_CFG_STRUC  TxLinkCfg;
+    TX_LINK_CFG_STRUCT  TxLinkCfg;
 
     RTMP_IO_READ32(pAd, TX_LINK_CFG, &TxLinkCfg.word);
 

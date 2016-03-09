@@ -1126,7 +1126,7 @@ static UINT32 MT76x0_RF_INT_PA_RegTb_Size = (sizeof(MT76x0_RF_INT_PA_RegTb) / si
 VOID InitFce(
     PRTMP_ADAPTER pAd)
 {
-    L2_STUFFING_STRUC L2Stuffing;
+    L2_STUFFING_STRUCT L2Stuffing;
 
     L2Stuffing.word = 0;
 
@@ -1741,7 +1741,7 @@ static VOID NICInitMT76x0BbpRegisters(
 
 static VOID MT76x0_AsicAntennaDefaultReset(
     IN struct _RTMP_ADAPTER	*pAd,
-    IN EEPROM_ANTENNA_STRUC *pAntenna)
+    IN EEPROM_ANTENNA_STRUCT *pAntenna)
 {
     pAntenna->word = 0;
     pAntenna->field.RfIcType = RFIC_7650;
@@ -2126,7 +2126,7 @@ static UCHAR mt76x0_txpwr_chlist[] =
 INT MT76x0_ReadChannelPwr(RTMP_ADAPTER *pAd)
 {
     UINT32 i, choffset, idx, ss_offset_g, ss_num;
-    EEPROM_TX_PWR_STRUC Power;
+    EEPROM_TX_PWR_STRUCT Power;
     CHAR tx_pwr1, tx_pwr2;
 
     DBGPRINT(RT_DEBUG_TRACE, ("%s()--->\n", __FUNCTION__));
@@ -5666,7 +5666,7 @@ static void adjust_mp_temp(
     IN PCHAR temp_minus_bdy,
     IN PCHAR temp_plus_bdy)
 {
-    EEPROM_TX_PWR_STRUC e2p_value;
+    EEPROM_TX_PWR_STRUCT e2p_value;
     CHAR mp_temp, idx = 0, mp_offset = 0;
 
     RT28xx_EEPROM_READ16(pAd, 0x10C, e2p_value);

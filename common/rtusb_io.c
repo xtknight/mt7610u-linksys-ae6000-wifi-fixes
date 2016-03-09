@@ -581,7 +581,7 @@ NTSTATUS	RTUSBReadBBPRegister(
     IN	UCHAR			Id,
     IN	PUCHAR			pValue)
 {
-    BBP_CSR_CFG_STRUC	BbpCsr;
+    BBP_CSR_CFG_STRUCT	BbpCsr;
     int i, k, ret;
 
 
@@ -657,7 +657,7 @@ NTSTATUS RTUSBWriteBBPRegister(
     IN UCHAR Id,
     IN UCHAR Value)
 {
-    BBP_CSR_CFG_STRUC BbpCsr;
+    BBP_CSR_CFG_STRUCT BbpCsr;
     int BusyCnt;
     int ret;
 
@@ -719,11 +719,11 @@ NTSTATUS	RTUSBWriteRFRegister(
     IN	PRTMP_ADAPTER	pAd,
     IN	UINT32			Value)
 {
-    RF_CSR_CFG0_STRUC PhyCsr4;
+    RF_CSR_CFG0_STRUCT PhyCsr4;
     UINT			i = 0;
     NTSTATUS		status;
 
-    NdisZeroMemory(&PhyCsr4, sizeof(RF_CSR_CFG0_STRUC));
+    NdisZeroMemory(&PhyCsr4, sizeof(RF_CSR_CFG0_STRUCT));
 
     RTMP_SEM_EVENT_WAIT(&pAd->reg_atomic, status);
 

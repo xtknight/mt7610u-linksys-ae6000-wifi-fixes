@@ -125,7 +125,7 @@
 
 
 #ifdef RT_BIG_ENDIAN
-typedef union _INT_SOURCE_CSR_STRUC
+typedef union _INT_SOURCE_CSR_STRUCT
 {
     struct
     {
@@ -158,9 +158,9 @@ typedef union _INT_SOURCE_CSR_STRUC
         UINT32 RxDone:1;
     } field;
     UINT32 word;
-} INT_SOURCE_CSR_STRUC;
+} INT_SOURCE_CSR_STRUCT;
 #else
-typedef union _INT_SOURCE_CSR_STRUC
+typedef union _INT_SOURCE_CSR_STRUCT
 {
     struct
     {
@@ -193,7 +193,7 @@ typedef union _INT_SOURCE_CSR_STRUC
         UINT32 rsv1:4;
     } field;
     UINT32 word;
-} INT_SOURCE_CSR_STRUC;
+} INT_SOURCE_CSR_STRUCT;
 #endif /* RT_BIG_ENDIAN */
 
 

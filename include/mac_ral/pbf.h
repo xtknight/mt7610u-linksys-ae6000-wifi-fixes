@@ -45,7 +45,7 @@
 
 #define WPDMA_GLO_CFG 	0x208
 #ifdef RT_BIG_ENDIAN
-typedef	union _WPDMA_GLO_CFG_STRUC
+typedef	union _WPDMA_GLO_CFG_STRUCT
 {
     struct
     {
@@ -62,9 +62,9 @@ typedef	union _WPDMA_GLO_CFG_STRUC
         UINT32 EnableTxDMA:1;
     }	field;
     UINT32 word;
-} WPDMA_GLO_CFG_STRUC, *PWPDMA_GLO_CFG_STRUC;
+} WPDMA_GLO_CFG_STRUCT, *PWPDMA_GLO_CFG_STRUCT;
 #else
-typedef	union _WPDMA_GLO_CFG_STRUC
+typedef	union _WPDMA_GLO_CFG_STRUCT
 {
     struct
     {
@@ -81,7 +81,7 @@ typedef	union _WPDMA_GLO_CFG_STRUC
         UINT32 rx_2b_offset:1;
     } field;
     UINT32 word;
-} WPDMA_GLO_CFG_STRUC, *PWPDMA_GLO_CFG_STRUC;
+} WPDMA_GLO_CFG_STRUCT, *PWPDMA_GLO_CFG_STRUCT;
 #endif
 
 

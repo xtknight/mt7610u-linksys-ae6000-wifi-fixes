@@ -590,7 +590,7 @@ INT	RT_CfgSetAutoFallBack(
     IN 	PRTMP_ADAPTER 	pAd,
     IN	PSTRING			arg)
 {
-    TX_RTY_CFG_STRUC tx_rty_cfg;
+    TX_RTY_CFG_STRUCT tx_rty_cfg;
     UCHAR AutoFallBack = (UCHAR)simple_strtol(arg, 0, 10);
 
     RTMP_IO_READ32(pAd, TX_RTY_CFG, &tx_rty_cfg.word);

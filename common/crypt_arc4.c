@@ -41,7 +41,7 @@ Arguments:
 ========================================================================
 */
 VOID ARC4_INIT(
-    IN ARC4_CTX_STRUC *pARC4_CTX,
+    IN ARC4_CTX_STRUCT *pARC4_CTX,
     IN PUCHAR pKey,
     IN UINT KeyLength)
 {
@@ -83,7 +83,7 @@ Return Value:
  ========================================================================
 */
 VOID ARC4_Compute(
-    IN ARC4_CTX_STRUC *pARC4_CTX,
+    IN ARC4_CTX_STRUCT *pARC4_CTX,
     IN UINT8 InputBlock[],
     IN UINT InputBlockSize,
     OUT UINT8 OutputBlock[])
@@ -119,7 +119,7 @@ Arguments:
 ========================================================================
 */
 VOID ARC4_Discard_KeyLength(
-    IN ARC4_CTX_STRUC *pARC4_CTX,
+    IN ARC4_CTX_STRUCT *pARC4_CTX,
     IN UINT Length)
 {
     UINT Index = 0;

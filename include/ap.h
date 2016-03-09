@@ -93,7 +93,7 @@ VOID APRxEAPOLFrameIndicate(
 
 NDIS_STATUS APCheckRxError(
     IN RTMP_ADAPTER *pAd,
-    IN RXINFO_STRUC *pRxInfo,
+    IN RXINFO_STRUCT *pRxInfo,
     IN UCHAR Wcid);
 
 BOOLEAN APCheckClass2Class3Error(

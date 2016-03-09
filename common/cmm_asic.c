@@ -35,13 +35,13 @@ VOID AsicUpdateAutoFallBackTable(
     IN	PUCHAR			pRateTable)
 {
     UCHAR					i;
-    HT_FBK_CFG0_STRUC		HtCfg0;
-    HT_FBK_CFG1_STRUC		HtCfg1;
-    LG_FBK_CFG0_STRUC		LgCfg0;
-    LG_FBK_CFG1_STRUC		LgCfg1;
+    HT_FBK_CFG0_STRUCT		HtCfg0;
+    HT_FBK_CFG1_STRUCT		HtCfg1;
+    LG_FBK_CFG0_STRUCT		LgCfg0;
+    LG_FBK_CFG1_STRUCT		LgCfg1;
 #ifdef DOT11N_SS3_SUPPORT
-    TX_FBK_CFG_3S_0_STRUC	Ht3SSCfg0;
-    TX_FBK_CFG_3S_1_STRUC	Ht3SSCfg1;
+    TX_FBK_CFG_3S_0_STRUCT	Ht3SSCfg0;
+    TX_FBK_CFG_3S_1_STRUCT	Ht3SSCfg1;
 #endif /* DOT11N_SS3_SUPPORT */
     RTMP_RA_LEGACY_TB *pCurrTxRate, *pNextTxRate;
 
@@ -369,7 +369,7 @@ VOID AsicUpdateProtect(
     IN BOOLEAN bDisableBGProtect,
     IN BOOLEAN bNonGFExist)
 {
-    PROT_CFG_STRUC	ProtCfg, ProtCfg4;
+    PROT_CFG_STRUCT	ProtCfg, ProtCfg4;
     UINT32 Protect[6];
     USHORT offset;
     UCHAR i, PhyMode = 0x4000;
@@ -577,7 +577,7 @@ VOID AsicUpdateProtect(
             // TODO: shiang-6590, fix me for this protection mechanism
             if(IS_RT65XX(pAd))
             {
-                PROT_CFG_STRUC vht_port_cfg;
+                PROT_CFG_STRUCT vht_port_cfg;
 
                 RTMP_IO_READ32(pAd, TX_PROT_CFG6, &vht_port_cfg.word);
                 vht_port_cfg.field.ProtectCtrl = 0;
@@ -631,7 +631,7 @@ VOID AsicUpdateProtect(
             if(IS_RT65XX(pAd))
             {
                 // Temporary tuen on RTS in VHT, MAC: TX_PROT_CFG6, TX_PROT_CFG7, TX_PROT_CFG8
-                PROT_CFG_STRUC vht_port_cfg;
+                PROT_CFG_STRUCT vht_port_cfg;
 
                 RTMP_IO_READ32(pAd, TX_PROT_CFG6, &vht_port_cfg.word);
                 vht_port_cfg.field.ProtectCtrl = ASIC_RTS;
@@ -693,7 +693,7 @@ VOID AsicUpdateProtect(
             // TODO: shiang-6590, fix me for this protection mechanism
             if(IS_RT65XX(pAd))
             {
-                PROT_CFG_STRUC vht_port_cfg;
+                PROT_CFG_STRUCT vht_port_cfg;
 
                 RTMP_IO_READ32(pAd, TX_PROT_CFG6, &vht_port_cfg.word);
                 vht_port_cfg.field.ProtectCtrl = 0;
@@ -750,7 +750,7 @@ VOID AsicUpdateProtect(
             if(IS_RT65XX(pAd))
             {
                 // Temporary tuen on RTS in VHT, MAC: TX_PROT_CFG6, TX_PROT_CFG7, TX_PROT_CFG8
-                PROT_CFG_STRUC vht_port_cfg;
+                PROT_CFG_STRUCT vht_port_cfg;
 
                 RTMP_IO_READ32(pAd, TX_PROT_CFG6, &vht_port_cfg.word);
                 vht_port_cfg.field.ProtectCtrl = ASIC_RTS;
@@ -956,7 +956,7 @@ VOID InitLookupTable(
     enum IEEE80211_BAND band;
     int band_nums = 1;
     const int Offset = 7;
-    EEPROM_WORD_STRUC WordStruct = {{0}};
+    EEPROM_WORD_STRUCT WordStruct = {{0}};
     UCHAR PlusStepNum[IEEE80211_BAND_NUMS][8] = {{0, 1, 3, 2, 3, 3, 3, 2}, {0, 1, 3, 2, 3, 3, 3, 2}};
     UCHAR MinusStepNum[IEEE80211_BAND_NUMS][8] = {{1, 1, 1, 1, 1, 1, 0, 1}, {1, 1, 1, 1, 1, 1, 0, 1}};
     UCHAR Step[IEEE80211_BAND_NUMS] = {10, 10};
@@ -1185,7 +1185,7 @@ VOID AsicGetAutoAgcOffsetForTemperatureSensor(
     const TX_POWER_TUNING_ENTRY_STRUCT *TxPowerTuningTable;
     TX_POWER_TUNING_ENTRY_STRUCT *TxPowerTuningTableEntry0 = NULL; /* Ant0 */
     TX_POWER_TUNING_ENTRY_STRUCT *TxPowerTuningTableEntry1 = NULL; /* Ant1 */
-    BBP_R49_STRUC	BbpR49;
+    BBP_R49_STRUCT	BbpR49;
     BOOLEAN			bAutoTxAgc = FALSE;
     PCHAR			pTxAgcCompensate = NULL;
     UCHAR 			RFValue = 0;
@@ -1461,7 +1461,7 @@ VOID AsicSetBssid(
 VOID AsicEnableRDG(
     IN PRTMP_ADAPTER pAd)
 {
-    TX_LINK_CFG_STRUC	TxLinkCfg;
+    TX_LINK_CFG_STRUCT	TxLinkCfg;
     UINT32				Data = 0;
 
     RTMP_IO_READ32(pAd, TX_LINK_CFG, &TxLinkCfg.word);
@@ -1485,7 +1485,7 @@ VOID AsicEnableRDG(
 VOID AsicDisableRDG(
     IN PRTMP_ADAPTER pAd)
 {
-    TX_LINK_CFG_STRUC	TxLinkCfg;
+    TX_LINK_CFG_STRUCT	TxLinkCfg;
     UINT32				Data = 0;
 
 
@@ -1531,7 +1531,7 @@ VOID AsicDisableRDG(
 VOID AsicDisableSync(
     IN PRTMP_ADAPTER pAd)
 {
-    BCN_TIME_CFG_STRUC csr;
+    BCN_TIME_CFG_STRUCT csr;
 
     DBGPRINT(RT_DEBUG_TRACE, ("--->Disable TSF synchronization\n"));
 
@@ -1559,7 +1559,7 @@ VOID AsicDisableSync(
 VOID AsicEnableBssSync(
     IN PRTMP_ADAPTER pAd)
 {
-    BCN_TIME_CFG_STRUC csr;
+    BCN_TIME_CFG_STRUCT csr;
 
     DBGPRINT(RT_DEBUG_TRACE, ("--->AsicEnableBssSync(INFRA mode)\n"));
 
@@ -1593,7 +1593,7 @@ VOID AsicEnableBssSync(
 VOID AsicEnableIbssSync(
     IN PRTMP_ADAPTER pAd)
 {
-    BCN_TIME_CFG_STRUC csr9;
+    BCN_TIME_CFG_STRUCT csr9;
     PUCHAR			ptr;
     UINT i;
     ULONG beaconBaseLocation = 0;
@@ -1603,7 +1603,7 @@ VOID AsicEnableIbssSync(
 
 #ifdef RT_BIG_ENDIAN
     {
-        TXWI_STRUC		localTxWI;
+        TXWI_STRUCT		localTxWI;
 
         NdisMoveMemory((PUCHAR)&localTxWI, (PUCHAR)&pAd->BeaconTxWI, TXWISize);
         RTMPWIEndianChange(pAd, (PUCHAR)&localTxWI, TYPE_TXWI);
@@ -1681,12 +1681,12 @@ VOID AsicSetEdcaParm(
     IN PRTMP_ADAPTER pAd,
     IN PEDCA_PARM	 pEdcaParm)
 {
-    EDCA_AC_CFG_STRUC   Ac0Cfg, Ac1Cfg, Ac2Cfg, Ac3Cfg;
-    AC_TXOP_CSR0_STRUC csr0;
-    AC_TXOP_CSR1_STRUC csr1;
-    AIFSN_CSR_STRUC    AifsnCsr;
-    CWMIN_CSR_STRUC    CwminCsr;
-    CWMAX_CSR_STRUC    CwmaxCsr;
+    EDCA_AC_CFG_STRUCT   Ac0Cfg, Ac1Cfg, Ac2Cfg, Ac3Cfg;
+    AC_TXOP_CSR0_STRUCT csr0;
+    AC_TXOP_CSR1_STRUCT csr1;
+    AIFSN_CSR_STRUCT    AifsnCsr;
+    CWMIN_CSR_STRUCT    CwminCsr;
+    CWMAX_CSR_STRUCT    CwmaxCsr;
     int i;
 
     Ac0Cfg.word = 0;
@@ -2078,7 +2078,7 @@ VOID AsicAddSharedKeyEntry(
     IN PCIPHER_KEY		pCipherKey)
 {
     ULONG offset; /*, csr0;*/
-    SHAREDKEY_MODE_STRUC csr1;
+    SHAREDKEY_MODE_STRUCT csr1;
     UINT16 SharedKeyTableBase, SharedKeyModeBase;
 
     PUCHAR		pKey = pCipherKey->Key;
@@ -2184,7 +2184,7 @@ VOID AsicRemoveSharedKeyEntry(
     IN UCHAR		 KeyIdx)
 {
     /*ULONG SecCsr0;*/
-    SHAREDKEY_MODE_STRUC csr1;
+    SHAREDKEY_MODE_STRUCT csr1;
     UINT16 SharedKeyTableBase, SharedKeyModeBase;
 
     DBGPRINT(RT_DEBUG_TRACE,("AsicRemoveSharedKeyEntry: #%d\n", BssIndex*4 + KeyIdx));
@@ -2292,7 +2292,7 @@ VOID	AsicUpdateWcidAttributeEntry(
     IN	UINT8			Wcid,
     IN	UINT8			KeyTabFlag)
 {
-    WCID_ATTRIBUTE_STRUC WCIDAttri;
+    WCID_ATTRIBUTE_STRUCT WCIDAttri;
     USHORT		offset;
 
     /* Initialize the content of WCID Attribue  */
@@ -2798,7 +2798,7 @@ VOID AsicWOWSendNullFrame(
     IN BOOLEAN bQosNull)
 {
 
-    TXWI_STRUC *TxWI;
+    TXWI_STRUCT *TxWI;
     PUCHAR NullFrame;
     UINT8  packet_len;
     PUCHAR ptr;
@@ -2809,7 +2809,7 @@ VOID AsicWOWSendNullFrame(
 
 
     ComposeNullFrame(pAd);
-    TxWI = (TXWI_STRUC *)&pAd->NullContext.TransferBuffer->field.WirelessPacket[TXINFO_SIZE];
+    TxWI = (TXWI_STRUCT *)&pAd->NullContext.TransferBuffer->field.WirelessPacket[TXINFO_SIZE];
     NullFrame = (PUCHAR)&pAd->NullFrame;
     packet_len = TxWI->TxWIMPDUByteCnt;
 
@@ -2877,7 +2877,7 @@ INT AsicSetPreTbttInt(RTMP_ADAPTER *pAd, BOOLEAN enable)
 BOOLEAN AsicWaitPDMAIdle(struct _RTMP_ADAPTER *pAd, INT round, INT wait_us)
 {
     INT i = 0;
-    WPDMA_GLO_CFG_STRUC GloCfg;
+    WPDMA_GLO_CFG_STRUCT GloCfg;
 
 
     do
@@ -2914,7 +2914,7 @@ BOOLEAN AsicWaitPDMAIdle(struct _RTMP_ADAPTER *pAd, INT round, INT wait_us)
 INT AsicReadAggCnt(RTMP_ADAPTER *pAd, ULONG *aggCnt, int cnt_len)
 {
     UINT32 reg_addr;
-    TX_AGG_CNT_STRUC reg_val;
+    TX_AGG_CNT_STRUCT reg_val;
     int i, cnt, seg;
     static USHORT aggReg[] =
     {

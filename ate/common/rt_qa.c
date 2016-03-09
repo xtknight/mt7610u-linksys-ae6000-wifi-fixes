@@ -798,7 +798,7 @@ static  INT DO_RACFG_CMD_IO_READ(
     UINT32	offset;
     UINT32	value;
 #ifdef RT6352
-    RF_CSR_CFG_STRUC rfcsr = { { 0 } };
+    RF_CSR_CFG_STRUCT rfcsr = { { 0 } };
     UCHAR bank, regID, rfValue;
 #endif /* RT6352 */
 #ifdef RT65xx
@@ -825,7 +825,7 @@ static  INT DO_RACFG_CMD_IO_READ(
         {
             if(offset == RF_CSR_CFG)
             {
-                rfcsr = (RF_CSR_CFG_STRUC)value;
+                rfcsr = (RF_CSR_CFG_STRUCT)value;
                 regID = (UCHAR)(rfcsr.field.TESTCSR_RFACC_REGNUM & 0x0000003F);
                 bank = (UCHAR)((rfcsr.field.TESTCSR_RFACC_REGNUM & 0x000003FF) >> 6);
                 rfValue = (UCHAR)(rfcsr.field.RF_CSR_DATA);
@@ -892,7 +892,7 @@ static  INT DO_RACFG_CMD_IO_WRITE(
 {
     UINT32	offset, value;
 #ifdef RT6352
-    RF_CSR_CFG_STRUC rfcsr = { { 0 } };
+    RF_CSR_CFG_STRUCT rfcsr = { { 0 } };
     UCHAR bank, regID, rfValue;
 #endif /* RT6352 */
 #ifdef RT65xx
@@ -922,7 +922,7 @@ static  INT DO_RACFG_CMD_IO_WRITE(
     {
         if(offset == RF_CSR_CFG)
         {
-            rfcsr = (RF_CSR_CFG_STRUC)value;
+            rfcsr = (RF_CSR_CFG_STRUCT)value;
             regID = (UCHAR)(rfcsr.field.TESTCSR_RFACC_REGNUM & 0x0000003F);
             bank = (UCHAR)((rfcsr.field.TESTCSR_RFACC_REGNUM & 0x000003FF) >> 6);
             rfValue = (UCHAR)(rfcsr.field.RF_CSR_DATA);
@@ -2758,8 +2758,8 @@ ERROR0:
 
 VOID ATE_QA_Statistics(
     IN RTMP_ADAPTER *pAd,
-    IN RXWI_STRUC *pRxWI,
-    IN RXINFO_STRUC *pRxInfo,
+    IN RXWI_STRUCT *pRxWI,
+    IN RXINFO_STRUCT *pRxInfo,
     IN PHEADER_802_11 pHeader)
 {
     PATE_INFO pATEInfo = &(pAd->ate);

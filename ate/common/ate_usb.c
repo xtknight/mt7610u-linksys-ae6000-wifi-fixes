@@ -35,7 +35,7 @@ extern UCHAR TemplateFrame[32];
 
 extern VOID rlt_usb_write_txinfo(
     IN RTMP_ADAPTER *pAd,
-    IN TXINFO_STRUC *pTxInfo,
+    IN TXINFO_STRUCT *pTxInfo,
     IN USHORT USBDMApktLen,
     IN BOOLEAN bWiv,
     IN UCHAR QueueSel,
@@ -46,7 +46,7 @@ extern VOID rlt_usb_write_txinfo(
 INT TxDmaBusy(RTMP_ADAPTER *pAd)
 {
     INT result;
-    USB_DMA_CFG_STRUC UsbCfg;
+    USB_DMA_CFG_STRUCT UsbCfg;
     BOOLEAN is_busy;
 
     USB_CFG_READ(pAd, &UsbCfg.word);
@@ -67,7 +67,7 @@ INT TxDmaBusy(RTMP_ADAPTER *pAd)
 INT RxDmaBusy(RTMP_ADAPTER *pAd)
 {
     INT result;
-    USB_DMA_CFG_STRUC UsbCfg;
+    USB_DMA_CFG_STRUCT UsbCfg;
     BOOLEAN is_busy;
 
     USB_CFG_READ(pAd, &UsbCfg.word);
@@ -89,7 +89,7 @@ VOID RtmpDmaEnable(RTMP_ADAPTER *pAd, INT Enable)
 {
     BOOLEAN value;
     ULONG WaitCnt;
-    USB_DMA_CFG_STRUC UsbCfg;
+    USB_DMA_CFG_STRUCT UsbCfg;
 
     value = Enable > 0 ? 1 : 0;
 
@@ -128,7 +128,7 @@ VOID RtmpDmaEnable(RTMP_ADAPTER *pAd, INT Enable)
 
 static VOID ATEWriteTxWI(
     IN	PRTMP_ADAPTER	pAd,
-    IN	TXWI_STRUC *pTxWI,
+    IN	TXWI_STRUCT *pTxWI,
     IN	BOOLEAN			FRAG,
     IN	BOOLEAN			InsTimestamp,
     IN	BOOLEAN 		AMPDU,
@@ -217,7 +217,7 @@ static VOID ATEWriteTxWI(
 */
 static VOID ATEWriteTxInfo(
     IN	PRTMP_ADAPTER	pAd,
-    IN	TXINFO_STRUC *pTxInfo,
+    IN	TXINFO_STRUCT *pTxInfo,
     IN	USHORT		USBDMApktLen,
     IN	BOOLEAN		bWiv,
     IN	UCHAR			QueueSel,
@@ -237,8 +237,8 @@ INT ATESetUpFrame(
     PTX_CONTEXT	pNullContext;
     PUCHAR			pDest;
     HTTRANSMIT_SETTING	TxHTPhyMode;
-    TXWI_STRUC *pTxWI;
-    TXINFO_STRUC *pTxInfo;
+    TXWI_STRUCT *pTxWI;
+    TXINFO_STRUCT *pTxInfo;
     UINT32			TransferBufferLength, OrgBufferLength = 0;
     UCHAR			padLen = 0;
     UINT8 TXWISize = pAd->chipCap.TXWISize;
@@ -314,7 +314,7 @@ INT ATESetUpFrame(
         }
 
         RTMPZeroMemory(&pAd->NullContext.TransferBuffer->field.WirelessPacket[0], TX_BUFFER_NORMSIZE);
-        pTxInfo = (TXINFO_STRUC *)&pAd->NullContext.TransferBuffer->field.WirelessPacket[0];
+        pTxInfo = (TXINFO_STRUCT *)&pAd->NullContext.TransferBuffer->field.WirelessPacket[0];
 
 #ifdef RALINK_QA
 
@@ -335,7 +335,7 @@ INT ATESetUpFrame(
                            , TRUE, FIFO_EDCA, FALSE,  FALSE);
         }
 
-        pTxWI = (TXWI_STRUC *)&pAd->NullContext.TransferBuffer->field.WirelessPacket[TXINFO_SIZE];
+        pTxWI = (TXWI_STRUCT *)&pAd->NullContext.TransferBuffer->field.WirelessPacket[TXINFO_SIZE];
 
 #ifdef RLT_MAC
         {

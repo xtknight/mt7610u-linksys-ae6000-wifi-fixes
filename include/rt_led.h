@@ -75,7 +75,7 @@
 /* */
 /* MCU_LEDCS: MCU LED Control Setting. */
 /* */
-typedef union  _MCU_LEDCS_STRUC
+typedef union  _MCU_LEDCS_STRUCT
 {
     struct
     {
@@ -88,7 +88,7 @@ typedef union  _MCU_LEDCS_STRUC
 #endif /* RT_BIG_ENDIAN */
     } field;
     UCHAR				word;
-} MCU_LEDCS_STRUC, *PMCU_LEDCS_STRUC;
+} MCU_LEDCS_STRUCT, *PMCU_LEDCS_STRUCT;
 
 void RTMPGetLEDSetting(IN RTMP_ADAPTER *pAd);
 void RTMPInitLEDMode(IN RTMP_ADAPTER *pAd);
@@ -120,7 +120,7 @@ VOID RTMPSetSignalLED(
 
 typedef struct _LED_CONTROL
 {
-    MCU_LEDCS_STRUC		MCULedCntl; /* LED Mode EEPROM 0x3b */
+    MCU_LEDCS_STRUCT		MCULedCntl; /* LED Mode EEPROM 0x3b */
     USHORT				LedAGCfg;	/* LED A/G Configuration EEPROM 0x3c */
     USHORT				LedACTCfg;	/* LED ACT Configuration EEPROM 0x3e */
     USHORT				LedPolarity;/* LED A/G/ACT polarity EEPROM 0x40 */

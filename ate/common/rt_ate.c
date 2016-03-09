@@ -744,7 +744,7 @@ CHAR ATEConvertToRssi(
 
 VOID ATESampleRssi(
     IN RTMP_ADAPTER *pAd,
-    IN RXWI_STRUC *pRxWI)
+    IN RXWI_STRUCT *pRxWI)
 {
     PATE_INFO pATEInfo = &(pAd->ate);
 
@@ -1284,7 +1284,7 @@ static VOID SetJapanFilter(
 VOID ATEDisableAsicProtect(
     IN		PRTMP_ADAPTER	pAd)
 {
-    PROT_CFG_STRUC	ProtCfg, ProtCfg4;
+    PROT_CFG_STRUCT	ProtCfg, ProtCfg4;
     UINT32 Protect[6];
     USHORT			offset;
     UCHAR			step;

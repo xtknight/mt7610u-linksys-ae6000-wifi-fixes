@@ -1930,7 +1930,7 @@ VOID MlmeCheckRDG(
             pAd->RalinkCounters.OneSecTransmittedByteCount > 50000 &&
             CLIENT_STATUS_TEST_FLAG(pEntry, fCLIENT_STATUS_RDG_CAPABLE))
     {
-        TX_LINK_CFG_STRUC	TxLinkCfg;
+        TX_LINK_CFG_STRUCT	TxLinkCfg;
         ULONG				TxOpThres;
         UCHAR				TableStep;
         RTMP_RA_LEGACY_TB *pTempTxRate;

@@ -109,7 +109,7 @@ typedef	union _RLT_RF_CSR_CFG
 #endif /* RLT_RF */
 
 
-typedef	union _RF_CSR_CFG_STRUC
+typedef	union _RF_CSR_CFG_STRUCT
 {
 #ifdef RT_BIG_ENDIAN
     struct
@@ -131,7 +131,7 @@ typedef	union _RF_CSR_CFG_STRUC
     } field;
 #endif /* RT_BIG_ENDIAN */
     UINT32 word;
-} RF_CSR_CFG_STRUC;
+} RF_CSR_CFG_STRUCT;
 
 #define RF_BYPASS_0		0x0504
 

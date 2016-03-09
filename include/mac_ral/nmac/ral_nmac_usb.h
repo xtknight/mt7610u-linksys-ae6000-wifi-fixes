@@ -29,7 +29,7 @@
 #define __RAL_OMAC_USB_H__
 #define CMB_CTRL		0x20
 #ifdef RT_BIG_ENDIAN
-typedef union _CMB_CTRL_STRUC
+typedef union _CMB_CTRL_STRUCT
 {
     struct
     {
@@ -68,9 +68,9 @@ typedef union _CMB_CTRL_STRUC
         UINT32		AUX_OPT_Bit0_InterfaceClk_40Mhz:1;
     } field;
     UINT32 word;
-} CMB_CTRL_STRUC, *PCMB_CTRL_STRUC;
+} CMB_CTRL_STRUCT, *PCMB_CTRL_STRUCT;
 #else
-typedef union _CMB_CTRL_STRUC
+typedef union _CMB_CTRL_STRUCT
 {
     struct
     {
@@ -109,7 +109,7 @@ typedef union _CMB_CTRL_STRUC
         UINT32       	LDO0_EN:1;
     } field;
     UINT32 word;
-} CMB_CTRL_STRUC, *PCMB_CTRL_STRUC;
+} CMB_CTRL_STRUCT, *PCMB_CTRL_STRUCT;
 #endif
 
 
@@ -119,7 +119,7 @@ typedef union _CMB_CTRL_STRUC
 #define U3DMA_WLCFG 0x9018
 
 #ifdef RT_BIG_ENDIAN
-typedef	union _USB_DMA_CFG_STRUC
+typedef	union _USB_DMA_CFG_STRUCT
 {
     struct
     {
@@ -138,9 +138,9 @@ typedef	union _USB_DMA_CFG_STRUC
         UINT32 RxBulkAggTOut:8;		/* Rx Bulk Aggregation TimeOut  in unit of 33ns */
     } field;
     UINT32 word;
-} USB_DMA_CFG_STRUC, *PUSB_DMA_CFG_STRUC;
+} USB_DMA_CFG_STRUCT, *PUSB_DMA_CFG_STRUCT;
 #else
-typedef	union _USB_DMA_CFG_STRUC
+typedef	union _USB_DMA_CFG_STRUCT
 {
     struct
     {
@@ -159,7 +159,7 @@ typedef	union _USB_DMA_CFG_STRUC
         UINT32 TxBusy:1;				/* USB DMA TX FSM busy */
     } field;
     UINT32 word;
-} USB_DMA_CFG_STRUC, *PUSB_DMA_CFG_STRUC;
+} USB_DMA_CFG_STRUCT, *PUSB_DMA_CFG_STRUCT;
 #endif
 
 #endif /*__RAL_OMAC_USB_H__ */

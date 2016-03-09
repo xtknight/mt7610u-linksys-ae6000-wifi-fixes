@@ -39,7 +39,7 @@
 #define PBF_SYS_CTRL 	 0x0400
 
 #ifdef RT_BIG_ENDIAN
-typedef union _PBF_SYS_CTRL_STRUC
+typedef union _PBF_SYS_CTRL_STRUCT
 {
     struct
     {
@@ -58,9 +58,9 @@ typedef union _PBF_SYS_CTRL_STRUC
         UINT32 rsv:2;
     } field;
     UINT32 word;
-} PBF_SYS_CTRL_STRUC;
+} PBF_SYS_CTRL_STRUCT;
 #else
-typedef union _PBF_SYS_CTRL_STRUC
+typedef union _PBF_SYS_CTRL_STRUCT
 {
     struct
     {
@@ -79,7 +79,7 @@ typedef union _PBF_SYS_CTRL_STRUC
         UINT32 rsv:2;
     } field;
     UINT32 word;
-} PBF_SYS_CTRL_STRUC;
+} PBF_SYS_CTRL_STRUCT;
 #endif
 
 

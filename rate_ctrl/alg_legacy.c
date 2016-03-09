@@ -59,8 +59,8 @@ VOID MlmeDynamicTxRateSwitching(
     MAC_TABLE_ENTRY			*pEntry;
     RTMP_RA_LEGACY_TB *pCurrTxRate, *pTmpTxRate = NULL;
     UCHAR					InitTxRateIdx, TrainUp, TrainDown;
-    TX_STA_CNT1_STRUC		StaTx1;
-    TX_STA_CNT0_STRUC		TxStaCnt0;
+    TX_STA_CNT1_STRUCT		StaTx1;
+    TX_STA_CNT0_STRUCT		TxStaCnt0;
     CHAR					Rssi, TmpIdx = 0;
     ULONG					TxRetransmit = 0, TxSuccess = 0, TxFailCount = 0;
     RSSI_SAMPLE				*pRssi = &pAd->StaCfg.RssiSample;
@@ -134,7 +134,7 @@ VOID MlmeDynamicTxRateSwitching(
                     ((AccuTxTotalCnt > 150) || (pAd->AntennaDiversityState == 1)) &&
                     (pAd->CommonCfg.BBPCurrentBW == BW_40))
             {
-                WLAN_FUN_CTRL_STRUC WlanFunCtrl = {.word = 0};
+                WLAN_FUN_CTRL_STRUCT WlanFunCtrl = {.word = 0};
                 RTMP_IO_READ32(pAd, WLAN_FUN_CTRL, &WlanFunCtrl.word);
 
                 if((WlanFunCtrl.field.WLAN_EN == TRUE) &&
@@ -218,7 +218,7 @@ VOID MlmeDynamicTxRateSwitching(
         {
             if(TxErrorRatio == 100)
             {
-                TX_RTY_CFG_STRUC	TxRtyCfg,TxRtyCfgtmp;
+                TX_RTY_CFG_STRUCT	TxRtyCfg,TxRtyCfgtmp;
                 ULONG	Index;
                 UINT32	MACValue;
 
@@ -256,7 +256,7 @@ VOID MlmeDynamicTxRateSwitching(
             // TODO: shiang, what's the purpose of "AntennaDiversityInfo.AntennaDiversityState"??
             if(0)  //IS_RT3290(pAd) &&  ((AccuTxTotalCnt > 150) || (pAd->AntennaDiversityInfo.AntennaDiversityState == 1)) && (pAd->CommonCfg.BBPCurrentBW == BW_40))
             {
-                WLAN_FUN_CTRL_STRUC WlanFunCtrl = {.word = 0};
+                WLAN_FUN_CTRL_STRUCT WlanFunCtrl = {.word = 0};
 
                 RTMP_IO_READ32(pAd, WLAN_FUN_CTRL, &WlanFunCtrl.word);
 
@@ -690,8 +690,8 @@ VOID StaQuickResponeForRateUpExec(
         if(pAd->MacTab.Size == 1)
         {
             /* Update statistic counter */
-            TX_STA_CNT1_STRUC	StaTx1;
-            TX_STA_CNT0_STRUC	TxStaCnt0;
+            TX_STA_CNT1_STRUCT	StaTx1;
+            TX_STA_CNT0_STRUCT	TxStaCnt0;
 
             RTMP_IO_READ32(pAd, TX_STA_CNT0, &TxStaCnt0.word);
             RTMP_IO_READ32(pAd, TX_STA_CNT1, &StaTx1.word);
@@ -749,7 +749,7 @@ VOID StaQuickResponeForRateUpExec(
             {
                 if(pEntry->Aid >= 1 && pEntry->Aid <= 8)
                 {
-                    WCID_TX_CNT_STRUC wcidTxCnt;
+                    WCID_TX_CNT_STRUCT wcidTxCnt;
                     UINT32 regAddr, offset;
                     ULONG HwTxCnt, HwErrRatio = 0;
 

@@ -41,7 +41,7 @@
 /* Read BBP register by register's ID. Generate PER to test BA */
 #define RTMP_BBP_IO_READ8_BY_REG_ID_SHORT_DELAY(_A, _I, _pV)		\
 {									\
-	BBP_CSR_CFG_STRUC  BbpCsr;					\
+	BBP_CSR_CFG_STRUCT  BbpCsr;					\
 	int	i, k;							\
 	if ((_A)->bPCIclkOff == FALSE)                     		\
 	{                                                   		\
@@ -136,7 +136,7 @@ VOID RT3XXX_AntDiversity_Fini(
 VOID AntDiversity_Update_Rssi_Sample(
     IN RTMP_ADAPTER *pAd,
     IN RSSI_SAMPLE *pRssi,
-    IN RXWI_STRUC *pRxWI);
+    IN RXWI_STRUCT *pRxWI);
 
 
 #endif

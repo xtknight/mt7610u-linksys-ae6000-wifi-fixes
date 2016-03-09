@@ -2449,7 +2449,7 @@ VOID LinkDown(
             /*||	RTMP_TEST_PSFLAG(pAd, fRTMP_PS_SET_PCI_CLK_OFF_COMMAND) */
             || RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_IDLE_RADIO_OFF))
     {
-        AUTO_WAKEUP_STRUC AutoWakeupCfg;
+        AUTO_WAKEUP_STRUCT AutoWakeupCfg;
         AsicForceWakeup(pAd, TRUE);
         AutoWakeupCfg.word = 0;
         RTMP_IO_WRITE32(pAd, AUTO_WAKEUP_CFG, AutoWakeupCfg.word);
@@ -3109,7 +3109,7 @@ ULONG MakeIbssBeacon(
     USHORT CapabilityInfo;
     LARGE_INTEGER FakeTimestamp;
     ULONG FrameLen = 0;
-    TXWI_STRUC *pTxWI = &pAd->BeaconTxWI;
+    TXWI_STRUCT *pTxWI = &pAd->BeaconTxWI;
     UCHAR *pBeaconFrame = pAd->BeaconBuf;
     BOOLEAN Privacy;
     UCHAR SupRate[MAX_LEN_OF_SUPPORTED_RATES];

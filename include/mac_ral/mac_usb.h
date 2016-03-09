@@ -113,27 +113,27 @@
 	Rx descriptor format, Rx Ring
 */
 #ifdef RT_BIG_ENDIAN
-typedef	struct GNU_PACKED _RXD_STRUC
+typedef	struct GNU_PACKED _RXD_STRUCT
 {
     UINT32 dma_len;
-} RXD_STRUC, *PRXD_STRUC;
+} RXD_STRUCT, *PRXD_STRUCT;
 #else
-typedef	struct GNU_PACKED _RXD_STRUC
+typedef	struct GNU_PACKED _RXD_STRUCT
 {
     UINT32 dma_len;
-} RXD_STRUC, *PRXD_STRUC;
+} RXD_STRUCT, *PRXD_STRUCT;
 #endif
 
 
 /*
 	Management ring buffer format
 */
-typedef	struct _MGMT_STRUC
+typedef	struct _MGMT_STRUCT
 {
     BOOLEAN		Valid;
     PUCHAR		pBuffer;
     ULONG		Length;
-} MGMT_STRUC, *PMGMT_STRUC;
+} MGMT_STRUCT, *PMGMT_STRUCT;
 
 
 /*////////////////////////////////////////////////////////////////////////*/

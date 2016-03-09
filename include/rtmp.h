@@ -565,7 +565,7 @@ typedef struct _RTMP_DMACB
 
     RTMP_DMABUF DmaBuf;	/* Associated DMA buffer structure */
 #ifdef CACHE_LINE_32B
-    RXD_STRUC LastBDInfo;
+    RXD_STRUCT LastBDInfo;
 #endif /* CACHE_LINE_32B */
 } RTMP_DMACB, *PRTMP_DMACB;
 
@@ -861,7 +861,7 @@ typedef struct _TKIP_KEY_INFO
 /* */
 /* Private / Misc data, counters for driver internal use */
 /* */
-typedef struct __PRIVATE_STRUC
+typedef struct __PRIVATE_STRUCT
 {
     UINT SystemResetCnt;	/* System reset counter */
     UINT TxRingFullCnt;	/* Tx ring full occurrance number */
@@ -870,7 +870,7 @@ typedef struct __PRIVATE_STRUC
     /* Tkip stuff */
     TKIP_KEY_INFO Tx;
     TKIP_KEY_INFO Rx;
-} PRIVATE_STRUC, *PPRIVATE_STRUC;
+} PRIVATE_STRUCT, *PPRIVATE_STRUCT;
 
 
 /***************************************************************************
@@ -1155,7 +1155,7 @@ typedef struct _QUERYBA_TABLE
     UCHAR RecNum;		/* Number of below BARecEntry */
 } QUERYBA_TABLE, *PQUERYBA_TABLE;
 
-typedef union _BACAP_STRUC
+typedef union _BACAP_STRUCT
 {
 #ifdef RT_BIG_ENDIAN
     struct
@@ -1189,7 +1189,7 @@ typedef union _BACAP_STRUC
     } field;
 #endif
     UINT32 word;
-} BACAP_STRUC, *PBACAP_STRUC;
+} BACAP_STRUCT, *PBACAP_STRUCT;
 
 typedef struct
 {
@@ -1231,7 +1231,7 @@ typedef struct _BssCoexChRange_
 #endif /* DOT11_N_SUPPORT */
 
 /*This structure is for all 802.11n card InterOptibilityTest action. Reset all Num every n second.  (Details see MLMEPeriodic) */
-typedef struct _IOT_STRUC
+typedef struct _IOT_STRUCT
 {
     BOOLEAN bRTSLongProtOn;
 #ifdef CONFIG_STA_SUPPORT
@@ -1241,7 +1241,7 @@ typedef struct _IOT_STRUC
     BOOLEAN bNextDisableRxBA;
     BOOLEAN bToggle;
 #endif /* CONFIG_STA_SUPPORT */
-} IOT_STRUC, *PIOT_STRUC;
+} IOT_STRUCT, *PIOT_STRUCT;
 
 /* This is the registry setting for 802.11n transmit setting.  Used in advanced page. */
 typedef union _REG_TRANSMIT_SETTING
@@ -1459,8 +1459,8 @@ typedef struct _COMMON_CONFIG
     UINT8 PwrConstraint;
 
 #ifdef DOT11_N_SUPPORT
-    BACAP_STRUC BACapability;	/*   NO USE = 0XFF  ;  IMMED_BA =1  ;  DELAY_BA=0 */
-    BACAP_STRUC REGBACapability;	/*   NO USE = 0XFF  ;  IMMED_BA =1  ;  DELAY_BA=0 */
+    BACAP_STRUCT BACapability;	/*   NO USE = 0XFF  ;  IMMED_BA =1  ;  DELAY_BA=0 */
+    BACAP_STRUCT REGBACapability;	/*   NO USE = 0XFF  ;  IMMED_BA =1  ;  DELAY_BA=0 */
 #endif /* DOT11_N_SUPPORT */
 
 #ifdef DOT11_VHT_AC
@@ -1473,7 +1473,7 @@ typedef struct _COMMON_CONFIG
     UCHAR vht_cent_ch2;
 #endif /* DOT11_VHT_AC */
 
-    IOT_STRUC IOTestParm;	/* 802.11n InterOpbility Test Parameter; */
+    IOT_STRUCT IOTestParm;	/* 802.11n InterOpbility Test Parameter; */
     ULONG TxPreamble;	/* Rt802_11PreambleLong, Rt802_11PreambleShort, Rt802_11PreambleAuto */
     BOOLEAN bUseZeroToDisableFragment;	/* Microsoft use 0 as disable */
     ULONG UseBGProtection;	/* 0: auto, 1: always use, 2: always not use */
@@ -2946,10 +2946,10 @@ struct _RTMP_ADAPTER
 
     RTMP_RF_REGS LatchRfRegs;	/* latch th latest RF programming value since RF IC doesn't support READ */
 
-    EEPROM_ANTENNA_STRUC Antenna;	/* Since ANtenna definition is different for a & g. We need to save it for future reference. */
-    EEPROM_NIC_CONFIG2_STRUC NicConfig2;
+    EEPROM_ANTENNA_STRUCT Antenna;	/* Since ANtenna definition is different for a & g. We need to save it for future reference. */
+    EEPROM_NIC_CONFIG2_STRUCT NicConfig2;
 #if defined(BT_COEXISTENCE_SUPPORT) || defined(RT3290) || defined(RT8592)
-    EEPROM_NIC_CONFIG3_STRUC NicConfig3;
+    EEPROM_NIC_CONFIG3_STRUCT NicConfig3;
 #endif /* defined(BT_COEXISTENCE_SUPPORT) || defined(RT3290) || defined(RT8592) */
 
     /* This soft Rx Antenna Diversity mechanism is used only when user set */
@@ -3033,13 +3033,13 @@ struct _RTMP_ADAPTER
 
 #if defined(RT3290) || defined(RT65xx)
 
-    WLAN_FUN_CTRL_STRUC WlanFunCtrl;
+    WLAN_FUN_CTRL_STRUCT WlanFunCtrl;
 #endif /* defined(RT3290) || defined(RT65xx) */
 #ifdef RT3290
     // TODO: shiang, check about the purpose of this parameter
-    CMB_CTRL_STRUC	CmbCtrl;
-    WLAN_FUN_INFO_STRUC WlanFunInfo;
-    BT_FUN_CTRL_STRUC BtFunCtrl;
+    CMB_CTRL_STRUCT	CmbCtrl;
+    WLAN_FUN_INFO_STRUCT WlanFunInfo;
+    BT_FUN_CTRL_STRUCT BtFunCtrl;
     WLAN_BT_COEX_SETTING WlanBTCoexInfo;
     BOOLEAN RateUp;
     ULONG AntennaDiversityState;/* 0->Stable state 1->training state */
@@ -3058,7 +3058,7 @@ struct _RTMP_ADAPTER
     /*      802.11 related parameters                                                        */
     /*****************************************************************************************/
     /* outgoing BEACON frame buffer and corresponding TXD */
-    TXWI_STRUC BeaconTxWI;
+    TXWI_STRUCT BeaconTxWI;
     PUCHAR BeaconBuf;
     USHORT BeaconOffset[HW_BEACON_MAX_NUM];
 
@@ -3194,7 +3194,7 @@ struct _RTMP_ADAPTER
     COUNTER_802_11 WlanCounters;	/* 802.11 MIB counters */
     COUNTER_RALINK RalinkCounters;	/* Ralink propriety counters */
     /* COUNTER_DRS DrsCounters;	*/ /* counters for Dynamic TX Rate Switching */
-    PRIVATE_STRUC PrivateInfo;	/* Private information & counters */
+    PRIVATE_STRUCT PrivateInfo;	/* Private information & counters */
 
     /* flags, see fRTMP_ADAPTER_xxx flags */
     ULONG Flags;		/* Represent current device status */
@@ -3435,7 +3435,7 @@ struct _RTMP_ADAPTER
 
     UCHAR bloopBackTest;
     BOOLEAN bHwTxLookupRate;
-    TXWI_STRUC NullTxWI;
+    TXWI_STRUCT NullTxWI;
     BOOLEAN TestMulMac;
 
     struct MCU_CTRL MCUCtrl;
@@ -3601,12 +3601,12 @@ typedef struct _TSSI_INFO_
   **************************************************************************/
 typedef struct _RX_BLK_
 {
-    UCHAR hw_rx_info[RXD_SIZE]; /* include "RXD_STRUC RxD" and "RXINFO_STRUC rx_info " */
-    RXINFO_STRUC *pRxInfo;
+    UCHAR hw_rx_info[RXD_SIZE]; /* include "RXD_STRUCT RxD" and "RXINFO_STRUCT rx_info " */
+    RXINFO_STRUCT *pRxInfo;
 #ifdef RLT_MAC
     RXFCE_INFO *pRxFceInfo;
 #endif /* RLT_MAC */
-    RXWI_STRUC *pRxWI;
+    RXWI_STRUCT *pRxWI;
     PHEADER_802_11 pHeader;
     PNDIS_PACKET pRxPacket;
     UCHAR *pData;
@@ -4165,8 +4165,8 @@ VOID NicResetRawCounters(RTMP_ADAPTER *pAd);
 
 VOID NicGetTxRawCounters(
     IN RTMP_ADAPTER *pAd,
-    IN TX_STA_CNT0_STRUC *pStaTxCnt0,
-    IN TX_STA_CNT1_STRUC *pStaTxCnt1);
+    IN TX_STA_CNT0_STRUCT *pStaTxCnt0,
+    IN TX_STA_CNT1_STRUCT *pStaTxCnt1);
 
 VOID RTMPZeroMemory(
     IN  PVOID   pSrc,
@@ -4519,7 +4519,7 @@ USHORT RTMPCalcDuration(
 
 VOID RTMPWriteTxWI(
     IN RTMP_ADAPTER *pAd,
-    IN TXWI_STRUC *pTxWI,
+    IN TXWI_STRUCT *pTxWI,
     IN BOOLEAN FRAG,
     IN BOOLEAN CFACK,
     IN BOOLEAN InsTimestamp,
@@ -4539,13 +4539,13 @@ VOID RTMPWriteTxWI(
 
 VOID RTMPWriteTxWI_Data(
     IN RTMP_ADAPTER *pAd,
-    INOUT TXWI_STRUC *pTxWI,
+    INOUT TXWI_STRUCT *pTxWI,
     IN TX_BLK *pTxBlk);
 
 
 VOID RTMPWriteTxWI_Cache(
     IN RTMP_ADAPTER *pAd,
-    INOUT TXWI_STRUC *pTxWI,
+    INOUT TXWI_STRUCT *pTxWI,
     IN TX_BLK *pTxBlk);
 
 VOID RTMPSuspendMsduTransmission(
@@ -5257,7 +5257,7 @@ BOOLEAN RTMPRcvFrameDLSCheck(
     IN RTMP_ADAPTER *pAd,
     IN PHEADER_802_11 pHeader,
     IN ULONG Len,
-    IN RXD_STRUC *pRxD);
+    IN RXD_STRUCT *pRxD);
 
 INT	RTMPCheckDLSFrame(
     IN RTMP_ADAPTER *pAd,
@@ -7153,7 +7153,7 @@ VOID CmmRxRalinkFrameIndicate(
 VOID Update_Rssi_Sample(
     IN RTMP_ADAPTER *pAd,
     IN RSSI_SAMPLE *pRssi,
-    IN RXWI_STRUC *pRxWI);
+    IN RXWI_STRUCT *pRxWI);
 
 PNDIS_PACKET GetPacketFromRxRing(
     IN RTMP_ADAPTER *pAd,
@@ -7513,7 +7513,7 @@ void append_pkt(
 
 VOID RTUSBMlmeHardTransmit(
     IN RTMP_ADAPTER *pAd,
-    IN MGMT_STRUC *pMgmt);
+    IN MGMT_STRUCT *pMgmt);
 
 INT MlmeThread(ULONG Context);
 
@@ -7627,8 +7627,8 @@ VOID RT28xxUsbAsicWOWDisable(
 NDIS_STATUS RTMPCheckRxError(
     IN RTMP_ADAPTER *pAd,
     IN PHEADER_802_11 pHeader,
-    IN RXWI_STRUC *pRxWI,
-    IN RXINFO_STRUC *pRxInfo);
+    IN RXWI_STRUCT *pRxWI,
+    IN RXINFO_STRUCT *pRxInfo);
 
 
 /*////////////////////////////////////*/
@@ -8187,10 +8187,10 @@ MAC_TABLE_ENTRY *InsertMacRepeaterEntry(
     IN  UCHAR			IfIdx);
 #endif /* MAC_REPEATER_SUPPORT */
 
-VOID dumpTxWI(RTMP_ADAPTER *pAd, TXWI_STRUC *pTxWI);
-VOID dump_rxwi(RTMP_ADAPTER *pAd, RXWI_STRUC *pRxWI);
-VOID dump_txinfo(RTMP_ADAPTER *pAd, TXINFO_STRUC *pTxInfo);
-VOID dump_rxinfo(RTMP_ADAPTER *pAd, RXINFO_STRUC *pRxInfo);
+VOID dumpTxWI(RTMP_ADAPTER *pAd, TXWI_STRUCT *pTxWI);
+VOID dump_rxwi(RTMP_ADAPTER *pAd, RXWI_STRUCT *pRxWI);
+VOID dump_txinfo(RTMP_ADAPTER *pAd, TXINFO_STRUCT *pTxInfo);
+VOID dump_rxinfo(RTMP_ADAPTER *pAd, RXINFO_STRUCT *pRxInfo);
 VOID dumpRxFCEInfo(RTMP_ADAPTER *pAd, RXFCE_INFO *pRxFceInfo);
 
 

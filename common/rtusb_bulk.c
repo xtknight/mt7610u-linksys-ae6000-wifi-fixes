@@ -268,8 +268,8 @@ VOID	RTUSBBulkOutDataPacket(
     PHT_TX_CONTEXT	pHTTXContext;
     PURB			pUrb;
     int				ret = 0;
-    TXINFO_STRUC *pTxInfo, *pLastTxInfo = NULL;
-    TXWI_STRUC *pTxWI;
+    TXINFO_STRUCT *pTxInfo, *pLastTxInfo = NULL;
+    TXWI_STRUCT *pTxWI;
     ULONG			TmpBulkEndPos, ThisBulkSize;
     unsigned long	IrqFlags = 0, IrqFlags2 = 0;
     PUCHAR			pWirelessPkt, pAppendant;
@@ -365,8 +365,8 @@ VOID	RTUSBBulkOutDataPacket(
 
     do
     {
-        pTxInfo = (TXINFO_STRUC *)&pWirelessPkt[TmpBulkEndPos];
-        pTxWI = (TXWI_STRUC *)&pWirelessPkt[TmpBulkEndPos + TXINFO_SIZE];
+        pTxInfo = (TXINFO_STRUCT *)&pWirelessPkt[TmpBulkEndPos];
+        pTxWI = (TXWI_STRUCT *)&pWirelessPkt[TmpBulkEndPos + TXINFO_SIZE];
 
         if(pAd->bForcePrintTX == TRUE)
             DBGPRINT(RT_DEBUG_TRACE, ("RTUSBBulkOutDataPacket AMPDU = %d.\n",   pTxWI->TxWIAMPDU));

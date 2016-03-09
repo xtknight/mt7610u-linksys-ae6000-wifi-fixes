@@ -308,7 +308,7 @@ typedef enum
 } RX_CHAIN_IDX;
 
 #ifdef RT_BIG_ENDIAN
-typedef union _BBP_R47_STRUC
+typedef union _BBP_R47_STRUCT
 {
     struct
     {
@@ -320,9 +320,9 @@ typedef union _BBP_R47_STRUC
     } field;
 
     UCHAR		byte;
-} BBP_R47_STRUC, *PBBP_R47_STRUC;
+} BBP_R47_STRUCT, *PBBP_R47_STRUCT;
 #else
-typedef union _BBP_R47_STRUC
+typedef union _BBP_R47_STRUCT
 {
     struct
     {
@@ -334,14 +334,14 @@ typedef union _BBP_R47_STRUC
     } field;
 
     UCHAR		byte;
-} BBP_R47_STRUC, *PBBP_R47_STRUC;
+} BBP_R47_STRUCT, *PBBP_R47_STRUCT;
 #endif
 
 /* */
 /* BBP R49 TSSI (Transmit Signal Strength Indicator) */
 /* */
 #ifdef RT_BIG_ENDIAN
-typedef union _BBP_R49_STRUC
+typedef union _BBP_R49_STRUCT
 {
     struct
     {
@@ -352,9 +352,9 @@ typedef union _BBP_R49_STRUC
     } field;
 
     UCHAR		byte;
-} BBP_R49_STRUC, *PBBP_R49_STRUC;
+} BBP_R49_STRUCT, *PBBP_R49_STRUCT;
 #else
-typedef union _BBP_R49_STRUC
+typedef union _BBP_R49_STRUCT
 {
     struct
     {
@@ -365,14 +365,14 @@ typedef union _BBP_R49_STRUC
     } field;
 
     UCHAR		byte;
-} BBP_R49_STRUC, *PBBP_R49_STRUC;
+} BBP_R49_STRUCT, *PBBP_R49_STRUCT;
 #endif
 
 /* */
 /* BBP R105 (FEQ control, MLD control and SIG remodulation) */
 /* */
 #ifdef RT_BIG_ENDIAN
-typedef union _BBP_R105_STRUC
+typedef union _BBP_R105_STRUCT
 {
     struct
     {
@@ -384,9 +384,9 @@ typedef union _BBP_R105_STRUC
     } field;
 
     UCHAR		byte;
-} BBP_R105_STRUC, *PBBP_R105_STRUC;
+} BBP_R105_STRUCT, *PBBP_R105_STRUCT;
 #else
-typedef union _BBP_R105_STRUC
+typedef union _BBP_R105_STRUCT
 {
     struct
     {
@@ -398,14 +398,14 @@ typedef union _BBP_R105_STRUC
     } field;
 
     UCHAR		byte;
-} BBP_R105_STRUC, *PBBP_R105_STRUC;
+} BBP_R105_STRUCT, *PBBP_R105_STRUCT;
 #endif
 
 /* */
 /* BBP R106 (GI remover) */
 /* */
 #ifdef RT_BIG_ENDIAN
-typedef union _BBP_R106_STRUC
+typedef union _BBP_R106_STRUCT
 {
     struct
     {
@@ -415,9 +415,9 @@ typedef union _BBP_R106_STRUC
     } field;
 
     UCHAR		byte;
-} BBP_R106_STRUC, *PBBP_R106_STRUC;
+} BBP_R106_STRUCT, *PBBP_R106_STRUCT;
 #else
-typedef union _BBP_R106_STRUC
+typedef union _BBP_R106_STRUCT
 {
     struct
     {
@@ -427,14 +427,14 @@ typedef union _BBP_R106_STRUC
     } field;
 
     UCHAR		byte;
-} BBP_R106_STRUC, *PBBP_R106_STRUC;
+} BBP_R106_STRUCT, *PBBP_R106_STRUCT;
 #endif
 
 /* */
 /* BBP R109 (Tx power control in 0.1dB step) */
 /* */
 #ifdef RT_BIG_ENDIAN
-typedef union _BBP_R109_STRUC
+typedef union _BBP_R109_STRUCT
 {
     struct
     {
@@ -443,9 +443,9 @@ typedef union _BBP_R109_STRUC
     } field;
 
     UCHAR		byte;
-} BBP_R109_STRUC, *PBBP_R109_STRUC;
+} BBP_R109_STRUCT, *PBBP_R109_STRUCT;
 #else
-typedef union _BBP_R109_STRUC
+typedef union _BBP_R109_STRUCT
 {
     struct
     {
@@ -454,14 +454,14 @@ typedef union _BBP_R109_STRUC
     } field;
 
     UCHAR		byte;
-} BBP_R109_STRUC, *PBBP_R109_STRUC;
+} BBP_R109_STRUCT, *PBBP_R109_STRUCT;
 #endif
 
 /* */
 /* BBP R110 (Tx power control in 0.1dB step) */
 /* */
 #ifdef RT_BIG_ENDIAN
-typedef union _BBP_R110_STRUC
+typedef union _BBP_R110_STRUCT
 {
     struct
     {
@@ -470,9 +470,9 @@ typedef union _BBP_R110_STRUC
     } field;
 
     UCHAR		byte;
-} BBP_R110_STRUC, *PBBP_R110_STRUC;
+} BBP_R110_STRUCT, *PBBP_R110_STRUCT;
 #else
-typedef union _BBP_R110_STRUC
+typedef union _BBP_R110_STRUCT
 {
     struct
     {
@@ -481,14 +481,14 @@ typedef union _BBP_R110_STRUC
     } field;
 
     UCHAR		byte;
-} BBP_R110_STRUC, *PBBP_R110_STRUC;
+} BBP_R110_STRUCT, *PBBP_R110_STRUCT;
 #endif
 
 /* */
 /* BBP R179 (Test config #1) */
 /* */
 #ifdef RT_BIG_ENDIAN
-typedef union _BBP_R179_STRUC
+typedef union _BBP_R179_STRUCT
 {
     struct
     {
@@ -496,9 +496,9 @@ typedef union _BBP_R179_STRUC
     } field;
 
     UCHAR		byte;
-} BBP_R179_STRUC, *PBBP_R179_STRUC;
+} BBP_R179_STRUCT, *PBBP_R179_STRUCT;
 #else
-typedef union _BBP_R179_STRUC
+typedef union _BBP_R179_STRUCT
 {
     struct
     {
@@ -506,14 +506,14 @@ typedef union _BBP_R179_STRUC
     } field;
 
     UCHAR		byte;
-} BBP_R179_STRUC, *PBBP_R179_STRUC;
+} BBP_R179_STRUCT, *PBBP_R179_STRUCT;
 #endif /* RT_BIG_ENDIAN */
 
 /* */
 /* BBP R180 (Test config #2) */
 /* */
 #ifdef RT_BIG_ENDIAN
-typedef union _BBP_R180_STRUC
+typedef union _BBP_R180_STRUCT
 {
     struct
     {
@@ -521,9 +521,9 @@ typedef union _BBP_R180_STRUC
     } field;
 
     UCHAR		byte;
-} BBP_R180_STRUC, *PBBP_R180_STRUC;
+} BBP_R180_STRUCT, *PBBP_R180_STRUCT;
 #else
-typedef union _BBP_R180_STRUC
+typedef union _BBP_R180_STRUCT
 {
     struct
     {
@@ -531,14 +531,14 @@ typedef union _BBP_R180_STRUC
     } field;
 
     UCHAR		byte;
-} BBP_R180_STRUC, *PBBP_R180_STRUC;
+} BBP_R180_STRUCT, *PBBP_R180_STRUCT;
 #endif /* RT_BIG_ENDIAN */
 
 /* */
 /* BBP R182 (Test data port) */
 /* */
 #ifdef RT_BIG_ENDIAN
-typedef union _BBP_R182_STRUC
+typedef union _BBP_R182_STRUCT
 {
     struct
     {
@@ -546,9 +546,9 @@ typedef union _BBP_R182_STRUC
     } field;
 
     UCHAR		byte;
-} BBP_R182_STRUC, *PBBP_R182_STRUC;
+} BBP_R182_STRUCT, *PBBP_R182_STRUCT;
 #else
-typedef union _BBP_R182_STRUC
+typedef union _BBP_R182_STRUCT
 {
     struct
     {
@@ -556,7 +556,7 @@ typedef union _BBP_R182_STRUC
     } field;
 
     UCHAR		byte;
-} BBP_R182_STRUC, *PBBP_R182_STRUC;
+} BBP_R182_STRUCT, *PBBP_R182_STRUCT;
 #endif /* RT_BIG_ENDIAN */
 
 #if defined(RT5370) || defined(RT5390) || defined(RT3290) //for hw antenna diversity (PPAD)

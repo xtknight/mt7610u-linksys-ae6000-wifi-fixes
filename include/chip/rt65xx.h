@@ -49,7 +49,7 @@ struct _RTMP_ADAPTER;
 #define COEXCFG3 			0x4C
 
 #ifdef RT_BIG_ENDIAN
-typedef union _COEXCFG0_STRUC
+typedef union _COEXCFG0_STRUCT
 {
     struct
     {
@@ -65,9 +65,9 @@ typedef union _COEXCFG0_STRUC
         UINT32		COEX_ENT:1;
     } field;
     UINT32 word;
-} COEXCFG0_STRUC, *PCOEXCFG0_STRUC;
+} COEXCFG0_STRUCT, *PCOEXCFG0_STRUCT;
 #else
-typedef union _COEXCFG0_STRUC
+typedef union _COEXCFG0_STRUCT
 {
     struct
     {
@@ -84,7 +84,7 @@ typedef union _COEXCFG0_STRUC
         UINT32       	COEX_CFG1:8;
     } field;
     UINT32 word;
-} COEXCFG0_STRUC, *PCOEXCFG0_STRUC;
+} COEXCFG0_STRUCT, *PCOEXCFG0_STRUCT;
 #endif
 
 #ifdef RTMP_USB_SUPPORT
@@ -97,7 +97,7 @@ VOID RT65xxUsbAsicRadioOff(struct _RTMP_ADAPTER *pAd, UCHAR Stage);
 */
 
 #ifdef RT_BIG_ENDIAN
-typedef union _EEPROM_NIC_CINFIG0_STRUC
+typedef union _EEPROM_NIC_CINFIG0_STRUCT
 {
     struct
     {
@@ -107,9 +107,9 @@ typedef union _EEPROM_NIC_CINFIG0_STRUC
         USHORT RxPath:4;			/* 1: 1R, 2: 2R, 3: 3R */
     } field;
     USHORT word;
-} EEPROM_NIC_CONFIG0_STRUC, *PEEPROM_NIC_CONFIG0_STRUC;
+} EEPROM_NIC_CONFIG0_STRUCT, *PEEPROM_NIC_CONFIG0_STRUCT;
 #else
-typedef union _EEPROM_NIC_CINFIG0_STRUC
+typedef union _EEPROM_NIC_CINFIG0_STRUCT
 {
     struct
     {
@@ -119,7 +119,7 @@ typedef union _EEPROM_NIC_CINFIG0_STRUC
         USHORT Rsv:6;
     } field;
     USHORT word;
-} EEPROM_NIC_CONFIG0_STRUC, *PEEPROM_NIC_CONFIG0_STRUC;
+} EEPROM_NIC_CONFIG0_STRUCT, *PEEPROM_NIC_CONFIG0_STRUCT;
 #endif
 
 VOID RT65xxDisableTxRx(struct _RTMP_ADAPTER *pAd, UCHAR Level);

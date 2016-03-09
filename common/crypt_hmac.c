@@ -56,14 +56,14 @@ VOID RT_HMAC_SHA1(
     OUT UINT8 MAC[],
     IN  UINT MACLen)
 {
-    SHA1_CTX_STRUC sha_ctx1;
-    SHA1_CTX_STRUC sha_ctx2;
+    SHA1_CTX_STRUCT sha_ctx1;
+    SHA1_CTX_STRUCT sha_ctx2;
     UINT8 K0[SHA1_BLOCK_SIZE];
     UINT8 Digest[SHA1_DIGEST_SIZE];
     UINT index;
 
-    NdisZeroMemory(&sha_ctx1, sizeof(SHA1_CTX_STRUC));
-    NdisZeroMemory(&sha_ctx2, sizeof(SHA1_CTX_STRUC));
+    NdisZeroMemory(&sha_ctx1, sizeof(SHA1_CTX_STRUCT));
+    NdisZeroMemory(&sha_ctx2, sizeof(SHA1_CTX_STRUCT));
     /*
      * If the length of K = B(Block size): K0 = K.
      * If the length of K > B: hash K to obtain an L byte string,
@@ -80,7 +80,7 @@ VOID RT_HMAC_SHA1(
     /* End of if */
 
     /* Exclusive-Or K0 with ipad */
-    /* ipad: Inner pad; the byte x¡¦36¡¦ repeated B times. */
+    /* ipad: Inner pad; the byte xï¿½ï¿½36ï¿½ï¿½ repeated B times. */
     for(index = 0; index < SHA1_BLOCK_SIZE; index++)
         K0[index] ^= 0x36;
 
@@ -94,7 +94,7 @@ VOID RT_HMAC_SHA1(
     RT_SHA1_End(&sha_ctx1, Digest);
 
     /* Exclusive-Or K0 with opad and remove ipad */
-    /* opad: Outer pad; the byte x¡¦5c¡¦ repeated B times. */
+    /* opad: Outer pad; the byte xï¿½ï¿½5cï¿½ï¿½ repeated B times. */
     for(index = 0; index < SHA1_BLOCK_SIZE; index++)
         K0[index] ^= 0x36^0x5c;
 
@@ -143,14 +143,14 @@ VOID RT_HMAC_SHA256(
     OUT UINT8 MAC[],
     IN  UINT MACLen)
 {
-    SHA256_CTX_STRUC sha_ctx1;
-    SHA256_CTX_STRUC sha_ctx2;
+    SHA256_CTX_STRUCT sha_ctx1;
+    SHA256_CTX_STRUCT sha_ctx2;
     UINT8 K0[SHA256_BLOCK_SIZE];
     UINT8 Digest[SHA256_DIGEST_SIZE];
     UINT index;
 
-    NdisZeroMemory(&sha_ctx1, sizeof(SHA256_CTX_STRUC));
-    NdisZeroMemory(&sha_ctx2, sizeof(SHA256_CTX_STRUC));
+    NdisZeroMemory(&sha_ctx1, sizeof(SHA256_CTX_STRUCT));
+    NdisZeroMemory(&sha_ctx2, sizeof(SHA256_CTX_STRUCT));
     /*
      * If the length of K = B(Block size): K0 = K.
      * If the length of K > B: hash K to obtain an L byte string,
@@ -169,7 +169,7 @@ VOID RT_HMAC_SHA256(
     }
 
     /* Exclusive-Or K0 with ipad */
-    /* ipad: Inner pad; the byte x¡¦36¡¦ repeated B times. */
+    /* ipad: Inner pad; the byte xï¿½ï¿½36ï¿½ï¿½ repeated B times. */
     for(index = 0; index < SHA256_BLOCK_SIZE; index++)
         K0[index] ^= 0x36;
 
@@ -183,7 +183,7 @@ VOID RT_HMAC_SHA256(
     RT_SHA256_End(&sha_ctx1, Digest);
 
     /* Exclusive-Or K0 with opad and remove ipad */
-    /* opad: Outer pad; the byte x¡¦5c¡¦ repeated B times. */
+    /* opad: Outer pad; the byte xï¿½ï¿½5cï¿½ï¿½ repeated B times. */
     for(index = 0; index < SHA256_BLOCK_SIZE; index++)
         K0[index] ^= 0x36^0x5c;
 
@@ -233,14 +233,14 @@ VOID RT_HMAC_MD5(
     OUT UINT8 MAC[],
     IN  UINT MACLen)
 {
-    MD5_CTX_STRUC md5_ctx1;
-    MD5_CTX_STRUC md5_ctx2;
+    MD5_CTX_STRUCT md5_ctx1;
+    MD5_CTX_STRUCT md5_ctx2;
     UINT8 K0[MD5_BLOCK_SIZE];
     UINT8 Digest[MD5_DIGEST_SIZE];
     UINT index;
 
-    NdisZeroMemory(&md5_ctx1, sizeof(MD5_CTX_STRUC));
-    NdisZeroMemory(&md5_ctx2, sizeof(MD5_CTX_STRUC));
+    NdisZeroMemory(&md5_ctx1, sizeof(MD5_CTX_STRUCT));
+    NdisZeroMemory(&md5_ctx2, sizeof(MD5_CTX_STRUCT));
     /*
      * If the length of K = B(Block size): K0 = K.
      * If the length of K > B: hash K to obtain an L byte string,
@@ -259,7 +259,7 @@ VOID RT_HMAC_MD5(
     }
 
     /* Exclusive-Or K0 with ipad */
-    /* ipad: Inner pad; the byte x¡¦36¡¦ repeated B times. */
+    /* ipad: Inner pad; the byte xï¿½ï¿½36ï¿½ï¿½ repeated B times. */
     for(index = 0; index < MD5_BLOCK_SIZE; index++)
         K0[index] ^= 0x36;
 
@@ -273,7 +273,7 @@ VOID RT_HMAC_MD5(
     RT_MD5_End(&md5_ctx1, Digest);
 
     /* Exclusive-Or K0 with opad and remove ipad */
-    /* opad: Outer pad; the byte x¡¦5c¡¦ repeated B times. */
+    /* opad: Outer pad; the byte xï¿½ï¿½5cï¿½ï¿½ repeated B times. */
     for(index = 0; index < MD5_BLOCK_SIZE; index++)
         K0[index] ^= 0x36^0x5c;
 

@@ -651,7 +651,7 @@ static VOID Default_ChipAGCInit(RTMP_ADAPTER *pAd, UCHAR BandWidth)
 
 static VOID AsicAntennaDefaultReset(
     IN PRTMP_ADAPTER		pAd,
-    IN EEPROM_ANTENNA_STRUC	*pAntenna)
+    IN EEPROM_ANTENNA_STRUCT	*pAntenna)
 {
     {
 

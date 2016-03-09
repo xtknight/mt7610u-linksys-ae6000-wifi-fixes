@@ -71,10 +71,10 @@ static const UINT32 MD5_DefaultHashValue[4] =
 /*
 ========================================================================
 Routine Description:
-    Initial Md5_CTX_STRUC
+    Initial Md5_CTX_STRUCT
 
 Arguments:
-    pMD5_CTX        Pointer to Md5_CTX_STRUC
+    pMD5_CTX        Pointer to Md5_CTX_STRUCT
 
 Return Value:
     None
@@ -84,7 +84,7 @@ Note:
 ========================================================================
 */
 VOID RT_MD5_Init(
-    IN  MD5_CTX_STRUC *pMD5_CTX)
+    IN  MD5_CTX_STRUCT *pMD5_CTX)
 {
     NdisMoveMemory(pMD5_CTX->HashValue, MD5_DefaultHashValue,
                    sizeof(MD5_DefaultHashValue));
@@ -100,7 +100,7 @@ Routine Description:
     MD5 computation for one block (512 bits)
 
 Arguments:
-    pMD5_CTX        Pointer to Md5_CTX_STRUC
+    pMD5_CTX        Pointer to Md5_CTX_STRUCT
 
 Return Value:
     None
@@ -110,7 +110,7 @@ Note:
 ========================================================================
 */
 VOID RT_MD5_Hash(
-    IN  MD5_CTX_STRUC *pMD5_CTX)
+    IN  MD5_CTX_STRUCT *pMD5_CTX)
 {
     UINT32 X_i;
     UINT32 X[16];
@@ -237,7 +237,7 @@ Routine Description:
 will be called.
 
 Arguments:
-    pMD5_CTX        Pointer to MD5_CTX_STRUC
+    pMD5_CTX        Pointer to MD5_CTX_STRUCT
     message         Message context
     messageLen      The length of message in bytes
 
@@ -249,7 +249,7 @@ Note:
 ========================================================================
 */
 VOID RT_MD5_Append(
-    IN  MD5_CTX_STRUC *pMD5_CTX,
+    IN  MD5_CTX_STRUCT *pMD5_CTX,
     IN  const UINT8 Message[],
     IN  UINT MessageLen)
 {
@@ -289,7 +289,7 @@ Routine Description:
     3. Transform the Hash Value to digest message
 
 Arguments:
-    pMD5_CTX        Pointer to MD5_CTX_STRUC
+    pMD5_CTX        Pointer to MD5_CTX_STRUCT
 
 Return Value:
     digestMessage   Digest message
@@ -299,7 +299,7 @@ Note:
 ========================================================================
 */
 VOID RT_MD5_End(
-    IN  MD5_CTX_STRUC *pMD5_CTX,
+    IN  MD5_CTX_STRUCT *pMD5_CTX,
     OUT UINT8 DigestMessage[])
 {
     UINT index;
@@ -350,9 +350,9 @@ VOID RT_MD5(
     IN  UINT MessageLen,
     OUT UINT8 DigestMessage[])
 {
-    MD5_CTX_STRUC md5_ctx;
+    MD5_CTX_STRUCT md5_ctx;
 
-    NdisZeroMemory(&md5_ctx, sizeof(MD5_CTX_STRUC));
+    NdisZeroMemory(&md5_ctx, sizeof(MD5_CTX_STRUCT));
     RT_MD5_Init(&md5_ctx);
     RT_MD5_Append(&md5_ctx, Message, MessageLen);
     RT_MD5_End(&md5_ctx, DigestMessage);

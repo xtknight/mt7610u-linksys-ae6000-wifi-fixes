@@ -1166,7 +1166,7 @@ BOOLEAN RTMPRcvFrameDLSCheck(
     IN RTMP_ADAPTER *pAd,
     IN PHEADER_802_11 pHeader,
     IN ULONG Len,
-    IN RXD_STRUC *pRxD)
+    IN RXD_STRUCT *pRxD)
 {
     ULONG i;
     BOOLEAN bFindEntry = FALSE;

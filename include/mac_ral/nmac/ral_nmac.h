@@ -523,7 +523,7 @@ typedef struct GNU_PACKED _HW_RATE_CTRL_STRUCT_
 
 #define WLAN_FUN_CTRL		0x80
 #ifdef RT_BIG_ENDIAN
-typedef union _WLAN_FUN_CTRL_STRUC
+typedef union _WLAN_FUN_CTRL_STRUCT
 {
     struct
     {
@@ -540,9 +540,9 @@ typedef union _WLAN_FUN_CTRL_STRUC
         UINT32 WLAN_EN:1;
     } field;
     UINT32 word;
-} WLAN_FUN_CTRL_STRUC, *PWLAN_FUN_CTRL_STRUC;
+} WLAN_FUN_CTRL_STRUCT, *PWLAN_FUN_CTRL_STRUCT;
 #else
-typedef union _WLAN_FUN_CTRL_STRUC
+typedef union _WLAN_FUN_CTRL_STRUCT
 {
     struct
     {
@@ -559,13 +559,13 @@ typedef union _WLAN_FUN_CTRL_STRUC
         UINT32 GPIO0_OUT_OE_N:8;
     } field;
     UINT32 word;
-} WLAN_FUN_CTRL_STRUC, *PWLAN_FUN_CTRL_STRUC;
+} WLAN_FUN_CTRL_STRUCT, *PWLAN_FUN_CTRL_STRUCT;
 #endif
 
 
 #define WLAN_FUN_INFO		0x84
 #ifdef RT_BIG_ENDIAN
-typedef union _WLAN_FUN_INFO_STRUC
+typedef union _WLAN_FUN_INFO_STRUCT
 {
     struct
     {
@@ -574,9 +574,9 @@ typedef union _WLAN_FUN_INFO_STRUC
         UINT32		COEX_MODE:5; /* WLAN function enable */
     } field;
     UINT32 word;
-} WLAN_FUN_INFO_STRUC, *PWLAN_FUN_INFO_STRUC;
+} WLAN_FUN_INFO_STRUCT, *PWLAN_FUN_INFO_STRUCT;
 #else
-typedef union _WLAN_FUN_INFO_STRUC
+typedef union _WLAN_FUN_INFO_STRUCT
 {
     struct
     {
@@ -585,13 +585,13 @@ typedef union _WLAN_FUN_INFO_STRUC
         UINT32		BT_EEP_BUSY:1; /* Read-only for WLAN Driver */
     } field;
     UINT32 word;
-} WLAN_FUN_INFO_STRUC, *PWLAN_FUN_INFO_STRUC;
+} WLAN_FUN_INFO_STRUCT, *PWLAN_FUN_INFO_STRUCT;
 #endif
 
 
 #define BT_FUN_CTRL		0xC0
 #ifdef RT_BIG_ENDIAN
-typedef union _BT_FUN_CTRL_STRUC
+typedef union _BT_FUN_CTRL_STRUCT
 {
     struct
     {
@@ -608,9 +608,9 @@ typedef union _BT_FUN_CTRL_STRUC
         UINT32		BT_EN:1;
     } field;
     UINT32 word;
-} BT_FUN_CTRL_STRUC, *PBT_FUN_CTRL_STRUC;
+} BT_FUN_CTRL_STRUCT, *PBT_FUN_CTRL_STRUCT;
 #else
-typedef union _BT_FUN_CTRL_STRUC
+typedef union _BT_FUN_CTRL_STRUCT
 {
     struct
     {
@@ -627,13 +627,13 @@ typedef union _BT_FUN_CTRL_STRUC
         UINT32		GPIO1_OUT_OE_N:8;
     } field;
     UINT32 word;
-} BT_FUN_CTRL_STRUC, *PBT_FUN_CTRL_STRUC;
+} BT_FUN_CTRL_STRUCT, *PBT_FUN_CTRL_STRUCT;
 #endif
 
 
 #define BT_FUN_INFO		0xC4
 #ifdef RT_BIG_ENDIAN
-typedef union _BT_FUN_INFO_STRUC
+typedef union _BT_FUN_INFO_STRUCT
 {
     struct
     {
@@ -644,9 +644,9 @@ typedef union _BT_FUN_INFO_STRUC
         UINT32		AFH_START_CH:8;
     } field;
     UINT32 word;
-} BT_FUN_INFO_STRUC, *PBT_FUN_INFO_STRUC;
+} BT_FUN_INFO_STRUCT, *PBT_FUN_INFO_STRUCT;
 #else
-typedef	union _BT_FUN_INFO_STRUC
+typedef	union _BT_FUN_INFO_STRUCT
 {
     struct
     {
@@ -657,7 +657,7 @@ typedef	union _BT_FUN_INFO_STRUC
         UINT32		WLAN_EEP_BUSY:1;
     } field;
     UINT32 word;
-} BT_FUN_INFO_STRUC, *PBT_FUN_INFO_STRUC;
+} BT_FUN_INFO_STRUCT, *PBT_FUN_INFO_STRUCT;
 #endif
 
 // TODO: shiang, this data structure is not defined for register. may can move to other place
@@ -677,7 +677,7 @@ typedef struct _WLAN_BT_COEX_SETTING
 
 #define TSO_CTRL	0x0250
 #ifdef RT_BIG_ENDIAN
-typedef union _TSO_CTRL_STRUC
+typedef union _TSO_CTRL_STRUCT
 {
     struct
     {
@@ -691,9 +691,9 @@ typedef union _TSO_CTRL_STRUC
         UINT32 TX_L2_FIX_LEN:4;
     } field;
     UINT32 word;
-} TSO_CTRL_STRUC;
+} TSO_CTRL_STRUCT;
 #else
-typedef union _TSO_CTRL_STRUC
+typedef union _TSO_CTRL_STRUCT
 {
     struct
     {
@@ -707,7 +707,7 @@ typedef union _TSO_CTRL_STRUC
         UINT32 rsv:13;
     } field;
     UINT32 word;
-} TSO_CTRL_STRUC;
+} TSO_CTRL_STRUCT;
 #endif /* RT_BIG_ENDIAN */
 
 
@@ -731,7 +731,7 @@ typedef union _TSO_CTRL_STRUC
 #define WIFI_INFO_SIZE		0
 #endif
 #ifdef RT_BIG_ENDIAN
-typedef union GNU_PACKED _WIFI_INFO_STRUC
+typedef union GNU_PACKED _WIFI_INFO_STRUCT
 {
     struct
     {
@@ -749,9 +749,9 @@ typedef union GNU_PACKED _WIFI_INFO_STRUC
         UINT32 Seq_Num:12;
     } field;
     UINT32 word;
-} WIFI_INFO_STRUC, *PWIFI_INFO_STRUC;
+} WIFI_INFO_STRUCT, *PWIFI_INFO_STRUCT;
 #else
-typedef union GNU_PACKED _WIFI_INFO_STRUC
+typedef union GNU_PACKED _WIFI_INFO_STRUCT
 {
     struct
     {
@@ -769,7 +769,7 @@ typedef union GNU_PACKED _WIFI_INFO_STRUC
         UINT32 More_Data:1;
     } field;
     UINT32 word;
-} WIFI_INFO_STRUC, *PWIFI_INFO_STRUC;
+} WIFI_INFO_STRUCT, *PWIFI_INFO_STRUCT;
 #endif /* RT_BIG_ENDIAN */
 
 /*
@@ -787,7 +787,7 @@ typedef union GNU_PACKED _WIFI_INFO_STRUC
 #define HT_MAC_BSSID_DW1		0x02B0
 
 #ifdef RT_BIG_ENDIAN
-typedef union GNU_PACKED _HDR_TRANS_CTRL_STRUC
+typedef union GNU_PACKED _HDR_TRANS_CTRL_STRUCT
 {
     struct
     {
@@ -796,9 +796,9 @@ typedef union GNU_PACKED _HDR_TRANS_CTRL_STRUC
         UINT32 Tx_En:1;
     } field;
     UINT32 word;
-} HDR_TRANS_CTRL_STRUC, *PHDR_TRANS_CTRL_STRUC;
+} HDR_TRANS_CTRL_STRUCT, *PHDR_TRANS_CTRL_STRUCT;
 #else
-typedef union GNU_PACKED _HDR_TRANS_CTRL_STRUC
+typedef union GNU_PACKED _HDR_TRANS_CTRL_STRUCT
 {
     struct
     {
@@ -807,7 +807,7 @@ typedef union GNU_PACKED _HDR_TRANS_CTRL_STRUC
         UINT32 Rsv:30;
     } field;
     UINT32 word;
-} HDR_TRANS_CTRL_STRUC, *PHDR_TRANS_CTRL_STRUC;
+} HDR_TRANS_CTRL_STRUCT, *PHDR_TRANS_CTRL_STRUCT;
 #endif /* RT_BIG_ENDIAN */
 
 /* RX header translation enable by WCID */
@@ -819,7 +819,7 @@ typedef union GNU_PACKED _HDR_TRANS_CTRL_STRUC
 #define HT_RX_WCID_SIZE		(HT_RX_WCID_OFFSET * 8)	/*	256 WCIDs */
 #endif /* defined(RT63xx) */
 #ifdef RT_BIG_ENDIAN
-typedef union GNU_PACKED _HT_RX_WCID_EN_STRUC
+typedef union GNU_PACKED _HT_RX_WCID_EN_STRUCT
 {
     struct
     {
@@ -857,9 +857,9 @@ typedef union GNU_PACKED _HT_RX_WCID_EN_STRUC
         UINT32 RX_WCID0_TRAN_EN:1;
     } field;
     UINT32 word;
-} HT_RX_WCID_EN_STRUC, *PHT_RX_WCID_EN_STRUC;
+} HT_RX_WCID_EN_STRUCT, *PHT_RX_WCID_EN_STRUCT;
 #else
-typedef union GNU_PACKED _HT_RX_WCID_EN_STRUC
+typedef union GNU_PACKED _HT_RX_WCID_EN_STRUCT
 {
     struct
     {
@@ -897,7 +897,7 @@ typedef union GNU_PACKED _HT_RX_WCID_EN_STRUC
         UINT32 RX_WCID31_TRAN_EN:1;
     } field;
     UINT32 word;
-} HT_RX_WCID_EN_STRUC, *PHT_RX_WCID_EN_STRUC;
+} HT_RX_WCID_EN_STRUCT, *PHT_RX_WCID_EN_STRUCT;
 #endif /* RT_BIG_ENDIAN */
 
 /* RX header translation - black list */
@@ -905,7 +905,7 @@ typedef union GNU_PACKED _HT_RX_WCID_EN_STRUC
 #define HT_RX_BL_OFFSET		2
 #define HT_RX_BL_SIZE		8
 #ifdef RT_BIG_ENDIAN
-typedef union GNU_PACKED _HT_RX_BLACK_LIST_STRUC
+typedef union GNU_PACKED _HT_RX_BLACK_LIST_STRUCT
 {
     struct
     {
@@ -913,9 +913,9 @@ typedef union GNU_PACKED _HT_RX_BLACK_LIST_STRUC
         UINT32 BLACK_ETHER_TYPE0:16;
     } field;
     UINT32 word;
-} HT_RX_BLACK_LIST_STRUC, *PHT_RX_BLACK_LIST_STRUC;
+} HT_RX_BLACK_LIST_STRUCT, *PHT_RX_BLACK_LIST_STRUCT;
 #else
-typedef union GNU_PACKED _HT_RX_BLACK_LIST_STRUC
+typedef union GNU_PACKED _HT_RX_BLACK_LIST_STRUCT
 {
     struct
     {
@@ -923,7 +923,7 @@ typedef union GNU_PACKED _HT_RX_BLACK_LIST_STRUC
         UINT32 BLACK_ETHER_TYPE1:16;
     } field;
     UINT32 word;
-} HT_RX_BLACK_LIST_STRUC, *PHT_RX_BLACK_LIST_STRUC;
+} HT_RX_BLACK_LIST_STRUCT, *PHT_RX_BLACK_LIST_STRUCT;
 #endif /* RT_BIG_ENDIAN */
 
 /* RX VLAN Mapping (TCI) */
@@ -931,7 +931,7 @@ typedef union GNU_PACKED _HT_RX_BLACK_LIST_STRUC
 #define HT_BSS_VLAN_OFFSET	2
 #define HT_BSS_VLAN_SIZE	8
 #ifdef RT_BIG_ENDIAN
-typedef union GNU_PACKED _HT_BSS_VLAN_STRUC
+typedef union GNU_PACKED _HT_BSS_VLAN_STRUCT
 {
     struct
     {
@@ -943,9 +943,9 @@ typedef union GNU_PACKED _HT_BSS_VLAN_STRUC
         UINT32 TCI0_PCP:3;
     } field;
     UINT32 word;
-} HT_BSS_VLAN_STRUC, *PHT_BSS_VLAN_STRUC;
+} HT_BSS_VLAN_STRUCT, *PHT_BSS_VLAN_STRUCT;
 #else
-typedef union GNU_PACKED _HT_BSS_VLAN_STRUC
+typedef union GNU_PACKED _HT_BSS_VLAN_STRUCT
 {
     struct
     {
@@ -957,7 +957,7 @@ typedef union GNU_PACKED _HT_BSS_VLAN_STRUC
         UINT32 TCI1_VID:12;
     } field;
     UINT32 word;
-} HT_BSS_VLAN_STRUC, *PHT_BSS_VLAN_STRUC;
+} HT_BSS_VLAN_STRUCT, *PHT_BSS_VLAN_STRUCT;
 #endif /* RT_BIG_ENDIAN */
 
 
@@ -994,7 +994,7 @@ typedef union GNU_PACKED _HT_BSS_VLAN_STRUC
 
 #define RF_MISC	0x0518
 #ifdef RT_BIG_ENDIAN
-typedef union _RF_MISC_STRUC
+typedef union _RF_MISC_STRUCT
 {
     struct
     {
@@ -1004,9 +1004,9 @@ typedef union _RF_MISC_STRUC
         UINT32 ADDAC_LDO_ADC6_EN:1;
     } field;
     UINT32 word;
-} RF_MISC_STRUC, *PRF_MISC_STRUC;
+} RF_MISC_STRUCT, *PRF_MISC_STRUCT;
 #else
-typedef union _RF_MISC_STRUC
+typedef union _RF_MISC_STRUCT
 {
     struct
     {
@@ -1016,7 +1016,7 @@ typedef union _RF_MISC_STRUC
         UINT32 Rsv1:29;
     } field;
     UINT32 word;
-} RF_MISC_STRUC, *PRF_MISC_STRUC;
+} RF_MISC_STRUCT, *PRF_MISC_STRUCT;
 #endif
 
 VOID ral_wlan_chip_onoff(

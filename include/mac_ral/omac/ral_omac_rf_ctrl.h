@@ -60,7 +60,7 @@ typedef union _INTERNAL_1_STRUCT
     UINT32 word;
 } INTERNAL_1_STRUCT, *PINTERNAL_1_STRUCT;
 #else
-typedef union _TX_ATTENUATION_CTRL_STRUC
+typedef union _TX_ATTENUATION_CTRL_STRUCT
 {
     struct
     {

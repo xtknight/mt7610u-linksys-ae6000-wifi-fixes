@@ -28,12 +28,12 @@
 #include "rt_config.h"
 
 
-INT get_pkt_phymode_by_rxwi(RXWI_STRUC *rxwi)
+INT get_pkt_phymode_by_rxwi(RXWI_STRUCT *rxwi)
 {
     return rxwi->RXWI_O.phy_mode;
 }
 
-INT get_pkt_rssi_by_rxwi(RXWI_STRUC *rxwi, INT size, CHAR *rssi)
+INT get_pkt_rssi_by_rxwi(RXWI_STRUCT *rxwi, INT size, CHAR *rssi)
 {
     switch(size)
     {
@@ -53,7 +53,7 @@ INT get_pkt_rssi_by_rxwi(RXWI_STRUC *rxwi, INT size, CHAR *rssi)
 }
 
 
-INT get_pkt_snr_by_rxwi(RXWI_STRUC *rxwi, INT size, UCHAR *snr)
+INT get_pkt_snr_by_rxwi(RXWI_STRUCT *rxwi, INT size, UCHAR *snr)
 {
     switch(size)
     {

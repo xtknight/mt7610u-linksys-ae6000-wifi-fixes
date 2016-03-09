@@ -31,7 +31,7 @@
 
 #define USB_DMA_CFG 0x02a0
 #ifdef RT_BIG_ENDIAN
-typedef	union _USB_DMA_CFG_STRUC
+typedef	union _USB_DMA_CFG_STRUCT
 {
     struct
     {
@@ -49,9 +49,9 @@ typedef	union _USB_DMA_CFG_STRUC
         UINT32 RxBulkAggTOut:8;        /*Rx Bulk Aggregation TimeOut  in unit of 33ns */
     } field;
     UINT32 word;
-} USB_DMA_CFG_STRUC, *PUSB_DMA_CFG_STRUC;
+} USB_DMA_CFG_STRUCT, *PUSB_DMA_CFG_STRUCT;
 #else
-typedef	union _USB_DMA_CFG_STRUC
+typedef	union _USB_DMA_CFG_STRUCT
 {
     struct
     {
@@ -69,7 +69,7 @@ typedef	union _USB_DMA_CFG_STRUC
         UINT32 TxBusy:1;   	/*USB DMA TX FSM busy */
     } field;
     UINT32 word;
-} USB_DMA_CFG_STRUC, *PUSB_DMA_CFG_STRUC;
+} USB_DMA_CFG_STRUCT, *PUSB_DMA_CFG_STRUCT;
 #endif
 
 #endif /*__RAL_OMAC_USB_H__ */

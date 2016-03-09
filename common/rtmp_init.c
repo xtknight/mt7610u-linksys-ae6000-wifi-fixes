@@ -335,13 +335,13 @@ NDIS_STATUS	RTMPAllocAdapterBlock(
 VOID NICReadEEPROMParameters(RTMP_ADAPTER *pAd, PSTRING mac_addr)
 {
     USHORT i, value, value2;
-    EEPROM_TX_PWR_STRUC Power;
-    EEPROM_VERSION_STRUC Version;
-    EEPROM_ANTENNA_STRUC Antenna;
-    EEPROM_NIC_CONFIG2_STRUC NicConfig2;
+    EEPROM_TX_PWR_STRUCT Power;
+    EEPROM_VERSION_STRUCT Version;
+    EEPROM_ANTENNA_STRUCT Antenna;
+    EEPROM_NIC_CONFIG2_STRUCT NicConfig2;
     USHORT  Addr01,Addr23,Addr45 ;
-    MAC_DW0_STRUC csr2;
-    MAC_DW1_STRUC csr3;
+    MAC_DW0_STRUCT csr2;
+    MAC_DW1_STRUCT csr3;
 
 
     DBGPRINT(RT_DEBUG_TRACE, ("--> NICReadEEPROMParameters\n"));
@@ -502,7 +502,7 @@ VOID NICReadEEPROMParameters(RTMP_ADAPTER *pAd, PSTRING mac_addr)
 
     if(IS_MT76x0(pAd) || IS_MT76x2(pAd))
     {
-        EEPROM_NIC_CONFIG0_STRUC NicCfg0;
+        EEPROM_NIC_CONFIG0_STRUCT NicCfg0;
         UINT32 reg_val = 0;
 
         RT28xx_EEPROM_READ16(pAd, 0x24, value);
@@ -1119,7 +1119,7 @@ VOID	NICInitAsicFromEEPROM(
 #ifdef RALINK_ATE
     USHORT value;
 #endif /* RALINK_ATE */
-    EEPROM_NIC_CONFIG2_STRUC NicConfig2;
+    EEPROM_NIC_CONFIG2_STRUCT NicConfig2;
 
     DBGPRINT(RT_DEBUG_TRACE, ("--> NICInitAsicFromEEPROM\n"));
 
@@ -1496,7 +1496,7 @@ NDIS_STATUS	NICInitializeAsic(
     UINT32			MACValue = 0;
 #ifdef RTMP_MAC_USB
     UINT32			Counter = 0;
-    USB_DMA_CFG_STRUC UsbCfg;
+    USB_DMA_CFG_STRUCT UsbCfg;
 #endif /* RTMP_MAC_USB */
 
 #ifdef RLT_MAC
@@ -1777,7 +1777,7 @@ NDIS_STATUS	NICInitializeAsic(
 VOID NICUpdateFifoStaCounters(
     IN PRTMP_ADAPTER pAd)
 {
-    TX_STA_FIFO_STRUC	StaFifo;
+    TX_STA_FIFO_STRUCT	StaFifo;
     MAC_TABLE_ENTRY		*pEntry = NULL;
     UINT32				i = 0;
     UCHAR				pid = 0, wcid = 0;
@@ -2055,7 +2055,7 @@ BOOLEAN NicGetMacFifoTxCnt(
 {
     if(pEntry->Aid >= 1 && pEntry->Aid <= 8)
     {
-        WCID_TX_CNT_STRUC wcidTxCnt;
+        WCID_TX_CNT_STRUCT wcidTxCnt;
         UINT32 regAddr;
 
         regAddr = WCID_TX_CNT_0 + (pEntry->Aid - 1) * 4;
@@ -2083,7 +2083,7 @@ VOID AsicFifoExtEntryClean(
     IN RTMP_ADAPTER *pAd,
     IN MAC_TABLE_ENTRY *pEntry)
 {
-    WCID_TX_CNT_STRUC wcidTxCnt;
+    WCID_TX_CNT_STRUCT wcidTxCnt;
     UINT32 regAddr;
 
     if(pAd->chipCap.FlgHwFifoExtCap)
@@ -2118,8 +2118,8 @@ VOID AsicFifoExtEntryClean(
 */
 VOID NicGetTxRawCounters(
     IN RTMP_ADAPTER *pAd,
-    IN TX_STA_CNT0_STRUC *pStaTxCnt0,
-    IN TX_STA_CNT1_STRUC *pStaTxCnt1)
+    IN TX_STA_CNT0_STRUCT *pStaTxCnt0,
+    IN TX_STA_CNT1_STRUCT *pStaTxCnt1)
 {
 
     RTMP_IO_READ32(pAd, TX_STA_CNT0, &pStaTxCnt0->word);
@@ -2191,22 +2191,22 @@ VOID NICUpdateRawCounters(
     UINT32	OldValue;/*, Value2;*/
     /*ULONG	PageSum, OneSecTransmitCount;*/
     /*ULONG	TxErrorRatio, Retry, Fail;*/
-    RX_STA_CNT0_STRUC	 RxStaCnt0;
-    RX_STA_CNT1_STRUC   RxStaCnt1;
-    RX_STA_CNT2_STRUC   RxStaCnt2;
-    TX_STA_CNT0_STRUC 	 TxStaCnt0;
-    TX_STA_CNT1_STRUC	 StaTx1;
-    TX_STA_CNT2_STRUC	 StaTx2;
+    RX_STA_CNT0_STRUCT	 RxStaCnt0;
+    RX_STA_CNT1_STRUCT   RxStaCnt1;
+    RX_STA_CNT2_STRUCT   RxStaCnt2;
+    TX_STA_CNT0_STRUCT 	 TxStaCnt0;
+    TX_STA_CNT1_STRUCT	 StaTx1;
+    TX_STA_CNT2_STRUCT	 StaTx2;
 #ifdef STATS_COUNT_SUPPORT
-    TX_NAG_AGG_CNT_STRUC	TxAggCnt;
-    TX_AGG_CNT0_STRUC	TxAggCnt0;
-    TX_AGG_CNT1_STRUC	TxAggCnt1;
-    TX_AGG_CNT2_STRUC	TxAggCnt2;
-    TX_AGG_CNT3_STRUC	TxAggCnt3;
-    TX_AGG_CNT4_STRUC	TxAggCnt4;
-    TX_AGG_CNT5_STRUC	TxAggCnt5;
-    TX_AGG_CNT6_STRUC	TxAggCnt6;
-    TX_AGG_CNT7_STRUC	TxAggCnt7;
+    TX_NAG_AGG_CNT_STRUCT	TxAggCnt;
+    TX_AGG_CNT0_STRUCT	TxAggCnt0;
+    TX_AGG_CNT1_STRUCT	TxAggCnt1;
+    TX_AGG_CNT2_STRUCT	TxAggCnt2;
+    TX_AGG_CNT3_STRUCT	TxAggCnt3;
+    TX_AGG_CNT4_STRUCT	TxAggCnt4;
+    TX_AGG_CNT5_STRUCT	TxAggCnt5;
+    TX_AGG_CNT6_STRUCT	TxAggCnt6;
+    TX_AGG_CNT7_STRUCT	TxAggCnt7;
 #endif /* STATS_COUNT_SUPPORT */
     COUNTER_RALINK		*pRalinkCounters;
 

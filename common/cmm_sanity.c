@@ -303,7 +303,7 @@ BOOLEAN PeerBeaconAndProbeRspSanity_Old(
     UCHAR				SubType;
     UCHAR				Sanity;
     /*UCHAR				ECWMin, ECWMax;*/
-    /*MAC_CSR9_STRUC		Csr9;*/
+    /*MAC_CSR9_STRUCT		Csr9;*/
     ULONG				Length = 0;
     UCHAR				*pPeerWscIe = NULL;
     INT					PeerWscIeLen = 0;

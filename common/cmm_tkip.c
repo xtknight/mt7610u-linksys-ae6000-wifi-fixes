@@ -714,7 +714,7 @@ BOOLEAN RTMPSoftDecryptTKIP(
     UINT			p1k[5]; /*for mix_key;*/
     ULONG			pnl;/* Least significant 16 bits of PN */
     ULONG			pnh;/* Most significant 32 bits of PN */
-    ARC4_CTX_STRUC 	ARC4_CTX;
+    ARC4_CTX_STRUCT 	ARC4_CTX;
     PUCHAR			plaintext_ptr;
     UINT32			plaintext_len;
     PUCHAR			ciphertext_ptr;
@@ -877,12 +877,12 @@ VOID TKIP_GTK_KEY_WRAP(
     OUT UCHAR   *output_text)
 {
     UCHAR	ekey[LEN_KEY_DESC_IV + LEN_PTK_KEK];
-    /*	ARC4_CTX_STRUC ARC4_CTX;*/
-    ARC4_CTX_STRUC *pARC4_CTX = NULL;
+    /*	ARC4_CTX_STRUCT ARC4_CTX;*/
+    ARC4_CTX_STRUCT *pARC4_CTX = NULL;
 
 
     /* allocate memory */
-    os_alloc_mem(NULL, (UCHAR **)&pARC4_CTX, sizeof(ARC4_CTX_STRUC));
+    os_alloc_mem(NULL, (UCHAR **)&pARC4_CTX, sizeof(ARC4_CTX_STRUCT));
 
     if(pARC4_CTX == NULL)
     {

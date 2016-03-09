@@ -46,14 +46,14 @@ typedef struct
 {
     UINT8 State[AES_STATE_ROWS][AES_STATE_COLUMNS];
     UINT8 KeyWordExpansion[AES_KEY_ROWS][AES_KEY_ROWS*((AES_KEY256_LENGTH >> 2) + 6 + 1)];
-} AES_CTX_STRUC, *PAES_CTX_STRUC;
+} AES_CTX_STRUCT, *PAES_CTX_STRUCT;
 
 
 /* AES operations */
 VOID RT_AES_KeyExpansion(
     IN UINT8 Key[],
     IN UINT KeyLength,
-    INOUT AES_CTX_STRUC *paes_ctx);
+    INOUT AES_CTX_STRUCT *paes_ctx);
 
 VOID RT_AES_Encrypt(
     IN UINT8 PlainBlock[],

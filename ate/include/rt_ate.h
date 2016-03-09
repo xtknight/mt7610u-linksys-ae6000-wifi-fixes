@@ -92,8 +92,8 @@ typedef struct _ATE_INFO
     USHORT TxInfoLen;
     USHORT TxWILen;
 #endif /* RLT_MAC */
-    TXINFO_STRUC TxInfo;	/* TxInfo */
-    TXWI_STRUC TxWI;	/* TXWI */
+    TXINFO_STRUCT TxInfo;	/* TxInfo */
+    TXWI_STRUCT TxWI;	/* TXWI */
     USHORT QID;
     UCHAR Addr1[MAC_ADDR_LEN];
     UCHAR Addr2[MAC_ADDR_LEN];
@@ -161,7 +161,7 @@ typedef struct _ATE_INFO
 #ifdef RALINK_QA
     /* Tx frame */
 #ifdef RTMP_MAC_USB
-    //	TXINFO_STRUC TxInfo;	/* TxInfo */
+    //	TXINFO_STRUCT TxInfo;	/* TxInfo */
 #endif /* RTMP_MAC_USB */
     USHORT PLen;		/* Pattern Length */
     UCHAR Header[32];	/* Header buffer */
@@ -419,8 +419,8 @@ INT RT28xxATETxPwrHandler(
 #ifdef RALINK_QA
 VOID ATE_QA_Statistics(
     IN RTMP_ADAPTER *pAd,
-    IN RXWI_STRUC *pRxWI,
-    IN RXINFO_STRUC *pRxInfo,
+    IN RXWI_STRUCT *pRxWI,
+    IN RXINFO_STRUCT *pRxInfo,
     IN PHEADER_802_11 pHeader);
 
 INT RtmpDoAte(
@@ -774,7 +774,7 @@ VOID ATEAsicAdjustTxPower(
 
 VOID ATESampleRssi(
     IN PRTMP_ADAPTER	pAd,
-    IN RXWI_STRUC *pRxWI);
+    IN RXWI_STRUCT *pRxWI);
 
 
 #ifdef RTMP_MAC_USB

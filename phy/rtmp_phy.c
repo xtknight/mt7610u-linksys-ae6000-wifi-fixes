@@ -117,7 +117,7 @@ NDIS_STATUS NICInitBBP(RTMP_ADAPTER *pAd)
 
 INT rtmp_bbp_get_temp(struct _RTMP_ADAPTER *pAd, CHAR *temp_val)
 {
-    BBP_R49_STRUC bbp_val;
+    BBP_R49_STRUCT bbp_val;
 
     bbp_val.byte = 0;
     RTMP_BBP_IO_READ8_BY_REG_ID(pAd, BBP_R49, &bbp_val.byte);

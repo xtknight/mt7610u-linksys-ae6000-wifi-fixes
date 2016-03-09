@@ -38,7 +38,7 @@
 
 
 #ifdef RT_BIG_ENDIAN
-typedef	union _EEPROM_WORD_STRUC
+typedef	union _EEPROM_WORD_STRUCT
 {
     struct
     {
@@ -46,9 +46,9 @@ typedef	union _EEPROM_WORD_STRUC
         UCHAR	Byte0;				// Low Byte
     } field;
     USHORT	word;
-} EEPROM_WORD_STRUC;
+} EEPROM_WORD_STRUCT;
 #else
-typedef	union _EEPROM_WORD_STRUC
+typedef	union _EEPROM_WORD_STRUCT
 {
     struct
     {
@@ -56,7 +56,7 @@ typedef	union _EEPROM_WORD_STRUC
         UCHAR	Byte1;
     } field;
     USHORT	word;
-} EEPROM_WORD_STRUC;
+} EEPROM_WORD_STRUCT;
 #endif
 
 
@@ -74,7 +74,7 @@ typedef	union _EEPROM_WORD_STRUC
 */
 
 #ifdef RT_BIG_ENDIAN
-typedef union _EEPROM_NIC_CINFIG2_STRUC
+typedef union _EEPROM_NIC_CINFIG2_STRUCT
 {
     struct
     {
@@ -96,9 +96,9 @@ typedef union _EEPROM_NIC_CINFIG2_STRUC
         USHORT HardwareRadioControl:1;	/* Whether RF is controlled by driver or HW. 1:enable hw control, 0:disable */
     } field;
     USHORT word;
-} EEPROM_NIC_CONFIG2_STRUC, *PEEPROM_NIC_CONFIG2_STRUC;
+} EEPROM_NIC_CONFIG2_STRUCT, *PEEPROM_NIC_CONFIG2_STRUCT;
 #else
-typedef union _EEPROM_NIC_CINFIG2_STRUC
+typedef union _EEPROM_NIC_CINFIG2_STRUCT
 {
     struct
     {
@@ -120,14 +120,14 @@ typedef union _EEPROM_NIC_CINFIG2_STRUC
         USHORT DACTestBit:1;	/* control if driver should patch the DAC issue */
     } field;
     USHORT word;
-} EEPROM_NIC_CONFIG2_STRUC, *PEEPROM_NIC_CONFIG2_STRUC;
+} EEPROM_NIC_CONFIG2_STRUCT, *PEEPROM_NIC_CONFIG2_STRUCT;
 #endif
 
 
 #if defined(BT_COEXISTENCE_SUPPORT) || defined(RT3290) || defined(RT8592)
 #ifdef RTMP_USB_SUPPORT
 #ifdef RT_BIG_ENDIAN
-typedef union _EEPROM_NIC_CINFIG3_STRUC
+typedef union _EEPROM_NIC_CINFIG3_STRUCT
 {
     struct
     {
@@ -137,9 +137,9 @@ typedef union _EEPROM_NIC_CINFIG3_STRUC
         USHORT RxStream:4;	/* Number of rx stream */
     } field;
     USHORT word;
-} EEPROM_NIC_CONFIG3_STRUC, *PEEPROM_NIC_CONFIG3_STRUC;
+} EEPROM_NIC_CONFIG3_STRUCT, *PEEPROM_NIC_CONFIG3_STRUCT;
 #else
-typedef union _EEPROM_NIC_CINFIG3_STRUC
+typedef union _EEPROM_NIC_CINFIG3_STRUCT
 {
     struct
     {
@@ -149,7 +149,7 @@ typedef union _EEPROM_NIC_CINFIG3_STRUC
         USHORT Rsv1:7;	/* must be 0 */
     } field;
     USHORT word;
-} EEPROM_NIC_CONFIG3_STRUC, *PEEPROM_NIC_CONFIG3_STRUC;
+} EEPROM_NIC_CONFIG3_STRUCT, *PEEPROM_NIC_CONFIG3_STRUCT;
 #endif
 #endif /* RTMP_USB_SUPPORT */
 
@@ -161,7 +161,7 @@ typedef union _EEPROM_NIC_CINFIG3_STRUC
 	TX_PWR Value valid range 0xFA(-6) ~ 0x24(36)
 */
 #ifdef RT_BIG_ENDIAN
-typedef union _EEPROM_TX_PWR_STRUC
+typedef union _EEPROM_TX_PWR_STRUCT
 {
     struct
     {
@@ -169,9 +169,9 @@ typedef union _EEPROM_TX_PWR_STRUC
         signed char Byte0;	/* Low Byte */
     } field;
     USHORT word;
-} EEPROM_TX_PWR_STRUC, *PEEPROM_TX_PWR_STRUC;
+} EEPROM_TX_PWR_STRUCT, *PEEPROM_TX_PWR_STRUCT;
 #else
-typedef union _EEPROM_TX_PWR_STRUC
+typedef union _EEPROM_TX_PWR_STRUCT
 {
     struct
     {
@@ -179,11 +179,11 @@ typedef union _EEPROM_TX_PWR_STRUC
         signed char Byte1;	/* High Byte */
     } field;
     USHORT word;
-} EEPROM_TX_PWR_STRUC, *PEEPROM_TX_PWR_STRUC;
+} EEPROM_TX_PWR_STRUCT, *PEEPROM_TX_PWR_STRUCT;
 #endif
 
 #ifdef RT_BIG_ENDIAN
-typedef union _EEPROM_VERSION_STRUC
+typedef union _EEPROM_VERSION_STRUCT
 {
     struct
     {
@@ -191,9 +191,9 @@ typedef union _EEPROM_VERSION_STRUC
         UCHAR FaeReleaseNumber;	/* Low Byte */
     } field;
     USHORT word;
-} EEPROM_VERSION_STRUC, *PEEPROM_VERSION_STRUC;
+} EEPROM_VERSION_STRUCT, *PEEPROM_VERSION_STRUCT;
 #else
-typedef union _EEPROM_VERSION_STRUC
+typedef union _EEPROM_VERSION_STRUCT
 {
     struct
     {
@@ -201,11 +201,11 @@ typedef union _EEPROM_VERSION_STRUC
         UCHAR Version;	/* High Byte */
     } field;
     USHORT word;
-} EEPROM_VERSION_STRUC, *PEEPROM_VERSION_STRUC;
+} EEPROM_VERSION_STRUCT, *PEEPROM_VERSION_STRUCT;
 #endif
 
 #ifdef RT_BIG_ENDIAN
-typedef union _EEPROM_LED_STRUC
+typedef union _EEPROM_LED_STRUCT
 {
     struct
     {
@@ -221,9 +221,9 @@ typedef union _EEPROM_LED_STRUC
         USHORT PolarityRDY_G:1;	/* Polarity RDY_G setting. */
     } field;
     USHORT word;
-} EEPROM_LED_STRUC, *PEEPROM_LED_STRUC;
+} EEPROM_LED_STRUCT, *PEEPROM_LED_STRUCT;
 #else
-typedef union _EEPROM_LED_STRUC
+typedef union _EEPROM_LED_STRUCT
 {
     struct
     {
@@ -239,11 +239,11 @@ typedef union _EEPROM_LED_STRUC
         USHORT Rsvd:3;	/* Reserved */
     } field;
     USHORT word;
-} EEPROM_LED_STRUC, *PEEPROM_LED_STRUC;
+} EEPROM_LED_STRUCT, *PEEPROM_LED_STRUCT;
 #endif
 
 #ifdef RT_BIG_ENDIAN
-typedef union _EEPROM_TXPOWER_DELTA_STRUC
+typedef union _EEPROM_TXPOWER_DELTA_STRUCT
 {
     struct
     {
@@ -252,9 +252,9 @@ typedef union _EEPROM_TXPOWER_DELTA_STRUC
         UCHAR DeltaValue:6;	/* Tx Power dalta value (MAX=4) */
     } field;
     UCHAR value;
-} EEPROM_TXPOWER_DELTA_STRUC, *PEEPROM_TXPOWER_DELTA_STRUC;
+} EEPROM_TXPOWER_DELTA_STRUCT, *PEEPROM_TXPOWER_DELTA_STRUCT;
 #else
-typedef union _EEPROM_TXPOWER_DELTA_STRUC
+typedef union _EEPROM_TXPOWER_DELTA_STRUCT
 {
     struct
     {
@@ -263,12 +263,12 @@ typedef union _EEPROM_TXPOWER_DELTA_STRUC
         UCHAR TxPowerEnable:1;	/* Enable */
     } field;
     UCHAR value;
-} EEPROM_TXPOWER_DELTA_STRUC, *PEEPROM_TXPOWER_DELTA_STRUC;
+} EEPROM_TXPOWER_DELTA_STRUCT, *PEEPROM_TXPOWER_DELTA_STRUCT;
 #endif
 
 
 #ifdef RT_BIG_ENDIAN
-typedef union _EEPROM_TX_PWR_OFFSET_STRUC
+typedef union _EEPROM_TX_PWR_OFFSET_STRUCT
 {
     struct
     {
@@ -277,9 +277,9 @@ typedef union _EEPROM_TX_PWR_OFFSET_STRUC
     } field;
 
     USHORT		word;
-} EEPROM_TX_PWR_OFFSET_STRUC, *PEEPROM_TX_PWR_OFFSET_STRUC;
+} EEPROM_TX_PWR_OFFSET_STRUCT, *PEEPROM_TX_PWR_OFFSET_STRUCT;
 #else
-typedef union _EEPROM_TX_PWR_OFFSET_STRUC
+typedef union _EEPROM_TX_PWR_OFFSET_STRUCT
 {
     struct
     {
@@ -288,7 +288,7 @@ typedef union _EEPROM_TX_PWR_OFFSET_STRUC
     } field;
 
     USHORT		word;
-} EEPROM_TX_PWR_OFFSET_STRUC, *PEEPROM_TX_PWR_OFFSET_STRUC;
+} EEPROM_TX_PWR_OFFSET_STRUCT, *PEEPROM_TX_PWR_OFFSET_STRUCT;
 #endif /* RT_BIG_ENDIAN */
 
 

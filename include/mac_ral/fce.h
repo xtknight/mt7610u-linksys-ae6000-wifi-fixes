@@ -42,7 +42,7 @@
 #define PER_PORT_PAUSE_ENABLE_CONTROL1		0x0A38
 
 #ifdef BIG_ENDIAN
-typedef	union _L2_STUFFING_STRUC
+typedef	union _L2_STUFFING_STRUCT
 {
     struct
     {
@@ -60,9 +60,9 @@ typedef	union _L2_STUFFING_STRUC
     }	field;
 
     UINT32 word;
-} L2_STUFFING_STRUC, *PL2_STUFFING_STRUC;
+} L2_STUFFING_STRUCT, *PL2_STUFFING_STRUCT;
 #else
-typedef	union _L2_STUFFING_STRUC
+typedef	union _L2_STUFFING_STRUCT
 {
     struct
     {
@@ -80,7 +80,7 @@ typedef	union _L2_STUFFING_STRUC
     }	field;
 
     UINT32 word;
-} L2_STUFFING_STRUC, *PL2_STUFFING_STRUC;
+} L2_STUFFING_STRUCT, *PL2_STUFFING_STRUCT;
 #endif
 
 #define NORMAL_PKT				0x0

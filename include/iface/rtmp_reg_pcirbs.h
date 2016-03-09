@@ -35,7 +35,7 @@
 
 #define CMB_CTRL		0x20
 #ifdef RT_BIG_ENDIAN
-typedef union _CMB_CTRL_STRUC
+typedef union _CMB_CTRL_STRUCT
 {
     struct
     {
@@ -74,9 +74,9 @@ typedef union _CMB_CTRL_STRUC
         UINT32		AUX_OPT_Bit0_InterfaceClk_40Mhz:1;
     } field;
     UINT32 word;
-} CMB_CTRL_STRUC, *PCMB_CTRL_STRUC;
+} CMB_CTRL_STRUCT, *PCMB_CTRL_STRUCT;
 #else
-typedef union _CMB_CTRL_STRUC
+typedef union _CMB_CTRL_STRUCT
 {
     struct
     {
@@ -115,13 +115,13 @@ typedef union _CMB_CTRL_STRUC
         UINT32       	LDO0_EN:1;
     } field;
     UINT32 word;
-} CMB_CTRL_STRUC, *PCMB_CTRL_STRUC;
+} CMB_CTRL_STRUCT, *PCMB_CTRL_STRUCT;
 #endif
 
 
 #define OSCCTL				0x38
 #ifdef RT_BIG_ENDIAN
-typedef	union _OSCCTL_STRUC
+typedef	union _OSCCTL_STRUCT
 {
     struct
     {
@@ -134,9 +134,9 @@ typedef	union _OSCCTL_STRUC
         UINT32		REF_CYCLE:13;
     } field;
     UINT32 word;
-} OSCCTL_STRUC, *POSCCTL_STRUC;
+} OSCCTL_STRUCT, *POSCCTL_STRUCT;
 #else
-typedef union _OSCCTL_STRUC
+typedef union _OSCCTL_STRUCT
 {
     struct
     {
@@ -149,13 +149,13 @@ typedef union _OSCCTL_STRUC
         UINT32       	ROSC_EN:1;
     } field;
     UINT32 word;
-} OSCCTL_STRUC, *POSCCTL_STRUC;
+} OSCCTL_STRUCT, *POSCCTL_STRUCT;
 #endif
 
 
 #define COEXCFG0			0x40
 #ifdef RT_BIG_ENDIAN
-typedef union _COEXCFG0_STRUC
+typedef union _COEXCFG0_STRUCT
 {
     struct
     {
@@ -171,9 +171,9 @@ typedef union _COEXCFG0_STRUC
         UINT32		COEX_ENT:1;
     } field;
     UINT32 word;
-} COEXCFG0_STRUC, *PCOEXCFG0_STRUC;
+} COEXCFG0_STRUCT, *PCOEXCFG0_STRUCT;
 #else
-typedef union _COEXCFG0_STRUC
+typedef union _COEXCFG0_STRUCT
 {
     struct
     {
@@ -190,13 +190,13 @@ typedef union _COEXCFG0_STRUC
         UINT32       	COEX_CFG1:8;
     } field;
     UINT32 word;
-} COEXCFG0_STRUC, *PCOEXCFG0_STRUC;
+} COEXCFG0_STRUCT, *PCOEXCFG0_STRUCT;
 #endif
 
 
 #define COEXCFG1			0x44
 #ifdef RT_BIG_ENDIAN
-typedef union _COEXCFG1_STRUC
+typedef union _COEXCFG1_STRUCT
 {
     struct
     {
@@ -206,9 +206,9 @@ typedef union _COEXCFG1_STRUC
         UINT32		DIS_WL_TR_DELY:8;
     } field;
     UINT32 word;
-} COEXCFG1_STRUC, *PCOEXCFG1_STRUC;
+} COEXCFG1_STRUCT, *PCOEXCFG1_STRUCT;
 #else
-typedef union _COEXCFG1_STRUC
+typedef union _COEXCFG1_STRUCT
 {
     struct
     {
@@ -218,13 +218,13 @@ typedef union _COEXCFG1_STRUC
         UINT32       	Rsv:8;
     } field;
     UINT32 word;
-} COEXCFG1_STRUC, *PCOEXCFG1_STRUC;
+} COEXCFG1_STRUCT, *PCOEXCFG1_STRUCT;
 #endif
 
 
 #define COEXCFG2			0x48
 #ifdef RT_BIG_ENDIAN
-typedef union _COEXCFG2_STRUC
+typedef union _COEXCFG2_STRUCT
 {
     struct
     {
@@ -265,9 +265,9 @@ typedef union _COEXCFG2_STRUC
         UINT32		WL_COEX_CFG0_Bit0_HaltTx_bt_rx_busy:1;
     } field;
     UINT32 word;
-} COEXCFG2_STRUC, *PCOEXCFG2_STRUC;
+} COEXCFG2_STRUCT, *PCOEXCFG2_STRUCT;
 #else
-typedef union _COEXCFG2_STRUC
+typedef union _COEXCFG2_STRUCT
 {
     struct
     {
@@ -308,13 +308,13 @@ typedef union _COEXCFG2_STRUC
         UINT32		BT_COEX_CFG1_Bit31_Rsv:1;
     } field;
     UINT32 word;
-} COEXCFG2_STRUC, *PCOEXCFG2_STRUC;
+} COEXCFG2_STRUCT, *PCOEXCFG2_STRUCT;
 #endif
 
 
 #define PLL_CTRL		0x50
 #ifdef RT_BIG_ENDIAN
-typedef	union	_PLL_CTRL_STRUC
+typedef	union	_PLL_CTRL_STRUCT
 {
     struct
     {
@@ -330,9 +330,9 @@ typedef	union	_PLL_CTRL_STRUC
         ULONG		RESERVED_INPUT1:8;
     }	field;
     ULONG			word;
-}	PLL_CTRL_STRUC, *PPLL_CTRL_STRUC;
+}	PLL_CTRL_STRUCT, *PPLL_CTRL_STRUCT;
 #else
-typedef	union	_PLL_CTRL_STRUC
+typedef	union	_PLL_CTRL_STRUCT
 {
     struct
     {
@@ -348,13 +348,13 @@ typedef	union	_PLL_CTRL_STRUC
         ULONG		VBGBK_EN:1;
     }	field;
     ULONG			word;
-} PLL_CTRL_STRUC, *PPLL_CTRL_STRUC;
+} PLL_CTRL_STRUCT, *PPLL_CTRL_STRUCT;
 #endif /* RT_BIG_ENDIAN */
 
 
 #define WPDMA_RST_IDX 	0x20c
 #ifdef RT_BIG_ENDIAN
-typedef	union _WPDMA_RST_IDX_STRUC
+typedef	union _WPDMA_RST_IDX_STRUCT
 {
     struct
     {
@@ -374,9 +374,9 @@ typedef	union _WPDMA_RST_IDX_STRUC
         UINT32		RST_DTX_IDX0:1;
     }	field;
     UINT32			word;
-} WPDMA_RST_IDX_STRUC, *PWPDMA_RST_IDX_STRUC;
+} WPDMA_RST_IDX_STRUCT, *PWPDMA_RST_IDX_STRUCT;
 #else
-typedef	union _WPDMA_RST_IDX_STRUC
+typedef	union _WPDMA_RST_IDX_STRUCT
 {
     struct
     {
@@ -396,11 +396,11 @@ typedef	union _WPDMA_RST_IDX_STRUC
         UINT32       	:14;
     }	field;
     UINT32			word;
-} WPDMA_RST_IDX_STRUC, *PWPDMA_RST_IDX_STRUC;
+} WPDMA_RST_IDX_STRUCT, *PWPDMA_RST_IDX_STRUCT;
 #endif
 #define DELAY_INT_CFG  0x0210
 #ifdef RT_BIG_ENDIAN
-typedef	union _DELAY_INT_CFG_STRUC
+typedef	union _DELAY_INT_CFG_STRUCT
 {
     struct
     {
@@ -412,9 +412,9 @@ typedef	union _DELAY_INT_CFG_STRUC
         UINT32		RXMAX_PTIME:8;
     }	field;
     UINT32			word;
-} DELAY_INT_CFG_STRUC, *PDELAY_INT_CFG_STRUC;
+} DELAY_INT_CFG_STRUCT, *PDELAY_INT_CFG_STRUCT;
 #else
-typedef	union _DELAY_INT_CFG_STRUC
+typedef	union _DELAY_INT_CFG_STRUCT
 {
     struct
     {
@@ -426,7 +426,7 @@ typedef	union _DELAY_INT_CFG_STRUC
         UINT32       	TXDLY_INT_EN:1;
     }	field;
     UINT32			word;
-} DELAY_INT_CFG_STRUC, *PDELAY_INT_CFG_STRUC;
+} DELAY_INT_CFG_STRUCT, *PDELAY_INT_CFG_STRUCT;
 #endif
 
 #endif /* __RTMP_REG_PCIRBUS_H__ */

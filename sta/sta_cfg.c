@@ -619,7 +619,7 @@ INT Set_NetworkType_Proc(
     else if(strcmp(arg, "Monitor") == 0)
 #endif /* MONITOR_FLAG_11N_SNIFFER_SUPPORT */
     {
-        BCN_TIME_CFG_STRUC csr;
+        BCN_TIME_CFG_STRUCT csr;
         UCHAR rf_channel, rf_bw;
         INT ext_ch;
 
@@ -2028,7 +2028,7 @@ INT RTMPSetInformation(
 #endif /* WPA_SUPPLICANT_SUPPORT */
 
 #ifdef SNMP_SUPPORT
-    TX_RTY_CFG_STRUC tx_rty_cfg;
+    TX_RTY_CFG_STRUCT tx_rty_cfg;
     ULONG ShortRetryLimit, LongRetryLimit;
     UCHAR ctmp;
 #endif /* SNMP_SUPPORT */
@@ -2983,11 +2983,11 @@ INT RTMPSetInformation(
 #ifdef DOT11_N_SUPPORT
 
     case RT_OID_802_11_SET_IMME_BA_CAP:
-        if(wrq->u.data.length != sizeof(OID_BACAP_STRUC))
+        if(wrq->u.data.length != sizeof(OID_BACAP_STRUCT))
             Status = -EINVAL;
         else
         {
-            OID_BACAP_STRUC Orde ;
+            OID_BACAP_STRUCT Orde ;
             Status = copy_from_user(&Orde, wrq->u.data.pointer, wrq->u.data.length);
 
             if(Orde.Policy > BA_NOTUSE)
@@ -3661,7 +3661,7 @@ INT RTMPQueryInformation(
 #ifdef SNMP_SUPPORT
     DefaultKeyIdxValue			*pKeyIdxValue;
     INT							valueLen;
-    TX_RTY_CFG_STRUC			tx_rty_cfg;
+    TX_RTY_CFG_STRUCT			tx_rty_cfg;
     ULONG						ShortRetryLimit, LongRetryLimit;
     UCHAR						tmp[64];
 #endif /*SNMP */

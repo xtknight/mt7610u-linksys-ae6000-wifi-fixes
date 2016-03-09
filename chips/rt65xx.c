@@ -55,7 +55,7 @@ VOID ral_wlan_chip_onoff(
     IN BOOLEAN bResetWLAN)
 {
     // TODO: check the functionality of the WLAN_FUN_CTRL here, now we just bring up it bu no fine tune.
-    WLAN_FUN_CTRL_STRUC WlanFunCtrl = {.word=0};
+    WLAN_FUN_CTRL_STRUCT WlanFunCtrl = {.word=0};
 
 
 #ifdef RTMP_MAC_USB
@@ -533,7 +533,7 @@ VOID RT65xx_WLAN_ChipOnOff(
     IN BOOLEAN bOn,
     IN BOOLEAN bResetWLAN)
 {
-    WLAN_FUN_CTRL_STRUC WlanFunCtrl = {.word=0};
+    WLAN_FUN_CTRL_STRUCT WlanFunCtrl = {.word=0};
 
 
 #ifdef RTMP_MAC_USB
@@ -609,7 +609,7 @@ VOID RT65xx_WLAN_ChipOnOff(
     if(bOn == TRUE)
     {
         UINT index = 0;
-        CMB_CTRL_STRUC CmbCtrl;
+        CMB_CTRL_STRUCT CmbCtrl;
 
         CmbCtrl.word = 0;
 

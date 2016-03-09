@@ -3176,7 +3176,7 @@ BOOLEAN RTMP_CardInfoRead(
     BOOLEAN flg_match_ok = FALSE;
     INT32 card_select_method;
     INT32 card_free_id, card_nouse_id, card_same_mac_id, card_match_id;
-    EEPROM_ANTENNA_STRUC antenna;
+    EEPROM_ANTENNA_STRUCT antenna;
     USHORT addr01, addr23, addr45;
     UINT8 mac[6];
     UINT32 data, card_index;

@@ -135,9 +135,9 @@ int rt28xx_init(VOID *pAdSrc, PSTRING pDefaultMac, PSTRING pHostName)
     if(IS_RT3290(pAd))
     {
         UINT32 MacRegValue;
-        OSCCTL_STRUC osCtrl = {.word = 0};
-        CMB_CTRL_STRUC cmbCtrl = {.word = 0};
-        WLAN_FUN_CTRL_STRUC WlanFunCtrl = {.word = 0};
+        OSCCTL_STRUCT osCtrl = {.word = 0};
+        CMB_CTRL_STRUCT cmbCtrl = {.word = 0};
+        WLAN_FUN_CTRL_STRUCT WlanFunCtrl = {.word = 0};
 
         RTMPEnableWlan(pAd, TRUE, TRUE);
 
@@ -171,7 +171,7 @@ int rt28xx_init(VOID *pAdSrc, PSTRING pDefaultMac, PSTRING pHostName)
 
     if(IS_RT3290LE(pAd))
     {
-        PLL_CTRL_STRUC PllCtrl;
+        PLL_CTRL_STRUCT PllCtrl;
         RTMP_IO_READ32(pAd, PLL_CTRL, &PllCtrl.word);
         PllCtrl.field.VCO_FIXED_CURRENT_CONTROL = 0x1;
         RTMP_IO_WRITE32(pAd, PLL_CTRL, PllCtrl.word);
@@ -188,7 +188,7 @@ int rt28xx_init(VOID *pAdSrc, PSTRING pDefaultMac, PSTRING pHostName)
         if(OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_DOZE) &&
                 OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_ADVANCE_POWER_SAVE_PCIE_DEVICE))
         {
-            AUTO_WAKEUP_STRUC AutoWakeupCfg;
+            AUTO_WAKEUP_STRUCT AutoWakeupCfg;
             AsicForceWakeup(pAd, TRUE);
             AutoWakeupCfg.word = 0;
             RTMP_IO_WRITE32(pAd, AUTO_WAKEUP_CFG, AutoWakeupCfg.word);
@@ -568,7 +568,7 @@ int rt28xx_init(VOID *pAdSrc, PSTRING pDefaultMac, PSTRING pHostName)
 
     if(IS_RT3290(pAd))
     {
-        WLAN_FUN_CTRL_STRUC     WlanFunCtrl = {.word = 0};
+        WLAN_FUN_CTRL_STRUCT     WlanFunCtrl = {.word = 0};
         RTMP_MAC_PWRSV_EN(pAd, TRUE, TRUE);
         //
         // Too much time for reading efuse(enter/exit L1), and our device will hang up

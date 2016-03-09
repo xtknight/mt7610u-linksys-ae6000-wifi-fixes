@@ -87,7 +87,7 @@
 
 
 #ifdef RT_BIG_ENDIAN
-typedef	union _INT_SOURCE_CSR_STRUC
+typedef	union _INT_SOURCE_CSR_STRUCT
 {
     struct
     {
@@ -118,9 +118,9 @@ typedef	union _INT_SOURCE_CSR_STRUC
         UINT32		RxDelayINT:1; /*dealyed interrupt */
     } field;
     UINT32			word;
-}	INT_SOURCE_CSR_STRUC;
+}	INT_SOURCE_CSR_STRUCT;
 #else
-typedef	union _INT_SOURCE_CSR_STRUC
+typedef	union _INT_SOURCE_CSR_STRUCT
 {
     struct
     {
@@ -151,14 +151,14 @@ typedef	union _INT_SOURCE_CSR_STRUC
 #endif /* CARRIER_DETECTION_SUPPORT */
     }	field;
     UINT32			word;
-} INT_SOURCE_CSR_STRUC;
+} INT_SOURCE_CSR_STRUCT;
 #endif
 
 
 /* INT_MASK_CSR:   Interrupt MASK register.   1: the interrupt is mask OFF */
 #define INT_MASK_CSR        0x204
 #ifdef RT_BIG_ENDIAN
-typedef	union _INT_MASK_CSR_STRUC
+typedef	union _INT_MASK_CSR_STRUCT
 {
     struct
     {
@@ -183,9 +183,9 @@ typedef	union _INT_MASK_CSR_STRUC
         UINT32		RXDelay_INT_MSK:1;
     }	field;
     UINT32			word;
-} INT_MASK_CSR_STRUC, *PINT_MASK_CSR_STRUC;
+} INT_MASK_CSR_STRUCT, *PINT_MASK_CSR_STRUCT;
 #else
-typedef	union _INT_MASK_CSR_STRUC
+typedef	union _INT_MASK_CSR_STRUCT
 {
     struct
     {
@@ -210,7 +210,7 @@ typedef	union _INT_MASK_CSR_STRUC
         UINT32       	TxCoherent:1;
     }	field;
     UINT32			word;
-} INT_MASK_CSR_STRUC, *PINT_MASK_CSR_STRUC;
+} INT_MASK_CSR_STRUCT, *PINT_MASK_CSR_STRUCT;
 #endif
 
 
@@ -250,7 +250,7 @@ typedef	union _INT_MASK_CSR_STRUC
 
 #define US_CYC_CNT      0x02a4
 #ifdef BIG_ENDIAN
-typedef	union _US_CYC_CNT_STRUC
+typedef	union _US_CYC_CNT_STRUCT
 {
     struct
     {
@@ -262,9 +262,9 @@ typedef	union _US_CYC_CNT_STRUC
         UINT32  UsCycCnt:8;
     } field;
     UINT32 word;
-} US_CYC_CNT_STRUC;
+} US_CYC_CNT_STRUCT;
 #else
-typedef	union _US_CYC_CNT_STRUC
+typedef	union _US_CYC_CNT_STRUCT
 {
     struct
     {
@@ -276,7 +276,7 @@ typedef	union _US_CYC_CNT_STRUC
         UINT32  rsv2:7;
     } field;
     UINT32 word;
-} US_CYC_CNT_STRUC;
+} US_CYC_CNT_STRUCT;
 #endif
 
 

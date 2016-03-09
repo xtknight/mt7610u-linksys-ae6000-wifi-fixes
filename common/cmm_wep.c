@@ -152,7 +152,7 @@ VOID	RTMPInitWepEngine(
     IN	PUCHAR			pIv,
     IN	PUCHAR			pKey,
     IN	UCHAR			KeyLen,
-    OUT	ARC4_CTX_STRUC  *pARC4_CTX)
+    OUT	ARC4_CTX_STRUCT  *pARC4_CTX)
 {
     /*	UCHAR   seed[16];*/
     PUCHAR	seed = NULL;
@@ -232,10 +232,10 @@ BOOLEAN	RTMPSoftEncryptWEP(
     INOUT 	PUCHAR			pData,
     IN 		ULONG			DataByteCnt)
 {
-    ARC4_CTX_STRUC *ARC4_CTX = NULL;
+    ARC4_CTX_STRUCT *ARC4_CTX = NULL;
     UINT 	FCSCRC32;
 
-    os_alloc_mem(NULL, (UCHAR **)&ARC4_CTX, sizeof(ARC4_CTX_STRUC));
+    os_alloc_mem(NULL, (UCHAR **)&ARC4_CTX, sizeof(ARC4_CTX_STRUCT));
 
     if(ARC4_CTX == NULL)
     {
@@ -298,8 +298,8 @@ BOOLEAN	RTMPSoftDecryptWEP(
     INOUT 	PUCHAR			pData,
     INOUT 	UINT16			*DataByteCnt)
 {
-    /*ARC4_CTX_STRUC 	ARC4_CTX;*/
-    ARC4_CTX_STRUC 	*ARC4_CTX = NULL;
+    /*ARC4_CTX_STRUCT 	ARC4_CTX;*/
+    ARC4_CTX_STRUCT 	*ARC4_CTX = NULL;
     PUCHAR			plaintext_ptr;
     UINT16			plaintext_len;
     PUCHAR			ciphertext_ptr;
@@ -307,7 +307,7 @@ BOOLEAN	RTMPSoftDecryptWEP(
     UINT			trailfcs;
     UINT    		crc32;
 
-    os_alloc_mem(NULL, (UCHAR **)&ARC4_CTX, sizeof(ARC4_CTX_STRUC));
+    os_alloc_mem(NULL, (UCHAR **)&ARC4_CTX, sizeof(ARC4_CTX_STRUCT));
 
     if(ARC4_CTX == NULL)
     {

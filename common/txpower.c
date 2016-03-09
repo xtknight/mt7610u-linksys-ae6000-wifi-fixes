@@ -134,7 +134,7 @@ VOID AsicGetAutoAgcOffsetForExternalTxAlc(
     IN PCHAR 					pAgcCompensate,
     IN PCHAR 					pDeltaPowerByBbpR1)
 {
-    BBP_R49_STRUC	BbpR49;
+    BBP_R49_STRUCT	BbpR49;
     BOOLEAN			bAutoTxAgc = FALSE;
     UCHAR			TssiRef, *pTssiMinusBoundary, *pTssiPlusBoundary, TxAgcStep, idx;
     PCHAR			pTxAgcCompensate = NULL;
@@ -984,8 +984,8 @@ VOID RTMPReadTxPwrPerRate(RTMP_ADAPTER *pAd)
 VOID RTMPReadChannelPwr(RTMP_ADAPTER *pAd)
 {
     UINT32					i, choffset;
-    EEPROM_TX_PWR_STRUC	    Power;
-    EEPROM_TX_PWR_STRUC	    Power2;
+    EEPROM_TX_PWR_STRUCT	    Power;
+    EEPROM_TX_PWR_STRUCT	    Power2;
 
     /* Read Tx power value for all channels*/
     /* Value from 1 - 0x7f. Default value is 24.*/

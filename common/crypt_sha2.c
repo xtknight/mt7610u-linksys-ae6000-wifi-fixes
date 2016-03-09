@@ -92,10 +92,10 @@ static const UINT32 SHA256_DefaultHashValue[8] =
 /*
 ========================================================================
 Routine Description:
-    Initial SHA1_CTX_STRUC
+    Initial SHA1_CTX_STRUCT
 
 Arguments:
-    pSHA_CTX        Pointer to SHA1_CTX_STRUC
+    pSHA_CTX        Pointer to SHA1_CTX_STRUCT
 
 Return Value:
     None
@@ -105,7 +105,7 @@ Note:
 ========================================================================
 */
 VOID RT_SHA1_Init(
-    IN  SHA1_CTX_STRUC *pSHA_CTX)
+    IN  SHA1_CTX_STRUCT *pSHA_CTX)
 {
     NdisMoveMemory(pSHA_CTX->HashValue, SHA1_DefaultHashValue,
                    sizeof(SHA1_DefaultHashValue));
@@ -121,7 +121,7 @@ Routine Description:
     SHA1 computation for one block (512 bits)
 
 Arguments:
-    pSHA_CTX        Pointer to SHA1_CTX_STRUC
+    pSHA_CTX        Pointer to SHA1_CTX_STRUCT
 
 Return Value:
     None
@@ -131,7 +131,7 @@ Note:
 ========================================================================
 */
 VOID RT_SHA1_Hash(
-    IN  SHA1_CTX_STRUC *pSHA_CTX)
+    IN  SHA1_CTX_STRUCT *pSHA_CTX)
 {
     UINT32 W_i,t;
     UINT32 W[80];
@@ -224,7 +224,7 @@ Routine Description:
 will be called.
 
 Arguments:
-    pSHA_CTX        Pointer to SHA1_CTX_STRUC
+    pSHA_CTX        Pointer to SHA1_CTX_STRUCT
     message         Message context
     messageLen      The length of message in bytes
 
@@ -236,7 +236,7 @@ Note:
 ========================================================================
 */
 VOID RT_SHA1_Append(
-    IN  SHA1_CTX_STRUC *pSHA_CTX,
+    IN  SHA1_CTX_STRUCT *pSHA_CTX,
     IN  const UINT8 Message[],
     IN  UINT MessageLen)
 {
@@ -276,7 +276,7 @@ Routine Description:
     3. Transform the Hash Value to digest message
 
 Arguments:
-    pSHA_CTX        Pointer to SHA1_CTX_STRUC
+    pSHA_CTX        Pointer to SHA1_CTX_STRUCT
 
 Return Value:
     digestMessage   Digest message
@@ -286,7 +286,7 @@ Note:
 ========================================================================
 */
 VOID RT_SHA1_End(
-    IN  SHA1_CTX_STRUC *pSHA_CTX,
+    IN  SHA1_CTX_STRUCT *pSHA_CTX,
     OUT UINT8 DigestMessage[])
 {
     UINT index;
@@ -338,9 +338,9 @@ VOID RT_SHA1(
     OUT UINT8 DigestMessage[])
 {
 
-    SHA1_CTX_STRUC sha_ctx;
+    SHA1_CTX_STRUCT sha_ctx;
 
-    NdisZeroMemory(&sha_ctx, sizeof(SHA1_CTX_STRUC));
+    NdisZeroMemory(&sha_ctx, sizeof(SHA1_CTX_STRUCT));
     RT_SHA1_Init(&sha_ctx);
     RT_SHA1_Append(&sha_ctx, Message, MessageLen);
     RT_SHA1_End(&sha_ctx, DigestMessage);
@@ -352,10 +352,10 @@ VOID RT_SHA1(
 /*
 ========================================================================
 Routine Description:
-    Initial SHA256_CTX_STRUC
+    Initial SHA256_CTX_STRUCT
 
 Arguments:
-    pSHA_CTX    Pointer to SHA256_CTX_STRUC
+    pSHA_CTX    Pointer to SHA256_CTX_STRUCT
 
 Return Value:
     None
@@ -365,7 +365,7 @@ Note:
 ========================================================================
 */
 VOID RT_SHA256_Init(
-    IN  SHA256_CTX_STRUC *pSHA_CTX)
+    IN  SHA256_CTX_STRUCT *pSHA_CTX)
 {
     NdisMoveMemory(pSHA_CTX->HashValue, SHA256_DefaultHashValue,
                    sizeof(SHA256_DefaultHashValue));
@@ -381,7 +381,7 @@ Routine Description:
     SHA256 computation for one block (512 bits)
 
 Arguments:
-    pSHA_CTX    Pointer to SHA256_CTX_STRUC
+    pSHA_CTX    Pointer to SHA256_CTX_STRUCT
 
 Return Value:
     None
@@ -391,7 +391,7 @@ Note:
 ========================================================================
 */
 VOID RT_SHA256_Hash(
-    IN  SHA256_CTX_STRUC *pSHA_CTX)
+    IN  SHA256_CTX_STRUCT *pSHA_CTX)
 {
     UINT32 W_i,t;
     UINT32 W[64];
@@ -457,7 +457,7 @@ Routine Description:
 will be called.
 
 Arguments:
-    pSHA_CTX    Pointer to SHA256_CTX_STRUC
+    pSHA_CTX    Pointer to SHA256_CTX_STRUCT
     message     Message context
     messageLen  The length of message in bytes
 
@@ -469,7 +469,7 @@ Note:
 ========================================================================
 */
 VOID RT_SHA256_Append(
-    IN  SHA256_CTX_STRUC *pSHA_CTX,
+    IN  SHA256_CTX_STRUCT *pSHA_CTX,
     IN  const UINT8 Message[],
     IN  UINT MessageLen)
 {
@@ -509,7 +509,7 @@ Routine Description:
     3. Transform the Hash Value to digest message
 
 Arguments:
-    pSHA_CTX        Pointer to SHA256_CTX_STRUC
+    pSHA_CTX        Pointer to SHA256_CTX_STRUCT
 
 Return Value:
     digestMessage   Digest message
@@ -519,7 +519,7 @@ Note:
 ========================================================================
 */
 VOID RT_SHA256_End(
-    IN  SHA256_CTX_STRUC *pSHA_CTX,
+    IN  SHA256_CTX_STRUCT *pSHA_CTX,
     OUT UINT8 DigestMessage[])
 {
     UINT index;
@@ -570,9 +570,9 @@ VOID RT_SHA256(
     IN  UINT MessageLen,
     OUT UINT8 DigestMessage[])
 {
-    SHA256_CTX_STRUC sha_ctx;
+    SHA256_CTX_STRUCT sha_ctx;
 
-    NdisZeroMemory(&sha_ctx, sizeof(SHA256_CTX_STRUC));
+    NdisZeroMemory(&sha_ctx, sizeof(SHA256_CTX_STRUCT));
     RT_SHA256_Init(&sha_ctx);
     RT_SHA256_Append(&sha_ctx, Message, MessageLen);
     RT_SHA256_End(&sha_ctx, DigestMessage);

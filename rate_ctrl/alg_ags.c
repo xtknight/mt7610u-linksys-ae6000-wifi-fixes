@@ -827,8 +827,8 @@ VOID MlmeDynamicTxRateSwitchingAGS(
                 CLIENT_STATUS_TEST_FLAG(&pAd->MacTab.Content[BSSID_WCID],
                                         fCLIENT_STATUS_RDG_CAPABLE)) /* RDG capable */
         {
-            TXOP_THRESHOLD_CFG_STRUC TxopThCfg = {{0}};
-            TX_LINK_CFG_STRUC TxLinkCfg = {{0}};
+            TXOP_THRESHOLD_CFG_STRUCT TxopThCfg = {{0}};
+            TX_LINK_CFG_STRUCT TxLinkCfg = {{0}};
 
             if((pAd->RalinkCounters.OneSecReceivedByteCount > (pAd->RalinkCounters.OneSecTransmittedByteCount * 5)) &&
                     (pNextTxRate->CurrMCS != MCS_23) &&
