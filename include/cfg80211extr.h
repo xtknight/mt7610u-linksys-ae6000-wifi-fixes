@@ -63,25 +63,6 @@
 #define RT_CFG80211_RFKILL_STATUS_UPDATE(_pAd, _active) \
 	CFG80211_RFKillStatusUpdate(_pAd, _active);
 
-#ifdef SINGLE_SKU
-#define CFG80211_BANDINFO_FILL(__pAd, __pBandInfo)							\
-{																			\
-	(__pBandInfo)->RFICType = __pAd->RFICType;								\
-	(__pBandInfo)->MpduDensity = __pAd->CommonCfg.BACapability.field.MpduDensity;\
-	(__pBandInfo)->TxStream = __pAd->CommonCfg.TxStream;					\
-	(__pBandInfo)->RxStream = __pAd->CommonCfg.RxStream;					\
-	(__pBandInfo)->MaxTxPwr = __pAd->CommonCfg.DefineMaxTxPwr;				\
-	if (WMODE_EQUAL(__pAd->CommonCfg.PhyMode, WMODE_B))				\
-		(__pBandInfo)->FlgIsBMode = TRUE;									\
-	else																	\
-		(__pBandInfo)->FlgIsBMode = FALSE;									\
-	(__pBandInfo)->MaxBssTable = MAX_LEN_OF_BSS_TABLE;						\
-	(__pBandInfo)->RtsThreshold = pAd->CommonCfg.RtsThreshold;				\
-	(__pBandInfo)->FragmentThreshold = pAd->CommonCfg.FragmentThreshold;	\
-	(__pBandInfo)->RetryMaxCnt = 0;											\
-	RTMP_IO_READ32(__pAd, TX_RTY_CFG, &((__pBandInfo)->RetryMaxCnt));		\
-}
-#else
 #define CFG80211_BANDINFO_FILL(__pAd, __pBandInfo)							\
 {																			\
 	(__pBandInfo)->RFICType = __pAd->RFICType;								\
@@ -99,7 +80,6 @@
 	(__pBandInfo)->RetryMaxCnt = 0;											\
 	RTMP_IO_READ32(__pAd, TX_RTY_CFG, &((__pBandInfo)->RetryMaxCnt));		\
 }
-#endif /* SINGLE_SKU */
 
 
 /* utilities used in DRV module */

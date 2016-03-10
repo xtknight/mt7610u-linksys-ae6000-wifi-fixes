@@ -189,7 +189,6 @@ VOID MlmeCntlMachinePerformAction(
 
             }
 
-#ifdef LED_CONTROL_SUPPORT
 
             /* */
             /* Set LED status to previous status. */
@@ -200,7 +199,6 @@ VOID MlmeCntlMachinePerformAction(
                 RTMPSetLED(pAd, pAd->LedCntl.LedStatus);
             }
 
-#endif /* LED_CONTROL_SUPPORT */
 
 
             /* AP sent a 2040Coexistence mgmt frame, then station perform a scan, and then send back the respone. */
@@ -2016,10 +2014,8 @@ VOID LinkUp(
               pAd->CommonCfg.BACapability.word,
               pAd->MacTab.Content[BSSID_WCID].ClientStatusFlags));
 
-#ifdef LED_CONTROL_SUPPORT
     /* Set LED */
     RTMPSetLED(pAd, LED_LINK_UP);
-#endif /* LED_CONTROL_SUPPORT */
 
     pAd->Mlme.PeriodicRound = 0;
     pAd->Mlme.OneSecPeriodicRound = 0;
@@ -2496,12 +2492,10 @@ VOID LinkDown(
     AsicSetSlotTime(pAd, TRUE);	/*FALSE); */
     AsicSetEdcaParm(pAd, NULL);
 
-#ifdef LED_CONTROL_SUPPORT
     /* Set LED */
     RTMPSetLED(pAd, LED_LINK_DOWN);
     pAd->LedCntl.LedIndicatorStrength = 0xF0;
     RTMPSetSignalLED(pAd, -100);	/* Force signal strength Led to be turned off, firmware is not done it. */
-#endif /* LED_CONTROL_SUPPORT */
 
     AsicDisableSync(pAd);
 

@@ -182,9 +182,6 @@ NDIS_STATUS	RTMPReadParametersHook(
 
 #endif /*HOSTAPD_SUPPORT */
 
-#ifdef SINGLE_SKU_V2
-    RTMPSetSingleSKUParameters(pAd);
-#endif /* SINGLE_SKU_V2 */
 
     /*	kfree(buffer); */
     os_free_mem(NULL, buffer);

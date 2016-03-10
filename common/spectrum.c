@@ -220,11 +220,7 @@ CHAR RTMP_GetTxPwr(
     ULONG TxPwr[5];
 
 
-#ifdef SINGLE_SKU
-    CurTxPwr = pAd->CommonCfg.DefineMaxTxPwr;
-#else
     CurTxPwr = 19;
-#endif /* SINGLE_SKU */
 
     /* check Tx Power setting from UI. */
     if(pAd->CommonCfg.TxPowerPercentage > 90)

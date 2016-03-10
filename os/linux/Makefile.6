@@ -131,15 +131,8 @@ $(MOD_NAME)-objs += \
 endif
 #endif // WFD_SUPPORT //
 
-
-#ifdef LED_CONTROL_SUPPORT
-ifeq ($(HAS_LED_CONTROL_SUPPORT),y)
 $(MOD_NAME)-objs += \
 	../../common/rt_led.o
-endif
-#endif // LED_CONTROL_SUPPORT //
-
-
 
 $(MOD_NAME)-objs += \
 	../../os/linux/cfg80211.o \

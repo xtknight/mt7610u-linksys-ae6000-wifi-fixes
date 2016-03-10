@@ -2019,36 +2019,6 @@ UINT8 GetCuntryMaxTxPwr(
     if(i == pAd->ChannelListNum)
         return 0xff;
 
-#ifdef SINGLE_SKU
-
-    if(pAd->CommonCfg.bSKUMode == TRUE)
-    {
-        UINT deltaTxStreamPwr = 0;
-
-
-        if(WMODE_CAP_N(pAd->CommonCfg.PhyMode) && (pAd->CommonCfg.TxStream == 2))
-            deltaTxStreamPwr = 3; /* If 2Tx case, antenna gain will increase 3dBm*/
-
-
-        if(pAd->ChannelList[i].RegulatoryDomain == FCC)
-        {
-            /* FCC should maintain 20/40 Bandwidth, and without antenna gain */
-            if(WMODE_CAP_N(pAd->CommonCfg.PhyMode) &&
-                    (pAd->CommonCfg.RegTransmitSetting.field.BW == BW_40) &&
-                    (channel == 1 || channel == 11))
-                return (pAd->ChannelList[i].MaxTxPwr - pAd->CommonCfg.BandedgeDelta - deltaTxStreamPwr);
-            else
-                return (pAd->ChannelList[i].MaxTxPwr - deltaTxStreamPwr);
-        }
-        else if(pAd->ChannelList[i].RegulatoryDomain == CE)
-        {
-            return (pAd->ChannelList[i].MaxTxPwr - pAd->CommonCfg.AntGain - deltaTxStreamPwr);
-        }
-        else
-            return 0xff;
-    }
-    else
-#endif /* SINGLE_SKU */
         return pAd->ChannelList[i].MaxTxPwr;
 }
 

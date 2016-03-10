@@ -2814,11 +2814,7 @@ BOOLEAN CFG80211_SupBandInit(
     CFG80211DBG(RT_DEBUG_INFO, ("mt7610u: number of rates = %d\n", NumOfRate));
 
     /* get TX power */
-#ifdef SINGLE_SKU
-    CurTxPower = pBandInfo->DefineMaxTxPwr; /* dBm */
-#else
     CurTxPower = 0; /* unknown */
-#endif /* SINGLE_SKU */
 
     CFG80211DBG(RT_DEBUG_TRACE, ("mt7610u: CurTxPower = %d dBm\n", CurTxPower));
 

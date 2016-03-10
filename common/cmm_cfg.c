@@ -356,9 +356,6 @@ static BOOLEAN RT_isLegalCmdBeforeInfUp(
                 !strcmp(SetCmd, "ChannelListAdd") ||
                 !strcmp(SetCmd, "ChannelListShow") ||
                 !strcmp(SetCmd, "ChannelListDel") ||
-#ifdef SINGLE_SKU
-                !strcmp(SetCmd, "ModuleTxpower") ||
-#endif /* SINGLE_SKU */
                 FALSE; /* default */
     return TestFlag;
 }

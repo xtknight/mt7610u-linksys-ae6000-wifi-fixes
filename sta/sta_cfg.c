@@ -234,9 +234,6 @@ static struct
     {"WfdPeerRtspPort",					Set_PeerRtspPort_Proc},
 #endif /* WFD_SUPPORT */
 
-#ifdef SINGLE_SKU
-    {"ModuleTxpower",				Set_ModuleTxpower_Proc},
-#endif /* SINGLE_SKU */
 
 
 #ifdef CONFIG_FPGA_MODE

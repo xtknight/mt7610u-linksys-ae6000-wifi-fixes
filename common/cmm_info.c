@@ -4422,16 +4422,6 @@ INT show_trinfo_proc(RTMP_ADAPTER *pAd, PSTRING arg)
 
 
 
-#ifdef SINGLE_SKU
-INT	Show_ModuleTxpower_Proc(
-    IN	PRTMP_ADAPTER	pAd,
-    OUT	PSTRING			pBuf,
-    IN	ULONG			BufLen)
-{
-    snprintf(pBuf, BufLen, "\tModuleTxpower = %d", pAd->CommonCfg.ModuleTxpower);
-    return 0;
-}
-#endif /* SINGLE_SKU */
 
 #ifdef APCLI_SUPPORT
 INT RTMPIoctlConnStatus(
@@ -5700,25 +5690,6 @@ INT Set_VcoPeriod_Proc(
     return TRUE;
 }
 
-#ifdef SINGLE_SKU
-INT Set_ModuleTxpower_Proc(
-    IN	PRTMP_ADAPTER	pAd,
-    IN	PSTRING			arg)
-{
-    UINT16 Value;
-
-    if(RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_INTERRUPT_IN_USE))
-    {
-        DBGPRINT(RT_DEBUG_ERROR, ("Do NOT accept this command after interface is up.\n"));
-        return FALSE;
-    }
-
-    Value = (UINT16)simple_strtol(arg, 0, 10);
-    pAd->CommonCfg.ModuleTxpower = Value;
-    DBGPRINT(RT_DEBUG_TRACE, ("IF Set_ModuleTxpower_Proc::(ModuleTxpower=%d)\n", pAd->CommonCfg.ModuleTxpower));
-    return TRUE;
-}
-#endif /* SINGLE_SKU */
 
 
 #ifdef CONFIG_FPGA_MODE
@@ -6118,9 +6089,6 @@ static struct
     {"Key3",					Show_Key3_Proc},
     {"Key4",					Show_Key4_Proc},
     {"PMK",						Show_PMK_Proc},
-#ifdef SINGLE_SKU
-    {"ModuleTxpower",			Show_ModuleTxpower_Proc},
-#endif /* SINGLE_SKU */
 #endif /* DBG */
     {"rainfo",					Show_STA_RAInfo_Proc},
     {NULL, NULL}

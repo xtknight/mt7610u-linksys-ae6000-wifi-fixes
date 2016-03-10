@@ -620,12 +620,6 @@ struct _RTMP_CHIP_CAP_
 #endif /* A_BAND_SUPPORT */
 #endif /* defined(RTMP_INTERNAL_TX_ALC) || defined(RTMP_TEMPERATURE_COMPENSATION) */
 
-#ifdef SINGLE_SKU_V2
-    INT16	PAModeCCK[4];
-    INT16	PAModeOFDM[8];
-    INT16	PAModeHT[16];
-    INT16	PAModeVHT[10];
-#endif /* SINGLE_SKU_V2 */
 
     /* ---------------------------- packet ---------------------------------- */
     UINT8 TXWISize;

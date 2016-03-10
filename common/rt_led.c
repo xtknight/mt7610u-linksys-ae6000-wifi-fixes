@@ -27,7 +27,6 @@
 
 #include	"rt_config.h"
 
-#ifdef LED_CONTROL_SUPPORT
 
 INT LED_Array[16][12]=
 {
@@ -316,4 +315,3 @@ inline void RTMPExitLEDMode(IN RTMP_ADAPTER *pAd)
     return;
 }
 
-#endif /* LED_CONTROL_SUPPORT */

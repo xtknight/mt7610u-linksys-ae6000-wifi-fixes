@@ -295,10 +295,8 @@ int rt28xx_init(VOID *pAdSrc, PSTRING pDefaultMac, PSTRING pHostName)
 
     DBGPRINT(RT_DEBUG_INFO, ("3. Phy Mode = %d\n", pAd->CommonCfg.PhyMode));
 
-#ifdef LED_CONTROL_SUPPORT
     /* Send LED Setting to MCU */
     RTMPInitLEDMode(pAd);
-#endif /* LED_CONTROL_SUPPORT */
 
     NICInitAsicFromEEPROM(pAd); /* rt2860b */
 
@@ -668,9 +666,7 @@ VOID RTMPDrvSTAClose(
     MeasureReqTabExit(pAd);
     TpcReqTabExit(pAd);
 
-#ifdef LED_CONTROL_SUPPORT
     RTMPExitLEDMode(pAd);
-#endif // LED_CONTROL_SUPPORT
 
     RTMP_CLEAR_FLAG(pAd, fRTMP_ADAPTER_MCU_SEND_IN_BAND_CMD);
 
@@ -686,16 +682,6 @@ VOID RTMPDrvSTAClose(
         RTMP_CLEAR_FLAG(pAd, fRTMP_ADAPTER_INTERRUPT_IN_USE);
     }
 
-#ifdef SINGLE_SKU_V2
-    {
-        CH_POWER *ch, *ch_temp;
-        DlListForEachSafe(ch, ch_temp, &pAd->SingleSkuPwrList, CH_POWER, List)
-        {
-            DlListDel(&ch->List);
-            os_free_mem(NULL, ch);
-        }
-    }
-#endif /* SINGLE_SKU_V2 */
 
 #ifdef RESOURCE_PRE_ALLOC
     RTMPResetTxRxRingMemory(pAd);

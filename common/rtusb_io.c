@@ -1734,7 +1734,6 @@ NTSTATUS QkeriodicExecutHdlr(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQelmt)
 
 
 
-#ifdef LED_CONTROL_SUPPORT
 static NTSTATUS SetLEDStatusHdlr(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQelmt)
 {
     UCHAR LEDStatus = *((PUCHAR)(CMDQelmt->buffer));
@@ -1746,7 +1745,6 @@ static NTSTATUS SetLEDStatusHdlr(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQelmt)
 
     return NDIS_STATUS_SUCCESS;
 }
-#endif /* LED_CONTROL_SUPPORT */
 
 
 
@@ -1828,11 +1826,7 @@ static CMDHdlr CMDHdlrTable[] =
     NULL,
     NULL,
 
-#ifdef LED_CONTROL_SUPPORT
     SetLEDStatusHdlr,			/* CMDTHREAD_SET_LED_STATUS*/
-#else
-    NULL,
-#endif /* LED_CONTROL_SUPPORT */
 
     NULL,
 

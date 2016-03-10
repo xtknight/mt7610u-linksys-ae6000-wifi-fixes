@@ -526,7 +526,6 @@ VOID MlmeHalt(
     {
         RTMP_CHIP_OP *pChipOps = &pAd->chipOps;
 
-#ifdef LED_CONTROL_SUPPORT
         /* Set LED*/
         RTMPSetLED(pAd, LED_HALT);
         RTMPSetSignalLED(pAd, -100);	/* Force signal strength Led to be turned off, firmware is not done it.*/
@@ -539,7 +538,6 @@ VOID MlmeHalt(
             LedCfg.field.YLedMode = 0;
             RTMP_IO_WRITE32(pAd, LED_CFG, LedCfg.word);
         }
-#endif /* LED_CONTROL_SUPPORT */
 
 #if defined(WOW_SUPPORT) && defined(RTMP_MAC_USB)
 
@@ -988,16 +986,11 @@ VOID STAMlmePeriodicExec(
     if(!RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_BSS_SCAN_IN_PROGRESS))
         AsicAdjustTxPower(pAd);
 
-#ifndef SINGLE_SKU_V2
 
     if(pAd->Mlme.OneSecPeriodicRound % 5 == 0)
         mt76x0_adjust_per_rate_pwr(pAd);
 
-#endif /* SINGLE_SKU_V2 */
 
-#ifdef RTMP_TEMPERATURE_TX_ALC
-    mt76x0_temp_tx_alc(pAd);
-#endif /* RTMP_TEMPERATURE_TX_ALC */
 
     /*
     	Driver needs to up date value of LastOneSecTotalTxCount here;

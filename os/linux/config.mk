@@ -41,9 +41,6 @@ HAS_IDS_SUPPORT=n
 #Support for Net-SNMP
 HAS_SNMP_SUPPORT=n
 
-#Support features of Single SKU. 
-HAS_SINGLE_SKU_SUPPORT=n
-
 
 #Support for 2860/2880 co-exist 
 HAS_RT2880_RT2860_COEXIST=n
@@ -108,9 +105,6 @@ HAS_APCLI_WPA_SUPPLICANT=n
 HAS_RTMP_FLASH_SUPPORT=n
 
 
-HAS_LED_CONTROL_SUPPORT=y
-
-
 #Support WIDI feature
 #Must enable HAS_WSC at the same time.
 
@@ -119,12 +113,6 @@ HAS_TXBF_SUPPORT=n
 HAS_STREAM_MODE_SUPPORT=n
 
 HAS_RATE_ADAPT_AGS_SUPPORT=n
-
-
-
-
-
-HAS_TEMPERATURE_TX_ALC=y
 
 HAS_WOW_SUPPORT=n
 HAS_WOW_IFDOWN_SUPPORT=n
@@ -179,10 +167,6 @@ endif
 
 ifeq ($(HAS_STREAM_MODE_SUPPORT),y)
 WFLAGS += -DSTREAM_MODE_SUPPORT
-endif
-
-ifeq ($(HAS_SINGLE_SKU_SUPPORT),y)
-WFLAGS += -DSINGLE_SKU_V2
 endif
 
 ifeq ($(HAS_HDR_TRANS_SUPPORT),y)
@@ -327,10 +311,6 @@ WFLAGS += -DBG_FT_OPEN_SUPPORT
 endif
 
 
-ifeq ($(HAS_LED_CONTROL_SUPPORT),y)
-WFLAGS += -DLED_CONTROL_SUPPORT
-endif
-
 ifeq ($(HAS_FPGA_MODE),y)
 WFLAGS += -DCONFIG_FPGA_MODE
 endif
@@ -339,10 +319,6 @@ ifeq ($(HAS_WIFI_TEST),y)
 WFLAGS += -DCONFIG_WIFI_TEST
 endif
 
-
-ifeq ($(HAS_TEMPERATURE_TX_ALC),y)
-WFLAGS += -DRTMP_TEMPERATURE_TX_ALC
-endif
 
 #################################################
 # ChipSet specific definitions.

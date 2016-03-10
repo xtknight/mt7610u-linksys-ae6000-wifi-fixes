@@ -834,40 +834,11 @@ VOID NICReadEEPROMParameters(RTMP_ADAPTER *pAd, PSTRING mac_addr)
     }
 
 
-#ifdef LED_CONTROL_SUPPORT
     /* LED Setting */
     RTMPGetLEDSetting(pAd);
-#endif /* LED_CONTROL_SUPPORT */
 
     RTMPReadTxPwrPerRate(pAd);
 
-#ifdef SINGLE_SKU
-    {
-        RT28xx_EEPROM_READ16(pAd, EEPROM_DEFINE_MAX_TXPWR, pAd->CommonCfg.DefineMaxTxPwr);
-    }
-
-    /*
-    	Some dongle has old EEPROM value, use ModuleTxpower for saving correct value fo DefineMaxTxPwr.
-    	ModuleTxpower will override DefineMaxTxPwr (value from EEPROM) if ModuleTxpower is not zero.
-    */
-    if(pAd->CommonCfg.ModuleTxpower > 0)
-        pAd->CommonCfg.DefineMaxTxPwr = pAd->CommonCfg.ModuleTxpower;
-
-    DBGPRINT(RT_DEBUG_TRACE, ("TX Power set for SINGLE SKU MODE is : 0x%04x\n", pAd->CommonCfg.DefineMaxTxPwr));
-
-    pAd->CommonCfg.bSKUMode = FALSE;
-
-    if((pAd->CommonCfg.DefineMaxTxPwr & 0xFF) <= 0x50)
-    {
-        if(IS_RT3883(pAd))
-            pAd->CommonCfg.bSKUMode = TRUE;
-        else if((pAd->CommonCfg.AntGain > 0) && (pAd->CommonCfg.BandedgeDelta >= 0))
-            pAd->CommonCfg.bSKUMode = TRUE;
-    }
-
-    DBGPRINT(RT_DEBUG_TRACE, ("Single SKU Mode is %s\n",
-                              pAd->CommonCfg.bSKUMode ? "Enable" : "Disable"));
-#endif /* SINGLE_SKU */
 
 
 #ifdef RTMP_INTERNAL_TX_ALC
@@ -1147,7 +1118,6 @@ VOID	NICInitAsicFromEEPROM(
         else
             pAd->StaCfg.bHardwareRadio = FALSE;
 
-#ifdef LED_CONTROL_SUPPORT
 
         if(pAd->StaCfg.bRadio == FALSE)
         {
@@ -1158,7 +1128,6 @@ VOID	NICInitAsicFromEEPROM(
             RTMPSetLED(pAd, LED_RADIO_ON);
         }
 
-#endif /* LED_CONTROL_SUPPORT */
 
     }
 #ifdef PCIE_PS_SUPPORT
@@ -2518,10 +2487,8 @@ VOID UserCfgInit(RTMP_ADAPTER *pAd)
     /*pAd->TurnAggrBulkInCount = 0;*/
     pAd->bUsbTxBulkAggre = 0;
 
-#ifdef LED_CONTROL_SUPPORT
     /* init as unsed value to ensure driver will set to MCU once.*/
     pAd->LedCntl.LedIndicatorStrength = 0xFF;
-#endif /* LED_CONTROL_SUPPORT */
 
     pAd->CommonCfg.MaxPktOneTxBulk = 2;
     pAd->CommonCfg.TxBulkFactor = 1;

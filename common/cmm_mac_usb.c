@@ -1817,10 +1817,8 @@ VOID RT28xxUsbMlmeRadioOn(
     RTMP_CLEAR_FLAG(pAd, fRTMP_ADAPTER_RADIO_OFF);
 
 
-#ifdef LED_CONTROL_SUPPORT
     /* Set LED*/
     RTMPSetLED(pAd, LED_RADIO_ON);
-#endif /* LED_CONTROL_SUPPORT */
 
 }
 
@@ -1890,10 +1888,8 @@ VOID RT28xxUsbMlmeRadioOFF(
     }
 
 
-#ifdef LED_CONTROL_SUPPORT
     /* Set LED*/
     RTMPSetLED(pAd, LED_RADIO_OFF);
-#endif /* LED_CONTROL_SUPPORT */
 
     ASIC_RADIO_OFF(pAd, MLME_RADIO_OFF);
 }

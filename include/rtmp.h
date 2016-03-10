@@ -88,9 +88,7 @@ typedef struct _UAPSD_INFO
 #include "dfs.h"
 #endif /* DFS_SUPPORT */
 
-#ifdef LED_CONTROL_SUPPORT
 #include "rt_led.h"
-#endif /* LED_CONTROL_SUPPORT */
 
 
 
@@ -1560,13 +1558,6 @@ typedef struct _COMMON_CONFIG
 
     /* transmit phy mode, trasmit rate for Multicast. */
 
-#ifdef SINGLE_SKU
-    UINT16 DefineMaxTxPwr;
-    BOOLEAN bSKUMode;
-    UINT16 AntGain;
-    UINT16 BandedgeDelta;
-    UINT16 ModuleTxpower;
-#endif /* SINGLE_SKU */
 
 
 
@@ -2826,15 +2817,6 @@ struct _RTMP_ADAPTER
     UCHAR TxAgcStepG;	/* Store Tx TSSI delta increment / decrement value */
     CHAR TxAgcCompensateG;	/* Store the compensation (TxAgcStep * (idx-1)) */
 
-#ifdef RTMP_TEMPERATURE_TX_ALC
-    CHAR TssiCalibratedOffset;	/* reference temperature(e2p[D1h]) */
-    UCHAR ChBndryIdx;			/* 5G Channel Group Boundary Index for Temperature Compensation */
-
-    CHAR mp_delta_pwr;			 /* calculated by MP ATE temperature */
-    CHAR CurrTemperature;
-    CHAR DeltaPwrBeforeTempComp;
-    CHAR LastTempCompDeltaPwr;
-#endif /* RTMP_TEMPERATURE_TX_ALC */
 
 #if defined(RTMP_INTERNAL_TX_ALC) || defined(RTMP_TEMPERATURE_COMPENSATION)
     TX_POWER_CONTROL TxPowerCtrl;	/* The Tx power control using the internal ALC */
@@ -2852,10 +2834,8 @@ struct _RTMP_ADAPTER
     CHAR ALNAGain2;		/* Store A external LNA#2 value for ch132~165 */
 
 
-#ifdef LED_CONTROL_SUPPORT
     /* LED control */
     LED_CONTROL LedCntl;
-#endif /* LED_CONTROL_SUPPORT */
 
     /* ---------------------------- */
     /* MAC control */
@@ -3206,11 +3186,6 @@ struct _RTMP_ADAPTER
 
     struct MCU_CTRL MCUCtrl;
 
-#ifdef SINGLE_SKU_V2
-    DL_LIST SingleSkuPwrList;
-    CHAR DefaultTargetPwr;
-    CHAR SingleSkuRatePwrDiff[19];
-#endif /* SINGLE_SKU_V2 */
 };
 
 #if defined(RTMP_INTERNAL_TX_ALC) || defined(RTMP_TEMPERATURE_COMPENSATION)
@@ -3843,10 +3818,6 @@ NDIS_STATUS	RTMPSetProfileParameters(
 NDIS_STATUS	RTMPSetDefaultProfileParameters(
     IN RTMP_ADAPTER *pAd);
 
-#ifdef SINGLE_SKU_V2
-NDIS_STATUS	RTMPSetSingleSKUParameters(
-    IN RTMP_ADAPTER *pAd);
-#endif /* SINGLE_SKU_V2 */
 
 INT RTMPGetKeyParameter(
     IN PSTRING key,
@@ -4384,13 +4355,6 @@ VOID AsicGetAutoAgcOffsetForTemperatureSensor(
     IN PCHAR 				pDeltaPowerByBbpR1);
 #endif /* RTMP_TEMPERATURE_COMPENSATION */
 
-#ifdef SINGLE_SKU
-VOID GetSingleSkuDeltaPower(
-    IN 		PRTMP_ADAPTER 	pAd,
-    IN 		PCHAR 			pTotalDeltaPower,
-    INOUT 	PULONG			pSingleSKUTotalDeltaPwr,
-    INOUT  	PUCHAR              	pSingleSKUBbpR1Offset);
-#endif /* SINGLE_SKU*/
 
 VOID AsicPercentageDeltaPower(
     IN 		PRTMP_ADAPTER 		pAd,
@@ -7743,11 +7707,6 @@ INT	Set_RateAlg_Proc(
     IN RTMP_ADAPTER *pAd,
     IN PSTRING arg);
 
-#ifdef SINGLE_SKU
-INT Set_ModuleTxpower_Proc(
-    IN RTMP_ADAPTER *pAd,
-    IN PSTRING arg);
-#endif /* SINGLE_SKU */
 
 VOID RtmpEnqueueNullFrame(
     IN PRTMP_ADAPTER pAd,

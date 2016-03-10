@@ -239,9 +239,6 @@ INT Set_AntennaSelect_Proc(
     IN struct _RTMP_ADAPTER		*pAd,
     IN PSTRING			arg);
 
-#ifdef RTMP_TEMPERATURE_TX_ALC
-void mt76x0_temp_tx_alc(struct _RTMP_ADAPTER *pAd);
-#endif /* RTMP_TEMPERATURE_TX_ALC */
 
 void mt76x0_adjust_per_rate_pwr(struct _RTMP_ADAPTER *pAd);
 
@@ -261,14 +258,5 @@ VOID MT76x0_IntTxAlcProcess(
 VOID MT76x0_MakeUpRatePwrTable(
     IN struct _RTMP_ADAPTER *pAd);
 
-#ifdef SINGLE_SKU_V2
-UCHAR MT76x0_GetSkuChannelBasePwr(
-    IN struct _RTMP_ADAPTER *pAd,
-    IN UCHAR channel);
-
-UCHAR MT76x0_UpdateSkuPwr(
-    IN struct _RTMP_ADAPTER *pAd,
-    IN UCHAR channel);
-#endif /* SINGLE_SKU_V2 */
 
 #endif /* __MT76x0_H__ */
