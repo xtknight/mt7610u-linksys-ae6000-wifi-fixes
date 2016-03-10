@@ -57,31 +57,15 @@ RT28XX_STA_OBJ := \
 	$(RT28xx_DIR)/sta/wpa.o\
 	$(RT28xx_DIR)/sta/sta_cfg.o
 
-ifeq ($(OSABL),NO)
 RT28XX_STA_OBJ += \
 	$(RT28xx_DIR)/common/rt_os_util.o\
 	$(RT28xx_DIR)/os/linux/sta_ioctl.o\
 	$(RT28xx_DIR)/os/linux/rt_linux.o\
 	$(RT28xx_DIR)/os/linux/rt_main_dev.o
-else
-RT28XX_STA_OBJ += \
-	$(RT28xx_DIR)/os/linux/rt_symb.o
-endif
 
 RT28XX_STA_OBJS += $(RT28xx_DIR)/rate_ctrl/alg_grp.o
 
-ifeq ($(HAS_ATE),y)
-RT28XX_STA_OBJ += \
-	$(RT28xx_DIR)/ate/common/rt_ate.o
-endif
 
-ifeq ($(HAS_QA_SUPPORT),y)
-RT28XX_STA_OBJ += \
-	$(RT28xx_DIR)/ate/common/rt_qa.o
-endif
-
-#ifdef DOT11_N_SUPPORT
-ifeq ($(HAS_DOT11_N_SUPPORT),y)
 RT28XX_STA_OBJ += \
 	$(RT28xx_DIR)/common/ba_action.o
 
@@ -92,8 +76,6 @@ rt$(MODULE)sta-objs += \
 	$(RT28xx_DIR)/common/cmm_txbf_cal.o
 endif
 #endif // TXBF_SUPPORT //
-endif
-#endif // DOT11_N_SUPPORT //
 
 #ifdef ETH_CONVERT
 ifeq ($(HAS_ETH_CONVERT_SUPPORT), y)

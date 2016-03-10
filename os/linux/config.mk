@@ -1,9 +1,3 @@
-# Support ATE function
-HAS_ATE=n
-
-# Support QA ATE function
-HAS_QA_SUPPORT=n
-
 HAS_RSSI_FEEDBACK=n
 
 # Support XLINK mode
