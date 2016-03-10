@@ -133,12 +133,10 @@ RT28XX_STA_OBJ += \
 	$(RT28xx_DIR)/ate/common/ate_pci.o
 endif
 
-ifeq ($(OSABL),NO)
 RT28XX_STA_OBJ += \
 	$(RT28xx_DIR)/os/linux/rt_pci_rbus.o\
 	$(RT28xx_DIR)/os/linux/rt_rbus_pci_util.o\
 	$(RT28xx_DIR)/os/linux/pci_main_dev.o
-endif
 endif
 
 ifneq ($(findstring 3390,$(CHIPSET)),)
@@ -162,12 +160,10 @@ RT28XX_STA_OBJ += \
 	$(RT28xx_DIR)/ate/common/ate_pci.o
 endif
 
-ifeq ($(OSABL),NO)
 RT28XX_STA_OBJ += \
 	$(RT28xx_DIR)/os/linux/rt_pci_rbus.o\
 	$(RT28xx_DIR)/os/linux/rt_rbus_pci_util.o\
 	$(RT28xx_DIR)/os/linux/pci_main_dev.o
-endif
 endif
 
 

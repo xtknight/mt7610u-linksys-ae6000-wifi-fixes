@@ -124,16 +124,11 @@ $(MOD_NAME)-objs := \
 	$(obj_wsc)
 
 
-ifeq ($(OSABL),NO)
 $(MOD_NAME)-objs += \
 	../../common/rt_os_util.o\
 	../../os/linux/sta_ioctl.o\
 	../../os/linux/rt_linux.o\
 	../../os/linux/rt_main_dev.o
-else
-$(MOD_NAME)-objs += \
-	../../os/linux/rt_symb.o
-endif
 
 #ifdef ETH_CONVERT
 ifeq ($(HAS_ETH_CONVERT_SUPPORT), y)
@@ -197,12 +192,10 @@ $(MOD_NAME)-objs += \
 	../../chips/rt30xx.o\
 	../../chips/rt3290.o
 
-ifeq ($(OSABL),NO)
 $(MOD_NAME)-objs += \
         ../../os/linux/rt_pci_rbus.o\
         ../../os/linux/rt_rbus_pci_util.o\
         ../../os/linux/pci_main_dev.o
-endif
 
 ifneq ($(findstring $(RT28xx_MODE),STA APSTA),)
 $(MOD_NAME)-objs += \
@@ -225,12 +218,10 @@ $(MOD_NAME)-objs += \
         ../../common/rt_rf.o\
         ../../chips/rt6592.o
 
-ifeq ($(OSABL),NO)
 $(MOD_NAME)-objs += \
         ../../os/linux/rt_pci_rbus.o\
         ../../os/linux/rt_rbus_pci_util.o\
         ../../os/linux/pci_main_dev.o
-endif
 endif
 #endif // RT6592 //
 
@@ -259,12 +250,10 @@ $(MOD_NAME)-objs += \
         ../../common/ee_flash.o
 endif
 
-ifeq ($(OSABL),NO)
 $(MOD_NAME)-objs += \
                 ../../os/linux/rt_pci_rbus.o\
                 ../../os/linux/rt_rbus_pci_util.o\
                 ../../os/linux/pci_main_dev.o
-endif
 
 ifneq ($(findstring $(RT28xx_MODE),STA APSTA),)
 $(MOD_NAME)-objs += \
@@ -315,13 +304,11 @@ $(MOD_NAME)-objs += \
 	../../ate/common/ate_usb.o
 endif
 
-ifeq ($(OSABL),NO)
 $(MOD_NAME)-objs += \
                 ../../os/linux/rt_usb.o\
                 ../../os/linux/rt_usb_util.o\
                 ../../os/linux/usb_main_dev.o\
 				../../common/rtusb_dev_id.o
-endif
 
 ifneq ($(findstring $(RT28xx_MODE),STA APSTA),)
 $(MOD_NAME)-objs += \
@@ -354,12 +341,10 @@ $(MOD_NAME)-objs += \
         		../../common/ee_flash.o
 endif
 
-ifeq ($(OSABL),NO)
 $(MOD_NAME)-objs += \
                 ../../os/linux/rt_pci_rbus.o\
                 ../../os/linux/rt_rbus_pci_util.o\
                 ../../os/linux/pci_main_dev.o
-endif
 
 ifneq ($(findstring $(RT28xx_MODE),STA APSTA),)
 $(MOD_NAME)-objs += \
