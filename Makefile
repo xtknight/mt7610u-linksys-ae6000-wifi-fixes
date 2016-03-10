@@ -1,9 +1,3 @@
-ifeq ($(WIFI_MODE),)
-RT28xx_MODE = STA
-else
-RT28xx_MODE = $(WIFI_MODE)
-endif
-
 ifeq ($(TARGET),)
 TARGET = LINUX
 endif
@@ -20,14 +14,13 @@ endif
 
 ifeq ($(CHIPSET),)
 CHIPSET = mt7610u mt7630u mt7650u
+#CHIPSET = mt7610u
 endif
 
 MODULE = $(word 1, $(CHIPSET))
 
-ifneq ($(TARGET),THREADX)
 #RT28xx_DIR = home directory of RT28xx source code
 RT28xx_DIR = $(shell pwd)
-endif
 
 include $(RT28xx_DIR)/os/linux/config.mk
 
@@ -57,18 +50,16 @@ export MODULE
 endif
 
 ifeq ($(PLATFORM),PC)
-# Linux 2.6
+# Linux 2.6 and higher
 LINUX_SRC = /lib/modules/$(shell uname -r)/build
-# Linux 2.4 Change to your local setting
-#LINUX_SRC = /usr/src/linux-2.4
 LINUX_SRC_MODULE = /lib/modules/$(shell uname -r)/kernel/drivers/net/wireless/
 CROSS_COMPILE = 
 endif
 
-export RT28xx_DIR RT28xx_MODE LINUX_SRC CROSS_COMPILE CROSS_COMPILE_INCLUDE PLATFORM RELEASE CHIPSET MODULE RTMP_SRC_DIR LINUX_SRC_MODULE TARGET HAS_WOW_SUPPORT
+export RT28xx_DIR LINUX_SRC CROSS_COMPILE CROSS_COMPILE_INCLUDE PLATFORM RELEASE CHIPSET MODULE RTMP_SRC_DIR LINUX_SRC_MODULE TARGET HAS_WOW_SUPPORT
 
 # The targets that may be used.
-PHONY += all build_tools test UCOS THREADX LINUX release prerelease clean uninstall install libwapi
+PHONY += all build_tools test UCOS THREADX LINUX release clean uninstall install libwapi
 
 ifeq ($(TARGET),LINUX)
 all: build_tools $(TARGET)
@@ -83,52 +74,10 @@ build_tools:
 test:
 	$(MAKE) -C tools test
 
-UCOS:
-	$(MAKE) -C os/ucos/ MODE=$(RT28xx_MODE)
-	echo $(RT28xx_MODE)
-
-ECOS:
-	$(MAKE) -C os/ecos/ MODE=$(RT28xx_MODE)
-	cp -f os/ecos/$(MODULE) $(MODULE)
-
-THREADX:
-	$(MAKE) -C $(RT28xx_DIR)/os/Threadx -f $(RT28xx_DIR)/os/ThreadX/Makefile
-
 LINUX:
-ifneq (,$(findstring 2.4,$(LINUX_SRC)))
-
-	cp -f os/linux/Makefile.4 $(RT28xx_DIR)/os/linux/Makefile
-	$(MAKE) -C $(RT28xx_DIR)/os/linux/
-
-ifeq ($(RT28xx_MODE),AP)
-	cp -f $(RT28xx_DIR)/os/linux/$(MODULE)_ap.o /tftpboot
-ifeq ($(PLATFORM),INF_AMAZON_SE)
-	cp -f /tftpboot/rt2870ap.o /backup/ifx/build/root_filesystem/lib/modules/2.4.31-Amazon_SE-3.6.2.2-R0416_Ralink/kernel/drivers/net
-endif
-else	
-ifeq ($(RT28xx_MODE),APSTA)
-	cp -f $(RT28xx_DIR)/os/linux/$(MODULE)_apsta.o /tftpboot
-else
-	cp -f $(RT28xx_DIR)/os/linux/$(MODULE)_sta.o /tftpboot
-endif	
-endif	
-else
-
 	cp -f os/linux/Makefile.6 $(RT28xx_DIR)/os/linux/Makefile
 	$(MAKE) -C $(LINUX_SRC) SUBDIRS=$(RT28xx_DIR)/os/linux modules
-
-ifeq ($(RT28xx_MODE),AP)
-	cp -f $(RT28xx_DIR)/os/linux/$(MODULE)_ap.ko /tftpboot
-	rm -f os/linux/$(MODULE)_ap.ko.lzma
-	/root/bin/lzma e os/linux/$(MODULE)_ap.ko os/linux/$(MODULE)_ap.ko.lzma
-else	
-ifeq ($(RT28xx_MODE),APSTA)
-	cp -f $(RT28xx_DIR)/os/linux/$(MODULE)_apsta.ko /tftpboot
-else
 	cp -f $(RT28xx_DIR)/os/linux/$(MODULE)_sta.ko /tftpboot 2>/dev/null || :
-endif
-endif
-endif
 
 
 release: build_tools
@@ -141,68 +90,28 @@ ifeq ($(RELEASE), DPO)
 	./striptool/banner -b striptool/copyright.frm -s DPO_GPL/include/firmware.h
 endif
 
-prerelease:
-ifeq ($(MODULE), 2880)
-	$(MAKE) -C $(RT28xx_DIR)/os/linux -f Makefile.release.2880 prerelease
-else
-	$(MAKE) -C $(RT28xx_DIR)/os/linux -f Makefile.release prerelease
-endif
-	cp $(RT28xx_DIR)/os/linux/Makefile.DPB $(RTMP_SRC_DIR)/os/linux/.
-	cp $(RT28xx_DIR)/os/linux/Makefile.DPA $(RTMP_SRC_DIR)/os/linux/.
-	cp $(RT28xx_DIR)/os/linux/Makefile.DPC $(RTMP_SRC_DIR)/os/linux/.
-ifeq ($(RT28xx_MODE),STA)
-	cp $(RT28xx_DIR)/os/linux/Makefile.DPD $(RTMP_SRC_DIR)/os/linux/.
-	cp $(RT28xx_DIR)/os/linux/Makefile.DPO $(RTMP_SRC_DIR)/os/linux/.
-endif	
-
 clean:
 ifeq ($(TARGET), LINUX)
 	cp -f os/linux/Makefile.clean os/linux/Makefile
 	$(MAKE) -C os/linux clean
 	rm -rf os/linux/Makefile
 endif	
-ifeq ($(TARGET), UCOS)
-	$(MAKE) -C os/ucos clean MODE=$(RT28xx_MODE)
-endif
-ifeq ($(TARGET), ECOS)
-	$(MAKE) -C os/ecos clean MODE=$(RT28xx_MODE)
-endif
 
 uninstall:
 ifeq ($(TARGET), LINUX)
-ifneq (,$(findstring 2.4,$(LINUX_SRC)))
-	$(MAKE) -C $(RT28xx_DIR)/os/linux -f Makefile.4 uninstall
-else
 	$(MAKE) -C $(RT28xx_DIR)/os/linux -f Makefile.6 uninstall
-endif
 endif
 
 install:
-ifeq ($(TARGET), LINUX)
-ifneq (,$(findstring 2.4,$(LINUX_SRC)))
-	$(MAKE) -C $(RT28xx_DIR)/os/linux -f Makefile.4 install
-else
 	$(MAKE) -C $(RT28xx_DIR)/os/linux -f Makefile.6 install
-endif
-endif
 
 libwapi:
-ifneq (,$(findstring 2.4,$(LINUX_SRC)))
-	cp -f os/linux/Makefile.libwapi.4 $(RT28xx_DIR)/os/linux/Makefile
-	$(MAKE) -C $(RT28xx_DIR)/os/linux/
-else
 	cp -f os/linux/Makefile.libwapi.6 $(RT28xx_DIR)/os/linux/Makefile	
 	$(MAKE) -C  $(LINUX_SRC) SUBDIRS=$(RT28xx_DIR)/os/linux modules	
-endif	
 
 osdrv:
-ifneq (,$(findstring 2.4,$(LINUX_SRC)))
-	cp -f os/linux/Makefile.4 $(RT28xx_DIR)/os/linux/Makefile
-	$(MAKE) -C $(RT28xx_DIR)/os/linux/
-else
 	cp -f os/linux/Makefile.6 $(RT28xx_DIR)/os/linux/Makefile
 	$(MAKE) -C $(LINUX_SRC) SUBDIRS=$(RT28xx_DIR)/os/linux modules
-endif
 
 # Declare the contents of the .PHONY variable as phony.  We keep that information in a variable
 .PHONY: $(PHONY)

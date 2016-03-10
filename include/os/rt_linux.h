@@ -123,9 +123,6 @@ typedef struct usb_ctrlrequest devctrlrequest;
 
 extern	const struct iw_handler_def rt28xx_iw_handler_def;
 
-#ifdef CONFIG_APSTA_MIXED_SUPPORT
-extern	const struct iw_handler_def rt28xx_ap_iw_handler_def;
-#endif /* CONFIG_APSTA_MIXED_SUPPORT */
 
 /***********************************************************************************
  *	Compiler related definitions

@@ -153,7 +153,7 @@ WFLAGS += -DSTA_DRIVER_BUILD="\"${STA_DRIVER_BUILD}\""
 endif
 
 WFLAGS += -g -DAGGREGATION_SUPPORT -DPIGGYBACK_SUPPORT -DWMM_SUPPORT  -DLINUX -Wall -Wstrict-prototypes -Wno-trigraphs
-WFLAGS += -DSYSTEM_LOG_SUPPORT -DRT28xx_MODE=$(RT28xx_MODE) -DCHIPSET=$(MODULE) -DRESOURCE_PRE_ALLOC -DENHANCED_STAT_DISPLAY
+WFLAGS += -DSYSTEM_LOG_SUPPORT -DCHIPSET=$(MODULE) -DRESOURCE_PRE_ALLOC -DENHANCED_STAT_DISPLAY
 #WFLAGS += -DFPGA_MODE
 WFLAGS += -I$(RT28xx_DIR)/include
 
@@ -348,7 +348,6 @@ endif
 # ChipSet specific definitions.
 #
 
-ifneq ($(or $(findstring mt7650u,$(CHIPSET)),$(findstring mt7630u,$(CHIPSET)),$(findstring mt7610u,$(CHIPSET))),)
 WFLAGS += -DMT76x0 -DRT65xx -DRLT_MAC -DRLT_RF -DRTMP_MAC_USB -DRTMP_USB_SUPPORT -DRTMP_TIMER_TASK_SUPPORT -DA_BAND_SUPPORT -DRTMP_EFUSE_SUPPORT -DNEW_MBSSID_MODE -DCONFIG_ANDES_SUPPORT
 ifneq ($(findstring mt7650u,$(CHIPSET)),)
 WFLAGS += -DMT7650
@@ -367,7 +366,6 @@ WFLAGS += -DCONFIG_CSO_SUPPORT -DCONFIG_TSO_SUPPORT
 endif
 
 CHIPSET_DAT = 2870
-endif
 
 #################################################
 
@@ -384,16 +382,5 @@ ifeq ($(HAS_MC_SUPPORT),y)
 WFLAGS += -DMULTIPLE_CARD_SUPPORT
 endif
 
-#kernel build options for 2.4
-# move to Makefile outside LINUX_SRC := /opt/star/kernel/linux-2.4.27-star
-
-ifeq ($(PLATFORM),PC)
-    ifneq (,$(findstring 2.4,$(LINUX_SRC)))
-	# Linux 2.4
-	CFLAGS := -D__KERNEL__ -I$(LINUX_SRC)/include -O2 -fomit-frame-pointer -fno-strict-aliasing -fno-common -pipe -mpreferred-stack-boundary=2 -march=i686 -DMODULE -DMODVERSIONS -include $(LINUX_SRC)/include/linux/modversions.h $(WFLAGS)
-	export CFLAGS
-    else
-	# Linux 2.6
-	EXTRA_CFLAGS := $(WFLAGS) 
-    endif
-endif
+# Linux 2.6 or higher
+EXTRA_CFLAGS := $(WFLAGS) 

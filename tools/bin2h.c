@@ -96,13 +96,12 @@ int main(int argc ,char *argv[])
     char fw_name[128], e2p_name[128];
     char *rt28xxdir;
     char *chipset, *token;
-    char *wow, *rt28xx_mode;
+    char *wow;
 
     rt28xxdir = (char *)getenv("RT28xx_DIR");
     chipset = (char *)getenv("CHIPSET");
     memcpy(chipsets, chipset, strlen(chipset));
     wow = (char *)getenv("HAS_WOW_SUPPORT");
-    rt28xx_mode = (char *)getenv("RT28xx_MODE");
 
     if(!rt28xxdir)
     {
@@ -146,7 +145,7 @@ int main(int argc ,char *argv[])
         }
         else if(strncmp(chipset, "2870",4) == 0)
         {
-            if((strncmp(wow, "y", 1) == 0) && (strncmp(rt28xx_mode, "STA", 3) == 0))
+            if((strncmp(wow, "y", 1) == 0))
             {
                 strcat(infname,"/mcu/bin/rt2870_wow.bin");
                 strcat(outfname,"/include/mcu/rt2870_wow_firmware.h");
@@ -167,7 +166,7 @@ int main(int argc ,char *argv[])
         }
         else if(strncmp(chipset, "2070",4) == 0)
         {
-            if((strncmp(wow, "y", 1) == 0) && (strncmp(rt28xx_mode, "STA", 3) == 0))
+            if((strncmp(wow, "y", 1) == 0))
             {
                 strcat(infname,"/mcu/bin/rt2870_wow.bin");
                 strcat(outfname,"/include/mcu/rt2870_wow_firmware.h");
@@ -182,7 +181,7 @@ int main(int argc ,char *argv[])
         }
         else if(strncmp(chipset, "3070",4) == 0)
         {
-            if((strncmp(wow, "y", 1) == 0) && (strncmp(rt28xx_mode, "STA", 3) == 0))
+            if((strncmp(wow, "y", 1) == 0))
             {
                 strcat(infname,"/mcu/bin/rt2870_wow.bin");
                 strcat(outfname,"/include/mcu/rt2870_wow_firmware.h");
@@ -197,7 +196,7 @@ int main(int argc ,char *argv[])
         }
         else if(strncmp(chipset, "3572",4) == 0)
         {
-            if((strncmp(wow, "y", 1) == 0) && (strncmp(rt28xx_mode, "STA", 3) == 0))
+            if((strncmp(wow, "y", 1) == 0))
             {
                 strcat(infname,"/mcu/bin/rt2870_wow.bin");
                 strcat(outfname,"/include/mcu/rt2870_wow_firmware.h");
@@ -212,7 +211,7 @@ int main(int argc ,char *argv[])
         }
         else if(strncmp(chipset, "3573",4) == 0)
         {
-            if((strncmp(wow, "y", 1) == 0) && (strncmp(rt28xx_mode, "STA", 3) == 0))
+            if((strncmp(wow, "y", 1) == 0))
             {
                 strcat(infname,"/mcu/bin/rt2870_wow.bin");
                 strcat(outfname,"/include/mcu/rt2870_wow_firmware.h");
@@ -227,7 +226,7 @@ int main(int argc ,char *argv[])
         }
         else if(strncmp(chipset, "3370",4) == 0)
         {
-            if((strncmp(wow, "y", 1) == 0) && (strncmp(rt28xx_mode, "STA", 3) == 0))
+            if((strncmp(wow, "y", 1) == 0))
             {
                 strcat(infname,"/mcu/bin/rt2870_wow.bin");
                 strcat(outfname,"/include/mcu/rt2870_wow_firmware.h");
@@ -242,7 +241,7 @@ int main(int argc ,char *argv[])
         }
         else if(strncmp(chipset, "5370",4) == 0)
         {
-            if((strncmp(wow, "y", 1) == 0) && (strncmp(rt28xx_mode, "STA", 3) == 0))
+            if((strncmp(wow, "y", 1) == 0))
             {
                 strcat(infname,"/mcu/bin/rt2870_wow.bin");
                 strcat(outfname,"/include/mcu/rt2870_wow_firmware.h");

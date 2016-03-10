@@ -8,8 +8,6 @@ clean:
 	rm -f ../../os/linux/*.o *.ko *.mod.o *.mod.c
 	rm -f ../../os/linux/.*.cmd .*.flags .*.d
 	rm -fr ../../os/linux/.tmp_versions
-#Must clean Module.symvers; or you will suffer symbol version not match
-#when OS_ABL = YES.
 	rm -f ../../os/linux/Module.symvers
 	rm -f ../../os/linux/Modules.symvers
 	rm -f ../../os/linux/Module.markers
@@ -18,10 +16,6 @@ clean:
 	rm -f ../../chips/.*.cmd .*.flags .*.d
 	rm -f ../../rate_ctrl/*.o
 	rm -f ../../rate_ctrl/.*.cmd .*.flags .*.d
-	rm -f ../../ate/common/*.o
-	rm -f ../../ate/common/.*.cmd .*.flags .*.d
-	rm -f ../../ate/chips/*.o
-	rm -f ../../ate/chips/.*.cmd .*.flags .*.d
 	rm -f ../../phy/*.o
 	rm -f ../../phy/.*.cmd .*.flags .*.d
 	rm -f ../../mac/*.o
@@ -32,26 +26,8 @@ clean:
 	rm -f ../../mgmt/.*.cmd .*.flags .*.d
 	rm -f ../../naf/*.o
 	rm -f ../../naf/.*.cmd .*.flags .*.d
-ifeq ($(RT28xx_MODE),AP)
-	rm -f ../../ap/*.o
-	rm -f ../../ap/.*.cmd .*.flags .*.d
-else
-ifeq ($(RT28xx_MODE),STA)
 	rm -f ../../sta/*.o
 	rm -f ../../sta/.*.cmd .*.flags .*.d
-ifeq ($(HAS_P2P_SUPPORT),y)
-	rm -f ../../ap/*.o
-	rm -f ../../ap/.*.cmd .*.flags .*.d
-endif
-else
-ifeq ($(RT28xx_MODE),APSTA)
-	rm -f ../../ap/*.o
-	rm -f ../../ap/.*.cmd .*.flags .*.d
-	rm -f ../../sta/*.o
-	rm -f ../../sta/.*.cmd .*.flags .*.d
-endif
-endif
-endif
 
 # Declare the contents of the .PHONY variable as phony.  We keep that
 # information in a variable so we can use it in if_changed and friends.

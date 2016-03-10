@@ -351,9 +351,6 @@ static BOOLEAN RT_isLegalCmdBeforeInfUp(
 {
     BOOLEAN TestFlag;
     TestFlag =	!strcmp(SetCmd, "Debug") ||
-#ifdef CONFIG_APSTA_MIXED_SUPPORT
-                !strcmp(SetCmd, "OpMode") ||
-#endif /* CONFIG_APSTA_MIXED_SUPPORT */
                 !strcmp(SetCmd, "CountryCode") ||
                 !strcmp(SetCmd, "DfsType") ||
                 !strcmp(SetCmd, "ChannelListAdd") ||
@@ -697,13 +694,6 @@ INT RTMP_COM_IoctlHandle(
         RTMP_CLEAR_PSFLAG(pAd, fRTMP_PS_MCU_SLEEP);
         break;
 
-#ifdef CONFIG_APSTA_MIXED_SUPPORT
-
-    case CMD_RTPRIV_IOCTL_MAX_IN_BIT:
-        /* set MAX_IN_BIT for WMM */
-        CW_MAX_IN_BITS = Data;
-        break;
-#endif /* CONFIG_APSTA_MIXED_SUPPORT */
         //#ifdef CONFIG_PM
 
     //#ifdef USB_SUPPORT_SELECTIVE_SUSPEND

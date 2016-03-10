@@ -42,9 +42,6 @@
 // TODO: End---
 
 
-#ifdef CONFIG_APSTA_MIXED_SUPPORT
-/*UINT32 CW_MAX_IN_BITS;*/
-#endif /* CONFIG_APSTA_MIXED_SUPPORT */
 
 /*---------------------------------------------------------------------*/
 /* Private Variables Used                                              */
@@ -307,32 +304,12 @@ int rt28xx_open(VOID *dev)
 #endif /* CONFIG_PM */
 
 
-#ifdef CONFIG_APSTA_MIXED_SUPPORT
-
-    if(OpMode == OPMODE_AP)
-    {
-        /*CW_MAX_IN_BITS = 6; */
-        RTMP_DRIVER_MAX_IN_BITS_SET(pAd, 6);
-    }
-    else if(OpMode == OPMODE_STA)
-    {
-        /*CW_MAX_IN_BITS = 10; */
-        RTMP_DRIVER_MAX_IN_BITS_SET(pAd, 10);
-    }
-
-#endif /* CONFIG_APSTA_MIXED_SUPPORT */
 
 #if WIRELESS_EXT >= 12
 
     /*	if (RT_DEV_PRIV_FLAGS_GET(net_dev) == INT_MAIN) */
     if(RTMP_DRIVER_MAIN_INF_CHECK(pAd, RT_DEV_PRIV_FLAGS_GET(net_dev)) == NDIS_STATUS_SUCCESS)
     {
-#ifdef CONFIG_APSTA_MIXED_SUPPORT
-
-        if(OpMode == OPMODE_AP)
-            net_dev->wireless_handlers = (struct iw_handler_def *) &rt28xx_ap_iw_handler_def;
-
-#endif /* CONFIG_APSTA_MIXED_SUPPORT */
 
         if(OpMode == OPMODE_STA)
             net_dev->wireless_handlers = (struct iw_handler_def *) &rt28xx_iw_handler_def;
@@ -432,16 +409,6 @@ PNET_DEV RtmpPhyNetDevInit(
 
 #endif /*WIRELESS_EXT >= 12 */
 
-#ifdef CONFIG_APSTA_MIXED_SUPPORT
-#if WIRELESS_EXT >= 12
-
-    if(OpMode == OPMODE_AP)
-    {
-        pNetDevHook->iw_handler = &rt28xx_ap_iw_handler_def;
-    }
-
-#endif /*WIRELESS_EXT >= 12 */
-#endif /* CONFIG_APSTA_MIXED_SUPPORT */
 
     /* put private data structure */
     RTMP_OS_NETDEV_SET_PRIV(net_dev, pAd);

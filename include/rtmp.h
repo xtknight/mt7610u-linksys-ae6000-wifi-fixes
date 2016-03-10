@@ -6901,11 +6901,6 @@ INT	Set_FixedTxMode_Proc(
     IN	PRTMP_ADAPTER	pAd,
     IN	PSTRING			arg);
 
-#ifdef CONFIG_APSTA_MIXED_SUPPORT
-INT	Set_OpMode_Proc(
-    IN	PRTMP_ADAPTER	pAd,
-    IN	PSTRING			arg);
-#endif /* CONFIG_APSTA_MIXED_SUPPORT */
 
 INT Set_LongRetryLimit_Proc(
     IN	PRTMP_ADAPTER	pAdapter,

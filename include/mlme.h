@@ -77,9 +77,6 @@
 
 #define CW_MAX_IN_BITS              10        /* actual CwMax = 2^CW_MAX_IN_BITS - 1 */
 
-#ifdef CONFIG_APSTA_MIXED_SUPPORT
-extern UINT32 CW_MAX_IN_BITS;
-#endif /* CONFIG_APSTA_MIXED_SUPPORT */
 
 /* Note: RSSI_TO_DBM_OFFSET has been changed to variable for new RF (2004-0720). */
 /* SHould not refer to this constant anymore */

@@ -145,99 +145,6 @@ $(MOD_NAME)-objs += \
 	../../os/linux/cfg80211.o \
 	../../os/linux/cfg80211drv.o
 
-
-
-
-#chip related
-
-
-#ifdef RT3290
-ifneq ($(findstring rt3290,$(CHIPSET)),)
-$(MOD_NAME)-objs += \
-	../../common/cmm_mac_pci.o\
-	../../common/cmm_data_pci.o\
-	../../os/linux/rt_rbus_pci_drv.o\
-	../../mcu/mcu.o\
-	../../mcu/mcu_51.o\
-	../../common/ee_prom.o\
-	../../common/ee_efuse.o\
-	../../common/rt_rf.o\
-	../../chips/rt30xx.o\
-	../../chips/rt3290.o
-
-$(MOD_NAME)-objs += \
-        ../../os/linux/rt_pci_rbus.o\
-        ../../os/linux/rt_rbus_pci_util.o\
-        ../../os/linux/pci_main_dev.o
-
-ifneq ($(findstring $(RT28xx_MODE),STA APSTA),)
-$(MOD_NAME)-objs += \
-	../../common/frq_cal.o
-endif
-
-endif
-#endif // RT3290 //
-
-#ifdef RT6592
-ifneq ($(findstring rt6592,$(CHIPSET)),)
-$(MOD_NAME)-objs += \
-        ../../common/cmm_mac_pci.o\
-        ../../common/cmm_data_pci.o\
-        ../../os/linux/rt_rbus_pci_drv.o\
-        ../../mcu/mcu.o\
-		../../mcu/rtmp_M51.o\
-        ../../common/ee_prom.o\
-        ../../common/ee_efuse.o\
-        ../../common/rt_rf.o\
-        ../../chips/rt6592.o
-
-$(MOD_NAME)-objs += \
-        ../../os/linux/rt_pci_rbus.o\
-        ../../os/linux/rt_rbus_pci_util.o\
-        ../../os/linux/pci_main_dev.o
-endif
-#endif // RT6592 //
-
-
-
-
-
-#ifdef MT76x0
-ifneq ($(or $(findstring mt7650e,$(CHIPSET)),$(findstring mt7630e,$(CHIPSET)),$(findstring mt7610e,$(CHIPSET))),)
-$(MOD_NAME)-objs += \
-                ../../common/cmm_mac_pci.o\
-                ../../common/cmm_data_pci.o\
-                ../../os/linux/rt_rbus_pci_drv.o\
-				../../common/ee_efuse.o\
-                ../../common/ee_prom.o\
-                ../../common/rt_rf.o\
-                ../../chips/rt30xx.o\
-				../../chips/rt65xx.o\
-                ../../chips/mt76x0.o\
-				../../mac/ral_nmac.o\
-				../../mcu/mcu.o\
-                ../../mcu/mcu_and.o
-
-ifeq ($(HAS_RTMP_FLASH_SUPPORT),y)
-$(MOD_NAME)-objs += \
-        ../../common/ee_flash.o
-endif
-
-$(MOD_NAME)-objs += \
-                ../../os/linux/rt_pci_rbus.o\
-                ../../os/linux/rt_rbus_pci_util.o\
-                ../../os/linux/pci_main_dev.o
-
-ifneq ($(findstring $(RT28xx_MODE),STA APSTA),)
-$(MOD_NAME)-objs += \
-        ../../common/frq_cal.o
-endif
-
-endif
-#endif // MT76x0 //
-
-#ifdef MT76x0
-ifneq ($(or $(findstring mt7650u,$(CHIPSET)),$(findstring mt7630u,$(CHIPSET)),$(findstring mt7610u,$(CHIPSET))),)
 $(MOD_NAME)-objs += \
                 ../../common/cmm_mac_usb.o\
                 ../../common/cmm_data_usb.o\
@@ -271,62 +178,14 @@ $(MOD_NAME)-objs += \
 				../../naf/cso.o
 endif
 
-ifeq ($(HAS_ATE),y)
-$(MOD_NAME)-objs += \
-	../../ate/chips/mt76x0_ate.o\
-	../../ate/common/ate_usb.o
-endif
-
 $(MOD_NAME)-objs += \
                 ../../os/linux/rt_usb.o\
                 ../../os/linux/rt_usb_util.o\
                 ../../os/linux/usb_main_dev.o\
 				../../common/rtusb_dev_id.o
 
-ifneq ($(findstring $(RT28xx_MODE),STA APSTA),)
 $(MOD_NAME)-objs += \
         ../../common/frq_cal.o
-endif
-
-endif
-#endif // MT76x0 //
-
-
-#ifdef RT8592
-ifneq ($(findstring rt8592,$(CHIPSET)),)
-$(MOD_NAME)-objs += \
-                ../../common/cmm_mac_pci.o\
-                ../../common/cmm_data_pci.o\
-                ../../os/linux/rt_rbus_pci_drv.o\
-                ../../common/ee_prom.o\
-				../../common/ee_efuse.o\
-                ../../common/rt_rf.o\
-                ../../chips/rt30xx.o\
-				../../chips/rt65xx.o\
-				../../chips/rt6592.o\
-                ../../chips/rt85592.o\
-                ../../mac/ral_nmac.o\
-				../../mcu/mcu.o\
-                ../../mcu/mcu_and.o
-
-ifeq ($(HAS_RTMP_FLASH_SUPPORT),y)
-$(MOD_NAME)-objs += \
-        		../../common/ee_flash.o
-endif
-
-$(MOD_NAME)-objs += \
-                ../../os/linux/rt_pci_rbus.o\
-                ../../os/linux/rt_rbus_pci_util.o\
-                ../../os/linux/pci_main_dev.o
-
-ifneq ($(findstring $(RT28xx_MODE),STA APSTA),)
-$(MOD_NAME)-objs += \
-        		../../common/frq_cal.o
-endif
-
-endif
-#endif // RT8592 //
-
 
 PHONY := clean install uninstall
 
@@ -336,30 +195,14 @@ clean:
 	rm -f ../../os/linux/*.{o,ko,mod.{o,c}}
 	rm -f ../../os/linux/.*.{cmd,flags,d}
 	rm -fr ../../os/linux/.tmp_versions
-#Must clean Module.symvers; or you will suffer symbol version not match
-#when OS_ABL = YES.
 	rm -f ../../os/linux/Module.symvers
 	rm -f ../../os/linux/Modules.symvers
 	rm -f ../../os/linux/Module.markers
 	rm -f ../../os/linux/modules.order
 	rm -f ../../chips/*.o
 	rm -f ../../chips/.*.{cmd,flags,d}
-ifeq ($(RT28xx_MODE),AP)
-	rm -f ../../ap/*.o
-	rm -f ../../ap/.*.{cmd,flags,d}
-else
-ifeq ($(RT28xx_MODE),STA)
 	rm -f ../../sta/*.o
 	rm -f ../../sta/.*.{cmd,flags,d}
-else
-ifeq ($(RT28xx_MODE),APSTA)
-	rm -f ../../ap/*.o
-	rm -f ../../ap/.*.{cmd,flags,d}
-	rm -f ../../sta/*.o
-	rm -f ../../sta/.*.{cmd,flags,d}
-endif
-endif
-endif
 
 install:
 	rm -rf $(DAT_PATH)
@@ -371,7 +214,6 @@ install:
 	/sbin/depmod -a ${shell uname -r}
 
 uninstall:
-#	rm -rf $(DAT_PATH)
 	rm -rf $(addprefix $(LINUX_SRC_MODULE),$(addsuffix .ko,$(MOD_NAME)))
 	/sbin/depmod -a ${shell uname -r}
 
