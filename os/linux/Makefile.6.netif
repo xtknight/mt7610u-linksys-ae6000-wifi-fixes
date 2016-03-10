@@ -16,10 +16,8 @@ $(MOD_NAME)-objs := \
 	../../os/linux/sta_ioctl.o\
 	../../os/linux/rt_main_dev.o
 
-ifeq ($(HAS_CFG80211_SUPPORT),y)
 $(MOD_NAME)-objs += \
 	../../os/linux/cfg80211.o
-endif
 
 ifeq ($(HAS_MESH_SUPPORT),y)
 $(MOD_NAME)-objs += \

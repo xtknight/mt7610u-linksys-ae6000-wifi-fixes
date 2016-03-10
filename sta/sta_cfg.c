@@ -6269,7 +6269,6 @@ RtmpIoctl_rt_ioctl_siwscan(
     	We will not see the definition in MODULE.
     	The definition can be saw in UTIL and NETIF.
     */
-    /* #if defined(SIOCGIWSCAN) || defined(RT_CFG80211_SUPPORT) */
     RT_CMD_STA_IOCTL_SCAN *pConfig = (RT_CMD_STA_IOCTL_SCAN *)pData;
     int Status = NDIS_STATUS_SUCCESS;
 
@@ -6340,7 +6339,6 @@ RtmpIoctl_rt_ioctl_siwscan(
     while(0);
 
     pConfig->Status = Status;
-    /* #endif */ /* SIOCGIWSCAN || RT_CFG80211_SUPPORT */
     return NDIS_STATUS_SUCCESS;
 }
 

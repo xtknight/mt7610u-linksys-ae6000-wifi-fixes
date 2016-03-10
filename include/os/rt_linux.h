@@ -72,7 +72,6 @@
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,28)
 #include <net/mac80211.h>
 #else /* LINUX_VERSION_CODE */
-#undef RT_CFG80211_SUPPORT
 #endif /* LINUX_VERSION_CODE */
 
 

@@ -169,36 +169,10 @@ endif
 #endif // LED_CONTROL_SUPPORT //
 
 
-ifeq ($(HAS_ATE),y)
-$(MOD_NAME)-objs += ../../ate/common/rt_ate.o
-endif
 
-ifeq ($(HAS_QA_SUPPORT),y)
-$(MOD_NAME)-objs += ../../ate/common/rt_qa.o
-endif
-
-
-
-
-
-
-
-#ifdef CRDA_SUPPORT
-ifeq ($(OSABL),NO)
-ifeq ($(HAS_CFG80211_SUPPORT),y)
 $(MOD_NAME)-objs += \
 	../../os/linux/cfg80211.o \
 	../../os/linux/cfg80211drv.o
-endif
-endif
-
-ifeq ($(OSABL),YES)
-ifeq ($(HAS_CFG80211_SUPPORT),y)
-$(MOD_NAME)-objs += \
-	../../os/linux/cfg80211drv.o
-endif
-endif
-#endif // CRDA_SUPPORT //
 
 
 endif
@@ -206,26 +180,7 @@ endif
 
 
 
-#chip releated
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#chip related
 
 
 #ifdef RT3290
