@@ -968,23 +968,6 @@ INT RTMP_COM_IoctlHandle(
         RT_CFG80211_CRDA_REG_RULE_APPLY(pAd);
         break;
 
-#ifdef INF_PPA_SUPPORT
-
-    case CMD_RTPRIV_IOCTL_INF_PPA_INIT:
-        os_alloc_mem(NULL, (UCHAR **)&(pAd->pDirectpathCb), sizeof(PPA_DIRECTPATH_CB));
-        break;
-
-    case CMD_RTPRIV_IOCTL_INF_PPA_EXIT:
-        if(ppa_hook_directpath_register_dev_fn && pAd->PPAEnable==TRUE)
-        {
-            UINT status;
-            status=ppa_hook_directpath_register_dev_fn(&pAd->g_if_id, pAd->net_dev, NULL, 0);
-            DBGPRINT(RT_DEBUG_TRACE, ("unregister PPA:g_if_id=%d status=%d\n",pAd->g_if_id,status));
-        }
-
-        os_free_mem(NULL, pAd->pDirectpathCb);
-        break;
-#endif /* INF_PPA_SUPPORT*/
 
     case CMD_RTPRIV_IOCTL_VIRTUAL_INF_UP:
         /* interface up */

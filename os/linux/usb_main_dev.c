@@ -785,11 +785,6 @@ static int rt2870_probe(
 
     *ppAd = pAd;
 
-#ifdef INF_PPA_SUPPORT
-    /*	pAd->pDirectpathCb = (PPA_DIRECTPATH_CB *) kmalloc (sizeof(PPA_DIRECTPATH_CB), GFP_ATOMIC); */
-    /*	os_alloc_mem(NULL, (UCHAR **)&(pAd->pDirectpathCb), sizeof(PPA_DIRECTPATH_CB)); */
-    RTMP_DRIVER_INF_PPA_INIT(pAd);
-#endif /* INF_PPA_SUPPORT */
 
 #ifdef PRE_ASSIGN_MAC_ADDR
     UCHAR PermanentAddress[MAC_ADDR_LEN];

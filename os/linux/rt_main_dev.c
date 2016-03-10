@@ -742,10 +742,6 @@ BOOLEAN RtmpPhyNetDevExit(
     IN PNET_DEV		net_dev)
 {
 
-#ifdef INF_PPA_SUPPORT
-
-    RTMP_DRIVER_INF_PPA_EXIT(pAd);
-#endif /* INF_PPA_SUPPORT */
 
     DBGPRINT(RT_DEBUG_TRACE, ("RtmpPhyNetDevExit(): enter\n"));
 

@@ -53,10 +53,6 @@
 #include <linux/wireless.h>
 #include <net/iw_handler.h>
 
-#ifdef INF_PPA_SUPPORT
-#include <net/ifx_ppa_api.h>
-#include <net/ifx_ppa_hook.h>
-#endif /* INF_PPA_SUPPORT */
 
 /* load firmware */
 #define __KERNEL_SYSCALLS__

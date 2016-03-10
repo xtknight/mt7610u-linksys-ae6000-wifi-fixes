@@ -453,13 +453,6 @@ VOID RTMP_P2P_Remove(
 #define RTMP_DRIVER_MESH_REMOVE(__pAd)										\
 	RTMP_COM_IoctlHandle(__pAd, NULL, CMD_RTPRIV_IOCTL_MESH_REMOVE, 0, NULL, 0)
 
-/* inf ppa */
-#define RTMP_DRIVER_INF_PPA_INIT(__pAd)										\
-	RTMP_COM_IoctlHandle(__pAd, NULL, CMD_RTPRIV_IOCTL_INF_PPA_INIT, 0, NULL, 0)
-
-#define RTMP_DRIVER_INF_PPA_EXIT(__pAd)										\
-	RTMP_COM_IoctlHandle(__pAd, NULL, CMD_RTPRIV_IOCTL_INF_PPA_EXIT, 0, NULL, 0)
-
 /* pci */
 #define RTMP_DRIVER_IRQ_INIT(__pAd)											\
 	RTMP_COM_IoctlHandle(__pAd, NULL, CMD_RTPRIV_IOCTL_IRQ_INIT, 0, NULL, 0)

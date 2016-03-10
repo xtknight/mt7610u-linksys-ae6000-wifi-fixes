@@ -16,7 +16,6 @@ OBJ := $(MOD_NAME).o
 
 RT28XX_STA_OBJ := \
 	../../common/rt_os_util.o\
-	../../os/linux/rt_linux_symb.o\
 	../../os/linux/rt_rbus_pci_util.o\
 	../../os/linux/rt_usb_util.o\
 	../../os/linux/rt_linux.o

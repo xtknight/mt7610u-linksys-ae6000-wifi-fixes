@@ -7,7 +7,6 @@ EXTRA_CFLAGS += -Idrivers/net/wireless/RT5572_ap/MODULE/ate/include
 # UTIL module
 obj-$(CONFIG_RTUSB_AP) += RT5572_ap_util.o
 RT5572_ap_util-y += UTIL/common/rt_os_util.o
-RT5572_ap_util-y += UTIL/os/linux/rt_linux_symb.o
 RT5572_ap_util-y += UTIL/os/linux/rt_rbus_pci_util.o
 RT5572_ap_util-y += UTIL/os/linux/rt_usb_util.o
 RT5572_ap_util-y += UTIL/os/linux/rt_linux.o

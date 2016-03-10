@@ -15,7 +15,6 @@ obj-m := $(MOD_NAME).o
 ifeq ($(RT28xx_MODE), STA)
 $(MOD_NAME)-objs := \
 	../../common/rt_os_util.o\
-	../../os/linux/rt_linux_symb.o\
 	../../os/linux/rt_rbus_pci_util.o\
 	../../os/linux/rt_usb_util.o\
 	../../os/linux/rt_linux.o
