@@ -34,95 +34,6 @@ typedef VOID *(*RTMP_NET_ETH_CONVERT_DEV_SEARCH)(VOID *net_dev, UCHAR *pData);
 typedef int (*RTMP_NET_PACKET_TRANSMIT)(VOID *pPacket);
 
 #ifdef LINUX
-#ifdef OS_ABL_FUNC_SUPPORT
-
-/* ========================================================================== */
-/* operators used in NETIF module */
-/* Note: No need to put any compile option here */
-typedef struct _RTMP_DRV_ABL_OPS
-{
-
-    NDIS_STATUS(*RTMPAllocAdapterBlock)(PVOID handle, VOID **ppAdapter);
-    VOID (*RTMPFreeAdapter)(VOID *pAd);
-    BOOLEAN(*RtmpRaDevCtrlExit)(VOID *pAd);
-    INT (*RtmpRaDevCtrlInit)(VOID *pAd, RTMP_INF_TYPE infType);
-    VOID (*RTMPHandleInterrupt)(VOID *pAd);
-    INT (*RTMP_COM_IoctlHandle)(
-        IN	VOID *pAd,
-        IN	RTMP_IOCTL_INPUT_STRUCT *wrq,
-        IN	INT cmd,
-        IN	USHORT subcmd,
-        IN	VOID *pData,
-        IN	ULONG Data);
-
-    int (*RTMPSendPackets)(
-        IN	NDIS_HANDLE MiniportAdapterContext,
-        IN	PPNDIS_PACKET ppPacketArray,
-        IN	UINT NumberOfPackets,
-        IN	UINT32 PktTotalLen,
-        IN	RTMP_NET_ETH_CONVERT_DEV_SEARCH Func);
-
-    int (*MBSS_PacketSend)(
-        IN	PNDIS_PACKET				pPktSrc,
-        IN	PNET_DEV					pDev,
-        IN	RTMP_NET_PACKET_TRANSMIT	Func);
-
-    int (*WDS_PacketSend)(
-        IN	PNDIS_PACKET				pPktSrc,
-        IN	PNET_DEV					pDev,
-        IN	RTMP_NET_PACKET_TRANSMIT	Func);
-
-    int (*APC_PacketSend)(
-        IN	PNDIS_PACKET				pPktSrc,
-        IN	PNET_DEV					pDev,
-        IN	RTMP_NET_PACKET_TRANSMIT	Func);
-
-    int (*MESH_PacketSend)(
-        IN	PNDIS_PACKET				pPktSrc,
-        IN	PNET_DEV					pDev,
-        IN	RTMP_NET_PACKET_TRANSMIT	Func);
-
-    int (*P2P_PacketSend)(
-        IN	PNDIS_PACKET				pPktSrc,
-        IN	PNET_DEV					pDev,
-        IN	RTMP_NET_PACKET_TRANSMIT	Func);
-
-    INT (*RTMP_AP_IoctlHandle)(
-        IN	VOID					*pAd,
-        IN	RTMP_IOCTL_INPUT_STRUCT	*wrq,
-        IN	INT						cmd,
-        IN	USHORT					subcmd,
-        IN	VOID					*pData,
-        IN	ULONG					Data);
-
-    INT (*RTMP_STA_IoctlHandle)(
-        IN	VOID					*pAd,
-        IN	RTMP_IOCTL_INPUT_STRUCT	*wrq,
-        IN	INT						cmd,
-        IN	USHORT					subcmd,
-        IN	VOID					*pData,
-        IN	ULONG					Data,
-        IN  USHORT                  priv_flags);
-
-    VOID (*RTMPDrvSTAOpen)(VOID *pAd);
-    VOID (*RTMPDrvAPOpen)(VOID *pAd);
-
-    VOID (*RTMPDrvSTAClose)(VOID *pAd, VOID *net_dev);
-    VOID (*RTMPDrvAPClose)(VOID *pAd, VOID *net_dev);
-
-    VOID (*RTMPInfClose)(VOID *pAd);
-
-    int (*rt28xx_init)(VOID *pAd,  PSTRING pDefaultMac, PSTRING pHostName);
-} RTMP_DRV_ABL_OPS;
-
-extern RTMP_DRV_ABL_OPS *pRtmpDrvOps;
-
-VOID RtmpDrvOpsInit(
-    OUT 	VOID				*pDrvOpsOrg,
-    INOUT	VOID				*pDrvNetOpsOrg,
-    IN		RTMP_PCI_CONFIG		*pPciConfig,
-    IN		RTMP_USB_CONFIG		*pUsbConfig);
-#endif /* OS_ABL_FUNC_SUPPORT */
 #endif /* LINUX */
 
 
@@ -135,7 +46,6 @@ typedef void (*RTMP_DRV_USB_COMPLETE_HANDLER)(VOID *pURB);
 typedef struct _RTMP_NET_ABL_OPS
 {
 
-#ifdef RTMP_USB_SUPPORT
     /* net complete handlers */
     RTMP_DRV_USB_COMPLETE_HANDLER	RtmpNetUsbBulkOutDataPacketComplete;
     RTMP_DRV_USB_COMPLETE_HANDLER	RtmpNetUsbBulkOutMLMEPacketComplete;
@@ -154,7 +64,6 @@ typedef struct _RTMP_NET_ABL_OPS
     RTMP_DRV_USB_COMPLETE_HANDLER	RtmpDrvUsbBulkRxComplete;
     RTMP_DRV_USB_COMPLETE_HANDLER	RtmpDrvUsbBulkCmdRspEventComplete;
 
-#endif /* RTMP_USB_SUPPORT */
 
 } RTMP_NET_ABL_OPS;
 
@@ -165,31 +74,6 @@ VOID RtmpNetOpsSet(VOID *pNetOpsOrg);
 
 
 /* ========================================================================== */
-#if defined(RTMP_MODULE_OS) && defined(OS_ABL_FUNC_SUPPORT)
-/* for UTIL/NETIF module in OS ABL mode */
-
-#define RTMPAllocAdapterBlock (((RTMP_DRV_ABL_OPS *)(pRtmpDrvOps))->RTMPAllocAdapterBlock)
-#define RTMPFreeAdapter (((RTMP_DRV_ABL_OPS *)(pRtmpDrvOps))->RTMPFreeAdapter)
-#define RtmpRaDevCtrlExit (((RTMP_DRV_ABL_OPS *)(pRtmpDrvOps))->RtmpRaDevCtrlExit)
-#define RtmpRaDevCtrlInit (((RTMP_DRV_ABL_OPS *)(pRtmpDrvOps))->RtmpRaDevCtrlInit)
-#define RTMPHandleInterrupt (((RTMP_DRV_ABL_OPS *)(pRtmpDrvOps))->RTMPHandleInterrupt)
-#define RTMP_COM_IoctlHandle (((RTMP_DRV_ABL_OPS *)(pRtmpDrvOps))->RTMP_COM_IoctlHandle)
-#define RTMPSendPackets (((RTMP_DRV_ABL_OPS *)(pRtmpDrvOps))->RTMPSendPackets)
-#define MBSS_PacketSend (((RTMP_DRV_ABL_OPS *)(pRtmpDrvOps))->MBSS_PacketSend)
-#define WDS_PacketSend (((RTMP_DRV_ABL_OPS *)(pRtmpDrvOps))->WDS_PacketSend)
-#define APC_PacketSend (((RTMP_DRV_ABL_OPS *)(pRtmpDrvOps))->APC_PacketSend)
-#define MESH_PacketSend (((RTMP_DRV_ABL_OPS *)(pRtmpDrvOps))->MESH_PacketSend)
-#define P2P_PacketSend (((RTMP_DRV_ABL_OPS *)(pRtmpDrvOps))->P2P_PacketSend)
-#define RTMP_AP_IoctlHandle (((RTMP_DRV_ABL_OPS *)(pRtmpDrvOps))->RTMP_AP_IoctlHandle)
-#define RTMP_STA_IoctlHandle (((RTMP_DRV_ABL_OPS *)(pRtmpDrvOps))->RTMP_STA_IoctlHandle)
-#define RTMPDrvSTAOpen (((RTMP_DRV_ABL_OPS *)(pRtmpDrvOps))->RTMPDrvSTAOpen)
-#define RTMPDrvAPOpen (((RTMP_DRV_ABL_OPS *)(pRtmpDrvOps))->RTMPDrvAPOpen)
-#define RTMPDrvSTAClose (((RTMP_DRV_ABL_OPS *)(pRtmpDrvOps))->RTMPDrvSTAClose)
-#define RTMPDrvAPClose (((RTMP_DRV_ABL_OPS *)(pRtmpDrvOps))->RTMPDrvAPClose)
-#define RTMPInfClose (((RTMP_DRV_ABL_OPS *)(pRtmpDrvOps))->RTMPInfClose)
-#define rt28xx_init (((RTMP_DRV_ABL_OPS *)(pRtmpDrvOps))->rt28xx_init)
-
-#else /* RTMP_MODULE_OS && OS_ABL_FUNC_SUPPORT */
 
 NDIS_STATUS RTMPAllocAdapterBlock(PVOID handle, VOID **ppAdapter);
 VOID RTMPFreeAdapter(VOID *pAd);
@@ -261,7 +145,6 @@ int rt28xx_init(
     IN PSTRING					pHostName);
 
 PNET_DEV RtmpPhyNetDevMainCreate(VOID *pAd);
-#endif /* RTMP_MODULE_OS */
 
 
 
@@ -469,7 +352,6 @@ VOID RTMP_P2P_Remove(
 
 
 #ifdef WOW_SUPPORT
-#ifdef RTMP_MAC_USB
 #define RTMP_DRIVER_ADAPTER_RT28XX_USB_WOW_STATUS(__pAd, __flag)								\
 	RTMP_COM_IoctlHandle(__pAd, NULL, CMD_RTPRIV_IOCTL_ADAPTER_RT28XX_USB_WOW_STATUS, 0, __flag, 0)
 
@@ -478,7 +360,6 @@ VOID RTMP_P2P_Remove(
 
 #define RTMP_DRIVER_ADAPTER_RT28XX_USB_WOW_DISABLE(__pAd)								\
 	RTMP_COM_IoctlHandle(__pAd, NULL, CMD_RTPRIV_IOCTL_ADAPTER_RT28XX_USB_WOW_DISABLE, 0, NULL, 0)
-#endif /* RTMP_MAC_USB */
 #endif /* WOW_SUPPORT */
 
 //#endif /* USB_SUPPORT_SELECTIVE_SUSPEND */
@@ -512,17 +393,14 @@ VOID RTMP_P2P_Remove(
 #define RTMP_DRIVER_P2P_INF_CHECK(__pAd, __InfId)							\
 	RTMP_COM_IoctlHandle(__pAd, NULL, CMD_RTPRIV_IOCTL_INF_P2P_CHECK, 0, NULL, __InfId)
 
-#ifdef EXT_BUILD_CHANNEL_LIST
 #define RTMP_DRIVER_SET_PRECONFIG_VALUE(__pAd)								\
 	RTMP_COM_IoctlHandle(__pAd, NULL, CMD_RTPRIV_SET_PRECONFIG_VALUE, 0, NULL, 0)
-#endif /* EXT_BUILD_CHANNEL_LIST */
 
 /* cfg80211 */
 #define RTMP_DRIVER_CFG80211_START(__pAd)									\
 	RTMP_COM_IoctlHandle(__pAd, NULL, CMD_RTPRIV_IOCTL_CFG80211_CFG_START, 0, NULL, 0)
 
 
-#ifdef RT_CFG80211_SUPPORT
 #define RTMP_DRIVER_80211_CB_GET(__pAd, __ppCB)							\
 	RTMP_COM_IoctlHandle(__pAd, NULL, CMD_RTPRIV_IOCTL_80211_CB_GET, 0, __ppCB, 0)
 #define RTMP_DRIVER_80211_CB_SET(__pAd, __pCB)							\
@@ -570,7 +448,6 @@ VOID RTMP_P2P_Remove(
 #define RTMP_DRIVER_80211_GEN_IE_SET(__pAd, __pData, __Len)    \
     RTMP_STA_IoctlHandle(__pAd, NULL, CMD_RTPRIV_IOCTL_STA_SIOCSIWGENIE, 0, __pData, __Len, 0)
 
-#endif /* RT_CFG80211_SUPPORT */
 
 /* mesh */
 #define RTMP_DRIVER_MESH_REMOVE(__pAd)										\

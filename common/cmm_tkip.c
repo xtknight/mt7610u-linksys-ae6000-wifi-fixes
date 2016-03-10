@@ -827,7 +827,6 @@ BOOLEAN RTMPSoftDecryptTKIP(
         DBGPRINT(RT_DEBUG_ERROR, ("! TKIP MIC Error !\n"));	 /*MIC error.*/
 #ifdef CONFIG_STA_SUPPORT
         /*RTMPReportMicError(pAd, &pWpaKey[KeyID]);	 marked by AlbertY @ 20060630 */
-#ifdef WPA_SUPPLICANT_SUPPORT
 
         if(pAd->StaCfg.WpaSupplicantUP)
         {
@@ -837,7 +836,6 @@ BOOLEAN RTMPSoftDecryptTKIP(
                                              FALSE);
         }
         else
-#endif /* WPA_SUPPLICANT_SUPPORT */
             RTMPReportMicError(pAd, pKey);
 
 #endif /* CONFIG_STA_SUPPORT */

@@ -55,13 +55,11 @@ typedef VOID	pregs;
 
 #ifdef CONFIG_STA_SUPPORT
 
-#ifdef RTMP_MAC_USB
 #define STA_PROFILE_PATH			"/etc/Wireless/RT2870STA/RT2870STA.dat"
 #define STA_DRIVER_VERSION			"3.0.0.2"
 #ifdef MULTIPLE_CARD_SUPPORT
 #define CARD_INFO_PATH			"/etc/Wireless/RT2870STA/RT2870STACard.dat"
 #endif /* MULTIPLE_CARD_SUPPORT */
-#endif /* RTMP_MAC_USB */
 
 #endif /* CONFIG_STA_SUPPORT */
 
@@ -263,7 +261,6 @@ typedef void (*TIMER_FUNCTION)(ULONG);
 struct os_cookie
 {
 
-#ifdef RTMP_MAC_USB
     VOID					*pUsb_Dev;
 #ifdef CONFIG_STA_SUPPORT
 #ifdef CONFIG_PM
@@ -273,7 +270,6 @@ struct os_cookie
 #endif /* CONFIG_PM */
 #endif /* CONFIG_STA_SUPPORT */
 
-#endif /* RTMP_MAC_USB */
 
 #ifdef WORKQUEUE_BH
     UINT32		     		pAd_va;
@@ -283,9 +279,6 @@ struct os_cookie
     RTMP_NET_TASK_STRUCT	cmd_rsp_event_task;
     RTMP_NET_TASK_STRUCT	mgmt_dma_done_task;
     RTMP_NET_TASK_STRUCT	ac0_dma_done_task;
-#ifdef RALINK_ATE
-    RTMP_NET_TASK_STRUCT	ate_ac0_dma_done_task;
-#endif /* RALINK_ATE */
     RTMP_NET_TASK_STRUCT	ac1_dma_done_task;
     RTMP_NET_TASK_STRUCT	ac2_dma_done_task;
     RTMP_NET_TASK_STRUCT	ac3_dma_done_task;
@@ -298,10 +291,8 @@ struct os_cookie
 #endif /* UAPSD_SUPPORT */
 
 
-#ifdef RTMP_MAC_USB
     RTMP_NET_TASK_STRUCT	null_frame_complete_task;
     RTMP_NET_TASK_STRUCT	pspoll_frame_complete_task;
-#endif /* RTMP_MAC_USB */
 
     RTMP_OS_PID				apd_pid; /*802.1x daemon pid */
     unsigned long			apd_pid_nr;
@@ -458,7 +449,6 @@ void linux_pci_unmap_single(void *handle, ra_dma_addr_t dma_addr, size_t size, i
 /* TODO: We can merge two readl to a function to speed up or one real/writel */
 
 
-#ifdef RTMP_MAC_USB
 #define RTMP_IO_FORCE_READ32(_A, _R, _pV)								\
 	RTUSBReadMACRegister((_A), (_R), (PUINT32) (_pV))
 
@@ -516,7 +506,6 @@ do {															\
 
 #define RTMP_SYS_IO_READ32
 #define RTMP_SYS_IO_WRITE32
-#endif /* RTMP_MAC_USB */
 
 #define pci_read_config_word	RtmpOsPciConfigReadWord
 #define pci_write_config_word	RtmpOsPciConfigWriteWord
@@ -802,11 +791,7 @@ extern ULONG RtmpOsGetUnalignedlong(
 #define RTMP_GET_PACKET_CLEAR_EAP_FRAME(_p)         (PACKET_CB(_p, 12))
 
 
-#ifdef DOT11_VHT_AC
 #define MAX_PACKETS_IN_QUEUE				1024 /*(512)*/
-#else
-#define MAX_PACKETS_IN_QUEUE				(512)
-#endif /* DOT11_VHT_AC */
 
 
 /* use bit3 of cb[CB_OFF+16] */
@@ -833,11 +818,6 @@ extern ULONG RtmpOsGetUnalignedlong(
 	((((UINT16)PACKET_CB(_p, 23)) << 8) \
 	| ((UINT16)PACKET_CB(_p, 24)))
 
-#ifdef INF_AMAZON_SE
-/* [CB_OFF+28], 1B, Iverson patch for WMM A5-T07 ,WirelessStaToWirelessSta do not bulk out aggregate */
-#define RTMP_SET_PACKET_NOBULKOUT(_p, _morebit)			(PACKET_CB(_p, 28) = _morebit)
-#define RTMP_GET_PACKET_NOBULKOUT(_p)					(PACKET_CB(_p, 28))
-#endif /* INF_AMAZON_SE */
 /* Max skb->cb = 48B = [CB_OFF+38] */
 
 
@@ -854,7 +834,6 @@ void RTMP_GetCurrentSystemTime(LARGE_INTEGER *time);
 
 
 
-#ifdef RTMP_USB_SUPPORT
 /******************************************************************************
 
   	USB related definitions
@@ -865,11 +844,7 @@ void RTMP_GetCurrentSystemTime(LARGE_INTEGER *time);
 
 /*typedef struct usb_device_id USB_DEVICE_ID; */
 
-#ifdef INF_AMAZON_SE
-#define BULKAGGRE_SIZE          30
-#else
 #define BULKAGGRE_SIZE          60
-#endif /* INF_AMAZON_SE */
 
 /*#define RT28XX_PUT_DEVICE			rausb_put_dev */
 #define RTUSB_ALLOC_URB				rausb_alloc_urb
@@ -971,26 +946,8 @@ extern int rausb_control_msg(VOID *dev,
                              __u16 size,
                              int timeout);
 
-#endif /* RTMP_USB_SUPPORT */
 
 
-#ifdef RALINK_ATE
-/******************************************************************************
-
-  	ATE related definitions
-
-******************************************************************************/
-#define ate_print printk
-#define ATEDBGPRINT DBGPRINT
-
-#ifdef RTMP_MAC_USB
-#ifdef CONFIG_STA_SUPPORT
-#undef EEPROM_BIN_FILE_NAME /* Avoid APSTA mode re-define issue */
-#define EEPROM_BIN_FILE_NAME  "/etc/Wireless/RT2870STA/e2p.bin"
-#endif /* CONFIG_STA_SUPPORT */
-#endif /* RTMP_MAC_USB */
-
-#endif /* RALINK_ATE */
 
 
 /* OS definition re-declaration */

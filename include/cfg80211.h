@@ -25,7 +25,6 @@
  *************************************************************************/
 
 
-#ifdef RT_CFG80211_SUPPORT
 
 #include <linux/ieee80211.h>
 
@@ -79,6 +78,5 @@ BOOLEAN CFG80211_Register(
     struct net_device			*pNetDev);
 
 
-#endif /* RT_CFG80211_SUPPORT */
 
 /* End of cfg80211.h */

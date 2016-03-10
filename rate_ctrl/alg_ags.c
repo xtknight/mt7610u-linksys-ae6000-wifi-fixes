@@ -118,7 +118,6 @@ UCHAR AGS3x3HTRateTable[] =
 };
 
 
-#ifdef DOT11_VHT_AC
 
 #define NSS_1 0
 #define NSS_2 1
@@ -191,7 +190,6 @@ UCHAR Ags2x2VhtRateTable[] =
     15,	0x40,	0x01, 7, /* VHT 2x2 MCS 7 */		8,	25,		14,	0,	16,	15,
     16,	0x42,	0x01, 7, /* VHT 2x2 MCS 7 + SGI */	8,	25,		15,	0,	16,	16,
 };
-#endif /* DOT11_VHT_AC */
 
 
 INT Show_AGS_Proc(
@@ -357,9 +355,7 @@ VOID MlmeDynamicTxRateSwitchingAGS(
             }
         }
         else if((pTable == AGS2x2HTRateTable)
-#ifdef DOT11_VHT_AC
                 || (pTable == Ags2x2VhtRateTable))
-#endif /* DOT11_VHT_AC*/
             )
         {
             DBGPRINT_RAW(RT_DEBUG_INFO | DBG_FUNC_RA,
@@ -477,7 +473,6 @@ VOID MlmeDynamicTxRateSwitchingAGS(
                  ("ags> UpRateIdx = %d, DownRateIdx = %d\n",
                   UpRateIdx, DownRateIdx));
 
-#ifdef DOT11_N_SUPPORT
 
     if((pAGSStatisticsInfo->RSSI > -65) && (pCurrTxRate->Mode >= MODE_HTMIX))
     {
@@ -485,7 +480,6 @@ VOID MlmeDynamicTxRateSwitchingAGS(
         TrainDown = (pCurrTxRate->TrainDown + (pCurrTxRate->TrainDown >> 1));
     }
     else
-#endif /* DOT11_N_SUPPORT */
     {
         TrainUp = pCurrTxRate->TrainUp;
         TrainDown = pCurrTxRate->TrainDown;
@@ -503,7 +497,6 @@ VOID MlmeDynamicTxRateSwitchingAGS(
         UCHAR MCS[24] = {0};
         /* Check the existence and index of each needed MCS */
 
-#ifdef DOT11_VHT_AC
 
         if((pTable == Ags2x2VhtRateTable) || (pTable == Ags1x1VhtRateTable))
         {
@@ -528,7 +521,6 @@ VOID MlmeDynamicTxRateSwitchingAGS(
             }
         }
         else
-#endif /* DOT11_VHT_AC */
         {
             while(idx < pTable[0])
             {
@@ -570,17 +562,13 @@ VOID MlmeDynamicTxRateSwitchingAGS(
                           pAGSStatisticsInfo->RSSI, TxRateIdx));
         }
         else if(pTable == AGS2x2HTRateTable)
-#ifdef DOT11_VHT_AC
             || (pTable == Ags2x2VhtRateTable))
-#endif /* DOT11_VHT_AC */
             )
         {
-#ifdef DOT11_VHT_AC
 
             if(pTable == Ags2x2VhtRateTable)
                 RssiOffset = AgsRssiOffsetTable[1][pAd->CommonCfg.BBPCurrentBW];
 
-#endif /* DOT11_VHT_AC */
 
             DBGPRINT_RAW(RT_DEBUG_INFO | DBG_FUNC_RA, ("%s: AGS: 2*2, RssiOffsetForAgs=%d\n", __FUNCTION__, RssiOffset));
 
@@ -605,12 +593,10 @@ VOID MlmeDynamicTxRateSwitchingAGS(
         }
                                                     else
     {
-#ifdef DOT11_VHT_AC
 
         if(pTable == Ags1x1VhtRateTable)
                 RssiOffset = AgsRssiOffsetTable[0][pAd->CommonCfg.BBPCurrentBW];
 
-#endif /* DOT11_VHT_AC */
             DBGPRINT_RAW(RT_DEBUG_INFO | DBG_FUNC_RA, ("%s: AGS: 1*1, RssiOffset=%d\n", __FUNCTION__, RssiOffset));
 
             /* 1x1 peer device (Adhoc, DLS or AP) */

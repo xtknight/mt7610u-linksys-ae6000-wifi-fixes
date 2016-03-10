@@ -35,96 +35,11 @@
 
 
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,28))
-#ifdef RT_CFG80211_SUPPORT
 
 /* 36 ~ 64, 100 ~ 136, 140 ~ 161 */
 #define CFG80211_NUM_OF_CHAN_5GHZ			\
 							(sizeof(Cfg80211_Chan)-CFG80211_NUM_OF_CHAN_2GHZ)
 
-#ifdef OS_ABL_FUNC_SUPPORT
-/*
-	Array of bitrates the hardware can operate with
-	in this band. Must be sorted to give a valid "supported
-	rates" IE, i.e. CCK rates first, then OFDM.
-
-	For HT, assign MCS in another structure, ieee80211_sta_ht_cap.
-*/
-const struct ieee80211_rate Cfg80211_SupRate[12] =
-{
-    {
-        .flags = IEEE80211_RATE_SHORT_PREAMBLE,
-        .bitrate = 10,
-        .hw_value = 0,
-        .hw_value_short = 0,
-    },
-    {
-        .flags = IEEE80211_RATE_SHORT_PREAMBLE,
-        .bitrate = 20,
-        .hw_value = 1,
-        .hw_value_short = 1,
-    },
-    {
-        .flags = IEEE80211_RATE_SHORT_PREAMBLE,
-        .bitrate = 55,
-        .hw_value = 2,
-        .hw_value_short = 2,
-    },
-    {
-        .flags = IEEE80211_RATE_SHORT_PREAMBLE,
-        .bitrate = 110,
-        .hw_value = 3,
-        .hw_value_short = 3,
-    },
-    {
-        .flags = 0,
-        .bitrate = 60,
-        .hw_value = 4,
-        .hw_value_short = 4,
-    },
-    {
-        .flags = 0,
-        .bitrate = 90,
-        .hw_value = 5,
-        .hw_value_short = 5,
-    },
-    {
-        .flags = 0,
-        .bitrate = 120,
-        .hw_value = 6,
-        .hw_value_short = 6,
-    },
-    {
-        .flags = 0,
-        .bitrate = 180,
-        .hw_value = 7,
-        .hw_value_short = 7,
-    },
-    {
-        .flags = 0,
-        .bitrate = 240,
-        .hw_value = 8,
-        .hw_value_short = 8,
-    },
-    {
-        .flags = 0,
-        .bitrate = 360,
-        .hw_value = 9,
-        .hw_value_short = 9,
-    },
-    {
-        .flags = 0,
-        .bitrate = 480,
-        .hw_value = 10,
-        .hw_value_short = 10,
-    },
-    {
-        .flags = 0,
-        .bitrate = 540,
-        .hw_value = 11,
-        .hw_value_short = 11,
-    },
-};
-#endif /* OS_ABL_FUNC_SUPPORT */
 
 /* all available channels */
 static const UCHAR Cfg80211_Chan[] =
@@ -382,11 +297,9 @@ static int CFG80211_OpsVirtualInfChg(
 
 
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,30))
-#if defined(SIOCGIWSCAN) || defined(RT_CFG80211_SUPPORT)
 extern int rt_ioctl_siwscan(struct net_device *dev,
                             struct iw_request_info *info,
                             union iwreq_data *wreq, char *extra);
-#endif
 /*
 ========================================================================
 Routine Description:
@@ -437,10 +350,8 @@ static int CFG80211_OpsScan(
 #ifdef CONFIG_STA_SUPPORT
     VOID *pAd;
     CFG80211_CB *pCfg80211_CB;
-#ifdef WPA_SUPPLICANT_SUPPORT
     struct iw_scan_req IwReq;
     union iwreq_data Wreq;
-#endif /* WPA_SUPPLICANT_SUPPORT */
 
     CFG80211DBG(RT_DEBUG_TRACE, ("mt7610u: %s()\n", __FUNCTION__));
     MAC80211_PAD_GET(pAd, pWiphy);
@@ -478,7 +389,6 @@ static int CFG80211_OpsScan(
     RTMP_DRIVER_80211_CB_GET(pAd, &pCfg80211_CB);
     pCfg80211_CB->pCfg80211_ScanReq = pRequest; /* used in scan end */
 
-#ifdef WPA_SUPPLICANT_SUPPORT
     memset(&Wreq, 0, sizeof(Wreq));
     memset(&IwReq, 0, sizeof(IwReq));
 
@@ -496,10 +406,6 @@ static int CFG80211_OpsScan(
     }
 
     rt_ioctl_siwscan(pNdev, NULL, &Wreq, (char *)&IwReq);
-#else
-
-    rt_ioctl_siwscan(pNdev, NULL, NULL, NULL);
-#endif /* WPA_SUPPLICANT_SUPPORT */
     return 0;
 #else
 
@@ -2340,7 +2246,6 @@ static INT32 CFG80211_RegNotifier(
 #endif /* LINUX_VERSION_CODE */
 
 
-#endif /* RT_CFG80211_SUPPORT */
 #endif /* LINUX_VERSION_CODE */
 
 /* End of crda.c */

@@ -32,9 +32,7 @@
 #define EEPROM_IS_PROGRAMMED		0x80
 
 
-#ifdef RTMP_MAC_USB
 #define EEPROM_SIZE					0x400
-#endif /* RTMP_MAC_USB */
 
 
 #ifdef RT_BIG_ENDIAN
@@ -125,7 +123,6 @@ typedef union _EEPROM_NIC_CINFIG2_STRUCT
 
 
 #if defined(BT_COEXISTENCE_SUPPORT) || defined(RT3290) || defined(RT8592)
-#ifdef RTMP_USB_SUPPORT
 #ifdef RT_BIG_ENDIAN
 typedef union _EEPROM_NIC_CINFIG3_STRUCT
 {
@@ -151,7 +148,6 @@ typedef union _EEPROM_NIC_CINFIG3_STRUCT
     USHORT word;
 } EEPROM_NIC_CONFIG3_STRUCT, *PEEPROM_NIC_CONFIG3_STRUCT;
 #endif
-#endif /* RTMP_USB_SUPPORT */
 
 #endif /* defined(BT_COEXISTENCE_SUPPORT) || defined(RT3290) || defined(RT8592) */
 
@@ -296,7 +292,6 @@ struct _RTMP_ADAPTER;
 
 
 
-#ifdef RTMP_USB_SUPPORT
 NTSTATUS RTUSBReadEEPROM16(
     IN struct _RTMP_ADAPTER *pAd,
     IN USHORT offset,
@@ -306,7 +301,6 @@ NTSTATUS RTUSBWriteEEPROM16(
     IN struct _RTMP_ADAPTER *pAd,
     IN USHORT offset,
     IN USHORT value);
-#endif /* RTMP_USB_SUPPORT */
 
 
 #if defined(RTMP_RBUS_SUPPORT) || defined(RTMP_FLASH_SUPPORT)

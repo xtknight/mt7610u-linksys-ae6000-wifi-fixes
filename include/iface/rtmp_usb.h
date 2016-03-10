@@ -65,9 +65,6 @@ extern UCHAR EpToQueue[6];
 #define	fRTUSB_BULK_OUT_DATA_NORMAL_4		0x00080000
 
 /* TODO:move to ./ate/include/iface/ate_usb.h */
-#ifdef RALINK_ATE
-#define	fRTUSB_BULK_OUT_DATA_ATE			0x00100000
-#endif /* RALINK_ATE */
 
 
 #define FREE_HTTX_RING(_pCookie, _pipeId, _txContext)			\

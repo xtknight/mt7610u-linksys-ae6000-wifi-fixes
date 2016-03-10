@@ -67,7 +67,6 @@ typedef struct _RTMP_RA_LEGACY_TB
 #define PTX_RA_LEGACY_ENTRY(pTable, idx)	((RTMP_RA_LEGACY_TB *)&(pTable[(idx+1)*5]))
 
 
-#ifdef NEW_RATE_ADAPT_SUPPORT
 typedef struct  _RTMP_RA_GRP_TB
 {
     UCHAR   ItemNo;
@@ -95,7 +94,6 @@ typedef struct  _RTMP_RA_GRP_TB
 } RTMP_RA_GRP_TB;
 
 #define PTX_RA_GRP_ENTRY(pTable, idx)	((RTMP_RA_GRP_TB *)&(pTable[(idx+1)*10]))
-#endif /* NEW_RATE_ADAPT_SUPPORT */
 
 #define RATE_TABLE_SIZE(pTable)			((pTable)[0])		/* Byte 0 is number of rate indices */
 #define RATE_TABLE_INIT_INDEX(pTable)	((pTable)[1])		/* Byte 1 is initial rate index */
@@ -121,7 +119,6 @@ extern UCHAR RateSwitchTable11B[];
 extern UCHAR RateSwitchTable11G[];
 extern UCHAR RateSwitchTable11BG[];
 
-#ifdef DOT11_N_SUPPORT
 extern UCHAR RateSwitchTable11BGN1S[];
 extern UCHAR RateSwitchTable11BGN2S[];
 extern UCHAR RateSwitchTable11BGN2SForABand[];
@@ -132,7 +129,6 @@ extern UCHAR RateSwitchTable11N2SForABand[];
 extern UCHAR RateSwitchTable11BGN3S[];
 extern UCHAR RateSwitchTable11BGN3SForABand[];
 
-#ifdef NEW_RATE_ADAPT_SUPPORT
 extern UCHAR RateSwitchTableAdapt11N1S[];
 extern UCHAR RateSwitchTableAdapt11N2S[];
 extern UCHAR RateSwitchTableAdapt11N3S[];
@@ -140,7 +136,6 @@ extern UCHAR RateSwitchTableAdapt11N3S[];
 #define PER_THRD_ADJ			1
 
 /* ADAPT_RATE_TABLE - true if pTable is one of the Adaptive Rate Switch tables */
-#ifdef DOT11_VHT_AC
 extern UCHAR RateTableVht1S[];
 extern UCHAR RateTableVht1S_MCS7[];
 extern UCHAR RateTableVht2S[];
@@ -151,13 +146,6 @@ extern UCHAR RateTableVht2S[];
 									(pTable)==RateTableVht1S ||\
 									(pTable)==RateTableVht1S_MCS7 ||\
 									(pTable)==RateTableVht2S)
-#else
-#define ADAPT_RATE_TABLE(pTable)	((pTable)==RateSwitchTableAdapt11N1S || \
-									(pTable)==RateSwitchTableAdapt11N2S || \
-									(pTable)==RateSwitchTableAdapt11N3S)
-#endif /* DOT11_VHT_AC */
-#endif /* NEW_RATE_ADAPT_SUPPORT */
-#endif /* DOT11_N_SUPPORT */
 
 
 /* FUNCTION */
@@ -209,14 +197,11 @@ VOID RTMPSetSupportMCS(
     IN UCHAR SupRateLen,
     IN UCHAR ExtRate[],
     IN UCHAR ExtRateLen,
-#ifdef DOT11_VHT_AC
     IN UCHAR vht_cap_len,
     IN VHT_CAP_IE *vht_cap,
-#endif /* DOT11_VHT_AC */
     IN HT_CAPABILITY_IE *pHtCapability,
     IN UCHAR HtCapabilityLen);
 
-#ifdef NEW_RATE_ADAPT_SUPPORT
 VOID MlmeSetMcsGroup(struct _RTMP_ADAPTER *pAd, struct _MAC_TABLE_ENTRY *pEnt);
 
 UCHAR MlmeSelectUpRate(
@@ -300,7 +285,6 @@ VOID MlmeDynamicTxRateSwitchingAdapt(
     IN ULONG TxRetransmit,
     IN ULONG TxFailCount);
 #endif /* CONFIG_STA_SUPPORT */
-#endif /* NEW_RATE_ADAPT_SUPPORT */
 
 
 #ifdef CONFIG_STA_SUPPORT

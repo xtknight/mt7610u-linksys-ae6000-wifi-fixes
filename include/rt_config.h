@@ -40,9 +40,7 @@
 
 
 #ifdef LINUX
-#ifdef RT_CFG80211_SUPPORT
 #include "cfg80211extr.h"
-#endif /* RT_CFG80211_SUPPORT */
 #endif /* LINUX */
 
 #ifdef AGS_SUPPORT
@@ -68,9 +66,7 @@
 #include "rt_os_util.h"
 
 #include "eeprom.h"
-#if defined(RTMP_PCI_SUPPORT) || defined(RTMP_USB_SUPPORT)
 #include "mcu/mcu.h"
-#endif
 
 #undef AP_WSC_INCLUDED
 #undef STA_WSC_INCLUDED
@@ -96,19 +92,8 @@
 #include "igmp_snoop.h"
 #endif /* IGMP_SNOOP_SUPPORT */
 
-#ifdef RALINK_ATE
-#include "rt_ate.h"
-#endif /* RALINK_ATE */
 
-#ifdef RALINK_QA
-#include "rt_qa.h"
-#endif /* RALINK_QA */
 
-#ifdef RALINK_QA
-#ifndef RALINK_ATE
-#error "For supporting QA GUI, please set HAS_ATE=y and HAS_QA_SUPPORT=y."
-#endif /* RALINK_ATE */
-#endif /* RALINK_QA */
 
 
 
@@ -129,19 +114,11 @@
 
 
 #ifdef CONFIG_STA_SUPPORT
-#ifdef NATIVE_WPA_SUPPLICANT_SUPPORT
-#ifndef WPA_SUPPLICANT_SUPPORT
-#error "Build for being controlled by NetworkManager or wext, please set HAS_WPA_SUPPLICANT=y and HAS_NATIVE_WPA_SUPPLICANT_SUPPORT=y"
-#endif /* WPA_SUPPLICANT_SUPPORT */
-#endif /* NATIVE_WPA_SUPPLICANT_SUPPORT */
 
 #endif /* CONFIG_STA_SUPPORT */
 
 
 
-#ifdef IKANOS_VX_1X0
-#include "vr_ikans.h"
-#endif /* IKANOS_VX_1X0 */
 
 
 
@@ -153,9 +130,7 @@
 #include "wfd.h"
 #endif /* WFD_SUPPORT */
 
-#ifdef DOT11_VHT_AC
 #include "vht.h"
-#endif /* DOT11_VHT_AC */
 #ifdef CONFIG_STA_SUPPORT
 #include "sta_cfg.h"
 #endif /* CONFIG_STA_SUPPORT */

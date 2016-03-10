@@ -431,10 +431,8 @@ BOOLEAN MacTableDeleteEntry(
             /* Delete this entry from ASIC on-chip WCID Table*/
             RTMP_STA_ENTRY_MAC_RESET(pAd, wcid);
 
-#ifdef DOT11_N_SUPPORT
             /* free resources of BA*/
             BASessionTearDownALL(pAd, pEntry->Aid);
-#endif /* DOT11_N_SUPPORT */
 
 #ifdef TXBF_SUPPORT
 
@@ -563,9 +561,7 @@ BOOLEAN MacTableDeleteEntry(
     /*Reset operating mode when no Sta.*/
     if(pAd->MacTab.Size == 0)
     {
-#ifdef DOT11_N_SUPPORT
         pAd->CommonCfg.AddHTInfo.AddHtInfo2.OperaionMode = 0;
-#endif /* DOT11_N_SUPPORT */
         RTMP_UPDATE_PROTECT(pAd, 0, ALLN_SETPROTECT, TRUE, 0);
     }
 

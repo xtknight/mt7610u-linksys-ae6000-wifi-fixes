@@ -68,13 +68,11 @@ VOID ActionStateMachineInit(
     StateMachineSetAction(S, ACT_IDLE, MT2_PEER_DLS_CATE, (STATE_MACHINE_FUNC)PeerDLSAction);
 #endif /* QOS_DLS_SUPPORT */
 
-#ifdef DOT11_N_SUPPORT
     StateMachineSetAction(S, ACT_IDLE, MT2_PEER_BA_CATE, (STATE_MACHINE_FUNC)PeerBAAction);
     StateMachineSetAction(S, ACT_IDLE, MT2_PEER_HT_CATE, (STATE_MACHINE_FUNC)PeerHTAction);
     StateMachineSetAction(S, ACT_IDLE, MT2_MLME_ADD_BA_CATE, (STATE_MACHINE_FUNC)MlmeADDBAAction);
     StateMachineSetAction(S, ACT_IDLE, MT2_MLME_ORI_DELBA_CATE, (STATE_MACHINE_FUNC)MlmeDELBAAction);
     StateMachineSetAction(S, ACT_IDLE, MT2_MLME_REC_DELBA_CATE, (STATE_MACHINE_FUNC)MlmeDELBAAction);
-#endif /* DOT11_N_SUPPORT */
 
     StateMachineSetAction(S, ACT_IDLE, MT2_PEER_PUBLIC_CATE, (STATE_MACHINE_FUNC)PeerPublicAction);
     StateMachineSetAction(S, ACT_IDLE, MT2_PEER_RM_CATE, (STATE_MACHINE_FUNC)PeerRMAction);
@@ -89,7 +87,6 @@ VOID ActionStateMachineInit(
 
 }
 
-#ifdef DOT11_N_SUPPORT
 VOID MlmeADDBAAction(
     IN PRTMP_ADAPTER pAd,
     IN MLME_QUEUE_ELEM *Elem)
@@ -287,7 +284,6 @@ VOID MlmeDELBAAction(
         DBGPRINT(RT_DEBUG_TRACE, ("BA - MlmeDELBAAction() . 3 DELBA sent. Initiator(%d)\n", pInfo->Initiator));
     }
 }
-#endif /* DOT11_N_SUPPORT */
 
 VOID MlmeQOSAction(
     IN PRTMP_ADAPTER pAd,
@@ -350,7 +346,6 @@ VOID PeerDLSAction(
 
 
 
-#ifdef DOT11_N_SUPPORT
 VOID PeerBAAction(
     IN PRTMP_ADAPTER pAd,
     IN MLME_QUEUE_ELEM *Elem)
@@ -374,7 +369,6 @@ VOID PeerBAAction(
 }
 
 
-#ifdef DOT11N_DRAFT3
 
 #ifdef CONFIG_STA_SUPPORT
 VOID StaPublicAction(
@@ -721,8 +715,6 @@ VOID ChannelSwitchAction(
                                   pAd->CommonCfg.CentralChannel));
     }
 }
-#endif /* DOT11N_DRAFT3 */
-#endif /* DOT11_N_SUPPORT */
 
 VOID PeerPublicAction(
     IN PRTMP_ADAPTER pAd,
@@ -737,8 +729,6 @@ VOID PeerPublicAction(
 
     switch(Action)
     {
-#ifdef DOT11_N_SUPPORT
-#ifdef DOT11N_DRAFT3
 
     case ACTION_BSS_2040_COEXIST:	/* Format defined in IEEE 7.4.7a.1 in 11n Draf3.03*/
     {
@@ -788,8 +778,6 @@ VOID PeerPublicAction(
 #endif /* CONFIG_STA_SUPPORT */
     }
     break;
-#endif /* DOT11N_DRAFT3 */
-#endif /* DOT11_N_SUPPORT */
 
     case ACTION_WIFI_DIRECT:
 
@@ -827,7 +815,6 @@ VOID PeerRMAction(
     return;
 }
 
-#ifdef DOT11_N_SUPPORT
 static VOID respond_ht_information_exchange_action(
     IN PRTMP_ADAPTER pAd,
     IN MLME_QUEUE_ELEM *Elem)
@@ -986,12 +973,6 @@ VOID ORIBATimerTimeout(
     /*	USHORT			Sequence;*/
     UCHAR			TID;
 
-#ifdef RALINK_ATE
-
-    if(ATE_ON(pAd))
-        return;
-
-#endif /* RALINK_ATE */
 
     total = pAd->MacTab.Size * NUM_OF_TID;
 
@@ -1076,7 +1057,6 @@ VOID SendRefreshBAR(
         }
     }
 }
-#endif /* DOT11_N_SUPPORT */
 
 VOID ActHeaderInit(
     IN	PRTMP_ADAPTER	pAd,

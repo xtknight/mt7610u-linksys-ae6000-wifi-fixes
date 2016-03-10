@@ -934,7 +934,6 @@ static void rtmp_psp_xlink_mode_set_default_parms(IN  PRTMP_ADAPTER pAd)
 #endif /* CONFIG_STA_SUPPORT */
 
 
-#ifdef DOT11_VHT_AC
 static void VHTParametersHook(
     IN RTMP_ADAPTER *pAd,
     IN PSTRING pValueStr,
@@ -1017,7 +1016,6 @@ static void VHTParametersHookDefaultValues(
     // VHT_BW_SIGNAL (bandwidth signaling) (missing)
 }
 
-#endif /* DOT11_VHT_AC */
 
 #ifdef CUSTOMER_DEMO
 void demo_mode_cfg(RTMP_ADAPTER *pAd)
@@ -1055,7 +1053,6 @@ void demo_mode_cfg(RTMP_ADAPTER *pAd)
 #endif /* CUSTOMER_DEMO */
 
 
-#ifdef DOT11_N_SUPPORT
 static void HTParametersHook(
     IN	PRTMP_ADAPTER pAd,
     IN	PSTRING		  pValueStr,
@@ -1435,8 +1432,6 @@ static void HTParametersHook(
         DBGPRINT(RT_DEBUG_TRACE, ("HT: Disallow TKIP mode = %s\n", (pAd->CommonCfg.HT_DisallowTKIP == TRUE) ? "ON" : "OFF"));
     }
 
-#ifdef DOT11_N_SUPPORT
-#ifdef DOT11N_DRAFT3
 
     if(RTMPGetKeyParameter("OBSSScanParam", pValueStr, 32, pInput, TRUE))
     {
@@ -1551,7 +1546,6 @@ static void HTParametersHook(
         DBGPRINT(RT_DEBUG_TRACE, ("HT: 20/40 BssCoexApCntThr = %d\n", pAd->CommonCfg.BssCoexApCntThr));
     }
 
-#endif /* DOT11N_DRAFT3 */
 
     if(RTMPGetKeyParameter("BurstMode", pValueStr, 25, pInput, TRUE))
     {
@@ -1560,7 +1554,6 @@ static void HTParametersHook(
         DBGPRINT(RT_DEBUG_TRACE, ("HT: RaBurstMode= %d\n", pAd->CommonCfg.bRalinkBurstMode));
     }
 
-#endif /* DOT11_N_SUPPORT */
 
 }
 
@@ -1709,21 +1702,16 @@ static void HTParametersHookDefaultValues(
     pAd->CommonCfg.HT_DisallowTKIP = TRUE;
     DBGPRINT(RT_DEBUG_INFO, ("Default HT: Disallow TKIP mode = %s\n", (pAd->CommonCfg.HT_DisallowTKIP == TRUE) ? "ON" : "OFF"));
 
-#ifdef DOT11_N_SUPPORT
-#ifdef DOT11N_DRAFT3
     // OBSSScanParam (missing)
 
     // HT_BSSCoexistence (missing)
 
     // HT_BSSCoexApCntThr (missing)
 
-#endif /* DOT11N_DRAFT3 */
 
     // BurstMode (missing)
-#endif /* DOT11_N_SUPPORT */
 
 }
-#endif /* DOT11_N_SUPPORT */
 
 
 #ifdef CONFIG_STA_SUPPORT
@@ -1819,10 +1807,8 @@ NDIS_STATUS RecoverConnectInfo(
 
     pAd->StaCfg.AuthMode = pAd->StaCtIf.AuthMode;
     pAd->StaCfg.WepStatus = pAd->StaCtIf.WepStatus;
-#ifdef WPA_SUPPLICANT_SUPPORT
     pAd->StaCfg.IEEE8021X = pAd->StaCtIf.IEEE8021X;
     pAd->StaCfg.DesireSharedKeyId = pAd->StaCtIf.DefaultKeyId;
-#endif // WPA_SUPPLICANT_SUPPORT //
     pAd->StaCfg.DefaultKeyId = pAd->StaCtIf.DefaultKeyId;
     NdisMoveMemory(pAd->StaCfg.PMK, pAd->StaCtIf.PMK, 32);
     RTMPMoveMemory(pAd->StaCfg.WpaPassPhrase, pAd->StaCtIf.WpaPassPhrase, pAd->StaCfg.WpaPassPhraseLen);
@@ -1831,9 +1817,7 @@ NDIS_STATUS RecoverConnectInfo(
     for(idx = 0; idx < 4; idx++)
     {
         NdisMoveMemory(&pAd->SharedKey[BSS0][idx], &pAd->StaCtIf.SharedKey[BSS0][idx], sizeof(CIPHER_KEY));
-#ifdef WPA_SUPPLICANT_SUPPORT
         NdisMoveMemory(&pAd->StaCfg.DesireSharedKey[idx], &pAd->StaCtIf.SharedKey[BSS0][idx], sizeof(CIPHER_KEY));
-#endif // WPA_SUPPLICANT_SUPPORT //
 
     }
 
@@ -1871,10 +1855,8 @@ NDIS_STATUS StoreConnectInfo(
     pAd->StaCtIf.WepStatus = pAd->StaCfg.WepStatus;
 
     pAd->StaCtIf.DefaultKeyId = pAd->StaCfg.DefaultKeyId;
-#ifdef WPA_SUPPLICANT_SUPPORT
     pAd->StaCtIf.DefaultKeyId = pAd->StaCfg.DesireSharedKeyId;
     pAd->StaCtIf.IEEE8021X = pAd->StaCfg.IEEE8021X;
-#endif // WPA_SUPPLICANT_SUPPORT //
     NdisMoveMemory(pAd->StaCtIf.PMK, pAd->StaCfg.PMK, 32);
     RTMPMoveMemory(pAd->StaCtIf.WpaPassPhrase, pAd->StaCfg.WpaPassPhrase, pAd->StaCfg.WpaPassPhraseLen);
     pAd->StaCtIf.WpaPassPhraseLen = pAd->StaCfg.WpaPassPhraseLen;
@@ -1901,10 +1883,8 @@ void RTMPSetCountryCode(RTMP_ADAPTER *pAd, PSTRING CountryCode)
     NdisMoveMemory(pAd->CommonCfg.CountryCode, CountryCode , 2);
     pAd->CommonCfg.CountryCode[2] = ' ';
 #ifdef CONFIG_STA_SUPPORT
-#ifdef EXT_BUILD_CHANNEL_LIST
     IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
     NdisMoveMemory(pAd->StaCfg.StaOriCountryCode, CountryCode , 2);
-#endif /* EXT_BUILD_CHANNEL_LIST */
 #endif /* CONFIG_STA_SUPPORT */
 
     if(strlen((PSTRING) pAd->CommonCfg.CountryCode) != 0)
@@ -1974,7 +1954,6 @@ NDIS_STATUS	RTMPSetProfileParameters(
                 RTMPSetCountryCode(pAd, tmpbuf);
         }
 
-#ifdef EXT_BUILD_CHANNEL_LIST
 
         /*ChannelGeography*/
         if(RTMPGetKeyParameter("ChannelGeography", tmpbuf, 25, pBuffer, TRUE))
@@ -1987,10 +1966,8 @@ NDIS_STATUS	RTMPSetProfileParameters(
                 pAd->CommonCfg.CountryCode[2] =
                     (pAd->CommonCfg.Geography == BOTH) ? ' ' : ((pAd->CommonCfg.Geography == IDOR) ? 'I' : 'O');
 #ifdef CONFIG_STA_SUPPORT
-#ifdef EXT_BUILD_CHANNEL_LIST
                 IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
                 pAd->StaCfg.StaOriGeography = pAd->CommonCfg.Geography;
-#endif /* EXT_BUILD_CHANNEL_LIST */
 #endif /* CONFIG_STA_SUPPORT */
                 DBGPRINT(RT_DEBUG_TRACE, ("ChannelGeography=%d\n", pAd->CommonCfg.Geography));
             }
@@ -2001,7 +1978,6 @@ NDIS_STATUS	RTMPSetProfileParameters(
             pAd->CommonCfg.CountryCode[2] = ' ';
         }
 
-#endif /* EXT_BUILD_CHANNEL_LIST */
 
 
 
@@ -2481,13 +2457,11 @@ NDIS_STATUS	RTMPSetProfileParameters(
                 else if((strcmp(tmpbuf, "WPA2PSK") == 0) || (strcmp(tmpbuf, "wpa2psk") == 0))
                     pAd->StaCfg.AuthMode = Ndis802_11AuthModeWPA2PSK;
 
-#ifdef WPA_SUPPLICANT_SUPPORT
                 else if((strcmp(tmpbuf, "WPA") == 0) || (strcmp(tmpbuf, "wpa") == 0))
                     pAd->StaCfg.AuthMode = Ndis802_11AuthModeWPA;
                 else if((strcmp(tmpbuf, "WPA2") == 0) || (strcmp(tmpbuf, "wpa2") == 0))
                     pAd->StaCfg.AuthMode = Ndis802_11AuthModeWPA2;
 
-#endif /* WPA_SUPPLICANT_SUPPORT */
                 else
                     pAd->StaCfg.AuthMode = Ndis802_11AuthModeOpen;
 
@@ -2536,13 +2510,9 @@ NDIS_STATUS	RTMPSetProfileParameters(
 
 
 
-#ifdef DOT11_N_SUPPORT
         HTParametersHook(pAd, tmpbuf, pBuffer);
-#endif /* DOT11_N_SUPPORT */
 
-#ifdef DOT11_VHT_AC
         VHTParametersHook(pAd, tmpbuf, pBuffer);
-#endif /* DOT11_VHT_AC */
 
 #ifdef CONFIG_FPGA_MODE
 #ifdef CAPTURE_MODE
@@ -2748,7 +2718,6 @@ NDIS_STATUS	RTMPSetProfileParameters(
 
 
 #ifdef WOW_SUPPORT
-#ifdef RTMP_MAC_USB
 
         /* set GPIO pin for wake-up signal */
         if(RTMPGetKeyParameter("WOW_GPIO", tmpbuf, 10, pBuffer, TRUE))
@@ -2767,7 +2736,6 @@ NDIS_STATUS	RTMPSetProfileParameters(
             Set_WOW_Hold(pAd, tmpbuf);
 
 
-#endif /* RTMP_MAC_USB */
 #endif /* WOW_SUPPORT */
 
     }
@@ -2826,11 +2794,9 @@ NDIS_STATUS	RTMPSetDefaultProfileParameters(
         // ChannelGeography=2(BOTH)
         // WARNING: after config file is read, it may change this default to BOTH if the variable is not specified. (???) That's why we set the value to BOTH here anyway.
         // See RTMPSetProfileParameters()
-#ifdef EXT_BUILD_CHANNEL_LIST
         pAd->CommonCfg.Geography = BOTH;
         // Unsure what this is supposed to do
         pAd->CommonCfg.CountryCode[2] = ' ';
-#endif /* EXT_BUILD_CHANNEL_LIST */
         DBGPRINT(RT_DEBUG_INFO, ("Default ChannelGeography=2\n"));
 
         // SSID="11n-AP"
@@ -2859,15 +2825,9 @@ NDIS_STATUS	RTMPSetDefaultProfileParameters(
         pAd->CommonCfg.Channel = (UCHAR) 0;
         DBGPRINT(RT_DEBUG_INFO, ("Default Channel=0\n"));
 
-#ifdef DOT11_VHT_AC
         // WirelessMode=12 (B/G/GN/A/AN/AC mixed)
         RT_CfgSetWirelessMode(pAd, "12");
         DBGPRINT(RT_DEBUG_INFO, ("Default WirelessMode=12 (B/G/GN/A/AN/AC mixed)\n"));
-#else
-        // WirelessMode=5 (A/B/G/GN/AN mixed)
-        RT_CfgSetWirelessMode(pAd, "5");
-        DBGPRINT(RT_DEBUG_INFO, ("Default WirelessMode=5 (A/B/G/GN/AN mixed)\n"));
-#endif /* DOT11_VHT_AC */
 
         DBGPRINT(RT_DEBUG_INFO, ("Default PhyMode=%d\n", pAd->CommonCfg.PhyMode));
 
@@ -3028,14 +2988,10 @@ NDIS_STATUS	RTMPSetDefaultProfileParameters(
         rtmp_key_set_default_parms(pAd);
 
         // 802.11n HT(High Throughput) related parameters
-#ifdef DOT11_N_SUPPORT
         HTParametersHookDefaultValues(pAd);
-#endif /* DOT11_N_SUPPORT */
 
         // 802.11ac VHT(Very? High Throughput) related parameters
-#ifdef DOT11_VHT_AC
         VHTParametersHookDefaultValues(pAd);
-#endif /* DOT11_VHT_AC */
 
 
 #ifdef CONFIG_FPGA_MODE
@@ -3114,7 +3070,6 @@ NDIS_STATUS	RTMPSetDefaultProfileParameters(
 
 
 #ifdef WOW_SUPPORT
-#ifdef RTMP_MAC_USB
         // WOW_GPIO (missing)
 
         // WOW_Enable (missing)
@@ -3122,7 +3077,6 @@ NDIS_STATUS	RTMPSetDefaultProfileParameters(
         // WOW_Delay (missing)
 
         // WOW_Hold (missing)
-#endif /* RTMP_MAC_USB */
 #endif /* WOW_SUPPORT */
 
     }

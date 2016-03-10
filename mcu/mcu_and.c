@@ -28,7 +28,6 @@
 #include	"rt_config.h"
 
 
-#ifdef RTMP_MAC_USB
 VOID usb_uploadfw_complete(purbb_t urb, pregs *pt_regs)
 {
     RTMP_OS_COMPLETION *load_fw_done = (RTMP_OS_COMPLETION *)RTMP_OS_USB_CONTEXT_GET(urb);
@@ -558,16 +557,13 @@ error0:
 
     return ret;
 }
-#endif
 
 static struct cmd_msg *andes_alloc_cmd_msg(RTMP_ADAPTER *ad, unsigned int length)
 {
     struct cmd_msg *msg = NULL;
     RTMP_CHIP_CAP *cap = &ad->chipCap;
     struct MCU_CTRL *ctl = &ad->MCUCtrl;
-#ifdef RTMP_USB_SUPPORT
     PURB urb = NULL;
-#endif
 
     PNDIS_PACKET net_pkt = RTMP_AllocateFragPacketBuffer(ad, cap->cmd_header_len + length + cap->cmd_padding_len);
 
@@ -591,7 +587,6 @@ static struct cmd_msg *andes_alloc_cmd_msg(RTMP_ADAPTER *ad, unsigned int length
 
     memset(msg, 0x00, sizeof(*msg));
 
-#ifdef RTMP_USB_SUPPORT
     urb = RTUSB_ALLOC_URB(0);
 
     if(!urb)
@@ -601,7 +596,6 @@ static struct cmd_msg *andes_alloc_cmd_msg(RTMP_ADAPTER *ad, unsigned int length
     }
 
     msg->urb = urb;
-#endif
 
     msg->priv = (void *)ad;
     msg->net_pkt = net_pkt;
@@ -657,9 +651,7 @@ void andes_free_cmd_msg(struct cmd_msg *msg)
     if(msg->need_wait)
         RTMP_OS_EXIT_COMPLETION(&msg->ack_done);
 
-#ifdef RTMP_USB_SUPPORT
     RTUSB_FREE_URB(msg->urb);
-#endif
 
     os_free_mem(NULL, msg);
 
@@ -945,7 +937,6 @@ void andes_rx_process_cmd_msg(RTMP_ADAPTER *ad, struct cmd_msg *rx_msg)
     }
 }
 
-#ifdef RTMP_USB_SUPPORT
 static void usb_rx_cmd_msg_complete(PURB urb)
 {
     PNDIS_PACKET net_pkt = (PNDIS_PACKET)RTMP_OS_USB_CONTEXT_GET(urb);
@@ -1244,7 +1235,6 @@ void andes_usb_unlink_urb(RTMP_ADAPTER *ad, DL_LIST *list)
     RTMP_SPIN_UNLOCK_IRQRESTORE(lock, &flags);
 }
 
-#endif
 
 void andes_cleanup_cmd_msg(RTMP_ADAPTER *ad, DL_LIST *list)
 {
@@ -1375,9 +1365,7 @@ static int andes_dequeue_and_kick_out_cmd_msgs(RTMP_ADAPTER *ad)
 #endif
 
 
-#ifdef RTMP_USB_SUPPORT
         ret = usb_kick_out_cmd_msg(ad, msg);
-#endif
 
 
         if(ret)

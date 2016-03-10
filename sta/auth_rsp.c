@@ -142,11 +142,9 @@ VOID PeerDeauthAction(
                                       NULL, 0, 0);
 
 
-#ifdef NATIVE_WPA_SUPPLICANT_SUPPORT
             RtmpOSWirelessEventSend(pAd->net_dev,
                                     RT_WLAN_EVENT_CGIWAP, -1, NULL,
                                     NULL, 0);
-#endif /* NATIVE_WPA_SUPPLICANT_SUPPORT */
 
             /* send wireless event - for deauthentication */
             RTMPSendWirelessEvent(pAd, IW_DEAUTH_EVENT_FLAG, NULL,
@@ -154,7 +152,6 @@ VOID PeerDeauthAction(
 
 
 
-#ifdef WPA_SUPPLICANT_SUPPORT
 
             if((pAd->StaCfg.WpaSupplicantUP !=
                     WPA_SUPPLICANT_DISABLE)
@@ -163,7 +160,6 @@ VOID PeerDeauthAction(
                         WPA_802_1X_PORT_SECURED))
                 pAd->StaCfg.bLostAp = TRUE;
 
-#endif /* WPA_SUPPLICANT_SUPPORT */
 
             /*
                Some customer would set AP1 & AP2 same SSID, AuthMode & EncrypType but different WPAPSK,

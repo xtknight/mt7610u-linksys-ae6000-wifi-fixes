@@ -36,12 +36,10 @@ INT Set_WfdEnable_Proc(
     IN  PRTMP_ADAPTER		pAd,
     IN  PSTRING			arg);
 
-#ifdef RT_CFG80211_SUPPORT
 INT Set_WfdInsertIe_Proc
 (
     IN	PRTMP_ADAPTER		pAd,
     IN	PSTRING 		arg);
-#endif /* RT_CFG80211_SUPPORT */
 
 INT Set_WfdDeviceType_Proc(
     IN  PRTMP_ADAPTER		pAd,

@@ -795,7 +795,6 @@ ra_dma_addr_t linux_pci_map_single(void *pPciDev, void *ptr, size_t size, int sd
 void linux_pci_unmap_single(void *pPciDev, ra_dma_addr_t dma_addr, size_t size, int direction);
 
 /* ============================ rt_usb_util.c =============================== */
-#ifdef RTMP_MAC_USB
 typedef VOID (*USB_COMPLETE_HANDLER)(VOID *);
 
 void dump_urb(VOID *purb);
@@ -885,7 +884,6 @@ NTSTATUS RtmpOsUsbStatusGet(
 
 VOID RtmpOsUsbDmaMapping(
     IN	VOID			*pUrb);
-#endif /* RTMP_MAC_USB */
 
 #if defined(RTMP_RBUS_SUPPORT) || defined(RTMP_FLASH_SUPPORT)
 void RtmpFlashRead(
@@ -906,7 +904,6 @@ UINT32 RtmpOsGetUsbDevProductID(
     IN VOID *pUsbDev);
 
 /* CFG80211 */
-#ifdef RT_CFG80211_SUPPORT
 typedef struct __CFG80211_BAND
 {
 
@@ -997,7 +994,6 @@ void CFG80211OS_ConnectResultInform(
     IN UCHAR					*pRspIe,
     IN UINT32					RspIeLen,
     IN UCHAR					FlgIsSuccess);
-#endif /* RT_CFG80211_SUPPORT */
 
 
 
@@ -1020,9 +1016,6 @@ extern ULONG OS_NumOfMemAlloc, OS_NumOfMemFree;
 extern INT32 ralinkrate[];
 extern UINT32 RT_RateSize;
 
-#ifdef PLATFORM_UBM_IPX8
-#include "vrut_ubm.h"
-#endif /* PLATFORM_UBM_IPX8 */
 
 INT32  RtPrivIoctlSetVal(VOID);
 

@@ -329,12 +329,10 @@ NDIS_STATUS MiniportMMRequest(
         }
 
 #ifdef CONFIG_STA_SUPPORT
-#ifdef RTMP_MAC_USB
 
         if(RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_IDLE_RADIO_OFF))
             ASIC_RADIO_ON(pAd, MLME_RADIO_ON);
 
-#endif /* RTMP_MAC_USB */
 #endif /* CONFIG_STA_SUPPORT */
 
         /* Check Free priority queue*/
@@ -502,12 +500,8 @@ NDIS_STATUS MlmeHardTransmitMgmtRing(
         /* Fixed W52 with Activity scan issue in ABG_MIXED and ABGN_MIXED mode.*/
         // TODO: shiang-6590, why we need this condition check here?
         if(WMODE_EQUAL(pAd->CommonCfg.PhyMode, WMODE_A | WMODE_B | WMODE_G)
-#ifdef DOT11_N_SUPPORT
                 || WMODE_EQUAL(pAd->CommonCfg.PhyMode, WMODE_A | WMODE_B | WMODE_G | WMODE_AN | WMODE_GN)
-#endif /* DOT11_N_SUPPORT */
-#ifdef DOT11_VHT_AC
                 || WMODE_CAP(pAd->CommonCfg.PhyMode, WMODE_AC)
-#endif /* DOT11_VHT_AC*/
           )
         {
             if(pAd->LatchRfRegs.Channel > 14)
@@ -767,9 +761,7 @@ static UCHAR TxPktClassification(
     UCHAR			TxFrameType = TX_UNKOWN_FRAME;
     UCHAR			Wcid;
     MAC_TABLE_ENTRY	*pMacEntry = NULL;
-#ifdef DOT11_N_SUPPORT
     BOOLEAN			bHTRate = FALSE;
-#endif /* DOT11_N_SUPPORT */
 
     Wcid = RTMP_GET_PACKET_WCID(pPacket);
 
@@ -788,7 +780,6 @@ static UCHAR TxPktClassification(
         TxFrameType = TX_LEGACY_FRAME;
     }
 
-#ifdef DOT11_N_SUPPORT
     else if(IS_HT_RATE(pMacEntry))
     {
         /* it's a 11n capable packet*/
@@ -819,7 +810,6 @@ static UCHAR TxPktClassification(
             TxFrameType = TX_LEGACY_FRAME;
     }
 
-#endif /* DOT11_N_SUPPORT */
     else
     {
         /* it's a legacy b/g packet.*/
@@ -840,9 +830,7 @@ static UCHAR TxPktClassification(
     /* Currently, our fragment only support when a unicast packet send as NOT-ARALINK, NOT-AMSDU and NOT-AMPDU.*/
     if((RTMP_GET_PACKET_FRAGMENTS(pPacket) > 1)
             && (TxFrameType == TX_LEGACY_FRAME)
-#ifdef DOT11_N_SUPPORT
             && ((pMacEntry->TXBAbitmap & (1<<(RTMP_GET_PACKET_UP(pPacket)))) == 0)
-#endif /* DOT11_N_SUPPORT */
       )
         TxFrameType = TX_FRAG_FRAME;
 
@@ -949,7 +937,6 @@ BOOLEAN RTMP_FillTxBlkInfo(RTMP_ADAPTER *pAd, TX_BLK *pTxBlk)
                 /* Specific packet, i.e., bDHCPFrame, bEAPOLFrame, bWAIFrame, need force low rate.*/
                 pTxBlk->pTransmit = &pAd->MacTab.Content[MCAST_WCID].HTPhyMode;
 
-#ifdef DOT11_N_SUPPORT
 
                 /* Modify the WMM bit for ICV issue. If we have a packet with EOSP field need to set as 1, how to handle it? */
                 if(IS_HT_STA(pTxBlk->pMacEntry) &&
@@ -960,10 +947,8 @@ BOOLEAN RTMP_FillTxBlkInfo(RTMP_ADAPTER *pAd, TX_BLK *pTxBlk)
                     TX_BLK_SET_FLAG(pTxBlk, fTX_bForceNonQoS);
                 }
 
-#endif /* DOT11_N_SUPPORT */
             }
 
-#ifdef DOT11_N_SUPPORT
 
             if((IS_HT_RATE(pMacEntry) == FALSE) &&
                     (CLIENT_STATUS_TEST_FLAG(pMacEntry, fCLIENT_STATUS_PIGGYBACK_CAPABLE)))
@@ -972,7 +957,6 @@ BOOLEAN RTMP_FillTxBlkInfo(RTMP_ADAPTER *pAd, TX_BLK *pTxBlk)
                 TX_BLK_SET_FLAG(pTxBlk, fTX_bPiggyBack);
             }
 
-#endif /* DOT11_N_SUPPORT */
 
             if(RTMP_GET_PACKET_MOREDATA(pPacket))
             {
@@ -1244,9 +1228,7 @@ VOID RTMPDeQueuePacket(
                     pTxBlk->TxFrameType = TX_LEGACY_FRAME;
             }
 
-#ifdef RTMP_MAC_USB
             DEQUEUE_UNLOCK(&pAd->irq_lock, bIntContext, IrqFlags);
-#endif /* RTMP_MAC_USB */
 
             Count += pTxBlk->TxPacketList.Number;
 
@@ -1263,12 +1245,10 @@ VOID RTMPDeQueuePacket(
 
         RTMP_STOP_DEQUEUE(pAd, QueIdx, IrqFlags);
 
-#ifdef RTMP_MAC_USB
 
         if(!hasTxDesc)
             RTUSBKickBulkOut(pAd);
 
-#endif /* RTMP_MAC_USB */
 
 #ifdef BLOCK_NET_IF
 
@@ -1432,7 +1412,6 @@ VOID RTMPResumeMsduTransmission(
 }
 
 
-#ifdef DOT11_N_SUPPORT
 UINT deaggregate_AMSDU_announce(
     IN	PRTMP_ADAPTER	pAd,
     PNDIS_PACKET		pPacket,
@@ -1581,7 +1560,6 @@ VOID Indicate_AMSDU_Packet(
     RTMP_SET_PACKET_IF(pRxBlk->pRxPacket, FromWhichBSSID);
     nMSDU = deaggregate_AMSDU_announce(pAd, pRxBlk->pRxPacket, pRxBlk->pData, pRxBlk->DataSize, pRxBlk->OpMode);
 }
-#endif /* DOT11_N_SUPPORT */
 
 
 /*
@@ -1962,8 +1940,6 @@ VOID Indicate_Legacy_Packet(
 
     STATS_INC_RX_PACKETS(pAd, FromWhichBSSID);
 
-#ifdef RTMP_MAC_USB
-#ifdef DOT11_N_SUPPORT
 
     if(pAd->CommonCfg.bDisableReordering == 0)
     {
@@ -1998,8 +1974,6 @@ VOID Indicate_Legacy_Packet(
         }
     }
 
-#endif /* DOT11_N_SUPPORT */
-#endif /* RTMP_MAC_USB */
 
 
     //+++Add by shiang for debug
@@ -2072,8 +2046,6 @@ VOID Indicate_Legacy_Packet_Hdr_Trns(
 
     STATS_INC_RX_PACKETS(pAd, FromWhichBSSID);
 
-#ifdef RTMP_MAC_USB
-#ifdef DOT11_N_SUPPORT
 
     if(pAd->CommonCfg.bDisableReordering == 0)
     {
@@ -2108,8 +2080,6 @@ VOID Indicate_Legacy_Packet_Hdr_Trns(
         }
     }
 
-#endif /* DOT11_N_SUPPORT */
-#endif /* RTMP_MAC_USB */
 
 
     //+++Add by shiang for debug
@@ -2162,16 +2132,13 @@ VOID CmmRxnonRalinkFrameIndicate(
     IN	RX_BLK			*pRxBlk,
     IN	UCHAR			FromWhichBSSID)
 {
-#ifdef DOT11_N_SUPPORT
 
     if(RX_BLK_TEST_FLAG(pRxBlk, fRX_AMPDU) && (pAd->CommonCfg.bDisableReordering == 0))
     {
         Indicate_AMPDU_Packet(pAd, pRxBlk, FromWhichBSSID);
     }
     else
-#endif /* DOT11_N_SUPPORT */
     {
-#ifdef DOT11_N_SUPPORT
 
         if(RX_BLK_TEST_FLAG(pRxBlk, fRX_AMSDU))
         {
@@ -2179,7 +2146,6 @@ VOID CmmRxnonRalinkFrameIndicate(
             Indicate_AMSDU_Packet(pAd, pRxBlk, FromWhichBSSID);
         }
         else
-#endif /* DOT11_N_SUPPORT */
         {
             Indicate_Legacy_Packet(pAd, pRxBlk, FromWhichBSSID);
         }
@@ -2194,16 +2160,13 @@ VOID CmmRxnonRalinkFrameIndicate_Hdr_Trns(
     IN	RX_BLK			*pRxBlk,
     IN	UCHAR			FromWhichBSSID)
 {
-#ifdef DOT11_N_SUPPORT
 
     if(RX_BLK_TEST_FLAG(pRxBlk, fRX_AMPDU) && (pAd->CommonCfg.bDisableReordering == 0))
     {
         Indicate_AMPDU_Packet_Hdr_Trns(pAd, pRxBlk, FromWhichBSSID);
     }
     else
-#endif /* DOT11_N_SUPPORT */
     {
-#ifdef DOT11_N_SUPPORT
 
         if(RX_BLK_TEST_FLAG(pRxBlk, fRX_AMSDU))
         {
@@ -2211,7 +2174,6 @@ VOID CmmRxnonRalinkFrameIndicate_Hdr_Trns(
             Indicate_AMSDU_Packet(pAd, pRxBlk, FromWhichBSSID);
         }
         else
-#endif /* DOT11_N_SUPPORT */
         {
             Indicate_Legacy_Packet_Hdr_Trns(pAd, pRxBlk, FromWhichBSSID);
         }
@@ -2943,7 +2905,6 @@ VOID StopDmaRx(
     for(MTxCycle = 0; MTxCycle < 2000; MTxCycle++)
     {
 
-#ifdef  RTMP_MAC_USB
         USB_CFG_READ(pAd, &MacReg);
 
         //RTMP_IO_READ32(pAd, USB_DMA_CFG, &MacReg);
@@ -2957,7 +2918,6 @@ VOID StopDmaRx(
             break;
         }
 
-#endif
 
         if(MacReg == 0xFFFFFFFF)
         {
@@ -2996,7 +2956,6 @@ VOID StopDmaTx(
     for(MTxCycle = 0; MTxCycle < 2000; MTxCycle++)
     {
 
-#ifdef RTMP_MAC_USB
         USB_CFG_READ(pAd, &MacReg);
 
         //RTMP_IO_READ32(pAd, USB_DMA_CFG, &MacReg);
@@ -3010,7 +2969,6 @@ VOID StopDmaTx(
             RTMPusecDelay(50);
         }
 
-#endif
 
         if(MacReg == 0xFFFFFFFF)
         {

@@ -274,13 +274,9 @@ VOID MlmeAssocReqAction(
     USHORT Status;
 
 
-#ifdef WPA_SUPPLICANT_SUPPORT
     DBGPRINT(RT_DEBUG_TRACE, ("wpa_supplicant support enabled\n"));
-#endif
 
-#ifdef NATIVE_WPA_SUPPLICANT_SUPPORT
     DBGPRINT(RT_DEBUG_TRACE, ("Native wpa_supplicant support enabled\n"));
-#endif
 
     /* Block all authentication request durning WPA block period */
     if(pAd->StaCfg.bBlockAssoc == TRUE)
@@ -373,7 +369,6 @@ VOID MlmeAssocReqAction(
             FrameLen += tmp;
         }
 
-#ifdef DOT11_N_SUPPORT
 
         /* HT */
         if((pAd->MlmeAux.HtCapabilityLen > 0)
@@ -413,7 +408,6 @@ VOID MlmeAssocReqAction(
 
             FrameLen += TmpLen;
 
-#ifdef DOT11_VHT_AC
 
             if(WMODE_CAP_AC(pAd->CommonCfg.PhyMode) &&
                     (pAd->MlmeAux.Channel > 14) &&
@@ -423,12 +417,9 @@ VOID MlmeAssocReqAction(
                 FrameLen += build_vht_ies(pAd, (UCHAR *)(pOutBuffer + FrameLen), SUBTYPE_ASSOC_REQ);
             }
 
-#endif /* DOT11_VHT_AC */
         }
 
-#endif /* DOT11_N_SUPPORT */
 
-#if defined(DOT11N_DRAFT3) || defined(DOT11V_WNM_SUPPORT) || defined(DOT11Z_TDLS_SUPPORT)
         {
             ULONG TmpLen;
             EXT_CAP_INFO_ELEMENT extCapInfo;
@@ -437,7 +428,6 @@ VOID MlmeAssocReqAction(
             extInfoLen = sizeof(EXT_CAP_INFO_ELEMENT);
             NdisZeroMemory(&extCapInfo, extInfoLen);
 
-#ifdef DOT11N_DRAFT3
 
             if((pAd->CommonCfg.bBssCoexEnable == TRUE) &&
                     WMODE_CAP_N(pAd->CommonCfg.PhyMode)
@@ -447,7 +437,6 @@ VOID MlmeAssocReqAction(
                 extCapInfo.BssCoexistMgmtSupport = 1;
             }
 
-#endif /* DOT11N_DRAFT3 */
 
 
             MakeOutgoingFrame(pOutBuffer + FrameLen, &TmpLen,
@@ -457,7 +446,6 @@ VOID MlmeAssocReqAction(
                               END_OF_ARGS);
             FrameLen += TmpLen;
         }
-#endif /* defined(DOT11N_DRAFT3) || defined(DOT11V_WNM_SUPPORT) || defined(DOT11Z_TDLS_SUPPORT) */
 
         /* add Ralink proprietary IE to inform AP this STA is going to use AGGREGATION or PIGGY-BACK+AGGREGATION */
         /* Case I: (Aggregation + Piggy-Back) */
@@ -546,10 +534,8 @@ VOID MlmeAssocReqAction(
                 RSNIe = IE_WPA2;
             }
 
-#ifdef WPA_SUPPLICANT_SUPPORT
 
             if(pAd->StaCfg.bRSN_IE_FromWpaSupplicant == FALSE)
-#endif /* WPA_SUPPLICANT_SUPPORT */
             {
                 RTMPMakeRSNIE(pAd, pAd->StaCfg.AuthMode,
                               pAd->StaCfg.WepStatus, BSS0);
@@ -570,7 +556,6 @@ VOID MlmeAssocReqAction(
                         }
                     }
 
-#ifdef WPA_SUPPLICANT_SUPPORT
 
                     /*
                        When AuthMode is WPA2-Enterprise and AP reboot or STA lost AP,
@@ -583,7 +568,6 @@ VOID MlmeAssocReqAction(
                         FoundPMK = FALSE;
                     }
 
-#endif /* WPA_SUPPLICANT_SUPPORT */
 
                     if(FoundPMK)
                     {
@@ -596,7 +580,6 @@ VOID MlmeAssocReqAction(
                 }
             }
 
-#ifdef WPA_SUPPLICANT_SUPPORT
 
             /*
             	Can not use SIOCSIWGENIE definition, it is used in wireless.h
@@ -611,7 +594,6 @@ VOID MlmeAssocReqAction(
             }
             else
                 /* #endif */
-#endif /* WPA_SUPPLICANT_SUPPORT */
             {
                 MakeOutgoingFrame(pOutBuffer + FrameLen, &tmp,
                                   1, &RSNIe,
@@ -622,7 +604,6 @@ VOID MlmeAssocReqAction(
                 FrameLen += tmp;
             }
 
-#ifdef WPA_SUPPLICANT_SUPPORT
 
             /*
             	Can not use SIOCSIWGENIE definition, it is used in wireless.h
@@ -634,7 +615,6 @@ VOID MlmeAssocReqAction(
                     WPA_SUPPLICANT_ENABLE)
                     || (pAd->StaCfg.bRSN_IE_FromWpaSupplicant == FALSE))
                 /* #endif */
-#endif /* WPA_SUPPLICANT_SUPPORT */
             {
                 /* Append Variable IE */
                 NdisMoveMemory(pAd->StaCfg.ReqVarIEs + VarIesOffset, &RSNIe, 1);
@@ -650,7 +630,6 @@ VOID MlmeAssocReqAction(
             }
         }
 
-#ifdef WPA_SUPPLICANT_SUPPORT
         DBGPRINT(RT_DEBUG_TRACE, ("wpa_supplicant support enabled\n"));
 
         /*
@@ -680,10 +659,8 @@ VOID MlmeAssocReqAction(
         }
 
         /* #endif */
-#endif /* WPA_SUPPLICANT_SUPPORT */
 
 #ifdef WFD_SUPPORT
-#ifdef RT_CFG80211_SUPPORT
 
         if(pAd->StaCfg.WfdCfg.bSuppInsertWfdIe)
         {
@@ -697,7 +674,6 @@ VOID MlmeAssocReqAction(
             FrameLen += WfdIeLen;
         }
 
-#endif /* RT_CFG80211_SUPPORT */
 #endif /* WFD_SUPPORT */
 
         MiniportMMRequest(pAd, 0, pOutBuffer, FrameLen);
@@ -751,13 +727,9 @@ VOID MlmeReassocReqAction(
     PUCHAR pOutBuffer = NULL;
     USHORT Status;
 
-#ifdef WPA_SUPPLICANT_SUPPORT
     DBGPRINT(RT_DEBUG_TRACE, ("wpa_supplicant support enabled\n"));
-#endif
 
-#ifdef NATIVE_WPA_SUPPLICANT_SUPPORT
     DBGPRINT(RT_DEBUG_TRACE, ("Native wpa_supplicant support enabled\n"));
-#endif
 
     /* Block all authentication request durning WPA block period */
     if(pAd->StaCfg.bBlockAssoc == TRUE)
@@ -842,7 +814,6 @@ VOID MlmeReassocReqAction(
             FrameLen += tmp;
         }
 
-#ifdef DOT11_N_SUPPORT
 
         /* HT */
         if((pAd->MlmeAux.HtCapabilityLen > 0)
@@ -884,7 +855,6 @@ VOID MlmeReassocReqAction(
 
             FrameLen += TmpLen;
 
-#ifdef DOT11_VHT_AC
 
             if(WMODE_CAP_AC(pAd->CommonCfg.PhyMode) &&
                     (pAd->MlmeAux.Channel > 14) &&
@@ -894,10 +864,8 @@ VOID MlmeReassocReqAction(
                 FrameLen += build_vht_ies(pAd, (UCHAR *)(pOutBuffer + FrameLen), SUBTYPE_ASSOC_REQ);
             }
 
-#endif /* DOT11_VHT_AC */
         }
 
-#endif /* DOT11_N_SUPPORT */
 
         if(FALSE
           )
@@ -960,7 +928,6 @@ VOID MlmeReassocReqAction(
         }
 
 #ifdef WFD_SUPPORT
-#ifdef RT_CFG80211_SUPPORT
 
         if(pAd->StaCfg.WfdCfg.bSuppInsertWfdIe)
         {
@@ -974,7 +941,6 @@ VOID MlmeReassocReqAction(
             FrameLen += WfdIeLen;
         }
 
-#endif /* RT_CFG80211_SUPPORT */
 #endif /* WFD_SUPPORT */
 
         MiniportMMRequest(pAd, 0, pOutBuffer, FrameLen);
@@ -1098,26 +1064,13 @@ VOID MlmeDisassocReqAction(
     RTMPSetTimer(&pAd->MlmeAux.DisassocTimer, Timeout);	/* in mSec */
     pAd->Mlme.AssocMachine.CurrState = DISASSOC_WAIT_RSP;
 
-#ifdef WPA_SUPPLICANT_SUPPORT
 
     DBGPRINT(RT_DEBUG_ERROR, ("wpa_supplicant support enabled\n"));
 
 
-#ifndef NATIVE_WPA_SUPPLICANT_SUPPORT
-
-    if(pAd->StaCfg.WpaSupplicantUP != WPA_SUPPLICANT_DISABLE)
-    {
-        /*send disassociate event to wpa_supplicant */
-        RtmpOSWirelessEventSend(pAd->net_dev, RT_WLAN_EVENT_CUSTOM,
-                                RT_DISASSOC_EVENT_FLAG, NULL, NULL, 0);
-    }
-
-#else
 
     DBGPRINT(RT_DEBUG_TRACE, ("Native wpa_supplicant support enabled\n"));
 
-#endif /* NATIVE_WPA_SUPPLICANT_SUPPORT */
-#endif /* WPA_SUPPLICANT_SUPPORT */
 
 
     /* mark here because linkdown also call this function */
@@ -1180,13 +1133,11 @@ VOID PeerAssocRspAction(
         {
             DBGPRINT(RT_DEBUG_TRACE,
                      ("%s():ASSOC - receive ASSOC_RSP to me (status=%d)\n", __FUNCTION__, Status));
-#ifdef DOT11_N_SUPPORT
             DBGPRINT(RT_DEBUG_TRACE,
                      ("%s():MacTable [%d].AMsduSize = %d. ClientStatusFlags = 0x%lx\n",
                       __FUNCTION__, Elem->Wcid,
                       pAd->MacTab.Content[BSSID_WCID].AMsduSize,
                       pAd->MacTab.Content[BSSID_WCID].ClientStatusFlags));
-#endif /* DOT11_N_SUPPORT */
             RTMPCancelTimer(&pAd->MlmeAux.AssocTimer, &TimerCancelled);
 
 
@@ -1234,10 +1185,8 @@ VOID PeerAssocRspAction(
                                   SupRateLen,
                                   ExtRate,
                                   ExtRateLen,
-#ifdef DOT11_VHT_AC
                                   ie_list->vht_cap_len,
                                   &ie_list->vht_cap,
-#endif /* DOT11_VHT_AC */
                                   &HtCapability,
                                   HtCapabilityLen);
 
@@ -1247,7 +1196,6 @@ VOID PeerAssocRspAction(
             MlmeEnqueue(pAd, MLME_CNTL_STATE_MACHINE, MT2_ASSOC_CONF, 2, &Status, 0);
 
 #ifdef LINUX
-#ifdef RT_CFG80211_SUPPORT
             {
                 /*PFRAME_802_11 pFrame = (PFRAME_802_11) (Elem->Msg);
                 RTEnqueueInternalCmd(pAd,
@@ -1266,7 +1214,6 @@ VOID PeerAssocRspAction(
                                                TRUE);
 
             }
-#endif /* RT_CFG80211_SUPPORT */
 #endif /* LINUX */
         }
     }
@@ -1380,34 +1327,14 @@ VOID PeerReassocRspAction(
                                   SupRateLen,
                                   ExtRate,
                                   ExtRateLen,
-#ifdef DOT11_VHT_AC
                                   ie_list->vht_cap_len,
                                   &ie_list->vht_cap,
-#endif /* DOT11_VHT_AC */
                                   &HtCapability,
                                   HtCapabilityLen);
 
-#ifdef WPA_SUPPLICANT_SUPPORT
                 DBGPRINT(RT_DEBUG_TRACE, ("wpa_supplicant support enabled"));
-#ifndef NATIVE_WPA_SUPPLICANT_SUPPORT
-
-                if(pAd->StaCfg.WpaSupplicantUP != WPA_SUPPLICANT_DISABLE)
-                {
-                    SendAssocIEsToWpaSupplicant(pAd->net_dev,
-                                                pAd->StaCfg.ReqVarIEs,
-                                                pAd->StaCfg.ReqVarIELen);
-                    RtmpOSWirelessEventSend(pAd->net_dev,
-                                            RT_WLAN_EVENT_CUSTOM,
-                                            RT_ASSOC_EVENT_FLAG,
-                                            NULL, NULL, 0);
-                }
-
-#else
                 DBGPRINT(RT_DEBUG_TRACE, ("Native wpa_supplicant support enabled"));
-#endif /* !NATIVE_WPA_SUPPLICANT_SUPPORT */
-#endif /* WPA_SUPPLICANT_SUPPORT */
 
-#ifdef NATIVE_WPA_SUPPLICANT_SUPPORT
                 {
 
                     DBGPRINT(RT_DEBUG_TRACE, ("Native wpa_supplicant support enabled (ReqVarIELen=%d)\n", pAd->StaCfg.ReqVarIELen));
@@ -1421,7 +1348,6 @@ VOID PeerReassocRspAction(
                                             &pAd->MlmeAux.Bssid[0], NULL,
                                             0);
                 }
-#endif /* NATIVE_WPA_SUPPLICANT_SUPPORT */
 
             }
 
@@ -1474,7 +1400,6 @@ VOID AssocPostProc(
     pAd->MlmeAux.Aid = Aid;
     pAd->MlmeAux.CapabilityInfo = CapabilityInfo & SUPPORTED_CAPABILITY_INFO;
 
-#ifdef DOT11_N_SUPPORT
 
     /* Some HT AP might lost WMM IE. We add WMM ourselves. beacuase HT requires QoS on. */
     if((HtCapabilityLen > 0) && (pEdcaParm->bValid == FALSE))
@@ -1502,7 +1427,6 @@ VOID AssocPostProc(
 
     }
 
-#endif /* DOT11_N_SUPPORT */
 
     NdisMoveMemory(&pAd->MlmeAux.APEdcaParm, pEdcaParm, sizeof(EDCA_PARM));
 
@@ -1516,7 +1440,6 @@ VOID AssocPostProc(
     NdisMoveMemory(pAd->MlmeAux.ExtRate, ExtRate, ExtRateLen);
     RTMPCheckRates(pAd, pAd->MlmeAux.ExtRate, &pAd->MlmeAux.ExtRateLen);
 
-#ifdef DOT11_N_SUPPORT
 
     if(HtCapabilityLen > 0)
     {
@@ -1535,15 +1458,12 @@ VOID AssocPostProc(
               pAd->MacTab.Content[BSSID_WCID].MmpsMode,
               pAd->MacTab.Content[BSSID_WCID].AMsduSize));
 
-#ifdef DOT11_VHT_AC
 
     if(ie_list->vht_cap_len > 0 && ie_list->vht_op_len > 0)
     {
         RTMPCheckVht(pAd, BSSID_WCID, &ie_list->vht_cap, &ie_list->vht_op);
     }
 
-#endif /* DOT11_VHT_AC */
-#endif /* DOT11_N_SUPPORT */
 
     /* Set New WPA information */
     Idx = BssTableSearch(&pAd->ScanTab, pAddr2, pAd->MlmeAux.Channel);
@@ -1690,28 +1610,6 @@ VOID PeerDisassocAction(
 
             pAd->Mlme.AssocMachine.CurrState = ASSOC_IDLE;
 
-#ifdef WPA_SUPPLICANT_SUPPORT
-#ifndef NATIVE_WPA_SUPPLICANT_SUPPORT
-
-            DBGPRINT(RT_DEBUG_INFO,
-                     ("ASSOC - Send disassoc to WpaSupplicant(1)\n"));
-
-            if(pAd->StaCfg.WpaSupplicantUP !=
-                    WPA_SUPPLICANT_DISABLE)
-            {
-
-                DBGPRINT(RT_DEBUG_INFO,
-                         ("ASSOC - Send disassoc to WpaSupplicant(2)\n"));
-
-                /*send disassociate event to wpa_supplicant */
-                RtmpOSWirelessEventSend(pAd->net_dev,
-                                        RT_WLAN_EVENT_CUSTOM,
-                                        RT_DISASSOC_EVENT_FLAG,
-                                        NULL, NULL, 0);
-            }
-
-#endif /* NATIVE_WPA_SUPPLICANT_SUPPORT */
-#endif /* WPA_SUPPLICANT_SUPPORT */
             /* mark here because linkdown also call this function */
         }
     }
@@ -1911,14 +1809,12 @@ BOOLEAN StaAddMacTableEntry(
             && (MaxSupportedRate < RATE_FIRST_OFDM_RATE))
         return FALSE;
 
-#ifdef DOT11_N_SUPPORT
 
     /* 11n only */
     if(WMODE_HT_ONLY(pAd->CommonCfg.PhyMode)
             && (HtCapabilityLen == 0))
         return FALSE;
 
-#endif /* DOT11_N_SUPPORT */
 
     NdisAcquireSpinLock(&pAd->MacTabLock);
 
@@ -1951,7 +1847,6 @@ BOOLEAN StaAddMacTableEntry(
         CLIENT_STATUS_CLEAR_FLAG(pEntry, fCLIENT_STATUS_PIGGYBACK_CAPABLE);
     }
 
-#ifdef DOT11_N_SUPPORT
     NdisZeroMemory(&pEntry->HTCapability, sizeof(pEntry->HTCapability));
 
     /* If this Entry supports 802.11n, upgrade to HT rate. */
@@ -2027,7 +1922,6 @@ BOOLEAN StaAddMacTableEntry(
         NdisMoveMemory(&pEntry->HTCapability, pHtCapability, HtCapabilityLen);
 
         assoc_ht_info_debugshow(pAd, pEntry, HtCapabilityLen, pHtCapability);
-#ifdef DOT11_VHT_AC
 
         if(WMODE_CAP_AC(pAd->CommonCfg.PhyMode) &&
                 ie_list->vht_cap_len && ie_list->vht_op_len)
@@ -2036,14 +1930,12 @@ BOOLEAN StaAddMacTableEntry(
             assoc_vht_info_debugshow(pAd, pEntry, &ie_list->vht_cap, &ie_list->vht_op);
         }
 
-#endif /* DOT11_VHT_AC */
     }
     else
     {
         pAd->MacTab.fAnyStationIsLegacy = TRUE;
     }
 
-#endif /* DOT11_N_SUPPORT */
 
     pEntry->HTPhyMode.word = pEntry->MaxHTPhyMode.word;
     pEntry->CurrTxRate = pEntry->MaxSupportedRate;
@@ -2143,31 +2035,7 @@ BOOLEAN StaAddMacTableEntry(
 
     NdisReleaseSpinLock(&pAd->MacTabLock);
 
-#ifdef WPA_SUPPLICANT_SUPPORT
-#ifndef NATIVE_WPA_SUPPLICANT_SUPPORT
 
-    DBGPRINT(RT_DEBUG_INFO,
-             ("ASSOC - Send assoc IEs to WpaSupplicant(0)\n"));
-
-
-    if(pAd->StaCfg.WpaSupplicantUP)
-    {
-
-        DBGPRINT(RT_DEBUG_INFO,
-                 ("ASSOC - Send assoc IEs to WpaSupplicant(1)\n"));
-
-        SendAssocIEsToWpaSupplicant(pAd->net_dev, pAd->StaCfg.ReqVarIEs,
-                                    pAd->StaCfg.ReqVarIELen);
-
-
-        RtmpOSWirelessEventSend(pAd->net_dev, RT_WLAN_EVENT_CUSTOM,
-                                RT_ASSOC_EVENT_FLAG, NULL, NULL, 0);
-    }
-
-#endif /* NATIVE_WPA_SUPPLICANT_SUPPORT */
-#endif /* WPA_SUPPLICANT_SUPPORT */
-
-#ifdef NATIVE_WPA_SUPPLICANT_SUPPORT
 
     DBGPRINT(RT_DEBUG_TRACE, ("Native wpa_supplicant support enabled (ReqVarIELen%d)\n", pAd->StaCfg.ReqVarIELen));
 
@@ -2180,7 +2048,6 @@ BOOLEAN StaAddMacTableEntry(
         RtmpOSWirelessEventSend(pAd->net_dev, RT_WLAN_EVENT_CGIWAP, -1,
                                 pAd->MlmeAux.Bssid, NULL, 0);
     }
-#endif /* NATIVE_WPA_SUPPLICANT_SUPPORT */
 
 
     return TRUE;

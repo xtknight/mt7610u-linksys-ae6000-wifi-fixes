@@ -245,7 +245,6 @@ VOID SupportRate(
 BOOLEAN ApScanRunning(
     IN PRTMP_ADAPTER pAd);
 
-#ifdef DOT11N_DRAFT3
 VOID APOverlappingBSSScan(
     IN RTMP_ADAPTER *pAd);
 
@@ -253,7 +252,6 @@ INT GetBssCoexEffectedChRange(
     IN RTMP_ADAPTER *pAd,
     IN BSS_COEX_CH_RANGE *pCoexChRange);
 
-#endif /* DOT11N_DRAFT3 */
 
 /* ap_wpa.c */
 VOID WpaStateMachineInit(
@@ -277,13 +275,11 @@ VOID APQuickResponeForRateUpExec(
     IN PVOID SystemSpecific2,
     IN PVOID SystemSpecific3);
 
-#ifdef RTMP_MAC_USB
 VOID BeaconUpdateExec(
     IN PVOID SystemSpecific1,
     IN PVOID FunctionContext,
     IN PVOID SystemSpecific2,
     IN PVOID SystemSpecific3);
-#endif /* RTMP_MAC_USB */
 
 VOID RTMPSetPiggyBack(
     IN PRTMP_ADAPTER	pAd,
@@ -342,10 +338,8 @@ VOID ApLogEvent(
 #define ApLogEvent(_pAd, _pAddr, _Event)
 #endif /* SYSTEM_LOG_SUPPORT */
 
-#ifdef DOT11_N_SUPPORT
 VOID APUpdateOperationMode(
     IN PRTMP_ADAPTER pAd);
-#endif /* DOT11_N_SUPPORT */
 
 VOID APUpdateCapabilityAndErpIe(
     IN PRTMP_ADAPTER pAd);

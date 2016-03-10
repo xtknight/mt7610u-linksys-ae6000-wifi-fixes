@@ -14,8 +14,13 @@ endif
 # rt3562(for rt3592), rt3050, rt3350, rt3352, rt5350, rt5370, rt5390, rt5572, rt5592, 
 # rt8592(for rt85592), mt7650e, mt7630e, mt7610e, mt7650u, mt7630u, mt7610u
 
+# wontcompile: mt7610e rt2860 rt2870 rt2880 rt2070 rt3070 rt3090 rt3572 rt3062 rt3562 rt3593 rt3573
+# rt3562 rt3050
+
+# works: mt7610u mt7630u mt7650u
+
 ifeq ($(CHIPSET),)
-CHIPSET = mt7610u
+CHIPSET = mt7610u mt7630u mt7650u
 endif
 
 MODULE = $(word 1, $(CHIPSET))
@@ -71,18 +76,6 @@ PLATFORM = PC
 #PLATFORM = INTELP6
 
 #APSOC
-ifeq ($(MODULE),3050)
-PLATFORM = RALINK_3050
-endif
-ifeq ($(MODULE),3052)
-PLATFORM = RALINK_3052
-endif
-ifeq ($(MODULE),3350)
-PLATFORM = RALINK_3050
-endif
-ifeq ($(MODULE),3352)
-PLATFORM = RALINK_3352
-endif
 
 
 #RELEASE Package

@@ -87,10 +87,8 @@ typedef union _COEXCFG0_STRUCT
 } COEXCFG0_STRUCT, *PCOEXCFG0_STRUCT;
 #endif
 
-#ifdef RTMP_USB_SUPPORT
 VOID RT65xxUsbAsicRadioOn(struct _RTMP_ADAPTER *pAd, UCHAR Stage);
 VOID RT65xxUsbAsicRadioOff(struct _RTMP_ADAPTER *pAd, UCHAR Stage);
-#endif
 
 /*
 	EEPROM format

@@ -50,11 +50,9 @@
 
 #define MLME_TASK_EXEC_MULTIPLE       10  /*5*/       /* MLME_TASK_EXEC_MULTIPLE * MLME_TASK_EXEC_INTV = 1 sec */
 #define REORDER_EXEC_INTV         	100       /* 0.1 sec */
-#ifdef RTMP_MAC_USB
 #ifdef CONFIG_STA_SUPPORT
 #define STAY_10_SECONDS_AWAKE        100/* */
 #endif /* CONFIG_STA_SUPPORT */
-#endif /* RTMP_MAC_USB */
 /*#define TBTT_PRELOAD_TIME         384        // usec. LomgPreamble + 24-byte at 1Mbps */
 
 /* The definition of Radar detection duration region */
@@ -131,9 +129,7 @@ enum SCAN_MODE
     SCAN_ACTIVE = 0x00,			/* all channels */
     SCAN_CISCO_ACTIVE = 0x1,	/* single channel only */
     FAST_SCAN_ACTIVE = 0x2,
-#ifdef DOT11N_DRAFT3
     SCAN_2040_BSS_COEXIST = 0x4,
-#endif /* DOT11N_DRAFT3 */
     SCAN_ACTIVE_MAX,
 
     /* Passive scan, no probe request, only wait beacon and probe response */
@@ -599,15 +595,12 @@ typedef struct _RT_PHY_INFO
     BOOLEAN		bPreNHt;	 /* If we should use ht rate. */
     /*Substract from HT Capability IE */
     UCHAR		MCSSet[16];
-#ifdef DOT11_VHT_AC
     BOOLEAN 	bVhtEnable;
     UCHAR 		vht_bw;
     VHT_MCS_SET vht_mcs_set;
-#endif /* DOT11_VHT_AC */
 } RT_PHY_INFO;
 
 
-#ifdef DOT11_VHT_AC
 typedef struct _RT_VHT_CAP
 {
     UINT32 vht_bw:2;
@@ -623,7 +616,6 @@ typedef struct _RT_VHT_CAP
 
     UINT32 rsv:16;
 } RT_VHT_CAP;
-#endif /* DOT11_VHT_AC */
 
 
 /*
@@ -1211,12 +1203,10 @@ typedef struct
     UCHAR			NewExtChanOffset;
     CHAR    Rssi;
 
-#ifdef DOT11_VHT_AC
     UCHAR vht_cap_len;
     UCHAR vht_op_len;
     VHT_CAP_IE vht_cap_ie;
     VHT_OP_IE vht_op_ie;
-#endif /* DOT11_VHT_AC */
 
 
     CHAR	MinSNR;
@@ -1272,10 +1262,8 @@ typedef struct
     WPA_IE_     RsnIE;
     WPA_IE_ 	WpsIE;
 
-#ifdef EXT_BUILD_CHANNEL_LIST
     UCHAR		CountryString[3];
     BOOLEAN		bHasCountryIE;
-#endif /* EXT_BUILD_CHANNEL_LIST */
 #endif /* CONFIG_STA_SUPPORT */
 
     UCHAR   MacAddr[MAC_ADDR_LEN];
@@ -1367,12 +1355,10 @@ typedef struct _MLME_AUX
     UCHAR			NewExtChannelOffset;
     /*RT_HT_CAPABILITY	SupportedHtPhy; */
 
-#ifdef DOT11_VHT_AC
     UCHAR vht_cap_len;
     UCHAR vht_op_len;
     VHT_CAP_IE vht_cap;
     VHT_OP_IE vht_op;
-#endif /* DOT11_VHT_AC */
 
     /* new for QOS */
     QOS_CAPABILITY_PARM APQosCapability;    /* QOS capability of the current associated AP */
@@ -1551,12 +1537,10 @@ typedef struct _IE_lists
     EXT_CAP_INFO_ELEMENT ExtCapInfo;
     UCHAR ht_cap_len;
     HT_CAPABILITY_IE HTCapability;
-#ifdef DOT11_VHT_AC
     VHT_CAP_IE vht_cap;
     VHT_OP_IE vht_op;
     UCHAR vht_cap_len;
     UCHAR vht_op_len;
-#endif /* DOT11_VHT_AC */
 } IE_LISTS;
 
 
@@ -1597,12 +1581,10 @@ typedef struct _bcn_ie_list
     UCHAR AddHtInfoLen;
     ADD_HT_INFO_IE AddHtInfo;
     UCHAR NewExtChannelOffset;
-#ifdef DOT11_VHT_AC
     VHT_CAP_IE vht_cap_ie;
     VHT_OP_IE vht_op_ie;
     UCHAR vht_cap_len;
     UCHAR vht_op_len;
-#endif /* DOT11_VHT_AC */
 } BCN_IE_LIST;
 
 #endif	/* MLME_H__ */

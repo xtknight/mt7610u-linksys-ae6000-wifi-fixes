@@ -67,7 +67,6 @@ INT RtmpChipOpsEepromHook(RTMP_ADAPTER *pAd, INT infType)
     {
 
 
-#ifdef RTMP_USB_SUPPORT
 
     case RTMP_DEV_INF_USB:
         pChipOps->eeinit = NULL;
@@ -76,7 +75,6 @@ INT RtmpChipOpsEepromHook(RTMP_ADAPTER *pAd, INT infType)
         DBGPRINT(RT_DEBUG_TRACE, ("pChipOps->eeread = RTUSBReadEEPROM16\n"));
         DBGPRINT(RT_DEBUG_TRACE, ("pChipOps->eewrite = RTUSBWriteEEPROM16\n"));
         break;
-#endif /* RTMP_USB_SUPPORT */
 
     default:
         DBGPRINT(RT_DEBUG_ERROR, ("mt7610u: RtmpChipOpsEepromHook() failed!\n"));

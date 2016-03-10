@@ -89,13 +89,11 @@ VOID AsicUpdateAutoFallBackTable(
 
 #endif /* MT76x0 */
 
-#ifdef NEW_RATE_ADAPT_SUPPORT
 
     /* Use standard fallback if using new rate table */
     if(ADAPT_RATE_TABLE(pRateTable))
         goto skipUpdate;
 
-#endif /* NEW_RATE_ADAPT_SUPPORT */
 
 #ifdef AGS_SUPPORT
 
@@ -164,7 +162,6 @@ VOID AsicUpdateAutoFallBackTable(
             }
         }
         break;
-#ifdef DOT11_N_SUPPORT
 
         case 2:		/* HT-MIX */
         case 3:		/* HT-GF */
@@ -286,7 +283,6 @@ VOID AsicUpdateAutoFallBackTable(
             }
         }
         break;
-#endif /* DOT11_N_SUPPORT */
         }
 
         pNextTxRate = pCurrTxRate;
@@ -306,9 +302,7 @@ VOID AsicUpdateAutoFallBackTable(
 
 #endif /* AGS_SUPPORT */
 
-#ifdef NEW_RATE_ADAPT_SUPPORT
 skipUpdate:
-#endif /* NEW_RATE_ADAPT_SUPPORT */
 
     RTMP_IO_WRITE32(pAd, HT_FBK_CFG0, HtCfg0.word);
     RTMP_IO_WRITE32(pAd, HT_FBK_CFG1, HtCfg1.word);
@@ -376,14 +370,7 @@ VOID AsicUpdateProtect(
     USHORT PhyMode = 0x4000;
     UINT32 MacReg = 0;
 
-#ifdef RALINK_ATE
 
-    if(ATE_ON(pAd))
-        return;
-
-#endif /* RALINK_ATE */
-
-#ifdef DOT11_N_SUPPORT
 
     if(!(pAd->CommonCfg.bHTProtect) && (OperationMode != 8))
         return;
@@ -395,7 +382,6 @@ VOID AsicUpdateProtect(
         OperationMode = 8;
     }
 
-#endif /* DOT11_N_SUPPORT */
 
     /* Config ASIC RTS threshold register*/
     RTMP_IO_READ32(pAd, TX_RTS_CFG, &MacReg);
@@ -403,9 +389,7 @@ VOID AsicUpdateProtect(
 
     /* If the user want disable RtsThreshold and enbale Amsdu/Ralink-Aggregation, set the RtsThreshold as 4096*/
     if((
-#ifdef DOT11_N_SUPPORT
                 (pAd->CommonCfg.BACapability.field.AmsduEnable) ||
-#endif /* DOT11_N_SUPPORT */
                 (pAd->CommonCfg.bAggregationCapable == TRUE))
             && pAd->CommonCfg.RtsThreshold == MAX_RTS_THRESHOLD)
     {
@@ -431,9 +415,7 @@ VOID AsicUpdateProtect(
     ProtCfg.field.RTSThEn = 1;
     ProtCfg.field.ProtectNav = ASIC_SHORTNAV;
 
-#ifdef DOT11_VHT_AC
     PhyMode = 0x2000; /* Bit 15:13, 0:Legacy CCK, 1: Legacy OFDM, 2: HT mix mode, 3: HT green field, 4: VHT mode, 5-7: Reserved */
-#endif /* DOT11_VHT_AC */
 
     /* update PHY mode and rate*/
     if(pAd->OpMode == OPMODE_AP)
@@ -491,7 +473,6 @@ VOID AsicUpdateProtect(
         pAd->FlgCtsEnabled = 1; /* CTS-self is used */
     }
 
-#ifdef DOT11_N_SUPPORT
 
     /* Decide HT frame protection.*/
     if((SetMask & ALLN_SETPROTECT) != 0)
@@ -510,69 +491,43 @@ VOID AsicUpdateProtect(
             /* 	PROT_TXOP(25:20) -- 010111*/
             /*	PROT_NAV(19:18)  -- 01 (Short NAV protection)*/
             /*  PROT_CTRL(17:16) -- 00 (None)*/
-#ifdef DOT11_VHT_AC
             /* 	PROT_RATE(15:0)  -- 0x2004 (OFDM 24M)*/
             Protect[2] = 0x01742004;
-#else /* DOT11_VHT_AC */
-            /* 	PROT_RATE(15:0)  -- 0x4004 (OFDM 24M)*/
-            Protect[2] = 0x01744004;
-#endif /* !DOT11_VHT_AC */
 
             /* MM40_PROT_CFG*/
             /*	Reserved (31:27)*/
             /* 	PROT_TXOP(25:20) -- 111111*/
             /*	PROT_NAV(19:18)  -- 01 (Short NAV protection)*/
             /*  PROT_CTRL(17:16) -- 00 (None) */
-#ifdef DOT11_VHT_AC
             /* 	PROT_RATE(15:0)  -- 0x2084 (duplicate OFDM 24M)*/
             Protect[3] = 0x03f42084;
-#else
-            /* 	PROT_RATE(15:0)  -- 0x4084 (duplicate OFDM 24M)*/
-            Protect[3] = 0x03f44084;
-#endif
 
             /* CF20_PROT_CFG*/
             /*	Reserved (31:27)*/
             /* 	PROT_TXOP(25:20) -- 010111*/
             /*	PROT_NAV(19:18)  -- 01 (Short NAV protection)*/
             /*  PROT_CTRL(17:16) -- 00 (None)*/
-#ifdef DOT11_VHT_AC
             /* 	PROT_RATE(15:0)  -- 0x2004 (OFDM 24M)*/
             Protect[4] = 0x01742004;
-#else
-            /* 	PROT_RATE(15:0)  -- 0x4004 (OFDM 24M)*/
-            Protect[4] = 0x01744004;
-#endif
 
             /* CF40_PROT_CFG*/
             /*	Reserved (31:27)*/
             /* 	PROT_TXOP(25:20) -- 111111*/
             /*	PROT_NAV(19:18)  -- 01 (Short NAV protection)*/
             /*  PROT_CTRL(17:16) -- 00 (None)*/
-#ifdef DOT11_VHT_AC
             /* 	PROT_RATE(15:0)  -- 0x2084 (duplicate OFDM 24M)*/
             Protect[5] = 0x03f42084;
-#else
-            /* 	PROT_RATE(15:0)  -- 0x4084 (duplicate OFDM 24M)*/
-            Protect[5] = 0x03f44084;
-#endif
 
             if(bNonGFExist)
             {
                 /* PROT_NAV(19:18)  -- 01 (Short NAV protectiion)*/
                 /* PROT_CTRL(17:16) -- 01 (RTS/CTS)*/
-#ifdef DOT11_VHT_AC
                 Protect[REG_IDX_GF20] = 0x01752004;
                 Protect[REG_IDX_GF40] = 0x03f52084;
-#else
-                Protect[REG_IDX_GF20] = 0x01754004;
-                Protect[REG_IDX_GF40] = 0x03f54084;
-#endif
             }
 
             pAd->CommonCfg.IOTestParm.bRTSLongProtOn = FALSE;
 
-#ifdef DOT11_VHT_AC
 #ifdef RT65xx
 
             // TODO: shiang-6590, fix me for this protection mechanism
@@ -594,19 +549,13 @@ VOID AsicUpdateProtect(
             }
 
 #endif /* RT65xx */
-#endif /* DOT11_VHT_AC */
             break;
 
         case 1:
             /* This is "HT non-member protection mode."*/
             /* If there may be non-HT STAs my BSS*/
-#ifdef DOT11_VHT_AC
             ProtCfg.word = 0x01742004;	/* PROT_CTRL(17:16) : 0 (None)*/
             ProtCfg4.word = 0x03f42084; /* duplicaet legacy 24M. BW set 1.*/
-#else
-            ProtCfg.word = 0x01744004;	/* PROT_CTRL(17:16) : 0 (None)*/
-            ProtCfg4.word = 0x03f44084; /* duplicaet legacy 24M. BW set 1.*/
-#endif
 
             if(OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_BG_PROTECTION_INUSED))
             {
@@ -625,7 +574,6 @@ VOID AsicUpdateProtect(
             Protect[REG_IDX_GF40] = ProtCfg4.word;
             pAd->CommonCfg.IOTestParm.bRTSLongProtOn = TRUE;
 
-#ifdef DOT11_VHT_AC
 #ifdef RT65xx
 
             // TODO: shiang-6590, fix me for this protection mechanism
@@ -651,19 +599,13 @@ VOID AsicUpdateProtect(
             }
 
 #endif /* RT65xx */
-#endif /* DOT11_VHT_AC */
 
             break;
 
         case 2:
             /* If only HT STAs are in BSS. at least one is 20MHz. Only protect 40MHz packets*/
-#ifdef DOT11_VHT_AC
             ProtCfg.word = 0x01742004;  /* PROT_CTRL(17:16) : 0 (None)*/
             ProtCfg4.word = 0x03f42084; /* duplicaet legacy 24M. BW set 1.*/
-#else
-            ProtCfg.word = 0x01744004;  /* PROT_CTRL(17:16) : 0 (None)*/
-            ProtCfg4.word = 0x03f44084; /* duplicaet legacy 24M. BW set 1.*/
-#endif
 
             if(OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_BG_PROTECTION_INUSED))
             {
@@ -688,7 +630,6 @@ VOID AsicUpdateProtect(
 
             pAd->CommonCfg.IOTestParm.bRTSLongProtOn = FALSE;
 
-#ifdef DOT11_VHT_AC
 #ifdef RT65xx
 
             // TODO: shiang-6590, fix me for this protection mechanism
@@ -712,19 +653,13 @@ VOID AsicUpdateProtect(
             }
 
 #endif /* RT65xx */
-#endif /* DOT11_VHT_AC */
             break;
 
         case 3:
             /* HT mixed mode.	 PROTECT ALL!*/
             /* Assign Rate*/
-#ifdef DOT11_VHT_AC
             ProtCfg.word = 0x01742004;	/*duplicaet legacy 24M. BW set 1.*/
             ProtCfg4.word = 0x03f42084;
-#else
-            ProtCfg.word = 0x01744004;	/*duplicaet legacy 24M. BW set 1.*/
-            ProtCfg4.word = 0x03f44084;
-#endif
 
             /* both 20MHz and 40MHz are protected. Whether use RTS or CTS-to-self depends on the*/
             if(OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_BG_PROTECTION_INUSED))
@@ -744,7 +679,6 @@ VOID AsicUpdateProtect(
             Protect[REG_IDX_GF40] = ProtCfg4.word;
             pAd->CommonCfg.IOTestParm.bRTSLongProtOn = TRUE;
 
-#ifdef DOT11_VHT_AC
 #ifdef RT65xx
 
             // TODO: shiang-6590, fix me for this protection mechanism
@@ -770,18 +704,12 @@ VOID AsicUpdateProtect(
             }
 
 #endif /* RT65xx */
-#endif /* DOT11_VHT_AC */
             break;
 
         case 8:
             /* Special on for Atheros problem n chip.*/
-#ifdef DOT11_VHT_AC
             ProtCfg.word = 0x01752004;	/*duplicaet legacy 24M. BW set 1.*/
             ProtCfg4.word = 0x03f52084;
-#else
-            ProtCfg.word = 0x01754004;	/*duplicaet legacy 24M. BW set 1.*/
-            ProtCfg4.word = 0x03f54084;
-#endif
 
             if(OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_BG_PROTECTION_INUSED))
             {
@@ -798,7 +726,6 @@ VOID AsicUpdateProtect(
         }
     }
 
-#endif /* DOT11_N_SUPPORT */
 
     offset = CCK_PROT_CFG;
 
@@ -810,7 +737,6 @@ VOID AsicUpdateProtect(
         }
     }
 
-#ifdef DOT11_VHT_AC
 #ifdef RT65xx
 
     if(IS_RT65XX(pAd))
@@ -830,7 +756,6 @@ VOID AsicUpdateProtect(
     }
 
 #endif /* RT65xx */
-#endif /* DOT11_VHT_AC */
 }
 
 
@@ -893,12 +818,10 @@ VOID AsicSwitchChannel(
 
 
 
-#ifdef DOT11_VHT_AC
 
     if(pAd->CommonCfg.BBPCurrentBW == BW_80)
         pAd->hw_cfg.cent_ch = pAd->CommonCfg.vht_cent_ch;
     else
-#endif /* DOT11_VHT_AC */
         pAd->hw_cfg.cent_ch = Channel;
 
     if(pAd->chipOps.ChipSwitchChannel)
@@ -1276,11 +1199,7 @@ VOID AsicGetAutoAgcOffsetForTemperatureSensor(
 
         TuningTableIndex0 = pAd->TxPowerCtrl.idxTxPowerTable
                             + pAd->TxPowerCtrl.LookupTableIndex
-#ifdef DOT11_N_SUPPORT
                             + pAd->TxPower[pAd->CommonCfg.CentralChannel-1].Power;
-#else
-                            + pAd->TxPower[pAd->CommonCfg.Channel-1].Power;
-#endif /* DOT11_N_SUPPORT */
         /* The boundary verification */
         TuningTableIndex0 = (TuningTableIndex0 > TuningTableUpperBound) ? TuningTableUpperBound : TuningTableIndex0;
         TuningTableIndex0 = (TuningTableIndex0 < LOWERBOUND_TX_POWER_TUNING_ENTRY) ?
@@ -1289,11 +1208,7 @@ VOID AsicGetAutoAgcOffsetForTemperatureSensor(
 
         TuningTableIndex1 = pAd->TxPowerCtrl.idxTxPowerTable2
                             + pAd->TxPowerCtrl.LookupTableIndex
-#ifdef DOT11_N_SUPPORT
                             + pAd->TxPower[pAd->CommonCfg.CentralChannel-1].Power2;
-#else
-                            + pAd->TxPower[pAd->CommonCfg.Channel-1].Power2;
-#endif /* DOT11_N_SUPPORT */
         /* The boundary verification */
         TuningTableIndex1 = (TuningTableIndex1 > TuningTableUpperBound) ? TuningTableUpperBound : TuningTableIndex1;
         TuningTableIndex1 = (TuningTableIndex1 < LOWERBOUND_TX_POWER_TUNING_ENTRY) ?
@@ -1450,7 +1365,6 @@ VOID AsicSetBssid(
 }
 
 
-#ifdef DOT11_N_SUPPORT
 /*
 	==========================================================================
 	Description:
@@ -1505,9 +1419,7 @@ VOID AsicDisableRDG(
 #endif
 
     if(RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_DYNAMIC_BE_TXOP_ACTIVE)
-#ifdef DOT11_N_SUPPORT
             && (pAd->MacTab.fAnyStationMIMOPSDynamic == FALSE)
-#endif /* DOT11_N_SUPPORT */
       )
     {
         /* For CWC test, change txop from 0x30 to 0x20 in TxBurst mode*/
@@ -1518,7 +1430,6 @@ VOID AsicDisableRDG(
     RTMP_IO_WRITE32(pAd, EDCA_AC0_CFG, Data);
 
 }
-#endif /* DOT11_N_SUPPORT */
 
 /*
 	==========================================================================
@@ -1625,7 +1536,6 @@ VOID AsicEnableIbssSync(
     beaconBaseLocation = HW_BEACON_BASE0(pAd);
 
 
-#ifdef RTMP_MAC_USB
     /* move BEACON TXD and frame content to on-chip memory*/
     ptr = (PUCHAR)&pAd->BeaconTxWI;
 
@@ -1647,7 +1557,6 @@ VOID AsicEnableIbssSync(
         ptr +=2;
     }
 
-#endif /* RTMP_MAC_USB */
 
 
 
@@ -1822,8 +1731,6 @@ VOID AsicSetEdcaParm(
         /*sync with window 20110524*/
         Ac2Cfg.field.Aifsn = pEdcaParm->Aifsn[QID_AC_VI] + 1; /* 5.2.27 T6 Pass Tx VI+BE, but will impack 5.2.27/28 T7. Tx VI*/
 
-#ifdef INF_AMAZON_SE
-#endif /* INF_AMAZON_SE */
 
 #ifdef CONFIG_STA_SUPPORT
         IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
@@ -1906,17 +1813,13 @@ VOID AsicSetEdcaParm(
         AifsnCsr.field.Aifsn0 = Ac0Cfg.field.Aifsn; /*pEdcaParm->Aifsn[QID_AC_BE];*/
         AifsnCsr.field.Aifsn1 = Ac1Cfg.field.Aifsn; /*pEdcaParm->Aifsn[QID_AC_BK];*/
 #ifdef CONFIG_STA_SUPPORT
-#ifdef RTMP_MAC_USB
         IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
         {
             if(pAd->Antenna.field.TxPath == 1)
                 AifsnCsr.field.Aifsn1 = Ac1Cfg.field.Aifsn + 2; 	/*5.2.27 T7 Pass*/
         }
-#endif /* RTMP_MAC_USB */
 #endif /* CONFIG_STA_SUPPORT */
         AifsnCsr.field.Aifsn2 = Ac2Cfg.field.Aifsn; /*pEdcaParm->Aifsn[QID_AC_VI];*/
-#ifdef INF_AMAZON_SE
-#endif /* INF_AMAZON_SE */
 
 #ifdef CONFIG_STA_SUPPORT
         IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
@@ -2024,9 +1927,7 @@ VOID 	AsicSetSlotTime(
     {
         /* force using short SLOT time for FAE to demo performance when TxBurst is ON*/
         if(((pAd->StaActive.SupportedPhyInfo.bHtEnable == FALSE) && (OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_WMM_INUSED)))
-#ifdef DOT11_N_SUPPORT
                 || ((pAd->StaActive.SupportedPhyInfo.bHtEnable == TRUE) && (pAd->CommonCfg.BACapability.field.Policy == BA_NOTUSE))
-#endif /* DOT11_N_SUPPORT */
           )
         {
             /* In this case, we will think it is doing Wi-Fi test*/
@@ -2125,7 +2026,6 @@ VOID AsicAddSharedKeyEntry(
     offset = SharedKeyTableBase + (4*BssIndex + KeyIdx)*HW_KEY_ENTRY_SIZE;
 
 
-#ifdef RTMP_MAC_USB
     {
         RTUSBMultiWrite(pAd, offset, pKey, MAX_LEN_OF_SHARE_KEY, FALSE);
 
@@ -2143,7 +2043,6 @@ VOID AsicAddSharedKeyEntry(
             RTUSBMultiWrite(pAd, offset, pRxMic, 8, FALSE);
         }
     }
-#endif /* RTMP_MAC_USB */
 
 
     /* Update cipher algorithm. WSTA always use BSS0*/
@@ -2408,9 +2307,7 @@ VOID AsicAddPairwiseKeyEntry(
 
     /* EKEY*/
     offset = PAIRWISE_KEY_TABLE_BASE + (WCID * HW_KEY_ENTRY_SIZE);
-#ifdef RTMP_MAC_USB
     RTUSBMultiWrite(pAd, offset, &pCipherKey->Key[0], MAX_LEN_OF_PEER_KEY, FALSE);
-#endif /* RTMP_MAC_USB */
 
     for(i=0; i<MAX_LEN_OF_PEER_KEY; i+=4)
     {
@@ -2423,18 +2320,14 @@ VOID AsicAddPairwiseKeyEntry(
     /*  MIC KEY*/
     if(pTxMic)
     {
-#ifdef RTMP_MAC_USB
         RTUSBMultiWrite(pAd, offset, &pCipherKey->TxMic[0], 8, FALSE);
-#endif /* RTMP_MAC_USB */
     }
 
     offset += 8;
 
     if(pRxMic)
     {
-#ifdef RTMP_MAC_USB
         RTUSBMultiWrite(pAd, offset, &pCipherKey->RxMic[0], 8, FALSE);
-#endif /* RTMP_MAC_USB */
     }
 
     DBGPRINT(RT_DEBUG_TRACE,("AsicAddPairwiseKeyEntry: WCID #%d Alg=%s\n",WCID, CipherName[CipherAlg]));
@@ -2716,7 +2609,6 @@ VOID RtmpStreamModeInit(
 #endif // STREAM_MODE_SUPPORT //
 
 
-#ifdef DOT11_N_SUPPORT
 /*
 	==========================================================================
 	Description:
@@ -2756,9 +2648,7 @@ VOID AsicDisableRalinkBurstMode(
     Data &= 0xFFFFFF00;
 
     if(RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_DYNAMIC_BE_TXOP_ACTIVE)
-#ifdef DOT11_N_SUPPORT
             && (pAd->MacTab.fAnyStationMIMOPSDynamic == FALSE)
-#endif // DOT11_N_SUPPORT //
       )
     {
         if(RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_RDG_ACTIVE))
@@ -2769,11 +2659,9 @@ VOID AsicDisableRalinkBurstMode(
 
     RTMP_IO_WRITE32(pAd, EDCA_AC0_CFG, Data);
 }
-#endif // DOT11_N_SUPPORT //
 
 
 #ifdef WOW_SUPPORT
-#ifdef RTMP_MAC_USB
 
 /* switch firmware
    a) before into WOW mode, switch firmware to WOW-enable firmware
@@ -2854,7 +2742,6 @@ VOID AsicWOWSendNullFrame(
     }
 }
 
-#endif /* RTMP_MAC_USB */
 #endif /* WOW_SUPPORT */
 
 
@@ -2904,7 +2791,6 @@ BOOLEAN AsicWaitPDMAIdle(struct _RTMP_ADAPTER *pAd, INT round, INT wait_us)
 }
 
 
-#ifdef DOT11_N_SUPPORT
 #if defined(RT65xx)
 #define MAX_AGG_CNT	32
 #elif defined(RT2883) || defined(RT3883)
@@ -2959,7 +2845,6 @@ INT AsicReadAggCnt(RTMP_ADAPTER *pAd, ULONG *aggCnt, int cnt_len)
     return TRUE;
 }
 
-#endif /* DOT11_N_SUPPORT */
 
 
 INT AsicSetChannel(RTMP_ADAPTER *pAd, UCHAR ch, UCHAR bw, UCHAR ext_ch, BOOLEAN bScan)

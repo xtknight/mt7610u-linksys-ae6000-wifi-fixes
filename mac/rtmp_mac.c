@@ -97,7 +97,6 @@ VOID RTMPWriteTxWI(
 
     pTxWI->TxWINSEQ = NSeq;
     /* John tune the performace with Intel Client in 20 MHz performance*/
-#ifdef DOT11_N_SUPPORT
     BASize = pAd->CommonCfg.TxBASize;
 #ifdef RT65xx
 
@@ -132,7 +131,6 @@ VOID RTMPWriteTxWI(
     }
 
 #endif /* TXBF_SUPPORT */
-#endif /* DOT11_N_SUPPORT */
 
     pTxWI->TxWIWirelessCliID = WCID;
     pTxWI->TxWIMPDUByteCnt = Length;
@@ -140,20 +138,15 @@ VOID RTMPWriteTxWI(
 
     /* If CCK or OFDM, BW must be 20*/
     pTxWI->TxWIBW = (pTransmit->field.MODE <= MODE_OFDM) ? (BW_20) : (pTransmit->field.BW);
-#ifdef DOT11_N_SUPPORT
-#ifdef DOT11N_DRAFT3
 
     if(pTxWI->TxWIBW)
         pTxWI->TxWIBW = (pAd->CommonCfg.AddHTInfo.AddHtInfo.RecomWidth == 0) ? (BW_20) : (pTransmit->field.BW);
 
-#endif /* DOT11N_DRAFT3 */
-#endif /* DOT11_N_SUPPORT */
 
     pTxWI->TxWIMCS = pTransmit->field.MCS;
     pTxWI->TxWIPHYMODE = pTransmit->field.MODE;
     pTxWI->TxWICFACK = CfAck;
 
-#ifdef DOT11_N_SUPPORT
 
     if(pMac)
     {
@@ -181,7 +174,6 @@ VOID RTMPWriteTxWI(
         }
     }
 
-#endif /* DOT11_N_SUPPORT */
 
 
     pTxWI->TxWIPacketId = pTxWI->TxWIMCS;
@@ -201,9 +193,7 @@ VOID RTMPWriteTxWI_Data(RTMP_ADAPTER *pAd, TXWI_STRUCT *pTxWI, TX_BLK *pTxBlk)
 {
     HTTRANSMIT_SETTING *pTransmit;
     MAC_TABLE_ENTRY *pMacEntry;
-#ifdef DOT11_N_SUPPORT
     UCHAR BASize;
-#endif /* DOT11_N_SUPPORT */
     UINT8 TXWISize = pAd->chipCap.TXWISize;
 
 
@@ -251,13 +241,10 @@ VOID RTMPWriteTxWI_Data(RTMP_ADAPTER *pAd, TXWI_STRUCT *pTxWI, TX_BLK *pTxBlk)
 
     /* If CCK or OFDM, BW must be 20 */
     pTxWI->TxWIBW = (pTransmit->field.MODE <= MODE_OFDM) ? (BW_20) : (pTransmit->field.BW);
-#ifdef DOT11_N_SUPPORT
-#ifdef DOT11N_DRAFT3
 
     if(pTxWI->TxWIBW)
         pTxWI->TxWIBW = (pAd->CommonCfg.AddHTInfo.AddHtInfo.RecomWidth == 0) ? (BW_20) : (pTransmit->field.BW);
 
-#endif /* DOT11N_DRAFT3 */
 
     pTxWI->TxWIAMPDU = ((pTxBlk->TxFrameType == TX_AMPDU_FRAME) ? TRUE : FALSE);
     BASize = pAd->CommonCfg.TxBASize;
@@ -312,10 +299,8 @@ VOID RTMPWriteTxWI_Data(RTMP_ADAPTER *pAd, TXWI_STRUCT *pTxWI, TX_BLK *pTxBlk)
 
 #endif /* TXBF_SUPPORT */
 
-#endif /* DOT11_N_SUPPORT */
 
 
-#ifdef DOT11_N_SUPPORT
 
     if(pMacEntry)
     {
@@ -338,7 +323,6 @@ VOID RTMPWriteTxWI_Data(RTMP_ADAPTER *pAd, TXWI_STRUCT *pTxWI, TX_BLK *pTxBlk)
         pTxWI->TxWIMpduDensity = pMacEntry->MpduDensity;
     }
 
-#endif /* DOT11_N_SUPPORT */
 
 #ifdef TXBF_SUPPORT
 
@@ -363,16 +347,6 @@ VOID RTMPWriteTxWI_Data(RTMP_ADAPTER *pAd, TXWI_STRUCT *pTxWI, TX_BLK *pTxBlk)
     /* for rate adapation*/
     pTxWI->TxWIPacketId = pTxWI->TxWIMCS;
 
-#ifdef INF_AMAZON_SE
-
-    /*Iverson patch for WMM A5-T07 ,WirelessStaToWirelessSta do not bulk out aggregate */
-    if(RTMP_GET_PACKET_NOBULKOUT(pTxBlk->pPacket))
-    {
-        if(pTxWI->TxWIPHYMODE == MODE_CCK)
-            pTxWI->TxWIPacketId = 6;
-    }
-
-#endif /* INF_AMAZON_SE */
 
 
 #ifdef CONFIG_FPGA_MODE
@@ -427,8 +401,6 @@ VOID RTMPWriteTxWI_Cache(
 {
     HTTRANSMIT_SETTING *pTransmit;
     MAC_TABLE_ENTRY *pMacEntry;
-#ifdef DOT11_N_SUPPORT
-#endif /* DOT11_N_SUPPORT */
 
 
     /* update TXWI */
@@ -459,7 +431,6 @@ VOID RTMPWriteTxWI_Cache(
 
     }
 
-#ifdef DOT11_N_SUPPORT
     pTxWI->TxWIAMPDU = ((pMacEntry->NoBADataCountDown == 0) ? TRUE: FALSE);
 #ifdef TXBF_SUPPORT
 
@@ -470,12 +441,10 @@ VOID RTMPWriteTxWI_Cache(
 
     pTxWI->TxWIMIMOps = 0;
 
-#ifdef DOT11N_DRAFT3
 
     if(pTxWI->TxWIBW)
         pTxWI->TxWIBW = (pAd->CommonCfg.AddHTInfo.AddHtInfo.RecomWidth == 0) ? (BW_20) : (pTransmit->field.BW);
 
-#endif /* DOT11N_DRAFT3 */
 
     if(pAd->CommonCfg.bMIMOPSEnable)
     {
@@ -496,7 +465,6 @@ VOID RTMPWriteTxWI_Cache(
         }
     }
 
-#endif /* DOT11_N_SUPPORT */
 
 #ifdef DBG_DIAGNOSE
 

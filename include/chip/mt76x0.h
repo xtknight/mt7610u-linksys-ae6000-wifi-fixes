@@ -43,9 +43,7 @@ struct _RTMP_ADAPTER;
 
 #ifdef RTMP_FLASH_SUPPORT
 
-#ifdef RTMP_MAC_USB
 #define EEPROM_DEFAULT_FILE_PATH                     "/etc_ro/Wireless/RT2870AP/MT7610U_ePA_V0_3.bin"
-#endif /* RTMP_MAC_USB */
 
 #define RF_OFFSET					0x48000
 

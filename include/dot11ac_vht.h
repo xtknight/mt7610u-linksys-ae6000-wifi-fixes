@@ -25,7 +25,6 @@
  *************************************************************************/
 
 
-#ifdef DOT11_VHT_AC
 
 
 #ifndef __DOT11AC_VHT_H
@@ -486,5 +485,4 @@ typedef struct GNU_PACKED _NDPA_PKT
 
 #endif /* __DOT11AC_VHT_H */
 
-#endif /* DOT11_VHT_AC */
 

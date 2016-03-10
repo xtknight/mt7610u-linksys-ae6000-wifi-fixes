@@ -1418,13 +1418,9 @@ typedef	union _PROT_CFG_STRUCT
 {
     struct
     {
-#ifdef DOT11_VHT_AC
         UINT32		 ProtectTxop:3; /* TXOP allowance */
         UINT32       DynCbw:1;  /* RTS use dynamic channel bandwidth when TX signaling mode is turned on */
         UINT32       RtsTaSignal:1; /* RTS TA signaling mode */
-#else
-        UINT32       rsv:5;
-#endif
         UINT32       RTSThEn:1;	/*RTS threshold enable on CCK TX */
         UINT32       TxopAllowGF40:1;	/*CCK TXOP allowance.0:disallow. */
         UINT32       TxopAllowGF20:1;	/*CCK TXOP allowance.0:disallow. */
@@ -1453,13 +1449,9 @@ typedef	union _PROT_CFG_STRUCT
         UINT32       TxopAllowGF20:1;
         UINT32       TxopAllowGF40:1;
         UINT32       RTSThEn:1;
-#ifdef DOT11_VHT_AC
         UINT32       RtsTaSignal:1; /* RTS TA signaling mode */
         UINT32       DynCbw:1;  /* RTS use dynamic channel bandwidth when TX signaling mode is turned on */
         UINT32		 ProtectTxop:3; /* TXOP allowance */
-#else
-        UINT32       rsv:5;
-#endif /* !DOT11_VHT_AC */
     } field;
     UINT32 word;
 } PROT_CFG_STRUCT;
@@ -2656,12 +2648,10 @@ typedef	union _QOS_CSR1_STRUCT
 #define RTMP_MAC_SHR_MSEL_PROTECT_UNLOCK(__pAd, __IrqFlags) __IrqFlags = __IrqFlags;
 
 
-#ifdef RTMP_MAC_USB
 #ifdef DFS_SUPPORT
 #define BBPR127TABLE_OWNERID			0x4CA0
 #define BBPR127TABLE_OFFSET				0x4D00
 #endif /* DFS_SUPPORT */
-#endif /* RTMP_MAC_USB */
 
 
 struct _RTMP_ADAPTER;

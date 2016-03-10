@@ -115,12 +115,10 @@ VOID BuildChannelList(
                     pAd->ChannelList[index + i].Flags = pChannelListFlag[i];
                 }
 
-#ifdef DOT11_N_SUPPORT
 
                 if(N_ChannelGroupCheck(pAd, pAd->ChannelList[index + i].Channel))
                     pAd->ChannelList[index + i].Flags |= CHANNEL_40M_CAP;
 
-#endif /* DOT11_N_SUPPORT */
 
                 pAd->ChannelList[index+i].MaxTxPwr = 20;
             }
@@ -192,12 +190,10 @@ VOID BuildChannelList(
                     pAd->ChannelList[index + i].Flags = pChannelListFlag[i];
                 }
 
-#ifdef DOT11_N_SUPPORT
 
                 if(N_ChannelGroupCheck(pAd, pAd->ChannelList[index + i].Channel))
                     pAd->ChannelList[index + i].Flags |= CHANNEL_40M_CAP;
 
-#endif /* DOT11_N_SUPPORT */
 
                 for(j=0; j<15; j++)
                 {
@@ -219,7 +215,6 @@ VOID BuildChannelList(
     DBGPRINT(RT_DEBUG_TRACE,("country code=%d/%d, RFIC=%d, PHY mode=%d, support %d channels\n",
                              pAd->CommonCfg.CountryRegion, pAd->CommonCfg.CountryRegionForABand, pAd->RfIcType, pAd->CommonCfg.PhyMode, pAd->ChannelListNum));
 
-#ifdef RT_CFG80211_SUPPORT
 
     for(i=0; i<pAd->ChannelListNum; i++)
     {
@@ -232,7 +227,6 @@ VOID BuildChannelList(
             (pAd->CommonCfg.RegTransmitSetting.field.BW == BW_20));
     }
 
-#endif /* RT_CFG80211_SUPPORT */
 
 #ifdef DBG
 
@@ -289,8 +283,6 @@ UCHAR NextChannel(
     {
         if(channel == pAd->ChannelList[i].Channel)
         {
-#ifdef DOT11_N_SUPPORT
-#ifdef DOT11N_DRAFT3
 
             /* Only scan effected channel if this is a SCAN_2040_BSS_COEXIST*/
             /* 2009 PF#2: Nee to handle the second channel of AP fall into affected channel range.*/
@@ -300,8 +292,6 @@ UCHAR NextChannel(
                 continue;
             }
             else
-#endif /* DOT11N_DRAFT3 */
-#endif /* DOT11_N_SUPPORT */
             {
                 /* Record this channel's idx in ChannelList array.*/
                 next_channel = pAd->ChannelList[i+1].Channel;

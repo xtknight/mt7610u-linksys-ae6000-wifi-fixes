@@ -28,7 +28,6 @@
 #include "rt_config.h"
 
 
-#ifdef DOT11_N_SUPPORT
 
 
 INT ht_mode_adjust(RTMP_ADAPTER *pAd, MAC_TABLE_ENTRY *pEntry, HT_CAPABILITY_IE *peer, RT_HT_CAPABILITY *my)
@@ -299,14 +298,12 @@ VOID RTMPSetHT(
         bw = BW_20;
     }
 
-#ifdef DOT11_VHT_AC
 
     if(pHTPhyMode->BW == BW_40 &&
             pAd->CommonCfg.vht_bw == VHT_BW_80 &&
             pAd->CommonCfg.vht_cent_ch)
         bw = BW_80;
 
-#endif /* DOT11_VHT_AC */
     rtmp_bbp_set_bw(pAd, bw);
 
 
@@ -574,7 +571,6 @@ VOID RTMPSetIndividualHT(
     else
         MlmeUpdateHtTxRates(pAd, apidx);
 
-#ifdef DOT11_VHT_AC
 
     if(WMODE_CAP_AC(pAd->CommonCfg.PhyMode))
     {
@@ -582,7 +578,6 @@ VOID RTMPSetIndividualHT(
         rtmp_set_vht(pAd, pDesired_ht_phy);
     }
 
-#endif /* DOT11_VHT_AC */
 }
 
 /*
@@ -620,9 +615,7 @@ INT	SetCommonHT(RTMP_ADAPTER *pAd)
         return FALSE;
     }
 
-#ifdef DOT11_VHT_AC
     SetCommonVHT(pAd);
-#endif /* DOT11_VHT_AC */
 
     SetHT.PhyMode = (RT_802_11_PHY_MODE)pAd->CommonCfg.PhyMode;
     SetHT.TransmitNo = ((UCHAR)pAd->Antenna.field.TxPath);
@@ -635,7 +628,6 @@ INT	SetCommonHT(RTMP_ADAPTER *pAd)
 
     RTMPSetHT(pAd, &SetHT);
 
-#ifdef DOT11N_DRAFT3
 
     if(pAd->CommonCfg.bBssCoexEnable && pAd->CommonCfg.Bss2040NeedFallBack)
     {
@@ -646,7 +638,6 @@ INT	SetCommonHT(RTMP_ADAPTER *pAd)
         pAd->CommonCfg.Bss2040NeedFallBack = 1;
     }
 
-#endif /* DOT11N_DRAFT3 */
 
     return TRUE;
 }
@@ -691,5 +682,4 @@ VOID RTMPUpdateHTIE(
     DBGPRINT(RT_DEBUG_TRACE,("RTMPUpdateHTIE <==\n"));
 }
 
-#endif /* DOT11_N_SUPPORT */
 

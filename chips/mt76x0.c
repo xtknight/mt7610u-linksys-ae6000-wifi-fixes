@@ -1756,17 +1756,14 @@ static VOID MT76x0_ChipBBPAdjust(RTMP_ADAPTER *pAd)
     UCHAR rf_bw, ext_ch;
 
 
-#ifdef DOT11_N_SUPPORT
 
     if(get_ht_cent_ch(pAd, &rf_bw, &ext_ch) == FALSE)
-#endif /* DOT11_N_SUPPORT */
     {
         rf_bw = BW_20;
         ext_ch = EXTCHA_NONE;
         pAd->CommonCfg.CentralChannel = pAd->CommonCfg.Channel;
     }
 
-#ifdef DOT11_VHT_AC
 
     if(WMODE_CAP(pAd->CommonCfg.PhyMode, WMODE_AC) &&
             (pAd->CommonCfg.Channel > 14) &&
@@ -1781,7 +1778,6 @@ static VOID MT76x0_ChipBBPAdjust(RTMP_ADAPTER *pAd)
     DBGPRINT(RT_DEBUG_TRACE, ("%s():rf_bw=%d, ext_ch=%d, PrimCh=%d, HT-CentCh=%d, VHT-CentCh=%d\n",
                             __FUNCTION__, rf_bw, ext_ch, pAd->CommonCfg.Channel,
                             pAd->CommonCfg.CentralChannel, pAd->CommonCfg.vht_cent_ch));
-#endif /* DOT11_VHT_AC */
 
     rtmp_bbp_set_bw(pAd, rf_bw);
 
@@ -1789,14 +1785,12 @@ static VOID MT76x0_ChipBBPAdjust(RTMP_ADAPTER *pAd)
     rtmp_mac_set_ctrlch(pAd, ext_ch);
     rtmp_bbp_set_ctrlch(pAd, ext_ch);
 
-#ifdef DOT11_N_SUPPORT
     DBGPRINT(RT_DEBUG_TRACE, ("%s() : %s, ChannelWidth=%d, Channel=%d, ExtChanOffset=%d(%d)\n",
                               __FUNCTION__, ext_str[ext_ch],
                               pAd->CommonCfg.HtCapability.HtCapInfo.ChannelWidth,
                               pAd->CommonCfg.Channel,
                               pAd->CommonCfg.RegTransmitSetting.field.EXTCHA,
                               pAd->CommonCfg.AddHTInfo.AddHtInfo.ExtChanOffset));
-#endif /* DOT11_N_SUPPORT */
 }
 
 static VOID MT76x0_ChipSwitchChannel(
@@ -1831,7 +1825,6 @@ static VOID MT76x0_ChipSwitchChannel(
     else
         rf_phy_mode = RF_G_BAND;
 
-#ifdef RTMP_MAC_USB
 
     if(IS_USB_INF(pAd))
     {
@@ -1844,7 +1837,6 @@ static VOID MT76x0_ChipSwitchChannel(
         }
     }
 
-#endif /* RTMP_MAC_USB */
 
     RTMP_IO_READ32(pAd, EXT_CCA_CFG, &RegValue);
     RegValue &= ~(0xFFF);
@@ -1996,12 +1988,10 @@ static VOID MT76x0_ChipSwitchChannel(
     {
         RT28xx_EEPROM_READ16(pAd, EEPROM_MT76x0_5G_TARGET_POWER, ee_val);
         pAd->DefaultTargetPwr = ee_val & 0x00FF;
-#ifdef DOT11_VHT_AC
 
         if(pAd->CommonCfg.BBPCurrentBW == BW_80)
             delta_power = pAd->chipCap.delta_tw_pwr_bw80;
         else
-#endif /* DOT11_VHT_AC */
             delta_power = pAd->chipCap.delta_tw_pwr_bw40_5G;
     }
     else
@@ -2067,14 +2057,12 @@ static VOID MT76x0_ChipSwitchChannel(
 #endif /* SINGLE_SKU_V2 */
 
 
-#ifdef RTMP_MAC_USB
 
     if(IS_USB_INF(pAd))
     {
         RTMP_SEM_EVENT_UP(&pAd->hw_atomic);
     }
 
-#endif /* RTMP_MAC_USB */
 
     if(Channel > 14)
     {
@@ -2096,7 +2084,6 @@ static VOID MT76x0_ChipSwitchChannel(
 static VOID MT76x0_NetDevNickNameInit(RTMP_ADAPTER *pAd)
 {
 
-#ifdef RTMP_MAC_USB
 
     if(IS_MT7650U(pAd))
         snprintf((PSTRING) pAd->nickname, sizeof(pAd->nickname), "MT7650U_STA");
@@ -2105,7 +2092,6 @@ static VOID MT76x0_NetDevNickNameInit(RTMP_ADAPTER *pAd)
     else if(IS_MT7610U(pAd))
         snprintf((PSTRING) pAd->nickname, sizeof(pAd->nickname), "MT7610U_STA");
 
-#endif
 }
 #endif /* CONFIG_STA_SUPPORT */
 
@@ -2225,7 +2211,6 @@ INT MT76x0_ReadChannelPwr(RTMP_ADAPTER *pAd)
         /* choffset = 14 + 12 + 16 + 7; */
         choffset = 14 + 12 + 16 + 11;
 
-#ifdef DOT11_VHT_AC
         ASSERT((pAd->TxPower[choffset].Channel == 42));
 
         /* For VHT80MHz, we need assign tx power for central channel 42, 58, 106, 122, and 155 */
@@ -2246,7 +2231,6 @@ INT MT76x0_ReadChannelPwr(RTMP_ADAPTER *pAd)
         choffset += 5;		/* the central channel of VHT80 */
 
         choffset = (MAX_NUM_OF_CHANNELS - 1);
-#endif /* DOT11_VHT_AC */
 
 
         /* 4. Print and Debug*/
@@ -2284,11 +2268,7 @@ VOID MT76x0_AsicExtraPowerOverMAC(
     	bit 5:0 -> HT MCS 15
     */
     RTMP_IO_READ32(pAd, TX_PWR_CFG_3, &ExtraPwrOverMAC);
-#ifdef DOT11_VHT_AC
     ExtraPwrOverTxPwrCfg8 = pAd->Tx80MPwrCfgABand[0] | (ExtraPwrOverMAC & 0x0000FF00) >> 8; /* Get Tx power for HT MCS 15 */
-#else
-    ExtraPwrOverTxPwrCfg8 |= (ExtraPwrOverMAC & 0x0000FF00) >> 8; /* Get Tx power for HT MCS 15 */
-#endif /* DOT11_VHT_AC */
     RTMP_IO_WRITE32(pAd, TX_PWR_CFG_8, ExtraPwrOverTxPwrCfg8);
 
     /*
@@ -2817,7 +2797,6 @@ VOID MT76x0_Init(RTMP_ADAPTER *pAd)
     pChipCap->cmd_header_len = sizeof(TXINFO_NMAC_CMD);
 
 
-#ifdef RTMP_USB_SUPPORT
     pChipCap->cmd_padding_len = 4;
     pChipCap->CommandBulkOutAddr = 0x8;
     pChipCap->WMM0ACBulkOutAddr[0] = 0x4;
@@ -2827,7 +2806,6 @@ VOID MT76x0_Init(RTMP_ADAPTER *pAd)
     pChipCap->WMM1ACBulkOutAddr	= 0x9;
     pChipCap->DataBulkInAddr = 0x84;
     pChipCap->CommandRspBulkInAddr = 0x85;
-#endif /* RTMP_USB_SUPPORT */
 
 #ifdef MT7650
 
@@ -2929,12 +2907,10 @@ VOID MT76x0_Init(RTMP_ADAPTER *pAd)
 
     pChipOps->DisableTxRx = RT65xxDisableTxRx;
 
-#ifdef RTMP_USB_SUPPORT
     pChipOps->AsicRadioOn = RT65xxUsbAsicRadioOn;
     pChipOps->AsicRadioOff = RT65xxUsbAsicRadioOff;
     pChipOps->usb_cfg_read = usb_cfg_read_v1;
     pChipOps->usb_cfg_write = usb_cfg_write_v1;
-#endif /* RTMP_USB_SUPPORT */
 
 
 #ifdef HDR_TRANS_SUPPORT
@@ -2983,7 +2959,6 @@ VOID MT76x0_AntennaSelCtrl(
     UINT32 ret;
 
 
-#ifdef RTMP_MAC_USB
 
     if(IS_USB_INF(pAd))
     {
@@ -2996,7 +2971,6 @@ VOID MT76x0_AntennaSelCtrl(
         }
     }
 
-#endif /* RTMP_MAC_USB */
 
     RTMP_IO_READ32(pAd, WLAN_FUN_CTRL, &WlanFunCtrl);
     RTMP_IO_READ32(pAd, CMB_CTRL, &CmbCtrl);
@@ -3056,14 +3030,12 @@ VOID MT76x0_AntennaSelCtrl(
     RTMP_IO_WRITE32(pAd, COEXCFG0, CoexCfg0);
     RTMP_IO_WRITE32(pAd, COEXCFG3, CoexCfg3);
 
-#ifdef RTMP_MAC_USB
 
     if(IS_USB_INF(pAd))
     {
         RTMP_SEM_EVENT_UP(&pAd->wlan_en_atomic);
     }
 
-#endif /* RTMP_MAC_USB */
 
 }
 
@@ -3176,14 +3148,11 @@ VOID MT76x0_Calibration(
     IN BOOLEAN bFullCal)
 {
     UINT32 MacReg = 0, reg_val = 0, reg_tx_alc = 0;
-#ifdef RTMP_MAC_USB
     UINT32 ret;
-#endif /* RTMP_MAC_USB */
 
     DBGPRINT(RT_DEBUG_TRACE, ("%s - Channel = %d, bPowerOn = %d, bFullCal = %d\n", __FUNCTION__, Channel, bPowerOn, bFullCal));
 
 
-#ifdef RTMP_MAC_USB
 
     if(IS_USB_INF(pAd))
     {
@@ -3196,7 +3165,6 @@ VOID MT76x0_Calibration(
         }
     }
 
-#endif /* RTMP_MAC_USB */
 
     if(!(bPowerOn || bDoTSSI || bFullCal))
         goto RXDC_Calibration;
@@ -3461,14 +3429,12 @@ RXDC_Calibration:
     RTMP_CHIP_CALIBRATION(pAd, RXDCOC_CALIBRATION, 1);
 
 
-#ifdef RTMP_MAC_USB
 
     if(IS_USB_INF(pAd))
     {
         RTMP_SEM_EVENT_UP(&pAd->cal_atomic);
     }
 
-#endif /* RTMP_MAC_USB */
 }
 
 VOID MT76x0_TempSensor(
@@ -3479,12 +3445,9 @@ VOID MT76x0_TempSensor(
     SHORT temperature = 0;
     INT32 Dout = 0;
     UINT32 MTxCycle = 0;
-#ifdef RTMP_MAC_USB
     UINT32 ret;
-#endif /* RTMP_MAC_USB */
 
 
-#ifdef RTMP_MAC_USB
 
     if(IS_USB_INF(pAd))
     {
@@ -3497,7 +3460,6 @@ VOID MT76x0_TempSensor(
         }
     }
 
-#endif /* RTMP_MAC_USB */
 
     rlt_rf_read(pAd, RF_BANK7, RF_R73, &rf_b7_73);
     rlt_rf_read(pAd, RF_BANK0, RF_R66, &rf_b0_66);
@@ -3591,14 +3553,12 @@ done:
     rlt_rf_write(pAd, RF_BANK0, RF_R67, rf_b0_67);
 
 
-#ifdef RTMP_MAC_USB
 
     if(IS_USB_INF(pAd))
     {
         RTMP_SEM_EVENT_UP(&pAd->cal_atomic);
     }
 
-#endif /* RTMP_MAC_USB */
 }
 
 #ifdef RTMP_FLASH_SUPPORT

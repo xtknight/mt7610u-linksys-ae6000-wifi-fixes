@@ -65,9 +65,7 @@ INT Set_CountryRegion_Proc(
 {
     int retval;
 
-#ifdef EXT_BUILD_CHANNEL_LIST
     return -EOPNOTSUPP;
-#endif /* EXT_BUILD_CHANNEL_LIST */
 
     retval = RT_CfgSetCountryRegion(pAd, arg, BAND_24G);
 
@@ -98,9 +96,7 @@ INT Set_CountryRegionABand_Proc(
 {
     int retval;
 
-#ifdef EXT_BUILD_CHANNEL_LIST
     return -EOPNOTSUPP;
-#endif /* EXT_BUILD_CHANNEL_LIST */
 
     retval = RT_CfgSetCountryRegion(pAd, arg, BAND_5G);
 
@@ -205,14 +201,12 @@ INT	Set_Channel_Proc(
             {
                 UCHAR rf_channel;
 
-#ifdef DOT11_N_SUPPORT
                 N_ChannelCheck(pAd);
 
                 if(WMODE_CAP_N(pAd->CommonCfg.PhyMode) &&
                         pAd->CommonCfg.RegTransmitSetting.field.BW == BW_40)
                     rf_channel = N_SetCenCh(pAd, pAd->CommonCfg.Channel);
                 else
-#endif /* DOT11_N_SUPPORT */
                     rf_channel = pAd->CommonCfg.Channel;
 
                 AsicSwitchChannel(pAd, rf_channel, FALSE);
@@ -667,7 +661,6 @@ INT	Set_IEEE80211H_Proc(
     return TRUE;
 }
 
-#ifdef EXT_BUILD_CHANNEL_LIST
 /*
     ==========================================================================
     Description:
@@ -1087,7 +1080,6 @@ INT Set_ChannelListDel_Proc(
 
     return TRUE;
 }
-#endif /* EXT_BUILD_CHANNEL_LIST  */
 
 
 #ifdef DBG
@@ -1590,11 +1582,7 @@ VOID RTMPSetPhyMode(
     pAd->CommonCfg.PhyMode = (UCHAR)phymode;
 
     DBGPRINT(RT_DEBUG_TRACE,("RTMPSetPhyMode : PhyMode=%d, channel=%d\n", pAd->CommonCfg.PhyMode, pAd->CommonCfg.Channel));
-#ifdef EXT_BUILD_CHANNEL_LIST
     BuildChannelListEx(pAd);
-#else
-    BuildChannelList(pAd);
-#endif /* EXT_BUILD_CHANNEL_LIST */
 
     /* sanity check user setting*/
     for(i = 0; i < pAd->ChannelListNum; i++)
@@ -1641,12 +1629,10 @@ VOID RTMPSetPhyMode(
     case(WMODE_G):
     case(WMODE_B | WMODE_G):
     case(WMODE_A | WMODE_B | WMODE_G):
-#ifdef DOT11_N_SUPPORT
     case(WMODE_GN):
     case(WMODE_A | WMODE_B | WMODE_G | WMODE_GN | WMODE_AN):
     case(WMODE_B | WMODE_G | WMODE_GN):
     case(WMODE_G | WMODE_GN):
-#endif /* DOT11_N_SUPPORT */
         pAd->CommonCfg.SupRate[0]  = 0x82;	  /* 1 mbps, in units of 0.5 Mbps, basic rate*/
         pAd->CommonCfg.SupRate[1]  = 0x84;	  /* 2 mbps, in units of 0.5 Mbps, basic rate*/
         pAd->CommonCfg.SupRate[2]  = 0x8B;	  /* 5.5 mbps, in units of 0.5 Mbps, basic rate*/
@@ -1676,15 +1662,11 @@ VOID RTMPSetPhyMode(
         break;
 
     case(WMODE_A):
-#ifdef DOT11_N_SUPPORT
     case(WMODE_A | WMODE_AN):
     case(WMODE_A | WMODE_G | WMODE_GN | WMODE_AN):
     case(WMODE_AN):
-#endif /* DOT11_N_SUPPORT */
-#ifdef DOT11_VHT_AC
     case(WMODE_A | WMODE_AN | WMODE_AC):
     case(WMODE_AN | WMODE_AC):
-#endif /* DOT11_VHT_AC */
         pAd->CommonCfg.SupRate[0]  = 0x8C;	  /* 6 mbps, in units of 0.5 Mbps, basic rate*/
         pAd->CommonCfg.SupRate[1]  = 0x12;	  /* 9 mbps, in units of 0.5 Mbps*/
         pAd->CommonCfg.SupRate[2]  = 0x98;	  /* 12 mbps, in units of 0.5 Mbps, basic rate*/
@@ -1712,13 +1694,9 @@ VOID RTMPSetPhyMode(
 
 
 
-#ifdef DOT11_N_SUPPORT
     SetCommonHT(pAd);
-#endif /* DOT11_N_SUPPORT */
 
-#ifdef DOT11_VHT_AC
     SetCommonVHT(pAd);
-#endif /* DOT11_VHT_AC */
 }
 
 
@@ -1805,9 +1783,7 @@ VOID	RTMPAddWcidAttributeEntry(
     }
 
     /* For key index and ext IV bit, so only need to update the position(offset+3).*/
-#ifdef RTMP_MAC_USB
     RTUSBMultiWrite_OneByte(pAd, offset+3, &IVEIV);
-#endif /* RTMP_MAC_USB */
 
     DBGPRINT(RT_DEBUG_TRACE,("RTMPAddWcidAttributeEntry: WCID #%d, KeyIndex #%d, Alg=%s\n",Wcid, KeyIdx, CipherName[CipherAlg]));
     DBGPRINT(RT_DEBUG_TRACE,("	WCIDAttri = 0x%x\n",  WCIDAttri));
@@ -2136,7 +2112,7 @@ VOID RTMPIoctlGetSiteSurvey(
     sprintf(msg,"%s","\n");
 
     sprintf(msg+strlen(msg),"%-4s%-33s%-20s%-23s%-9s%-7s%-7s%-3s\n",
-            "Ch", "SSID", "BSSID", "Security", "Siganl(%)", "W-Mode", " ExtCH"," NT");
+            "Ch", "SSID", "BSSID", "Security", "Signal(%)", "W-Mode", " ExtCH"," NT");
 
 
 #ifdef CONFIG_STA_SUPPORT
@@ -2219,9 +2195,7 @@ VOID RTMPIoctlGetMacTable(
             COPY_MAC_ADDR(pDst->Addr, &pEntry->Addr);
             pDst->Aid = (UCHAR)pEntry->Aid;
             pDst->Psm = pEntry->PsMode;
-#ifdef DOT11_N_SUPPORT
             pDst->MimoPs = pEntry->MmpsMode;
-#endif /* DOT11_N_SUPPORT */
 
             /* Fill in RSSI per entry*/
             pDst->AvgRssi0 = pEntry->RssiSample.AvgRssi0;
@@ -2296,12 +2270,7 @@ LabelOK:
         os_free_mem(NULL, pMacTab);
 }
 
-#ifdef INF_AR9
-#ifdef AR9_MAPI_SUPPORT
-#endif/*AR9_MAPI_SUPPORT*/
-#endif/* INF_AR9 */
 
-#ifdef DOT11_N_SUPPORT
 INT	Set_BASetup_Proc(
     IN	PRTMP_ADAPTER	pAd,
     IN	PSTRING			arg)
@@ -3072,7 +3041,6 @@ INT	Set_HtMimoPs_Proc(
 }
 
 
-#ifdef DOT11N_DRAFT3
 INT Set_HT_BssCoex_Proc(
     IN	PRTMP_ADAPTER		pAd,
     IN	PSTRING				pParam)
@@ -3097,12 +3065,9 @@ INT Set_HT_BssCoexApCntThr_Proc(
 
     return TRUE;
 }
-#endif /* DOT11N_DRAFT3 */
-
-#endif /* DOT11_N_SUPPORT */
 
 
-#ifdef DOT11_VHT_AC
+
 INT	Set_VhtBw_Proc(
     IN RTMP_ADAPTER *pAd,
     IN PSTRING arg)
@@ -3184,7 +3149,6 @@ INT	Set_VhtStbc_Proc(
 
     return TRUE;
 }
-#endif /* DOT11_VHT_AC */
 
 
 
@@ -3213,10 +3177,8 @@ INT	Set_OpMode_Proc(
 
     Value = simple_strtol(arg, 0, 10);
 
-#ifdef RTMP_MAC_USB
 
     if(RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_START_UP))
-#endif /* RTMP_MAC_USB */
     {
         DBGPRINT(RT_DEBUG_ERROR, ("Can not switch operate mode on interface up !!\n"));
         return FALSE;
@@ -3909,7 +3871,6 @@ INT	Show_WirelessMode_Proc(
     case(WMODE_G):
         snprintf(pBuf, BufLen, "\t11G only");
         break;
-#ifdef DOT11_N_SUPPORT
 
     case(WMODE_A | WMODE_B | WMODE_G | WMODE_GN | WMODE_AN):
         snprintf(pBuf, BufLen, "\t11A/B/G/N mixed");
@@ -3938,8 +3899,6 @@ INT	Show_WirelessMode_Proc(
     case(WMODE_AN):
         snprintf(pBuf, BufLen, "\t11N 5G only");
         break;
-#endif /* DOT11_N_SUPPORT */
-#ifdef DOT11_VHT_AC
 
     case(WMODE_B | WMODE_G | WMODE_GN |WMODE_A | WMODE_AN | WMODE_AC):
         snprintf(pBuf, BufLen, "\t11A/B/G/N/AC mixed");
@@ -3956,7 +3915,6 @@ INT	Show_WirelessMode_Proc(
     case(WMODE_AN | WMODE_AC):
         snprintf(pBuf, BufLen, "\t11N/AC mixed 5G only"); // according to MTK_Wi-Fi_SoftAP_Software_Programming_Guide_v4.4.pdf
         break;
-#endif /* DOT11_VHT_AC*/
 
     default:
         snprintf(pBuf, BufLen, "\tUnknown Value(%d)", pAd->CommonCfg.PhyMode);
@@ -4066,7 +4024,6 @@ INT	Show_FragThreshold_Proc(
     return 0;
 }
 
-#ifdef DOT11_N_SUPPORT
 INT	Show_HtBw_Proc(
     IN	PRTMP_ADAPTER	pAd,
     OUT	PSTRING			pBuf,
@@ -4211,7 +4168,6 @@ INT	Show_HtAutoBa_Proc(
     snprintf(pBuf, BufLen, "\t%s", pAd->CommonCfg.BACapability.field.AutoBA ? "TRUE":"FALSE");
     return 0;
 }
-#endif /* DOT11_N_SUPPORT */
 
 INT	Show_CountryRegion_Proc(
     IN	PRTMP_ADAPTER	pAd,
@@ -4497,13 +4453,11 @@ INT	Show_STA_RAInfo_Proc(
 #endif /* PRE_ANT_SWITCH */
 
 
-#ifdef NEW_RATE_ADAPT_SUPPORT
     sprintf(pBuf+strlen(pBuf), "LowTrafficThrd: %d\n", pAd->CommonCfg.lowTrafficThrd);
     sprintf(pBuf+strlen(pBuf), "TrainUpRule: %d\n", pAd->CommonCfg.TrainUpRule);
     sprintf(pBuf+strlen(pBuf), "TrainUpRuleRSSI: %d\n", pAd->CommonCfg.TrainUpRuleRSSI);
     sprintf(pBuf+strlen(pBuf), "TrainUpLowThrd: %d\n", pAd->CommonCfg.TrainUpLowThrd);
     sprintf(pBuf+strlen(pBuf), "TrainUpHighThrd: %d\n", pAd->CommonCfg.TrainUpHighThrd);
-#endif // NEW_RATE_ADAPT_SUPPORT //
 
 #ifdef STREAM_MODE_SUPPORT
     sprintf(pBuf+strlen(pBuf), "StreamMode: %d\n", pAd->CommonCfg.StreamMode);
@@ -4538,10 +4492,8 @@ INT Show_MacTable_Proc(RTMP_ADAPTER *pAd, PSTRING *arg)
            OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_SHORT_SLOT_INUSED) ? "short" : "long",
            RegValue);
 
-#ifdef DOT11_N_SUPPORT
     printk("HT Operating Mode : %d\n", pAd->CommonCfg.AddHTInfo.AddHtInfo2.OperaionMode);
     printk("\n");
-#endif /* DOT11_N_SUPPORT */
 
     printk("\n%-19s%-4s%-4s%-4s%-4s%-8s%-7s%-7s%-7s%-10s%-6s%-6s%-6s%-6s%-7s%-7s\n",
            "MAC", "AID", "BSS", "PSM", "WMM", "MIMOPS", "RSSI0", "RSSI1",
@@ -4561,20 +4513,16 @@ INT Show_MacTable_Proc(RTMP_ADAPTER *pAd, PSTRING *arg)
             printk("%-4d", (int)pEntry->apidx);
             printk("%-4d", (int)pEntry->PsMode);
             printk("%-4d", (int)CLIENT_STATUS_TEST_FLAG(pEntry, fCLIENT_STATUS_WMM_CAPABLE));
-#ifdef DOT11_N_SUPPORT
             printk("%-8d", (int)pEntry->MmpsMode);
-#endif /* DOT11_N_SUPPORT */
             printk("%-7d", pEntry->RssiSample.AvgRssi0);
             printk("%-7d", pEntry->RssiSample.AvgRssi1);
             printk("%-7d", pEntry->RssiSample.AvgRssi2);
             printk("%-10s", get_phymode_str(pEntry->HTPhyMode.field.MODE));
             printk("%-6s", get_bw_str(pEntry->HTPhyMode.field.BW));
-#ifdef DOT11_VHT_AC
 
             if(pEntry->HTPhyMode.field.MODE == MODE_VHT)
                 printk("%dS-M%d  ", ((pEntry->HTPhyMode.field.MCS>>4) + 1), (pEntry->HTPhyMode.field.MCS & 0xf));
             else
-#endif /* DOT11_VHT_AC */
                 printk("%-6d", pEntry->HTPhyMode.field.MCS);
 
             printk("%-6d", pEntry->HTPhyMode.field.ShortGI);
@@ -4586,12 +4534,10 @@ INT Show_MacTable_Proc(RTMP_ADAPTER *pAd, PSTRING *arg)
 
             printk("\t\t\t\t\t\t\t%-10s", get_phymode_str(pEntry->MaxHTPhyMode.field.MODE));
             printk("%-6s", get_bw_str(pEntry->MaxHTPhyMode.field.BW));
-#ifdef DOT11_VHT_AC
 
             if(pEntry->MaxHTPhyMode.field.MODE == MODE_VHT)
                 printk("%dS-M%d  ", ((pEntry->MaxHTPhyMode.field.MCS>>4) + 1), (pEntry->MaxHTPhyMode.field.MCS & 0xf));
             else
-#endif /* DOT11_VHT_AC */
                 printk("%-6d", pEntry->MaxHTPhyMode.field.MCS);
 
             printk("%-6d", pEntry->MaxHTPhyMode.field.ShortGI);
@@ -4631,18 +4577,15 @@ INT show_devinfo_proc(RTMP_ADAPTER *pAd, PSTRING arg)
 
     DBGPRINT(RT_DEBUG_ERROR, ("Channel: %d\n", pAd->CommonCfg.Channel));
     DBGPRINT(RT_DEBUG_ERROR, ("\tCentralChannel: %d\n", pAd->CommonCfg.CentralChannel));
-#ifdef DOT11_VHT_AC
 
     if(WMODE_CAP_AC(pAd->CommonCfg.PhyMode))
         DBGPRINT(RT_DEBUG_ERROR, ("\tVHT CentralChannel: %d\n", pAd->CommonCfg.vht_cent_ch));
 
-#endif /* DOT11_VHT_AC */
     DBGPRINT(RT_DEBUG_ERROR, ("\tRF Channel: %d\n", pAd->LatchRfRegs.Channel));
 
     DBGPRINT(RT_DEBUG_ERROR, ("Bandwidth\n"));
     pstr = (pAd->CommonCfg.RegTransmitSetting.field.BW) ? "20/40" : "20";
     DBGPRINT(RT_DEBUG_ERROR, ("\tHT-BW: %s\n", pstr));
-#ifdef DOT11_VHT_AC
 
     if(WMODE_CAP_AC(pAd->CommonCfg.PhyMode))
     {
@@ -4652,7 +4595,6 @@ INT show_devinfo_proc(RTMP_ADAPTER *pAd, PSTRING arg)
         DBGPRINT(RT_DEBUG_ERROR, ("\tVHT-BW: %s\n", pstr));
     }
 
-#endif /* DOT11_VHT_AC */
 
 #ifdef RT65xx
 
@@ -4769,7 +4711,6 @@ void  getRate(HTTRANSMIT_SETTING HTSetting, ULONG *fLastTxRxRate)
     int rate_index = 0;
     int value = 0;
 
-#ifdef DOT11_N_SUPPORT
 
     if(HTSetting.field.MODE >= MODE_HTMIX)
     {
@@ -4777,7 +4718,6 @@ void  getRate(HTTRANSMIT_SETTING HTSetting, ULONG *fLastTxRxRate)
         rate_index = 12 + ((UCHAR)HTSetting.field.BW *24) + ((UCHAR)HTSetting.field.ShortGI *48) + ((UCHAR)HTSetting.field.MCS);
     }
     else
-#endif /* DOT11_N_SUPPORT */
         if(HTSetting.field.MODE == MODE_OFDM)
             rate_index = (UCHAR)(HTSetting.field.MCS) + 4;
         else if(HTSetting.field.MODE == MODE_CCK)
@@ -5381,12 +5321,6 @@ INT	Set_ITxBfLnaCal_Proc(
     UCHAR channel = pAd->CommonCfg.Channel;
     int calFunction;
 
-#ifdef RALINK_ATE
-
-    if(ATE_ON(pAd))
-        channel = pAd->ate.Channel;
-
-#endif /* RALINK_ATE */
 
     calFunction = simple_strtol(arg, 0, 10);
 
@@ -5408,12 +5342,6 @@ INT	Set_ITxBfCal_Proc(
     int ret;
     UCHAR channel = pAd->CommonCfg.Channel;
 
-#ifdef RALINK_ATE
-
-    if(ATE_ON(pAd))
-        channel = pAd->ate.Channel;
-
-#endif /* RALINK_ATE */
 
     ret = iCalcCalibration(pAd, calParams, 0);
 
@@ -5433,14 +5361,6 @@ INT	Set_ITxBfCal_Proc(
     DBGPRINT((calFunction==0? RT_DEBUG_ERROR: RT_DEBUG_WARN),
              ("ITxBfCal Result = [0x%02x 0x%02x]\n", calParams[0], calParams[1]));
 
-#ifdef RALINK_ATE
-    pAd->ate.calParams[0] = (UCHAR)calParams[0];
-    pAd->ate.calParams[1] = (UCHAR)calParams[1];
-
-    /* Double check */
-    DBGPRINT((calFunction==0? RT_DEBUG_ERROR: RT_DEBUG_WARN),
-             ("ITxBfCal Result in ATE = [0x%02x 0x%02x]\n", pAd->ate.calParams[0], pAd->ate.calParams[1]));
-#endif /* RALINK_ATE */
 
     /* Update BBP R176 and EEPROM for Ant 0 and 2 */
     if(calFunction == 1)
@@ -5766,7 +5686,6 @@ INT	Set_ITxBfEn_Proc(
 #endif /* TXBF_SUPPORT */
 
 
-#ifdef DOT11_N_SUPPORT
 void assoc_ht_info_debugshow(
     IN PRTMP_ADAPTER pAd,
     IN MAC_TABLE_ENTRY *pEntry,
@@ -5834,10 +5753,8 @@ void assoc_ht_info_debugshow(
                                   pEntry->MaxRAmpduFactor, pEntry->MpduDensity,
                                   pEntry->MmpsMode, pEntry->AMsduSize));
 
-#ifdef DOT11N_DRAFT3
         DBGPRINT(RT_DEBUG_TRACE, ("\tExt Cap Info:\n"));
         DBGPRINT(RT_DEBUG_TRACE, ("\t\tBss2040CoexistMgmt=%d\n", pEntry->BSS2040CoexistenceMgmtSupport));
-#endif /* DOT11N_DRAFT3 */
     }
 }
 
@@ -5868,10 +5785,8 @@ INT	Set_BurstMode_Proc(
 
     return TRUE;
 }
-#endif /* DOT11_N_SUPPORT */
 
 
-#ifdef DOT11_VHT_AC
 VOID assoc_vht_info_debugshow(
     IN RTMP_ADAPTER *pAd,
     IN MAC_TABLE_ENTRY *pEntry,
@@ -5929,7 +5844,6 @@ VOID assoc_vht_info_debugshow(
     DBGPRINT(RT_DEBUG_TRACE, ("\n"));
 
 }
-#endif /* DOT11_VHT_AC */
 
 
 INT Set_RateAdaptInterval(
@@ -6381,7 +6295,6 @@ static struct
     {"BGProtection",			Show_BGProtection_Proc},
     {"RTSThreshold",			Show_RTSThreshold_Proc},
     {"FragThreshold",			Show_FragThreshold_Proc},
-#ifdef DOT11_N_SUPPORT
     {"HtBw",					Show_HtBw_Proc},
     {"HtMcs",					Show_HtMcs_Proc},
     {"HtGi",					Show_HtGi_Proc},
@@ -6392,7 +6305,6 @@ static struct
     {"HtRdg",		        	Show_HtRdg_Proc},
     {"HtAmsdu",		        	Show_HtAmsdu_Proc},
     {"HtAutoBa",		        Show_HtAutoBa_Proc},
-#endif /* DOT11_N_SUPPORT */
     {"CountryRegion",			Show_CountryRegion_Proc},
     {"CountryRegionABand",		Show_CountryRegionABand_Proc},
     {"CountryCode",				Show_CountryCode_Proc},

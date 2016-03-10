@@ -451,18 +451,6 @@ static void rx_done_tasklet(unsigned long data)
 
     ASSERT((pRxContext->InUse == pRxContext->IRPPending));
 
-#ifdef RALINK_ATE
-
-    if(ATE_ON(pAd))
-    {
-        /* If the driver is in ATE mode and Rx frame is set into here. */
-        if(pAd->ContinBulkIn == TRUE)
-        {
-            RTUSBBulkReceive(pAd);
-        }
-    }
-    else
-#endif /* RALINK_ATE */
         RTUSBBulkReceive(pAd);
 
 
@@ -823,153 +811,6 @@ static void rtusb_ac0_dma_done_tasklet(unsigned long data)
 
 }
 
-#ifdef RALINK_ATE
-static void rtusb_ate_ac0_dma_done_tasklet(unsigned long data)
-{
-    PRTMP_ADAPTER pAd;
-    PTX_CONTEXT pNullContext;
-    UCHAR BulkOutPipeId;
-    NTSTATUS Status;
-    ULONG IrqFlags;
-    ULONG OldValue;
-    purbb_t pURB;
-
-    pURB = (purbb_t)data;
-    /*pNullContext = (PTX_CONTEXT)pURB->rtusb_urb_context; */
-    pNullContext	= (PTX_CONTEXT)RTMP_USB_URB_DATA_GET(pURB);
-    pAd = pNullContext->pAd;
-
-    /* Reset Null frame context flags */
-    pNullContext->IRPPending = FALSE;
-    pNullContext->InUse = FALSE;
-    Status = RTMP_USB_URB_STATUS_GET(pURB);/*pURB->rtusb_urb_status; */
-
-    /* Store BulkOut PipeId. */
-    BulkOutPipeId = pNullContext->BulkOutPipeId;
-    pAd->BulkOutDataOneSecCount++;
-
-    if(Status == USB_ST_NOERROR)
-    {
-#ifdef RALINK_QA
-
-        if((ATE_ON(pAd)) && (pAd->ate.bQATxStart == TRUE))
-        {
-            if(pAd->ate.QID == BulkOutPipeId)
-            {
-#ifdef RELASE_EXCLUDE
-                /*
-                	Let Rx can have a chance to break in during Tx process,
-                	especially for loopback mode in QA ATE.
-
-                	To trade off between tx performance and loopback mode integrity.
-
-                	Q   : Now Rx is handled by tasklet, do we still need this delay ?
-                	Ans : Even tasklet is used, Rx/Tx < 1 if we do not delay for a while right here.
-                */
-#endif /* RELASE_EXCLUDE */
-                RTMPusecDelay(10);
-                pAd->ate.TxDoneCount++;
-#ifdef RELASE_EXCLUDE
-                DBGPRINT(RT_DEBUG_INFO, ("pAd->ate.TxDoneCount == %d\n", pAd->ate.TxDoneCount));
-#endif /* RELASE_EXCLUDE */
-                pAd->RalinkCounters.KickTxCount++;
-                ASSERT(pAd->ate.QID == 0);
-                pAd->ate.TxAc0++;
-            }
-        }
-
-#endif /* RALINK_QA */
-        pAd->BulkOutComplete++;
-
-        pAd->Counters8023.GoodTransmits++;
-
-        /* Don't worry about the queue is empty or not. This function will check itself. */
-        /* In RT28xx, SendTxWaitQueue == TxSwQueue  */
-        RTMPDeQueuePacket(pAd, TRUE, BulkOutPipeId, MAX_TX_PROCESS);
-
-    }
-    else
-    {
-        pAd->BulkOutCompleteOther++;
-
-        DBGPRINT(RT_DEBUG_ERROR, ("BulkOutDataPacket Failed STATUS_OTHER = 0x%x .\n", Status));
-        DBGPRINT(RT_DEBUG_ERROR, (">>BulkOutReq=0x%lx, BulkOutComplete=0x%lx\n", pAd->BulkOutReq, pAd->BulkOutComplete));
-
-        if((!RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_RESET_IN_PROGRESS)) &&
-                (!RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_HALT_IN_PROGRESS)) &&
-                (!RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST)) &&
-                (!RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_BULKOUT_RESET)))
-        {
-            RTMP_SET_FLAG(pAd, fRTMP_ADAPTER_BULKOUT_RESET);
-
-            /* In 28xx, RT_OID_USB_RESET_BULK_OUT ==> CMDTHREAD_RESET_BULK_OUT */
-            RTEnqueueInternalCmd(pAd, CMDTHREAD_RESET_BULK_OUT, NULL, 0);
-
-            /* check */
-            BULK_OUT_LOCK(&pAd->BulkOutLock[BulkOutPipeId], IrqFlags);
-            pAd->BulkOutPending[BulkOutPipeId] = FALSE;
-            pAd->bulkResetPipeid = BulkOutPipeId;
-            BULK_OUT_UNLOCK(&pAd->BulkOutLock[BulkOutPipeId], IrqFlags);
-
-            return;
-        }
-    }
-
-#ifdef RELASE_EXCLUDE
-    DBGPRINT(RT_DEBUG_INFO, ("pNullContext->pAd = 0x%lx\n", (ULONG)&pNullContext->pAd));
-    DBGPRINT(RT_DEBUG_INFO, ("pNullContext->pUrb = 0x%lx\n", (ULONG)&pNullContext->pUrb));
-    DBGPRINT(RT_DEBUG_INFO, ("pNullContext->TransferBuffer = 0x%lx\n", (ULONG)&pNullContext->TransferBuffer));
-    DBGPRINT(RT_DEBUG_INFO, ("pNullContext->BulkOutPipeId = %d\n", pNullContext->BulkOutPipeId));
-    DBGPRINT(RT_DEBUG_INFO, ("pNullContext->BulkOutSize = %ld\n", pNullContext->BulkOutSize));
-    DBGPRINT(RT_DEBUG_INFO, ("pNullContext->InUse = %d\n", (pNullContext->InUse==TRUE)));
-    DBGPRINT(RT_DEBUG_INFO, ("pNullContext->bWaitingBulkOut = %d\n", (pNullContext->bWaitingBulkOut==TRUE)));
-    DBGPRINT(RT_DEBUG_INFO, ("pNullContext->IRPPending = %d\n", (pNullContext->IRPPending==TRUE)));
-    DBGPRINT(RT_DEBUG_INFO, ("pNullContext->LastOne = %d\n", (pNullContext->LastOne==TRUE)));
-#endif /* RELASE_EXCLUDE */
-
-
-    if(atomic_read(&pAd->BulkOutRemained) > 0)
-    {
-        atomic_dec(&pAd->BulkOutRemained);
-#ifdef RELASE_EXCLUDE
-        DBGPRINT(RT_DEBUG_INFO, ("Bulk Out Remained = %d\n", atomic_read(&pAd->BulkOutRemained)));
-#endif /* RELASE_EXCLUDE */
-    }
-
-    /* 1st - Transmit Success */
-    OldValue = pAd->WlanCounters.TransmittedFragmentCount.u.LowPart;
-    pAd->WlanCounters.TransmittedFragmentCount.u.LowPart++;
-
-    if(pAd->WlanCounters.TransmittedFragmentCount.u.LowPart < OldValue)
-    {
-        pAd->WlanCounters.TransmittedFragmentCount.u.HighPart++;
-    }
-
-    if(((pAd->ContinBulkOut == TRUE) ||(atomic_read(&pAd->BulkOutRemained) > 0))
-            && (pAd->ate.Mode & ATE_TXFRAME))
-    {
-#ifdef RELASE_EXCLUDE
-        DBGPRINT(RT_DEBUG_INFO, ("Continue to BulkOut !\n"));
-#endif /* RELASE_EXCLUDE */
-        RTUSB_SET_BULK_FLAG(pAd, fRTUSB_BULK_OUT_DATA_ATE);
-    }
-    else
-    {
-        RTUSB_CLEAR_BULK_FLAG(pAd, fRTUSB_BULK_OUT_DATA_ATE);
-#ifdef RALINK_QA
-        pAd->ate.TxStatus = 0;
-#endif /* RALINK_QA */
-    }
-
-    BULK_OUT_LOCK(&pAd->BulkOutLock[BulkOutPipeId], IrqFlags);
-    pAd->BulkOutPending[BulkOutPipeId] = FALSE;
-    BULK_OUT_UNLOCK(&pAd->BulkOutLock[BulkOutPipeId], IrqFlags);
-
-    /* Always call Bulk routine, even reset bulk. */
-    /* The protection of rest bulk should be in BulkOut routine. */
-    RTUSBKickBulkOut(pAd);
-}
-#endif /* RALINK_ATE */
 
 
 NDIS_STATUS RtmpNetTaskInit(
@@ -982,9 +823,6 @@ NDIS_STATUS RtmpNetTaskInit(
     //RTMP_OS_TASKLET_INIT(pAd, &pObj->cmd_rsp_event_task, cmd_rsp_event_tasklet, (ULONG)pAd);
     RTMP_OS_TASKLET_INIT(pAd, &pObj->mgmt_dma_done_task, rtusb_mgmt_dma_done_tasklet, (unsigned long)pAd);
     RTMP_OS_TASKLET_INIT(pAd, &pObj->ac0_dma_done_task, rtusb_ac0_dma_done_tasklet, (unsigned long)pAd);
-#ifdef RALINK_ATE
-    RTMP_OS_TASKLET_INIT(pAd, &pObj->ate_ac0_dma_done_task, rtusb_ate_ac0_dma_done_tasklet, (unsigned long)pAd);
-#endif /* RALINK_ATE */
     RTMP_OS_TASKLET_INIT(pAd, &pObj->ac1_dma_done_task, rtusb_ac1_dma_done_tasklet, (unsigned long)pAd);
     RTMP_OS_TASKLET_INIT(pAd, &pObj->ac2_dma_done_task, rtusb_ac2_dma_done_tasklet, (unsigned long)pAd);
     RTMP_OS_TASKLET_INIT(pAd, &pObj->ac3_dma_done_task, rtusb_ac3_dma_done_tasklet, (unsigned long)pAd);
@@ -1007,9 +845,6 @@ void RtmpNetTaskExit(IN RTMP_ADAPTER *pAd)
     RTMP_OS_TASKLET_KILL(&pObj->cmd_rsp_event_task);
     RTMP_OS_TASKLET_KILL(&pObj->mgmt_dma_done_task);
     RTMP_OS_TASKLET_KILL(&pObj->ac0_dma_done_task);
-#ifdef RALINK_ATE
-    RTMP_OS_TASKLET_KILL(&pObj->ate_ac0_dma_done_task);
-#endif
     RTMP_OS_TASKLET_KILL(&pObj->ac1_dma_done_task);
     RTMP_OS_TASKLET_KILL(&pObj->ac2_dma_done_task);
     RTMP_OS_TASKLET_KILL(&pObj->ac3_dma_done_task);

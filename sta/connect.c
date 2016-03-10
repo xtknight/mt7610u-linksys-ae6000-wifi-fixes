@@ -202,7 +202,6 @@ VOID MlmeCntlMachinePerformAction(
 
 #endif /* LED_CONTROL_SUPPORT */
 
-#ifdef DOT11N_DRAFT3
 
             /* AP sent a 2040Coexistence mgmt frame, then station perform a scan, and then send back the respone. */
             if((pAd->CommonCfg.BSSCoexist2040.field.InfoReq == 1)
@@ -213,8 +212,6 @@ VOID MlmeCntlMachinePerformAction(
                                                 TRUE);
             }
 
-#endif /* DOT11N_DRAFT3 */
-#ifdef WPA_SUPPLICANT_SUPPORT
 
             if(pAd->IndicateMediaState != NdisMediaStateConnected && (pAd->StaCfg.WpaSupplicantUP != WPA_SUPPLICANT_ENABLE_WITH_WEB_UI))
             {
@@ -223,7 +220,6 @@ VOID MlmeCntlMachinePerformAction(
                 IterateOnBssTab(pAd);
             }
 
-#endif // WPA_SUPPLICANT_SUPPORT //
 
 
             if(Status == MLME_SUCCESS)
@@ -240,9 +236,7 @@ VOID MlmeCntlMachinePerformAction(
                 {
                     RTMPSendWirelessEvent(pAd, IW_SCAN_COMPLETED_EVENT_FLAG, NULL, BSS0, 0);
 
-#ifdef WPA_SUPPLICANT_SUPPORT
                     RtmpOSWirelessEventSend(pAd->net_dev, RT_WLAN_EVENT_SCAN, -1, NULL, NULL, 0);
-#endif /* WPA_SUPPLICANT_SUPPORT */
                 }
 
             }
@@ -323,11 +317,9 @@ VOID CntlIdleProc(
         MlmeEnqueue(pAd, ASSOC_STATE_MACHINE, MT2_MLME_DISASSOC_REQ,
                     sizeof(MLME_DISASSOC_REQ_STRUCT), &DisassocReq, 0);
         pAd->Mlme.CntlMachine.CurrState = CNTL_WAIT_OID_DISASSOC;
-#ifdef WPA_SUPPLICANT_SUPPORT
 
         if((pAd->StaCfg.WpaSupplicantUP & 0x7F) !=
                 WPA_SUPPLICANT_ENABLE_WITH_WEB_UI)
-#endif /* WPA_SUPPLICANT_SUPPORT */
         {
             /* Set the AutoReconnectSsid to prevent it reconnect to old SSID */
             /* Since calling this indicate user don't want to connect to that SSID anymore. */
@@ -371,13 +363,6 @@ VOID CntlOidScanProc(
     /*	BSS_ENTRY                  CurrBss; */
     BSS_ENTRY *pCurrBss = NULL;
 
-#ifdef RALINK_ATE
-
-    /* Disable scanning when ATE is running. */
-    if(ATE_ON(pAd))
-        return;
-
-#endif /* RALINK_ATE */
 
 
     /* allocate memory */
@@ -548,12 +533,10 @@ VOID CntlOidSsidProc(
             }
 
             pAd->Mlme.CntlMachine.CurrState = CNTL_IDLE;
-#ifdef NATIVE_WPA_SUPPLICANT_SUPPORT
             RtmpOSWirelessEventSend(pAd->net_dev,
                                     RT_WLAN_EVENT_CGIWAP, -1,
                                     &pAd->MlmeAux.Bssid[0], NULL,
                                     0);
-#endif /* NATIVE_WPA_SUPPLICANT_SUPPORT */
         }
     }
     else if(INFRA_ON(pAd))
@@ -688,13 +671,6 @@ VOID CntlOidRTBssidProc(
 
 
 
-#ifdef RALINK_ATE
-
-    /* No need to perform this routine when ATE is running. */
-    if(ATE_ON(pAd))
-        return;
-
-#endif /* RALINK_ATE */
 
     /* record user desired settings */
     COPY_MAC_ADDR(pAd->MlmeAux.Bssid, pOidBssid);
@@ -710,11 +686,9 @@ VOID CntlOidRTBssidProc(
     /* find the desired BSS in the latest SCAN result table */
     BssIdx = BssTableSearch(&pAd->ScanTab, pOidBssid, pAd->MlmeAux.Channel);
 
-#ifdef WPA_SUPPLICANT_SUPPORT
 
     if(pAd->StaCfg.WpaSupplicantUP & WPA_SUPPLICANT_ENABLE_WPS) ;
     else
-#endif /* WPA_SUPPLICANT_SUPPORT */
         if(
             (BssIdx != BSS_NOT_FOUND))
         {
@@ -844,10 +818,8 @@ VOID CntlOidRTBssidProc(
             pInBss = &pAd->MlmeAux.SsidBssTab.BssEntry[0];
 
             pAd->StaCfg.PairCipher = pAd->StaCfg.WepStatus;
-#ifdef WPA_SUPPLICANT_SUPPORT
 
             if(pAd->StaCfg.WpaSupplicantUP == WPA_SUPPLICANT_DISABLE)
-#endif /* WPA_SUPPLICANT_SUPPORT */
                 pAd->StaCfg.GroupCipher = pAd->StaCfg.WepStatus;
 
             /* Check cipher suite, AP must have more secured cipher than station setting */
@@ -1274,7 +1246,6 @@ VOID CntlWaitStartProc(
                 return;
             }
 
-#ifdef DOT11_N_SUPPORT
             rt_phy_info = &pAd->StaActive.SupportedPhyInfo;
             NdisZeroMemory(&rt_phy_info->MCSSet[0], 16);
 
@@ -1298,7 +1269,6 @@ VOID CntlWaitStartProc(
                 NdisMoveMemory(&rt_phy_info->MCSSet[0],
                                &pAd->CommonCfg.HtCapability.MCSSet[0], 16);
                 COPY_HTSETTINGS_FROM_MLME_AUX_TO_ACTIVE_CFG(pAd);
-#ifdef DOT11_VHT_AC
 
                 if(WMODE_CAP_AC(pAd->CommonCfg.PhyMode) &&
                         pAd->MlmeAux.vht_cap_len)
@@ -1313,10 +1283,8 @@ VOID CntlWaitStartProc(
                     rt_vht_cap->vht_htc = pAd->MlmeAux.vht_cap.vht_cap.htc_vht_cap;
                 }
 
-#endif /* DOT11_VHT_AC */
             }
             else
-#endif /* DOT11_N_SUPPORT */
             {
                 pAd->StaActive.SupportedPhyInfo.bHtEnable = FALSE;
             }
@@ -1635,10 +1603,8 @@ VOID LinkUp(
     pAd->StaCfg.bNotFirstScan = TRUE;
     pAd->StaCfg.bAutoConnectByBssid = FALSE;
 
-#ifdef RTMP_MAC_USB
     /* Within 10 seconds after link up, don't allow to go to sleep. */
     pAd->CountDowntoPsm = STAY_10_SECONDS_AWAKE;
-#endif /* RTMP_MAC_USB */
 
 
     pEntry = &pAd->MacTab.Content[BSSID_WCID];
@@ -1656,9 +1622,7 @@ VOID LinkUp(
 
     COPY_SETTINGS_FROM_MLME_AUX_TO_ACTIVE_CFG(pAd);
 
-#ifdef DOT11_N_SUPPORT
     COPY_HTSETTINGS_FROM_MLME_AUX_TO_ACTIVE_CFG(pAd);
-#endif /* DOT11_N_SUPPORT */
 
 
     if(BssType == BSS_ADHOC)
@@ -1672,13 +1636,11 @@ VOID LinkUp(
         pAd->CommonCfg.CarrierDetect.CD_State = CD_NORMAL;
 #endif /* CARRIER_DETECTION_SUPPORT */
 
-#ifdef DOT11_N_SUPPORT
 
         if(WMODE_CAP_N(pAd->CommonCfg.PhyMode)
                 && (pAd->StaCfg.bAdhocN == TRUE))
             AdhocTurnOnQos(pAd);
 
-#endif /* DOT11_N_SUPPORT */
 
         InitChannelRelatedValue(pAd);
     }
@@ -1696,9 +1658,7 @@ VOID LinkUp(
               BssType, pAd->StaActive.Aid, pAd->CommonCfg.Ssid,
               pAd->CommonCfg.Channel, pAd->CommonCfg.CentralChannel));
 
-#ifdef DOT11_N_SUPPORT
     DBGPRINT(RT_DEBUG_TRACE, ("!!! LINK UP !!! (Density =%d, )\n", pAd->MacTab.Content[BSSID_WCID].MpduDensity));
-#endif /* DOT11_N_SUPPORT */
 
     /*
     	We cannot move AsicSetBssid to PeerBeaconAtJoinAction because
@@ -1722,7 +1682,6 @@ VOID LinkUp(
     */
     AsicUpdateProtect(pAd, 0, (OFDMSETPROTECT | CCKSETPROTECT), TRUE, FALSE);
 
-#ifdef DOT11_N_SUPPORT
 
     if((pAd->StaActive.SupportedPhyInfo.bHtEnable == TRUE))
     {
@@ -1739,7 +1698,6 @@ VOID LinkUp(
                               FALSE);
     }
 
-#endif /* DOT11_N_SUPPORT */
 
     /*
     	NdisZeroMemory(&pAd->DrsCounters, sizeof (COUNTER_DRS));
@@ -1760,13 +1718,11 @@ VOID LinkUp(
 
     if(pAd->StaCfg.WepStatus <= Ndis802_11WEPDisabled)
     {
-#ifdef WPA_SUPPLICANT_SUPPORT
 
         if(pAd->StaCfg.WpaSupplicantUP &&
                 (pAd->StaCfg.WepStatus == Ndis802_11WEPEnabled) &&
                 (pAd->StaCfg.IEEE8021X == TRUE)) ;
         else
-#endif /* WPA_SUPPLICANT_SUPPORT */
         {
             pAd->StaCfg.PortSecured = WPA_802_1X_PORT_SECURED;
             pAd->StaCfg.PrivacyFilter = Ndis802_11PrivFilterAcceptAll;
@@ -1946,16 +1902,12 @@ VOID LinkUp(
         AsicUpdateRxWCIDTable(pAd, BSSID_WCID, pAd->CommonCfg.Bssid);
 
         /* If WEP is enabled, add paiewise and shared key */
-#ifdef WPA_SUPPLICANT_SUPPORT
 
         if(((pAd->StaCfg.WpaSupplicantUP) &&
                 (pAd->StaCfg.WepStatus == Ndis802_11WEPEnabled) &&
                 (pAd->StaCfg.PortSecured == WPA_802_1X_PORT_SECURED)) ||
                 ((pAd->StaCfg.WpaSupplicantUP == WPA_SUPPLICANT_DISABLE) &&
                  (pAd->StaCfg.WepStatus == Ndis802_11WEPEnabled)))
-#else
-        if(pAd->StaCfg.WepStatus == Ndis802_11WEPEnabled)
-#endif /* WPA_SUPPLICANT_SUPPORT */
         {
             UCHAR CipherAlg;
 
@@ -1989,12 +1941,10 @@ VOID LinkUp(
         /* For GUI ++ */
         if(pAd->StaCfg.AuthMode < Ndis802_11AuthModeWPA)
         {
-#ifdef WPA_SUPPLICANT_SUPPORT
 
             if(((pAd->StaCfg.WpaSupplicantUP) && (pAd->StaCfg.WepStatus == Ndis802_11WEPEnabled) && (pAd->StaCfg.PortSecured == WPA_802_1X_PORT_SECURED))
                     || ((pAd->StaCfg.WpaSupplicantUP == WPA_SUPPLICANT_DISABLE) && (pAd->StaCfg.WepStatus == Ndis802_11WEPEnabled))
                     || (pAd->StaCfg.WepStatus == Ndis802_11WEPDisabled))
-#endif /* WPA_SUPPLICANT_SUPPORT */
             {
                 pAd->ExtraInfo = GENERAL_LINK_UP;
                 RTMP_IndicateMediaState(pAd, NdisMediaStateConnected);
@@ -2003,10 +1953,8 @@ VOID LinkUp(
         else if((pAd->StaCfg.AuthMode == Ndis802_11AuthModeWPAPSK) ||
                 (pAd->StaCfg.AuthMode == Ndis802_11AuthModeWPA2PSK))
         {
-#ifdef WPA_SUPPLICANT_SUPPORT
 
             if(pAd->StaCfg.WpaSupplicantUP == WPA_SUPPLICANT_DISABLE)
-#endif /* WPA_SUPPLICANT_SUPPORT */
                 RTMPSetTimer(&pAd->Mlme.LinkDownTimer, LINK_DOWN_TIMEOUT);
 
         }
@@ -2019,11 +1967,9 @@ VOID LinkUp(
 
 
         MlmeUpdateTxRates(pAd, TRUE, BSS0);
-#ifdef DOT11_N_SUPPORT
         MlmeUpdateHtTxRates(pAd, BSS0);
         DBGPRINT(RT_DEBUG_TRACE, ("!!! LINK UP !! (StaActive.bHtEnable =%d)\n",
                                   pAd->StaActive.SupportedPhyInfo.bHtEnable));
-#endif /* DOT11_N_SUPPORT */
 
 
         if(pAd->CommonCfg.bAggregationCapable)
@@ -2048,14 +1994,12 @@ VOID LinkUp(
 
         if(pAd->MlmeAux.APRalinkIe != 0x0)
         {
-#ifdef DOT11_N_SUPPORT
 
             if(CLIENT_STATUS_TEST_FLAG(pEntry, fCLIENT_STATUS_RDG_CAPABLE))
             {
                 AsicEnableRDG(pAd);
             }
 
-#endif /* DOT11_N_SUPPORT */
             OPSTATUS_SET_FLAG(pAd, fCLIENT_STATUS_RALINK_CHIPSET);
             CLIENT_STATUS_SET_FLAG(pEntry, fCLIENT_STATUS_RALINK_CHIPSET);
         }
@@ -2067,12 +2011,10 @@ VOID LinkUp(
     }
 
 
-#ifdef DOT11_N_SUPPORT
     DBGPRINT(RT_DEBUG_TRACE,
              ("NDIS_STATUS_MEDIA_CONNECT Event B!.BACapability = %x. ClientStatusFlags = %lx\n",
               pAd->CommonCfg.BACapability.word,
               pAd->MacTab.Content[BSSID_WCID].ClientStatusFlags));
-#endif /* DOT11_N_SUPPORT */
 
 #ifdef LED_CONTROL_SUPPORT
     /* Set LED */
@@ -2101,7 +2043,6 @@ VOID LinkUp(
     if(pAd->StaCfg.bAutoTxRateSwitch == FALSE)
     {
         pEntry->bAutoTxRateSwitch = FALSE;
-#ifdef DOT11_N_SUPPORT
 
         if(pEntry->HTPhyMode.field.MCS == 32)
             pEntry->HTPhyMode.field.ShortGI = GI_800;
@@ -2110,7 +2051,6 @@ VOID LinkUp(
                 || (pEntry->HTPhyMode.field.MCS == 32))
             pEntry->HTPhyMode.field.STBC = STBC_NONE;
 
-#endif /* DOT11_N_SUPPORT */
 
         /* If the legacy mode is set, overwrite the transmit setting of this entry. */
         if(pEntry->HTPhyMode.field.MODE <= MODE_OFDM)
@@ -2139,7 +2079,6 @@ VOID LinkUp(
         rtmp_bbp_set_txdac(pAd, 0);
     }
 
-#ifdef DOT11_N_SUPPORT
 
     if((pAd->StaActive.SupportedPhyInfo.bHtEnable == TRUE))
     {
@@ -2167,11 +2106,9 @@ VOID LinkUp(
                   pEntry->MaxRAmpduFactor));
     }
 
-#endif /* DOT11_N_SUPPORT */
 
     /* Txop can only be modified when RDG is off, WMM is disable and TxBurst is enable */
     /* if 1. Legacy AP WMM on,  or 2. 11n AP, AMPDU disable.  Force turn off burst no matter what bEnableTxBurst is. */
-#ifdef DOT11_N_SUPPORT
 
     if(!((pAd->CommonCfg.RxStream == 1) && (pAd->CommonCfg.TxStream == 1))
             && (pAd->StaCfg.bForceTxBurst == FALSE)
@@ -2191,7 +2128,6 @@ VOID LinkUp(
         DBGPRINT(RT_DEBUG_TRACE, ("Txburst 1\n"));
     }
     else
-#endif /* DOT11_N_SUPPORT */
         if(pAd->CommonCfg.bEnableTxBurst)
         {
             RTMP_IO_READ32(pAd, EDCA_AC0_CFG, &Data);
@@ -2215,7 +2151,6 @@ VOID LinkUp(
             DBGPRINT(RT_DEBUG_TRACE, ("Txburst 3\n"));
         }
 
-#ifdef DOT11_N_SUPPORT
 
     /* Re-check to turn on TX burst or not. */
     if((pAd->CommonCfg.IOTestParm.bLastAtheros == TRUE)
@@ -2239,11 +2174,9 @@ VOID LinkUp(
         pAd->CommonCfg.IOTestParm.bNextDisableRxBA = FALSE;
     }
 
-#endif /* DOT11_N_SUPPORT */
 
     pAd->CommonCfg.IOTestParm.bLastAtheros = FALSE;
 
-#ifdef WPA_SUPPLICANT_SUPPORT
 
     /*
        If STA connects to different AP, STA couldn't send EAPOL_Start for WpaSupplicant.
@@ -2256,7 +2189,6 @@ VOID LinkUp(
         pAd->StaCfg.bLostAp = FALSE;
     }
 
-#endif /* WPA_SUPPLICANT_SUPPORT */
     /*
        Need to check this COPY. This COPY is from Windows Driver.
      */
@@ -2291,8 +2223,6 @@ VOID LinkUp(
     /*RTMP_CLEAR_PSFLAG(pAd, fRTMP_PS_GO_TO_SLEEP_NOW); */
 
 
-#ifdef DOT11_N_SUPPORT
-#ifdef DOT11N_DRAFT3
 
     if(INFRA_ON(pAd))
     {
@@ -2323,10 +2253,7 @@ VOID LinkUp(
         }
     }
 
-#endif /* DOT11N_DRAFT3 */
-#endif /* DOT11_N_SUPPORT */
 
-#ifdef WPA_SUPPLICANT_SUPPORT
 
     /*
        When AuthMode is WPA2-Enterprise and AP reboot or STA lost AP,
@@ -2343,7 +2270,6 @@ VOID LinkUp(
         pAd->StaCfg.bLostAp = FALSE;
     }
 
-#endif /* WPA_SUPPLICANT_SUPPORT */
 
 #ifdef MT76x0
 
@@ -2393,13 +2319,6 @@ VOID LinkDown(
     if(MONITOR_ON(pAd))
         return;
 
-#ifdef RALINK_ATE
-
-    /* Nothing to do in ATE mode. */
-    if(ATE_ON(pAd))
-        return;
-
-#endif /* RALINK_ATE */
 
 #ifdef PCIE_PS_SUPPORT
     /* Not allow go to sleep within linkdown function. */
@@ -2552,7 +2471,6 @@ VOID LinkDown(
         /*      3. short preamble */
         OPSTATUS_CLEAR_FLAG(pAd, fOP_STATUS_BG_PROTECTION_INUSED);
 
-#ifdef EXT_BUILD_CHANNEL_LIST
 
         /* Country IE of the AP will be evaluated and will be used. */
         if(pAd->StaCfg.IEEE80211dClientMode != Rt802_11_D_None)
@@ -2563,7 +2481,6 @@ VOID LinkDown(
             BuildChannelListEx(pAd);
         }
 
-#endif /* EXT_BUILD_CHANNEL_LIST */
 
     }
 
@@ -2591,7 +2508,6 @@ VOID LinkDown(
     pAd->Mlme.PeriodicRound = 0;
     pAd->Mlme.OneSecPeriodicRound = 0;
 
-#ifdef DOT11_N_SUPPORT
     NdisZeroMemory(&pAd->MlmeAux.HtCapability, sizeof(HT_CAPABILITY_IE));
     NdisZeroMemory(&pAd->MlmeAux.AddHtInfo, sizeof(ADD_HT_INFO_IE));
     pAd->MlmeAux.HtCapabilityLen = 0;
@@ -2600,7 +2516,6 @@ VOID LinkDown(
     DBGPRINT(RT_DEBUG_TRACE, ("LinkDownCleanMlmeAux.ExtCapInfo!\n"));
     NdisZeroMemory((PUCHAR)(&pAd->MlmeAux.ExtCapInfo),
                    sizeof(EXT_CAP_INFO_ELEMENT));
-#endif /* DOT11_N_SUPPORT */
 
     /* Reset WPA-PSK state. Only reset when supplicant enabled */
     if(pAd->StaCfg.WpaState != SS_NOTUSE)
@@ -2628,7 +2543,6 @@ VOID LinkDown(
     }
 
     /* 802.1x port control */
-#ifdef WPA_SUPPLICANT_SUPPORT
 
     /* Prevent clear PortSecured here with static WEP */
     /* NetworkManger set security policy first then set SSID to connect AP. */
@@ -2639,7 +2553,6 @@ VOID LinkDown(
         pAd->StaCfg.PortSecured = WPA_802_1X_PORT_SECURED;
     }
     else
-#endif /* WPA_SUPPLICANT_SUPPORT */
     {
         pAd->StaCfg.PortSecured = WPA_802_1X_PORT_NOT_SECURED;
         pAd->StaCfg.PrivacyFilter = Ndis802_11PrivFilter8021xWEP;
@@ -2658,9 +2571,7 @@ VOID LinkDown(
 
     pAd->StaActive.SupportedPhyInfo.bHtEnable = FALSE;
 
-#ifdef RTMP_MAC_USB
     pAd->bUsbTxBulkAggre = FALSE;
-#endif /* RTMP_MAC_USB */
 
     /* Clean association information */
     NdisZeroMemory(&pAd->StaCfg.AssocInfo,
@@ -2679,7 +2590,6 @@ VOID LinkDown(
     pAd->CommonCfg.MlmeRate = pAd->CommonCfg.BasicMlmeRate;
     pAd->CommonCfg.RtsRate = pAd->CommonCfg.BasicMlmeRate;
 
-#ifdef DOT11_N_SUPPORT
 
     // TODO: shiang-6590, why we need to fallback to BW_20 here? How about the BW_10?
     if(pAd->CommonCfg.BBPCurrentBW != BW_20)
@@ -2689,7 +2599,6 @@ VOID LinkDown(
         }
     }
 
-#endif /* DOT11_N_SUPPORT */
 
     {
         /* Reset DAC */
@@ -2705,22 +2614,16 @@ VOID LinkDown(
     RTMPSetPiggyBack(pAd, FALSE);
     OPSTATUS_CLEAR_FLAG(pAd, fOP_STATUS_PIGGYBACK_INUSED);
 
-#ifdef DOT11_N_SUPPORT
     pAd->CommonCfg.BACapability.word = pAd->CommonCfg.REGBACapability.word;
-#endif /* DOT11_N_SUPPORT */
 
     /* Restore all settings in the following. */
     AsicUpdateProtect(pAd, 0,
                       (ALLN_SETPROTECT | CCKSETPROTECT | OFDMSETPROTECT),
                       TRUE, FALSE);
-#ifdef DOT11_N_SUPPORT
     AsicDisableRDG(pAd);
-#endif /* DOT11_N_SUPPORT */
     pAd->CommonCfg.IOTestParm.bCurrentAtheros = FALSE;
     pAd->CommonCfg.IOTestParm.bNowAtherosBurstOn = FALSE;
 
-#ifdef DOT11_N_SUPPORT
-#ifdef DOT11N_DRAFT3
     OPSTATUS_CLEAR_FLAG(pAd, fOP_STATUS_SCAN_2040);
     pAd->CommonCfg.BSSCoexist2040.word = 0;
     TriEventInit(pAd);
@@ -2730,8 +2633,6 @@ VOID LinkDown(
         pAd->ChannelList[i].bEffectedChannel = FALSE;
     }
 
-#endif /* DOT11N_DRAFT3 */
-#endif /* DOT11_N_SUPPORT */
 
     RTMP_IO_WRITE32(pAd, MAX_LEN_CFG, 0x1fff);
     RTMP_CLEAR_FLAG(pAd, fRTMP_ADAPTER_BSS_SCAN_IN_PROGRESS);
@@ -2742,34 +2643,18 @@ VOID LinkDown(
 #endif /* PCIE_PS_SUPPORT */
 
 
-#ifdef WPA_SUPPLICANT_SUPPORT
-#ifndef NATIVE_WPA_SUPPLICANT_SUPPORT
 
-    if(pAd->StaCfg.WpaSupplicantUP)
-    {
-        /*send disassociate event to wpa_supplicant */
-        RtmpOSWirelessEventSend(pAd->net_dev, RT_WLAN_EVENT_CUSTOM,
-                                RT_DISASSOC_EVENT_FLAG, NULL, NULL, 0);
-    }
-
-#endif /* NATIVE_WPA_SUPPLICANT_SUPPORT */
-#endif /* WPA_SUPPLICANT_SUPPORT */
-
-#ifdef NATIVE_WPA_SUPPLICANT_SUPPORT
     RtmpOSWirelessEventSend(pAd->net_dev, RT_WLAN_EVENT_CGIWAP, -1, NULL,
                             NULL, 0);
-#endif /* NATIVE_WPA_SUPPLICANT_SUPPORT */
 
 
 
 
     /* ------ new addition from mt7612u ------ */
-#ifdef RT_CFG80211_SUPPORT
 #ifdef CONFIG_STA_SUPPORT
     DBGPRINT(RT_DEBUG_TRACE, ("LOST_AP_INFORM\n"));
     RT_CFG80211_LOST_AP_INFORM(pAd);
 #endif
-#endif /* RT_CFG80211_SUPPORT */
     /* ------ new addition from mt7612u ------ */
 
     if(pAd->StaCfg.BssType != BSS_ADHOC)
@@ -2810,10 +2695,8 @@ VOID IterateOnBssTab(
 
     /* Change the wepstatus to original wepstatus */
     pAd->StaCfg.PairCipher = pAd->StaCfg.WepStatus;
-#ifdef WPA_SUPPLICANT_SUPPORT
 
     if(pAd->StaCfg.WpaSupplicantUP == WPA_SUPPLICANT_DISABLE)
-#endif /* WPA_SUPPLICANT_SUPPORT */
         pAd->StaCfg.GroupCipher = pAd->StaCfg.WepStatus;
 
     BssIdx = pAd->MlmeAux.BssIdx;
@@ -2892,8 +2775,6 @@ VOID IterateOnBssTab(
     else
     {
         /* no more BSS */
-#ifdef DOT11_N_SUPPORT
-#endif /* DOT11_N_SUPPORT */
         {
             DBGPRINT(RT_DEBUG_TRACE,
             ("CNTL - All roaming failed, restore to channel %d, Total BSS[%02d]\n",
@@ -2947,8 +2828,6 @@ VOID IterateOnBssTab2(
         UCHAR rf_channel = 0, rf_bw;
         INT ext_ch;
 
-#ifdef DOT11_N_SUPPORT
-#endif /* DOT11_N_SUPPORT */
         {
             rf_channel = pAd->CommonCfg.Channel;
             rf_bw = BW_20;
@@ -3078,7 +2957,6 @@ VOID AuthParmFill(
 
 	==========================================================================
  */
-#ifdef RTMP_MAC_USB
 
 VOID MlmeCntlConfirm(
     IN PRTMP_ADAPTER pAd,
@@ -3088,7 +2966,6 @@ VOID MlmeCntlConfirm(
     MlmeEnqueue(pAd, MLME_CNTL_STATE_MACHINE, MsgType, sizeof(USHORT),
                 &Msg, 0);
 }
-#endif /* RTMP_MAC_USB */
 
 /*
 	==========================================================================
@@ -3215,7 +3092,7 @@ ULONG MakeIbssBeacon(
         FrameLen += tmp;
     }
 
-    /* If adhoc secruity is set for WPA-None, append the cipher suite IE */
+    /* If adhoc security is set for WPA-None, append the cipher suite IE */
     /* Modify by Eddy, support WPA2PSK in Adhoc mode */
     if((pAd->StaCfg.AuthMode == Ndis802_11AuthModeWPANone)
       )
@@ -3234,7 +3111,6 @@ ULONG MakeIbssBeacon(
         FrameLen += tmp;
     }
 
-#ifdef DOT11_N_SUPPORT
 
     if(WMODE_CAP_N(pAd->CommonCfg.PhyMode)
             && (pAd->StaCfg.bAdhocN == TRUE))
@@ -3286,7 +3162,6 @@ ULONG MakeIbssBeacon(
         FrameLen += TmpLen;
     }
 
-#endif /* DOT11_N_SUPPORT */
 
     /*beacon use reserved WCID 0xff */
     if(pAd->CommonCfg.Channel > 14)
@@ -3326,7 +3201,6 @@ VOID InitChannelRelatedValue(RTMP_ADAPTER *pAd)
 
     pAd->CommonCfg.CentralChannel = pAd->MlmeAux.CentralChannel;
     pAd->CommonCfg.Channel = pAd->MlmeAux.Channel;
-#ifdef DOT11_N_SUPPORT
 
     /* Change to AP channel */
     if((pAd->CommonCfg.CentralChannel > pAd->CommonCfg.Channel)
@@ -3344,7 +3218,6 @@ VOID InitChannelRelatedValue(RTMP_ADAPTER *pAd)
         ext_ch = EXTCHA_BELOW;
     }
     else
-#endif /* DOT11_N_SUPPORT */
     {
         rf_channel = pAd->CommonCfg.CentralChannel;
         rf_bw = BW_20;
@@ -3459,7 +3332,6 @@ VOID AdjustChannelRelatedValue(
 
     pAd->CommonCfg.CentralChannel = ExtraCh;
     pAd->CommonCfg.Channel = PriCh;
-#ifdef DOT11_N_SUPPORT
 
     /* Change to AP channel */
     if((pAd->CommonCfg.CentralChannel > pAd->CommonCfg.Channel) && (BandWidth == BW_40))
@@ -3475,14 +3347,12 @@ VOID AdjustChannelRelatedValue(
         ext_ch = EXTCHA_BELOW;
     }
     else
-#endif /* DOT11_N_SUPPORT */
     {
         rf_channel = pAd->CommonCfg.Channel;
         rf_bw = BW_20;
         ext_ch = EXTCHA_NONE;
     }
 
-#ifdef DOT11_VHT_AC
 
     if(rf_bw == BW_40 &&
             pAd->StaActive.SupportedPhyInfo.bVhtEnable == TRUE &&
@@ -3495,7 +3365,6 @@ VOID AdjustChannelRelatedValue(
     DBGPRINT(RT_DEBUG_INFO, ("%s(): Input BW=%d, rf_channel=%d, vht_bw=%d, Channel=%d, vht_cent_ch=%d!\n",
                             __FUNCTION__, rf_bw, rf_channel, pAd->CommonCfg.vht_bw, pAd->CommonCfg.Channel,
                             pAd->CommonCfg.vht_cent_ch));
-#endif /* DOT11_VHT_AC */
 
     rtmp_bbp_set_bw(pAd, rf_bw);
     rtmp_bbp_set_ctrlch(pAd, ext_ch);
@@ -3509,9 +3378,7 @@ VOID AdjustChannelRelatedValue(
               pAd->LatchRfRegs.Channel,
               pAd->CommonCfg.Channel,
               pAd->CommonCfg.CentralChannel));
-#ifdef DOT11_VHT_AC
     DBGPRINT(RT_DEBUG_INFO, ("VHT-CentralCh=%d\n", pAd->CommonCfg.vht_cent_ch));
-#endif /* DOT11_VHT_AC */
 
     DBGPRINT(RT_DEBUG_TRACE, ("AdjustChannelRelatedValue ==> not any connection !!!\n"));
 }

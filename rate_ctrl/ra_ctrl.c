@@ -70,7 +70,6 @@ UCHAR RateSwitchTable11G[] =
 };
 
 
-#ifdef DOT11_N_SUPPORT
 UCHAR RateSwitchTable11N1S[] =
 {
     /* Item No.   Mode   Curr-MCS   TrainUp   TrainDown		 Mode- Bit0: STBC, Bit1: Short GI, Bit4~6: Mode(0:CCK, 1:OFDM, 2:HT Mix, 3:HT GF)*/
@@ -296,7 +295,6 @@ UCHAR RateSwitchTable11BGN3SForABand[] =   /* 3*3*/
 };
 
 
-#ifdef NEW_RATE_ADAPT_SUPPORT
 
 #ifdef RANGE_EXTEND
 #define SUPPORT_SHORT_GI_RA		/* Support switching to Short GI rates in RA */
@@ -461,7 +459,6 @@ UCHAR RateSwitchTableAdapt11N3S[] =
 };
 
 
-#ifdef DOT11_VHT_AC
 /*
 	VHT-capable rate table
 
@@ -548,10 +545,7 @@ UCHAR RateTableVht2S[] =
     17,		0x48,	7,		8, 25,				16,		0, 18, 17, 	2,
     18,		0x4A,	7,		8, 25,				17,		0, 18, 18, 	2,
 };
-#endif /* DOT11_VHT_AC */
-#endif /*  NEW_RATE_ADAPT_SUPPORT */
 
-#endif /* DOT11_N_SUPPORT */
 
 
 /* MlmeGetSupportedMcs - fills in the table of mcs with index into the pTable
@@ -593,7 +587,6 @@ VOID MlmeGetSupportedMcs(
         else if((pCurrTxRate->CurrMCS == MCS_7) && (pCurrTxRate->ShortGI == GI_800))
             mcs[7] = idx;
 
-#ifdef DOT11_N_SUPPORT
         else if(pCurrTxRate->CurrMCS == MCS_12)
             mcs[12] = idx;
         else if(pCurrTxRate->CurrMCS == MCS_13)
@@ -616,7 +609,6 @@ VOID MlmeGetSupportedMcs(
             mcs[23] = idx;
 
 #endif /*  DOT11N_SS3_SUPPORT */
-#endif /*  DOT11_N_SUPPORT */
     }
 
 #ifdef DBG_CTRL_SUPPORT
@@ -751,30 +743,22 @@ VOID MlmeSetTxRate(
 {
     UCHAR	MaxMode = MODE_OFDM;
 
-#ifdef DOT11_N_SUPPORT
     MaxMode = MODE_HTGREENFIELD;
 
-#ifdef DOT11_VHT_AC
     MaxMode = MODE_VHT;
-#endif /* DOT11_VHT_AC */
 
     if(pTxRate->STBC &&
             (((pAd->StaCfg.MaxHTPhyMode.field.STBC) && (pTxRate->Mode == MODE_HTMIX || pTxRate->Mode == MODE_HTGREENFIELD))
-#ifdef DOT11_VHT_AC
              ||((CLIENT_STATUS_TEST_FLAG(pEntry, fCLIENT_STATUS_VHT_RXSTBC_CAPABLE)) && (pTxRate->Mode == MODE_VHT))
-#endif /* DOT11_VHT_AC */
             )
       )
         pAd->StaCfg.HTPhyMode.field.STBC = STBC_USE;
     else
-#endif /*  DOT11_N_SUPPORT */
         pAd->StaCfg.HTPhyMode.field.STBC = STBC_NONE;
 
     if(pTxRate->CurrMCS < MCS_AUTO)
         pAd->StaCfg.HTPhyMode.field.MCS = pTxRate->CurrMCS;
 
-#ifdef DOT11_VHT_AC
-#ifdef NEW_RATE_ADAPT_SUPPORT
 
     if(pEntry->pTable == RateTableVht2S)
     {
@@ -782,7 +766,6 @@ VOID MlmeSetTxRate(
         pEntry->HTPhyMode.field.MCS = pAdaptTbEntry->CurrMCS | ((pAdaptTbEntry->dataRate -1) <<4);
     }
 
-#endif /* NEW_RATE_ADAPT_SUPPORT */
 
 #ifdef AGS_SUPPORT
 
@@ -793,7 +776,6 @@ VOID MlmeSetTxRate(
     }
 
 #endif /* AGS_SUPPORT */
-#endif /* DOT11_VHT_AC */
 
     if(pAd->StaCfg.HTPhyMode.field.MCS > 7)
         pAd->StaCfg.HTPhyMode.field.STBC = STBC_NONE;
@@ -816,25 +798,20 @@ VOID MlmeSetTxRate(
     {
         USHORT OperationMode =0xffff;
 
-#ifdef DOT11_N_SUPPORT
 
         if((pAd->CommonCfg.RegTransmitSetting.field.HTMODE == HTMODE_GF) &&
                 (pAd->MlmeAux.HtCapability.HtCapInfo.GF == HTMODE_GF))
             pAd->StaCfg.HTPhyMode.field.MODE = MODE_HTGREENFIELD;
         else
-#endif /*  DOT11_N_SUPPORT */
             if(pTxRate->Mode <= MaxMode)
                 pAd->StaCfg.HTPhyMode.field.MODE = pTxRate->Mode;
 
-#ifdef DOT11_N_SUPPORT
 
         if(pTxRate->ShortGI && (pAd->StaCfg.MaxHTPhyMode.field.ShortGI))
             pAd->StaCfg.HTPhyMode.field.ShortGI = GI_400;
         else
-#endif /*  DOT11_N_SUPPORT */
             pAd->StaCfg.HTPhyMode.field.ShortGI = GI_800;
 
-#ifdef DOT11_N_SUPPORT
 
         /*  BW depends on Negotiated BW */
         if(pEntry->MaxHTPhyMode.field.BW==BW_20 || pAd->CommonCfg.BBPCurrentBW==BW_20)
@@ -842,15 +819,12 @@ VOID MlmeSetTxRate(
         else
             pEntry->HTPhyMode.field.BW = BW_40;
 
-#ifdef DOT11_VHT_AC
 
         if(pEntry->MaxHTPhyMode.field.BW==BW_80 || pAd->CommonCfg.BBPCurrentBW==BW_80)
             pEntry->HTPhyMode.field.BW = BW_80;
 
-#endif /* DOT11_VHT_AC */
 
 #ifdef RANGE_EXTEND
-#ifdef NEW_RATE_ADAPT_SUPPORT
 
         /*  20 MHz Fallback */
         if(pTxRate->Mode>=MODE_HTMIX && pEntry->HTPhyMode.field.BW==BW_40 &&
@@ -892,7 +866,6 @@ VOID MlmeSetTxRate(
             }
         }
 
-#endif /* NEW_RATE_ADAPT_SUPPORT */
 
 #ifdef DBG_CTRL_SUPPORT
 
@@ -938,7 +911,6 @@ VOID MlmeSetTxRate(
             AsicUpdateProtect(pAd, OperationMode , ALLN_SETPROTECT, TRUE,
                               (BOOLEAN)pAd->MlmeAux.AddHtInfo.AddHtInfo2.NonGfPresent);
 
-#endif /* DOT11_N_SUPPORT */
 
         pEntry->HTPhyMode.field.STBC	= pAd->StaCfg.HTPhyMode.field.STBC;
         pEntry->HTPhyMode.field.ShortGI = pAd->StaCfg.HTPhyMode.field.ShortGI;
@@ -963,7 +935,6 @@ VOID MlmeSelectTxRateTable(
 {
     do
     {
-#ifdef DOT11_VHT_AC
 
         if(WMODE_CAP_AC(pAd->CommonCfg.PhyMode) &&
                 (pEntry->SupportRateMode & SUPPORT_VHT_MODE))
@@ -989,7 +960,6 @@ VOID MlmeSelectTxRateTable(
 
 #endif /* RT65xx */
 
-#ifdef NEW_RATE_ADAPT_SUPPORT
 
             if(pAd->rateAlg == RATE_ALG_GRP)
             {
@@ -1010,7 +980,6 @@ VOID MlmeSelectTxRateTable(
                                                        __FUNCTION__, (ss == 2 ? 2 : 1)));
             }
 
-#endif /* NEW_RATE_ADAPT_SUPPORT */
 
 #ifdef AGS_SUPPORT
 
@@ -1029,14 +998,12 @@ VOID MlmeSelectTxRateTable(
             break;
         }
 
-#endif /* DOT11_VHT_AC */
 
 #ifdef CONFIG_STA_SUPPORT
 
         if((pAd->OpMode == OPMODE_STA) && ADHOC_ON(pAd))
         {
             /* for ADHOC mode */
-#ifdef DOT11_N_SUPPORT
             if(WMODE_CAP_N(pAd->CommonCfg.PhyMode) &&
                     (pEntry->HTCapability.MCSSet[0] != 0x00) &&
                     ((pEntry->HTCapability.MCSSet[1] == 0x00) || (pAd->Antenna.field.TxPath == 1)))
@@ -1088,11 +1055,8 @@ VOID MlmeSelectTxRateTable(
 
 #endif /* AGS_SUPPORT */
             else
-#endif /* DOT11_N_SUPPORT */
                 if((pEntry->RateLen == 4)
-#ifdef DOT11_N_SUPPORT
                         && (pEntry->HTCapability.MCSSet[0] == 0) && (pEntry->HTCapability.MCSSet[1] == 0)
-#endif /* DOT11_N_SUPPORT */
                   )
                     *ppTable = RateSwitchTable11B;
                 else if(pAd->LatchRfRegs.Channel <= 14)
@@ -1105,7 +1069,6 @@ VOID MlmeSelectTxRateTable(
 
 #endif /* CONFIG_STA_SUPPORT */
 
-#ifdef DOT11_N_SUPPORT
 
         /*if ((pAd->StaActive.SupRateLen + pAd->StaActive.ExtRateLen == 12) && (pAd->StaActive.SupportedPhyInfo.MCSSet[0] == 0xff) &&*/
         /*	((pAd->StaActive.SupportedPhyInfo.MCSSet[1] == 0x00) || (pAd->Antenna.field.TxPath == 1)))*/
@@ -1119,11 +1082,9 @@ VOID MlmeSelectTxRateTable(
                 *ppTable = AGS1x1HTRateTable;
             else
 #endif /* AGS_SUPPORT */
-#ifdef NEW_RATE_ADAPT_SUPPORT
                 if(pAd->rateAlg == RATE_ALG_GRP)
                     *ppTable = RateSwitchTableAdapt11N1S;
                 else
-#endif
                     if((pAd->LatchRfRegs.Channel <= 14) && (pEntry->SupportRateMode & (SUPPORT_CCK_MODE)))
                         *ppTable = RateSwitchTable11BGN1S;
                     else
@@ -1163,11 +1124,9 @@ VOID MlmeSelectTxRateTable(
             }
             else
 #endif /* AGS_SUPPORT */
-#ifdef NEW_RATE_ADAPT_SUPPORT
                 if(pAd->rateAlg == RATE_ALG_GRP)
                     *ppTable = RateSwitchTableAdapt11N2S;
                 else
-#endif /* NEW_RATE_ADAPT_SUPPORT */
                     if((pAd->LatchRfRegs.Channel <= 14) && (pEntry->SupportRateMode & (SUPPORT_CCK_MODE)))
                         *ppTable = RateSwitchTable11BGN2S;
                     else
@@ -1184,14 +1143,12 @@ VOID MlmeSelectTxRateTable(
                 (pEntry->HTCapability.MCSSet[2] != 0x00) &&
                 (pAd->CommonCfg.TxStream == 3))
         {
-#ifdef NEW_RATE_ADAPT_SUPPORT
 
             if(pAd->rateAlg == RATE_ALG_GRP)
             {
                 *ppTable = RateSwitchTableAdapt11N3S;
             }
             else
-#endif /* NEW_RATE_ADAPT_SUPPORT */
                 if((pAd->LatchRfRegs.Channel <= 14) && (pEntry->SupportRateMode & (SUPPORT_CCK_MODE)))
                     *ppTable = RateSwitchTable11N3S;
                 else
@@ -1213,12 +1170,10 @@ VOID MlmeSelectTxRateTable(
             else
 #endif /* AGS_SUPPORT */
             {
-#ifdef NEW_RATE_ADAPT_SUPPORT
 
                 if(pAd->rateAlg == RATE_ALG_GRP)
                     *ppTable = RateSwitchTableAdapt11N1S;
                 else
-#endif /* NEW_RATE_ADAPT_SUPPORT */
                     if(pAd->LatchRfRegs.Channel <= 14)
                         *ppTable = RateSwitchTable11N1S;
                     else
@@ -1240,12 +1195,10 @@ VOID MlmeSelectTxRateTable(
             else
 #endif /* AGS_SUPPORT */
             {
-#ifdef NEW_RATE_ADAPT_SUPPORT
 
                 if(pAd->rateAlg == RATE_ALG_GRP)
                     *ppTable = RateSwitchTableAdapt11N2S;
                 else
-#endif /* NEW_RATE_ADAPT_SUPPORT */
                     if(pAd->LatchRfRegs.Channel <= 14)
                         *ppTable = RateSwitchTable11N2S;
                     else
@@ -1262,12 +1215,10 @@ VOID MlmeSelectTxRateTable(
                 (pEntry->HTCapability.MCSSet[2] != 0x00) &&
                 (pAd->CommonCfg.TxStream == 3))
         {
-#ifdef NEW_RATE_ADAPT_SUPPORT
 
             if(pAd->rateAlg == RATE_ALG_GRP)
                 *ppTable = RateSwitchTableAdapt11N3S;
             else
-#endif /* NEW_RATE_ADAPT_SUPPORT */
             {
                 if(pAd->LatchRfRegs.Channel <= 14)
                     *ppTable = RateSwitchTable11N3S;
@@ -1291,12 +1242,10 @@ VOID MlmeSelectTxRateTable(
                     /* Only support 1SS */
                     if(pEntry->RateLen > 0)
                     {
-#ifdef NEW_RATE_ADAPT_SUPPORT
 
                         if(pAd->rateAlg == RATE_ALG_GRP)
                             *ppTable = RateSwitchTableAdapt11N1S;
                         else
-#endif /* NEW_RATE_ADAPT_SUPPORT */
                             if((pAd->LatchRfRegs.Channel <= 14) && (pEntry->SupportRateMode & (SUPPORT_CCK_MODE)))
                                 *ppTable = RateSwitchTable11N1S;
                             else
@@ -1304,12 +1253,10 @@ VOID MlmeSelectTxRateTable(
                     }
                     else
                     {
-#ifdef NEW_RATE_ADAPT_SUPPORT
 
                         if(pAd->rateAlg == RATE_ALG_GRP)
                             *ppTable = RateSwitchTableAdapt11N1S;
                         else
-#endif /* NEW_RATE_ADAPT_SUPPORT */
                             if(pAd->LatchRfRegs.Channel <= 14)
                                 *ppTable = RateSwitchTable11N1S;
                             else
@@ -1323,12 +1270,10 @@ VOID MlmeSelectTxRateTable(
                     /* Only support 2SS */
                     if(pEntry->RateLen > 0)
                     {
-#ifdef NEW_RATE_ADAPT_SUPPORT
 
                         if(pAd->rateAlg == RATE_ALG_GRP)
                             *ppTable = RateSwitchTableAdapt11N2S;
                         else
-#endif /* NEW_RATE_ADAPT_SUPPORT */
                             if((pAd->LatchRfRegs.Channel <= 14) && (pEntry->SupportRateMode & (SUPPORT_CCK_MODE)))
                                 *ppTable = RateSwitchTable11BGN2S;
                             else
@@ -1336,12 +1281,10 @@ VOID MlmeSelectTxRateTable(
                     }
                     else
                     {
-#ifdef NEW_RATE_ADAPT_SUPPORT
 
                         if(pAd->rateAlg == RATE_ALG_GRP)
                             *ppTable = RateSwitchTableAdapt11N2S;
                         else
-#endif /* NEW_RATE_ADAPT_SUPPORT */
                             if(pAd->LatchRfRegs.Channel <= 14)
                                 *ppTable = RateSwitchTable11N2S;
                             else
@@ -1356,14 +1299,11 @@ VOID MlmeSelectTxRateTable(
         }
 
 #endif /* DOT11N_SS3_SUPPORT */
-#endif /* DOT11_N_SUPPORT */
 
         if(((pEntry->SupportRateMode == SUPPORT_CCK_MODE) ||
                 WMODE_EQUAL(pAd->CommonCfg.PhyMode, WMODE_B))
-#ifdef DOT11_N_SUPPORT
                 /*Iverson mark for Adhoc b mode,sta will use rate 54  Mbps when connect with sta b/g/n mode */
                 /* && (pEntry->HTCapability.MCSSet[0] == 0) && (pEntry->HTCapability.MCSSet[1] == 0)*/
-#endif /* DOT11_N_SUPPORT */
           )
         {
             /* B only AP*/
@@ -1374,9 +1314,7 @@ VOID MlmeSelectTxRateTable(
         /*else if ((pAd->StaActive.SupRateLen + pAd->StaActive.ExtRateLen > 8) && (pAd->StaActive.SupportedPhyInfo.MCSSet[0] == 0) && (pAd->StaActive.SupportedPhyInfo.MCSSet[1] == 0))*/
         if((pEntry->SupportRateMode & (SUPPORT_CCK_MODE)) &&
                 (pEntry->SupportRateMode & (SUPPORT_OFDM_MODE))
-#ifdef DOT11_N_SUPPORT
                 && (pEntry->HTCapability.MCSSet[0] == 0) && (pEntry->HTCapability.MCSSet[1] == 0)
-#endif /* DOT11_N_SUPPORT */
           )
         {
             /* B/G  mixed AP*/
@@ -1386,9 +1324,7 @@ VOID MlmeSelectTxRateTable(
 
         /*else if ((pAd->StaActive.SupRateLen + pAd->StaActive.ExtRateLen == 8) && (pAd->StaActive.SupportedPhyInfo.MCSSet[0] == 0) && (pAd->StaActive.SupportedPhyInfo.MCSSet[1] == 0))*/
         if((pEntry->SupportRateMode & (SUPPORT_OFDM_MODE))
-#ifdef DOT11_N_SUPPORT
                 && (pEntry->HTCapability.MCSSet[0] == 0) && (pEntry->HTCapability.MCSSet[1] == 0)
-#endif /* DOT11_N_SUPPORT */
           )
         {
             /* G only AP*/
@@ -1396,17 +1332,13 @@ VOID MlmeSelectTxRateTable(
             break;
         }
 
-#ifdef DOT11_N_SUPPORT
-#endif /* DOT11_N_SUPPORT */
 
 #ifdef CONFIG_STA_SUPPORT
         IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
         {
-#ifdef DOT11_N_SUPPORT
 
             /*else if ((pAd->StaActive.SupportedPhyInfo.MCSSet[0] == 0) && (pAd->StaActive.SupportedPhyInfo.MCSSet[1] == 0))*/
             if((pEntry->HTCapability.MCSSet[0] == 0) && (pEntry->HTCapability.MCSSet[1] == 0))
-#endif /* DOT11_N_SUPPORT */
             {
                 /* Legacy mode*/
                 if(pAd->CommonCfg.MaxTxRate <= RATE_11)
@@ -1425,7 +1357,6 @@ VOID MlmeSelectTxRateTable(
                 break;
             }
 
-#ifdef DOT11_N_SUPPORT
 #ifdef AGS_SUPPORT
 
             if(SUPPORT_AGS(pAd) && (pAd->CommonCfg.TxStream == 3))
@@ -1448,12 +1379,10 @@ VOID MlmeSelectTxRateTable(
                     else
                     {
 #ifdef DOT11N_SS3_SUPPORT
-#ifdef NEW_RATE_ADAPT_SUPPORT
 
                         if(pAd->rateAlg == RATE_ALG_GRP)
                             *ppTable = RateSwitchTableAdapt11N3S;
                         else
-#endif /* NEW_RATE_ADAPT_SUPPORT */
                             *ppTable = RateSwitchTable11N3S;
 
 #else
@@ -1476,12 +1405,10 @@ VOID MlmeSelectTxRateTable(
                     else
                     {
 #ifdef DOT11N_SS3_SUPPORT
-#ifdef NEW_RATE_ADAPT_SUPPORT
 
                         if(pAd->rateAlg == RATE_ALG_GRP)
                             *ppTable = RateSwitchTableAdapt11N3S;
                         else
-#endif /* NEW_RATE_ADAPT_SUPPORT */
                             *ppTable = RateSwitchTable11N3S;
 
 #else
@@ -1491,7 +1418,6 @@ VOID MlmeSelectTxRateTable(
                 }
             }
 
-#endif /* DOT11_N_SUPPORT */
             DBGPRINT_RAW(RT_DEBUG_ERROR,("DRS: unkown mode (SupRateLen=%d, ExtRateLen=%d, MCSSet[0]=0x%x, MCSSet[1]=0x%x)\n",
                                          pAd->StaActive.SupRateLen,
                                          pAd->StaActive.ExtRateLen,
@@ -1527,8 +1453,6 @@ UCHAR MlmeSelectTxRate(
     UCHAR TxRateIdx = 0;
     UCHAR *pTable = pEntry->pTable;
 
-#ifdef DOT11_N_SUPPORT
-#ifdef DOT11_VHT_AC
 
     if(pTable == RateTableVht2S)
     {
@@ -1597,12 +1521,9 @@ UCHAR MlmeSelectTxRate(
             TxRateIdx = mcs[0];
     }
     else
-#endif /* DOT11_VHT_AC */
 #ifdef DOT11N_SS3_SUPPORT
         if((pTable == RateSwitchTable11BGN3S) || (pTable == RateSwitchTable11N3S) || (pTable == RateSwitchTable11BGN3SForABand)
-#ifdef NEW_RATE_ADAPT_SUPPORT
                 || (pTable == RateSwitchTableAdapt11N3S)
-#endif /* NEW_RATE_ADAPT_SUPPORT */
           )
         {
             /*  N mode with 3 stream */
@@ -1633,9 +1554,7 @@ UCHAR MlmeSelectTxRate(
 #endif /*  DOT11N_SS3_SUPPORT */
             if((pTable == RateSwitchTable11BGN2S) || (pTable == RateSwitchTable11BGN2SForABand) ||
                     (pTable == RateSwitchTable11N2S) || (pTable == RateSwitchTable11N2SForABand)
-#ifdef NEW_RATE_ADAPT_SUPPORT
                     || (pTable == RateSwitchTableAdapt11N2S)
-#endif /* NEW_RATE_ADAPT_SUPPORT */
               )
             {
                 /*  N mode with 2 stream */
@@ -1661,9 +1580,7 @@ UCHAR MlmeSelectTxRate(
             else if((pTable == RateSwitchTable11BGN1S) ||
                     (pTable == RateSwitchTable11N1S) ||
                     (pTable == RateSwitchTable11N1SForABand)
-#ifdef NEW_RATE_ADAPT_SUPPORT
                     || (pTable == RateSwitchTableAdapt11N1S)
-#endif /* NEW_RATE_ADAPT_SUPPORT */
                    )
             {
                 /*  N mode with 1 stream */
@@ -1685,7 +1602,6 @@ UCHAR MlmeSelectTxRate(
                     TxRateIdx = mcs[0];
             }
             else
-#endif /*  DOT11_N_SUPPORT */
             {
                 /*  Legacy mode */
                 if(mcs[7]>=0 && (Rssi > -70) && (pEntry->SupportOFDMMCS[MCS_7]))
@@ -1727,13 +1643,11 @@ UCHAR MlmeSelectTxRate(
 /*  MlmeRAInit - Initialize Rate Adaptation for this entry */
 VOID MlmeRAInit(RTMP_ADAPTER *pAd, MAC_TABLE_ENTRY *pEntry)
 {
-#ifdef NEW_RATE_ADAPT_SUPPORT
     MlmeSetMcsGroup(pAd, pEntry);
 
     pEntry->lastRateIdx = 1;
     pEntry->lowTrafficCount = 0;
     pEntry->perThrdAdj = PER_THRD_ADJ;
-#endif /* NEW_RATE_ADAPT_SUPPORT */
 
 #ifdef TXBF_SUPPORT
     pEntry->phyETxBf = pEntry->phyITxBf = FALSE;
@@ -1923,9 +1837,7 @@ VOID MlmeCheckRDG(
     if(((pTable == RateSwitchTable11BGN3S) ||
             (pTable == RateSwitchTable11BGN3SForABand) ||
             (pTable == RateSwitchTable11N3S)
-#ifdef NEW_RATE_ADAPT_SUPPORT
             || (pTable == RateSwitchTableAdapt11N3S)
-#endif /* NEW_RATE_ADAPT_SUPPORT */
        ) && pAd->RalinkCounters.OneSecReceivedByteCount > 50000 &&
             pAd->RalinkCounters.OneSecTransmittedByteCount > 50000 &&
             CLIENT_STATUS_TEST_FLAG(pEntry, fCLIENT_STATUS_RDG_CAPABLE))
@@ -1935,11 +1847,7 @@ VOID MlmeCheckRDG(
         UCHAR				TableStep;
         RTMP_RA_LEGACY_TB *pTempTxRate;
 
-#ifdef NEW_RATE_ADAPT_SUPPORT
         TableStep = ADAPT_RATE_TABLE(pTable)? 10: 5;
-#else
-        TableStep = 5;
-#endif
 
         pTempTxRate = (RTMP_RA_LEGACY_TB *)(&pTable[(pEntry->CurrTxRateIndex + 1)*TableStep]);
         RTMP_IO_READ32(pAd, TX_LINK_CFG, &TxLinkCfg.word);
@@ -1982,12 +1890,10 @@ VOID txbf_rate_adjust(RTMP_ADAPTER *pAd, MAC_TABLE_ENTRY *pEntry)
 
 
     /*  Get pointer to CurrTxRate entry */
-#ifdef NEW_RATE_ADAPT_SUPPORT
 
     if(ADAPT_RATE_TABLE(pTable))
         pNextTxRate = (RTMP_RA_LEGACY_TB *)PTX_RA_GRP_ENTRY(pTable, pEntry->CurrTxRateIndex);
     else
-#endif /*  NEW_RATE_ADAPT_SUPPORT */
         pNextTxRate = PTX_RA_LEGACY_ENTRY(pTable, pEntry->CurrTxRateIndex);
 
     /*  If BF has been disabled then force a non-BF rate */
@@ -2030,7 +1936,6 @@ VOID txbf_rate_adjust(RTMP_ADAPTER *pAd, MAC_TABLE_ENTRY *pEntry)
 
 INT rtmp_get_rate_from_rate_tb(UCHAR *table, INT idx, RTMP_TX_RATE *tx_rate)
 {
-#ifdef NEW_RATE_ADAPT_SUPPORT
 
     if(ADAPT_RATE_TABLE(table))
     {
@@ -2042,16 +1947,13 @@ INT rtmp_get_rate_from_rate_tb(UCHAR *table, INT idx, RTMP_TX_RATE *tx_rate)
         tx_rate->mcs = rate_entry->CurrMCS;
         tx_rate->sgi = rate_entry->ShortGI;
         tx_rate->stbc = rate_entry->STBC;
-#ifdef DOT11_VHT_AC
 
         if(table == RateTableVht1S || table == RateTableVht2S || table == RateTableVht1S_MCS7)
             tx_rate->nss = rate_entry->dataRate;
         else
-#endif /* DOT11_VHT_AC */
             tx_rate->nss = 0;
     }
     else
-#endif /* NEW_RATE_ADAPT_SUPPORT */
     {
         RTMP_RA_LEGACY_TB *rate_entry;
 
@@ -2081,12 +1983,10 @@ VOID MlmeNewTxRate(RTMP_ADAPTER *pAd, MAC_TABLE_ENTRY *pEntry)
 
     rtmp_get_rate_from_rate_tb(pEntry->pTable, pEntry->CurrTxRateIndex, &tx_rate);
     /*  Get pointer to CurrTxRate entry */
-#ifdef NEW_RATE_ADAPT_SUPPORT
 
     if(ADAPT_RATE_TABLE(pTable))
         pNextTxRate = (RTMP_RA_LEGACY_TB *)PTX_RA_GRP_ENTRY(pTable, pEntry->CurrTxRateIndex);
     else
-#endif /* NEW_RATE_ADAPT_SUPPORT */
         pNextTxRate = PTX_RA_LEGACY_ENTRY(pTable, pEntry->CurrTxRateIndex);
 
     /*  Set new rate */
@@ -2097,7 +1997,6 @@ VOID MlmeNewTxRate(RTMP_ADAPTER *pAd, MAC_TABLE_ENTRY *pEntry)
     }
 #endif /*  CONFIG_STA_SUPPORT */
 
-#ifdef DOT11_N_SUPPORT
 
     /*  Disable invalid HT Duplicate modes to prevent PHY error */
     if(pEntry->HTPhyMode.field.MCS==32)
@@ -2108,7 +2007,6 @@ VOID MlmeNewTxRate(RTMP_ADAPTER *pAd, MAC_TABLE_ENTRY *pEntry)
             pEntry->HTPhyMode.field.STBC = 0;
     }
 
-#endif /*  DOT11_N_SUPPORT */
 
 #ifdef TXBF_SUPPORT
 
@@ -2151,10 +2049,8 @@ VOID RTMPSetSupportMCS(
     IN UCHAR SupRateLen,
     IN UCHAR ExtRate[],
     IN UCHAR ExtRateLen,
-#ifdef DOT11_VHT_AC
     IN UCHAR vht_cap_len,
     IN VHT_CAP_IE *vht_cap,
-#endif /* DOT11_VHT_AC */
     IN HT_CAPABILITY_IE *pHtCapability,
     IN UCHAR HtCapabilityLen)
 {
@@ -2199,9 +2095,7 @@ VOID RTMPSetSupportMCS(
     NdisZeroMemory(pEntry->SupportCCKMCS, MAX_LEN_OF_CCK_RATES);
     NdisZeroMemory(pEntry->SupportOFDMMCS, MAX_LEN_OF_OFDM_RATES);
     NdisZeroMemory(pEntry->SupportHTMCS, MAX_LEN_OF_HT_RATES);
-#ifdef DOT11_VHT_AC
     NdisZeroMemory(pEntry->SupportVHTMCS, MAX_LEN_OF_VHT_RATES);
-#endif /* DOT11_VHT_AC */
 
     pEntry->SupportRateMode = 0;
 
@@ -2301,7 +2195,6 @@ VOID RTMPSetSupportMCS(
             }
         }
 
-#ifdef DOT11_VHT_AC
 
         if((vht_cap_len > 0)&& (vht_cap != NULL) && pDesired_ht_phy->vht_bw == VHT_BW_80)
         {
@@ -2346,7 +2239,6 @@ VOID RTMPSetSupportMCS(
             }
         }
 
-#endif /* DOT11_VHT_AC */
     }
 }
 

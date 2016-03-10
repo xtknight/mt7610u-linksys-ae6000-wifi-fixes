@@ -25,7 +25,6 @@
  *************************************************************************/
 
 
-#ifdef RT_CFG80211_SUPPORT
 
 #include "rt_config.h"
 
@@ -213,10 +212,8 @@ BOOLEAN CFG80211DRV_OpsSetChannel(
     UINT8 IfType;
     UINT8 ChannelType;
     STRING ChStr[5] = { 0 };
-#ifdef DOT11_N_SUPPORT
     UCHAR BW_Old;
     BOOLEAN FlgIsChanged;
-#endif /* DOT11_N_SUPPORT */
 
 
     /* init */
@@ -225,7 +222,6 @@ BOOLEAN CFG80211DRV_OpsSetChannel(
     IfType = pChan->IfType;
     ChannelType = pChan->ChanType;
 
-#ifdef DOT11_N_SUPPORT
 
     if(IfType != RT_CMD_80211_IFTYPE_MONITOR)
     {
@@ -281,7 +277,6 @@ BOOLEAN CFG80211DRV_OpsSetChannel(
         SetCommonHT(pAd);
 
     /* End of if */
-#endif /* DOT11_N_SUPPORT */
 
     /* switch to the channel */
     sprintf(ChStr, "%d", ChanId);
@@ -292,7 +287,6 @@ BOOLEAN CFG80211DRV_OpsSetChannel(
     } /* End of if */
 
 #ifdef CONFIG_STA_SUPPORT
-#ifdef DOT11_N_SUPPORT
 
     if((IfType == RT_CMD_80211_IFTYPE_STATION) && (FlgIsChanged == TRUE))
     {
@@ -306,7 +300,6 @@ BOOLEAN CFG80211DRV_OpsSetChannel(
         Set_SSID_Proc(pAd, (PSTRING)pAd->CommonCfg.Ssid);
     } /* End of if */
 
-#endif /* DOT11_N_SUPPORT */
 
     if(IfType == RT_CMD_80211_IFTYPE_ADHOC)
     {
@@ -1050,7 +1043,6 @@ VOID CFG80211_RegRuleApply(
         return;
 
 #ifdef AUTO_CH_SELECT_ENHANCE
-#ifdef EXT_BUILD_CHANNEL_LIST
 
     if((pAlpha2[0] != '0') && (pAlpha2[1] != '0'))
     {
@@ -1082,7 +1074,6 @@ VOID CFG80211_RegRuleApply(
         } /* End of if */
     } /* End of if */
 
-#endif /* EXT_BUILD_CHANNEL_LIST */
 #endif /* AUTO_CH_SELECT_ENHANCE */
 
     for(IdBand=0; IdBand<2; IdBand++)
@@ -1432,6 +1423,5 @@ VOID CFG80211_LostApInform(
 }
 #endif /*CONFIG_STA_SUPPORT*/
 
-#endif /* RT_CFG80211_SUPPORT */
 
 /* End of cfg80211drv.c */

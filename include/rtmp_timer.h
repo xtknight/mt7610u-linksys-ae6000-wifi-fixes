@@ -117,9 +117,7 @@ DECLARE_TIMER_FUNCTION(EnqueueStartForPSKExec);
 #endif /* CONFIG_STA_SUPPORT */
 
 
-#ifdef RTMP_MAC_USB
 DECLARE_TIMER_FUNCTION(BeaconUpdateExec);
-#endif /* RTMP_MAC_USB */
 
 
 #ifdef CONFIG_STA_SUPPORT
@@ -139,9 +137,7 @@ DECLARE_TIMER_FUNCTION(DlsTimeoutAction);
 
 
 
-#ifdef RTMP_MAC_USB
 DECLARE_TIMER_FUNCTION(RtmpUsbStaAsicForceWakeupTimeout);
-#endif /* RTMP_MAC_USB */
 
 #endif /* CONFIG_STA_SUPPORT */
 
@@ -153,8 +149,5 @@ DECLARE_TIMER_FUNCTION(eTxBfProbeTimerExec);
 
 
 
-#ifdef RALINK_ATE
-DECLARE_TIMER_FUNCTION(ATEPeriodicExec);
-#endif /* RALINK_ATE */
 
 #endif /* __RTMP_TIMER_H__ */

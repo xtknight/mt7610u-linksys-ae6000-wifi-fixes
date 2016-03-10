@@ -166,7 +166,6 @@ BOOLEAN PeerAssocRspSanity(
 
             break;
 
-#ifdef DOT11_N_SUPPORT
 
         case IE_HT_CAP:
         case IE_HT_CAP2:
@@ -220,7 +219,6 @@ BOOLEAN PeerAssocRspSanity(
 
             break;
 
-#ifdef DOT11_VHT_AC
 
         case IE_VHT_CAP:
             if(pEid->Len == sizeof(VHT_CAP_IE))
@@ -247,8 +245,6 @@ BOOLEAN PeerAssocRspSanity(
             }
 
             break;
-#endif /* DOT11_VHT_AC */
-#endif /* DOT11_N_SUPPORT */
 
         case IE_VENDOR_SPECIFIC:
 

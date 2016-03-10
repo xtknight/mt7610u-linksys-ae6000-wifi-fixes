@@ -45,7 +45,6 @@ typedef struct _COUNTRY_REGION_CH_DESC
     PCH_DESC pChDesc;
 } COUNTRY_REGION_CH_DESC, *PCOUNTRY_REGION_CH_DESC;
 
-#ifdef EXT_BUILD_CHANNEL_LIST
 #define ODOR			0
 #define IDOR			1
 #define BOTH			2
@@ -67,7 +66,6 @@ typedef struct _CH_REGION
 } CH_REGION, *PCH_REGION;
 
 extern CH_REGION ChRegion[];
-#endif /* EXT_BUILD_CHANNEL_LIST */
 
 #ifdef SINGLE_SKU_V2
 #define SINGLE_SKU_TABLE_LENGTH			(SINGLE_SKU_TABLE_CCK_LENGTH+SINGLE_SKU_TABLE_OFDM_LENGTH+(SINGLE_SKU_TABLE_HT_LENGTH*2)+SINGLE_SKU_TABLE_VHT_LENGTH)
@@ -109,7 +107,6 @@ extern int CH_HZ_ID_MAP_NUM;
 #define JapanChannelCheck(_ch)  ((_ch == 52) || (_ch == 56) || (_ch == 60) || (_ch == 64))
 
 
-#ifdef EXT_BUILD_CHANNEL_LIST
 VOID BuildChannelListEx(
     IN PRTMP_ADAPTER pAd);
 
@@ -117,14 +114,11 @@ VOID BuildBeaconChList(
     IN PRTMP_ADAPTER pAd,
     OUT PUCHAR pBuf,
     OUT	PULONG pBufLen);
-#endif /* EXT_BUILD_CHANNEL_LIST */
 
-#ifdef DOT11_N_SUPPORT
 VOID N_ChannelCheck(RTMP_ADAPTER *pAd);
 UCHAR N_SetCenCh(RTMP_ADAPTER *pAd, UCHAR channel);
 BOOLEAN N_ChannelGroupCheck(RTMP_ADAPTER *pAd, UCHAR channel);
 
-#endif /* DOT11_N_SUPPORT */
 
 UINT8 GetCuntryMaxTxPwr(
     IN PRTMP_ADAPTER pAd,

@@ -25,7 +25,6 @@
  *************************************************************************/
 
 
-#ifdef DOT11_N_SUPPORT
 
 #include "rt_config.h"
 
@@ -1152,13 +1151,6 @@ VOID BAOriSessionSetupTimeout(
     }
 #endif /* CONFIG_STA_SUPPORT */
 
-#ifdef RALINK_ATE
-
-    /* Nothing to do in ATE mode. */
-    if(ATE_ON(pAd))
-        return;
-
-#endif /* RALINK_ATE */
 
     pEntry = &pAd->MacTab.Content[pBAEntry->Wcid];
 
@@ -2164,5 +2156,4 @@ VOID BaReOrderingBufferMaintain(
         }
     }
 }
-#endif /* DOT11_N_SUPPORT */
 

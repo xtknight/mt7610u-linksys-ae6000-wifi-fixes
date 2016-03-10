@@ -25,7 +25,6 @@
  *************************************************************************/
 
 
-#ifdef RTMP_MAC_USB
 
 
 #include	"rt_config.h"
@@ -1187,15 +1186,6 @@ NTSTATUS RTUSB_ResetDevice(
 NTSTATUS CheckGPIOHdlr(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQelmt)
 {
 
-#ifdef RALINK_ATE
-
-    if(ATE_ON(pAd))
-    {
-        DBGPRINT(RT_DEBUG_TRACE, ("The driver is in ATE mode now\n"));
-        return NDIS_STATUS_SUCCESS;
-    }
-
-#endif /* RALINK_ATE */
 
 #ifdef CONFIG_STA_SUPPORT
 
@@ -1326,12 +1316,6 @@ static NTSTATUS ResetBulkOutHdlr(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQelmt)
             /*NdisReleaseSpinLock(&pAd->BulkOutLock[pAd->bulkResetPipeid]);*/
             RTMP_INT_UNLOCK(&pAd->BulkOutLock[pAd->bulkResetPipeid], IrqFlags);
 
-#ifdef RALINK_ATE
-
-            if(ATE_ON(pAd))
-                ret = ATEResetBulkOut(pAd);
-            else
-#endif /* RALINK_ATE */
             {
                 RTUSBInitHTTxDesc(pAd, pHTTXContext, pAd->bulkResetPipeid,
                                   pHTTXContext->BulkOutSize,
@@ -1433,12 +1417,6 @@ static NTSTATUS ResetBulkInHdlr(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQelmt)
 
 #endif /* CONFIG_STA_SUPPORT */
 
-#ifdef RALINK_ATE
-
-    if(ATE_ON(pAd))
-        ATEResetBulkIn(pAd);
-    else
-#endif /* RALINK_ATE */
     {
         /*while ((atomic_read(&pAd->PendingRx) > 0) && (!RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST))) */
         if((pAd->PendingRx > 0) && (!RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST)))
@@ -1783,7 +1761,6 @@ static NTSTATUS SetLEDStatusHdlr(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQelmt)
 
 
 #ifdef LINUX
-#ifdef RT_CFG80211_SUPPORT
 static NTSTATUS RegHintHdlr(IN PRTMP_ADAPTER pAd, IN PCmdQElmt CMDQelmt)
 {
     RT_CFG80211_CRDA_REG_HINT(pAd, CMDQelmt->buffer, CMDQelmt->bufferlength);
@@ -1811,7 +1788,6 @@ static NTSTATUS RT_Mac80211_ConnResultInfom(IN PRTMP_ADAPTER pAd, IN PCmdQElmt C
                                    1);
     return NDIS_STATUS_SUCCESS;
 }
-#endif /* RT_CFG80211_SUPPORT */
 #endif /* LINUX */
 
 
@@ -1895,17 +1871,10 @@ static CMDHdlr CMDHdlrTable[] =
 
 
 #ifdef LINUX
-#ifdef RT_CFG80211_SUPPORT
     RegHintHdlr,
     RegHint11DHdlr,
     RT_Mac80211_ScanEnd,
     RT_Mac80211_ConnResultInfom,
-#else
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-#endif /* RT_CFG80211_SUPPORT */
 
 #else
     NULL,
@@ -2144,7 +2113,6 @@ VOID RTUSBWatchDog(IN RTMP_ADAPTER *pAd)
         }
     }
 
-#ifdef DOT11_N_SUPPORT
 
     /* For Sigma debug, dump the ba_reordering sequence.*/
     if((needDumpSeq == TRUE) && (pAd->CommonCfg.bDisableReordering == 0))
@@ -2176,7 +2144,5 @@ VOID RTUSBWatchDog(IN RTMP_ADAPTER *pAd)
         }
     }
 
-#endif /* DOT11_N_SUPPORT */
 }
 
-#endif /* RTMP_MAC_USB */

@@ -30,9 +30,7 @@
 
 #include "rtmp_type.h"
 
-#ifdef DOT11_VHT_AC
 #include "dot11ac_vht.h"
-#endif /* DOT11_VHT_AC */
 
 #ifdef TXBF_SUPPORT
 /* CSI/Steering values */

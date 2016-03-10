@@ -25,7 +25,6 @@
  *************************************************************************/
 
 
-#ifdef RTMP_MAC_USB
 
 #define usb_buffer_alloc(a, b, c, d) usb_alloc_coherent(a, b, c, d)
 #define usb_buffer_free(a, b, c, d) usb_free_coherent(a, b, c, d)
@@ -187,9 +186,6 @@ VOID RTMPResetTxRxRingMemory(
     NdisFreeSpinLock(&pAd->MLMEBulkOutLock);
 
     NdisFreeSpinLock(&pAd->CmdQLock);
-#ifdef RALINK_ATE
-    NdisFreeSpinLock(&pAd->GenericLock);
-#endif /* RALINK_ATE */
     /* Clear all pending bulk-out request flags.*/
     RTUSB_CLEAR_BULK_FLAG(pAd, 0xffffffff);
 
@@ -744,9 +740,6 @@ NDIS_STATUS RTMPInitTxRxRingMemory
         NdisAllocateSpinLock(pAd, &pAd->TxContextQueueLock[num]);
     }
 
-#ifdef RALINK_ATE
-    NdisAllocateSpinLock(pAd, &pAd->GenericLock);
-#endif /* RALINK_ATE */
 
     NICInitRecv(pAd);
 
@@ -1161,9 +1154,6 @@ NDIS_STATUS	RTMPAllocTxRxRingMemory(
             NdisAllocateSpinLock(pAd, &pAd->TxContextQueueLock[num]);
         }
 
-#ifdef RALINK_ATE
-        NdisAllocateSpinLock(pAd, &pAd->GenericLock);
-#endif /* RALINK_ATE */
 
 
 
@@ -1320,9 +1310,6 @@ VOID	RTMPFreeTxRxRingMemory(
     NdisFreeSpinLock(&pAd->MLMEBulkOutLock);
 
     NdisFreeSpinLock(&pAd->CmdQLock);
-#ifdef RALINK_ATE
-    NdisFreeSpinLock(&pAd->GenericLock);
-#endif /* RALINK_ATE */
 
     /* Clear all pending bulk-out request flags.*/
     RTUSB_CLEAR_BULK_FLAG(pAd, 0xffffffff);
@@ -1933,7 +1920,6 @@ BOOLEAN AsicCheckCommandOk(
     INT ret;
 
 
-#ifdef RTMP_MAC_USB
 
     if(IS_USB_INF(pAd))
     {
@@ -1946,7 +1932,6 @@ BOOLEAN AsicCheckCommandOk(
         }
     }
 
-#endif /* RTMP_MAC_USB */
 
     i = 0;
 
@@ -1993,14 +1978,12 @@ BOOLEAN AsicCheckCommandOk(
     RTUSBWriteMACRegister(pAd, H2M_MAILBOX_STATUS, 0xffffffff, FALSE);
     RTUSBWriteMACRegister(pAd, H2M_MAILBOX_CID, 0xffffffff, FALSE);
 
-#ifdef RTMP_MAC_USB
 
     if(IS_USB_INF(pAd))
     {
         RTMP_SEM_EVENT_UP(&pAd->reg_atomic);
     }
 
-#endif /* RTMP_MAC_USB */
 
 
     return ret;
@@ -2044,4 +2027,3 @@ VOID RT28xxUsbAsicWOWDisable(
     DBGPRINT(RT_DEBUG_TRACE, ("MCU back to normal mode (%d/%d)\n", pAd->WOW_Cfg.nDelay, pAd->WOW_Cfg.nSelectedGPIO));
 }
 #endif /* WOW_SUPPORT */
-#endif /* RTMP_MAC_USB */

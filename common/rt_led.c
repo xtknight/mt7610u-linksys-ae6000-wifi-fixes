@@ -82,28 +82,13 @@ VOID RTMPSetLEDStatus(
     BOOLEAN 		bIgnored = FALSE;
     INT LED_CMD = -1;
 
-#ifdef RALINK_ATE
 
-    /*
-    	In ATE mode of RT2860 AP/STA, we have erased 8051 firmware.
-    	So LED mode is not supported when ATE is running.
-    */
-    if(!IS_RT3572(pAd))
-    {
-        if(ATE_ON(pAd))
-            return;
-    }
-
-#endif /* RALINK_ATE */
-
-#ifdef RTMP_MAC_USB
 #ifdef STATS_COUNT_SUPPORT
 
     if(RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_IDLE_RADIO_OFF))
         return;
 
 #endif /* STATS_COUNT_SUPPORT */
-#endif /* RTMP_MAC_USB */
 
 
     LedMode = LED_MODE(pAd);
@@ -160,8 +145,6 @@ VOID RTMPSetLEDStatus(
         LinkStatus = LINK_STATUS_POWER_UP;
         MCUCmd = MCU_SET_LED_MODE;
         break;
-#ifdef RALINK_ATE
-#endif /* RALINK_ATE */
 
     default:
         DBGPRINT(RT_DEBUG_WARN, ("RTMPSetLED::Unknown Status 0x%x\n", Status));
@@ -225,14 +208,12 @@ VOID RTMPSetSignalLED(
     UCHAR		nLed = 0;
 
 
-#ifdef RTMP_MAC_USB
 #ifdef STATS_COUNT_SUPPORT
 
     if(RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_IDLE_RADIO_OFF))
         return;
 
 #endif /* STATS_COUNT_SUPPORT */
-#endif /* RTMP_MAC_USB */
 
 
     if(pAd->LedCntl.MCULedCntl.field.LedMode == LED_MODE_SIGNAL_STREGTH)
@@ -312,9 +293,7 @@ void RTMPInitLEDMode(IN RTMP_ADAPTER *pAd)
         pLedCntl->LedAGCfg = 0x5555;
         pLedCntl->LedACTCfg= 0x2221;
 
-#ifdef RTMP_MAC_USB
         pLedCntl->LedPolarity = 0x5627;
-#endif /* RTMP_MAC_USB */
     }
 
     AsicSendCommandToMcu(pAd, MCU_SET_LED_AG_CFG, 0xff, (UCHAR)pLedCntl->LedAGCfg, (UCHAR)(pLedCntl->LedAGCfg >> 8), FALSE);

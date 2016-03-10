@@ -619,10 +619,8 @@ static void rt2870_disconnect(struct usb_device *dev, VOID *pAd)
     DBGPRINT(RT_DEBUG_TRACE, ("rt2870_disconnect(): RtmpOSNetDeviceDetach()\n"));
     RtmpOSNetDevDetach(net_dev);
 
-#ifdef RT_CFG80211_SUPPORT
     DBGPRINT(RT_DEBUG_TRACE, ("rt2870_disconnect(): RTMP_DRIVER_80211_UNREGISTER()\n"));
     RTMP_DRIVER_80211_UNREGISTER(pAd, net_dev);
-#endif /* RT_CFG80211_SUPPORT */
 
 
     /* free the root net_device */
@@ -725,12 +723,6 @@ static int rt2870_probe(
 
 
     /* set/get operators to/from DRIVER module */
-#ifdef OS_ABL_FUNC_SUPPORT
-    /* get DRIVER operations */
-    RtmpNetOpsInit(pRtmpDrvNetOps);
-    RTMP_DRV_OPS_FUNCTION(pRtmpDrvOps, pRtmpDrvNetOps, NULL, NULL);
-    RtmpNetOpsSet(pRtmpDrvNetOps);
-#endif /* OS_ABL_FUNC_SUPPORT */
 
     rv = RTMPAllocAdapterBlock(handle, &pAd);
 
@@ -754,7 +746,6 @@ static int rt2870_probe(
         goto err_out_free_radev;
 
     /* Here are the net_device structure with usb specific parameters. */
-#ifdef NATIVE_WPA_SUPPLICANT_SUPPORT
     /* for supporting Network Manager.
       * Set the sysfs physical device reference for the network logical device if set prior to registration will
       * cause a symlink during initialization.
@@ -762,7 +753,6 @@ static int rt2870_probe(
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,0))
     SET_NETDEV_DEV(net_dev, &(usb_dev->dev));
 #endif
-#endif /* NATIVE_WPA_SUPPLICANT_SUPPORT */
 
 #ifdef CONFIG_STA_SUPPORT
     /*    pAd->StaCfg.OriDevType = net_dev->type; */
@@ -771,7 +761,6 @@ static int rt2870_probe(
 
     /*All done, it's time to register the net device to linux kernel. */
     /* Register this device */
-#ifdef RT_CFG80211_SUPPORT
     {
         /*	pAd->pCfgDev = &(usb_dev->dev); */
         /*	pAd->CFG80211_Register = CFG80211_Register; */
@@ -785,7 +774,6 @@ static int rt2870_probe(
         */
         CFG80211_Register(pAd, &(usb_dev->dev), net_dev);
     }
-#endif /* RT_CFG80211_SUPPORT */
 
     RTMP_DRIVER_OP_MODE_GET(pAd, &OpMode);
     status = RtmpOSNetDevAttach(OpMode, net_dev, &netDevHook);
@@ -811,9 +799,7 @@ static int rt2870_probe(
     RtmpOSNetDevAddrSet(OpMode, net_dev, &PermanentAddress[0], NULL);
 #endif /* PRE_ASSIGN_MAC_ADDR */
 
-#ifdef EXT_BUILD_CHANNEL_LIST
     RTMP_DRIVER_SET_PRECONFIG_VALUE(pAd);
-#endif /* EXT_BUILD_CHANNEL_LIST */
 
     DBGPRINT(RT_DEBUG_TRACE, ("<===rt2870_probe()!\n"));
 
@@ -834,75 +820,3 @@ err_out:
 }
 
 
-#ifdef OS_ABL_SUPPORT
-/* USB complete handlers in LINUX */
-RTMP_DRV_USB_COMPLETE_HANDLER RtmpDrvUsbBulkOutDataPacketComplete = NULL;
-RTMP_DRV_USB_COMPLETE_HANDLER RtmpDrvUsbBulkOutMLMEPacketComplete = NULL;
-RTMP_DRV_USB_COMPLETE_HANDLER RtmpDrvUsbBulkOutNullFrameComplete = NULL;
-RTMP_DRV_USB_COMPLETE_HANDLER RtmpDrvUsbBulkOutRTSFrameComplete = NULL;
-RTMP_DRV_USB_COMPLETE_HANDLER RtmpDrvUsbBulkOutPsPollComplete = NULL;
-RTMP_DRV_USB_COMPLETE_HANDLER RtmpDrvUsbBulkRxComplete = NULL;
-//RTMP_DRV_USB_COMPLETE_HANDLER RtmpDrvUsbBulkCmdRspEventComplete = NULL;
-
-USBHST_STATUS RTUSBBulkOutDataPacketComplete(URBCompleteStatus Status, purbb_t pURB, pregs *pt_regs)
-{
-    RtmpDrvUsbBulkOutDataPacketComplete((VOID *)pURB);
-}
-
-USBHST_STATUS RTUSBBulkOutMLMEPacketComplete(URBCompleteStatus Status, purbb_t pURB, pregs *pt_regs)
-{
-    RtmpDrvUsbBulkOutMLMEPacketComplete((VOID *)pURB);
-}
-
-USBHST_STATUS RTUSBBulkOutNullFrameComplete(URBCompleteStatus Status, purbb_t pURB, pregs *pt_regs)
-{
-    RtmpDrvUsbBulkOutNullFrameComplete((VOID *)pURB);
-}
-
-USBHST_STATUS RTUSBBulkOutRTSFrameComplete(URBCompleteStatus Status, purbb_t pURB, pregs *pt_regs)
-{
-    RtmpDrvUsbBulkOutRTSFrameComplete((VOID *)pURB);
-}
-
-USBHST_STATUS RTUSBBulkOutPsPollComplete(URBCompleteStatus Status, purbb_t pURB, pregs *pt_regs)
-{
-    RtmpDrvUsbBulkOutPsPollComplete((VOID *)pURB);
-}
-
-USBHST_STATUS RTUSBBulkRxComplete(URBCompleteStatus Status, purbb_t pURB, pregs *pt_regs)
-{
-    RtmpDrvUsbBulkRxComplete((VOID *)pURB);
-}
-
-
-VOID RtmpNetOpsInit(
-    IN VOID			*pDrvNetOpsSrc)
-{
-    RTMP_NET_ABL_OPS *pDrvNetOps = (RTMP_NET_ABL_OPS *)pDrvNetOpsSrc;
-
-
-    pDrvNetOps->RtmpNetUsbBulkOutDataPacketComplete = (RTMP_DRV_USB_COMPLETE_HANDLER)RTUSBBulkOutDataPacketComplete;
-    pDrvNetOps->RtmpNetUsbBulkOutMLMEPacketComplete = (RTMP_DRV_USB_COMPLETE_HANDLER)RTUSBBulkOutMLMEPacketComplete;
-    pDrvNetOps->RtmpNetUsbBulkOutNullFrameComplete = (RTMP_DRV_USB_COMPLETE_HANDLER)RTUSBBulkOutNullFrameComplete;
-    pDrvNetOps->RtmpNetUsbBulkOutRTSFrameComplete = (RTMP_DRV_USB_COMPLETE_HANDLER)RTUSBBulkOutRTSFrameComplete;
-    pDrvNetOps->RtmpNetUsbBulkOutPsPollComplete = (RTMP_DRV_USB_COMPLETE_HANDLER)RTUSBBulkOutPsPollComplete;
-    pDrvNetOps->RtmpNetUsbBulkRxComplete = (RTMP_DRV_USB_COMPLETE_HANDLER)RTUSBBulkRxComplete;
-    //pDrvNetOps->RtmpNetUsbBulkCmdRspEventComplete = (RTMP_DRV_USB_COMPLETE_HANDLER)RTUSBBulkCmdRspEventComplete;
-}
-
-
-VOID RtmpNetOpsSet(
-    IN VOID			*pDrvNetOpsSrc)
-{
-    RTMP_NET_ABL_OPS *pDrvNetOps = (RTMP_NET_ABL_OPS *)pDrvNetOpsSrc;
-
-
-    RtmpDrvUsbBulkOutDataPacketComplete = pDrvNetOps->RtmpDrvUsbBulkOutDataPacketComplete;
-    RtmpDrvUsbBulkOutMLMEPacketComplete = pDrvNetOps->RtmpDrvUsbBulkOutMLMEPacketComplete;
-    RtmpDrvUsbBulkOutNullFrameComplete = pDrvNetOps->RtmpDrvUsbBulkOutNullFrameComplete;
-    RtmpDrvUsbBulkOutRTSFrameComplete = pDrvNetOps->RtmpDrvUsbBulkOutRTSFrameComplete;
-    RtmpDrvUsbBulkOutPsPollComplete = pDrvNetOps->RtmpDrvUsbBulkOutPsPollComplete;
-    RtmpDrvUsbBulkRxComplete = pDrvNetOps->RtmpDrvUsbBulkRxComplete;
-    //RtmpDrvUsbBulkCmdRspEventComplete = pDrvNetOps->RtmpDrvUsbBulkCmdRspEventComplete;
-}
-#endif /* OS_ABL_SUPPORT */

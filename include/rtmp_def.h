@@ -65,18 +65,12 @@
 
 #define PCI_VIRT_TO_PHYS(__Addr)	(((UINT32)(__Addr)) & 0x0FFFFFFF)
 
-#ifdef RTMP_MAC_USB
 #define TX_RING_SIZE            8	/* 1 */
 #define PRIO_RING_SIZE          8
 #define MGMT_RING_SIZE       	32	/* PRIO_RING_SIZE */
-#ifdef INF_AMAZON_SE
-#define RX_RING_SIZE            1
-#else
 #define RX_RING_SIZE            8
-#endif /* INF_AMAZON_SE */
 #define MAX_TX_PROCESS          4
 #define LOCAL_TXBUF_SIZE        2048
-#endif /* RTMP_MAC_USB */
 
 #ifdef MULTIPLE_CARD_SUPPORT
 /* MC: Multple Cards */
@@ -157,9 +151,7 @@
 #endif /* XLINK_SUPPORT */
 #endif /* CONFIG_STA_SUPPORT */
 
-#ifdef EXT_BUILD_CHANNEL_LIST
 #define MAX_PRECONFIG_DESP_ENTRY_SIZE  11
-#endif /* EXT_BUILD_CHANNEL_LIST */
 
 
 /*
@@ -300,9 +292,7 @@ enum WIFI_MODE
 #define SLEEP_MCU_CMD				0x30
 #define RFOFF_MCU_CMD				0x35
 
-#ifdef DOT11N_DRAFT3
 #define fOP_STATUS_SCAN_2040               	    0x00040000
-#endif /* DOT11N_DRAFT3 */
 
 
 #define CCKSETPROTECT		0x1
@@ -329,17 +319,13 @@ enum WIFI_MODE
 #define fCLIENT_STATUS_MCSFEEDBACK_CAPABLE	0x00000400
 #define fCLIENT_STATUS_APSD_CAPABLE			0x00000800	/* UAPSD STATION */
 
-#ifdef DOT11N_DRAFT3
 #define fCLIENT_STATUS_BSSCOEXIST_CAPABLE	0x00001000
-#endif /* DOT11N_DRAFT3 */
 #define fCLIENT_STATUS_SOFTWARE_ENCRYPT		0x00002000	/* Indicate the client encrypt/decrypt by software */
 
-#ifdef DOT11_VHT_AC
 #define fCLIENT_STATUS_SGI80_CAPABLE			0x00010000
 #define fCLIENT_STATUS_SGI160_CAPABLE			0x00020000
 #define fCLIENT_STATUS_VHT_TXSTBC_CAPABLE	0x00040000
 #define fCLIENT_STATUS_VHT_RXSTBC_CAPABLE	0x00080000
-#endif /* DOT11_VHT_AC */
 
 #define fCLIENT_STATUS_RALINK_CHIPSET			0x00100000
 
@@ -509,9 +495,7 @@ enum WIFI_MODE
 #define MAX_LEN_OF_CCK_RATES	4
 #define MAX_LEN_OF_OFDM_RATES	8
 #define MAX_LEN_OF_HT_RATES		24
-#ifdef DOT11_VHT_AC
 #define MAX_LEN_OF_VHT_RATES		16
-#endif /* DOT11_VHT_AC */
 #define SUPPORT_CCK_MODE	1
 #define SUPPORT_OFDM_MODE	2
 #define SUPPORT_HT_MODE		4
@@ -1274,7 +1258,6 @@ enum WIFI_MODE
 #define MCS_32		32
 #define MCS_AUTO		33
 
-#ifdef DOT11_VHT_AC
 #define MCS_VHT_1SS_MCS0	0
 #define MCS_VHT_1SS_MCS1	1
 #define MCS_VHT_1SS_MCS2	2
@@ -1296,14 +1279,11 @@ enum WIFI_MODE
 #define MCS_VHT_2SS_MCS7	17
 #define MCS_VHT_2SS_MCS8	18
 #define MCS_VHT_2SS_MCS9	19
-#endif /* DOT11_VHT_AC */
 
-#ifdef DOT11_N_SUPPORT
 /* OID_HTPHYMODE */
 /* MODE */
 #define HTMODE_MM	0
 #define HTMODE_GF	1
-#endif /* DOT11_N_SUPPORT */
 
 /* Fixed Tx MODE - HT, CCK or OFDM */
 #define FIXED_TXMODE_HT	0
@@ -1327,28 +1307,21 @@ enum WIFI_MODE
 #define RF_MODE_CCK	1
 #define RF_MODE_OFDM	2
 
-#ifdef DOT11_N_SUPPORT
 #define HT_BW_20		0
 #define HT_BW_40		1
-#endif /* DOT11_N_SUPPORT */
 
-#ifdef DOT11_VHT_AC
 #define VHT_BW_2040	0
 #define VHT_BW_80		1
 #define VHT_BW_160		2
 #define VHT_BW_8080	3
-#endif /* DOT11_VHT_AC */
 
-#ifdef DOT11_N_SUPPORT
 /* SHORTGI */
 #define GI_400		GAP_INTERVAL_400	/* only support in HT mode */
 #define GI_BOTH		GAP_INTERVAL_BOTH
-#endif /* DOT11_N_SUPPORT */
 #define GI_800		GAP_INTERVAL_800
 
 /* STBC */
 #define STBC_NONE	0
-#ifdef DOT11_N_SUPPORT
 #define STBC_USE	1	/* limited use in rt2860b phy */
 #define RXSTBC_ONE	1	/* rx support of one spatial stream */
 #define RXSTBC_TWO	2	/* rx support of 1 and 2 spatial stream */
@@ -1369,7 +1342,6 @@ enum WIFI_MODE
 #define	AMSDU_0	0
 #define	AMSDU_1		1
 
-#endif /* DOT11_N_SUPPORT */
 
 /* MCS use 7 bits */
 #define TXRATEMIMO		0x80

@@ -58,7 +58,6 @@ VOID ral_wlan_chip_onoff(
     WLAN_FUN_CTRL_STRUCT WlanFunCtrl = {.word=0};
 
 
-#ifdef RTMP_MAC_USB
     UINT32 ret;
 
     if(IS_USB_INF(pAd))
@@ -72,7 +71,6 @@ VOID ral_wlan_chip_onoff(
         }
     }
 
-#endif /* RTMP_MAC_USB */
 
     RTMP_IO_READ32(pAd, WLAN_FUN_CTRL, &WlanFunCtrl.word);
     DBGPRINT(RT_DEBUG_TRACE, ("==>%s(): OnOff:%d, pAd->WlanFunCtrl:0x%x, Reg-WlanFunCtrl=0x%x\n",
@@ -107,14 +105,12 @@ VOID ral_wlan_chip_onoff(
               __FUNCTION__, pAd->WlanFunCtrl.word, WlanFunCtrl.word));
 
 
-#ifdef RTMP_MAC_USB
 
     if(IS_USB_INF(pAd))
     {
         RTMP_SEM_EVENT_UP(&pAd->wlan_en_atomic);
     }
 
-#endif /* RTMP_MAC_USB */
 }
 
 VOID dump_bw_info(RTMP_ADAPTER *pAd)
@@ -158,7 +154,6 @@ VOID dump_bw_info(RTMP_ADAPTER *pAd)
 }
 
 
-#ifdef RTMP_USB_SUPPORT
 VOID RT65xxUsbAsicRadioOff(RTMP_ADAPTER *pAd, UCHAR Stage)
 {
     UINT32 ret;
@@ -301,7 +296,6 @@ VOID RT65xxUsbAsicRadioOn(RTMP_ADAPTER *pAd, UCHAR Stage)
 
     DBGPRINT(RT_DEBUG_TRACE, ("<== %s\n", __FUNCTION__));
 }
-#endif
 
 VOID RT65xxDisableTxRx(
     RTMP_ADAPTER *pAd,
@@ -455,11 +449,9 @@ VOID RT65xxDisableTxRx(
             return;
         }
 
-#ifdef RTMP_MAC_USB
         RTMP_SET_FLAG(pAd, fRTMP_ADAPTER_POLL_IDLE);
         usb_rx_cmd_msgs_receive(pAd);
         RTUSBBulkReceive(pAd);
-#endif /* RTMP_MAC_USB */
     }
 
     RTMP_CLEAR_FLAG(pAd, fRTMP_ADAPTER_POLL_IDLE);
@@ -536,7 +528,6 @@ VOID RT65xx_WLAN_ChipOnOff(
     WLAN_FUN_CTRL_STRUCT WlanFunCtrl = {.word=0};
 
 
-#ifdef RTMP_MAC_USB
     UINT32 ret;
 
     if(IS_USB_INF(pAd))
@@ -550,7 +541,6 @@ VOID RT65xx_WLAN_ChipOnOff(
         }
     }
 
-#endif /* RTMP_MAC_USB */
 
     RTMP_IO_READ32(pAd, WLAN_FUN_CTRL, &WlanFunCtrl.word);
     DBGPRINT(RT_DEBUG_TRACE, ("==>%s(): OnOff:%d, Reset= %d, pAd->WlanFunCtrl:0x%x, Reg-WlanFunCtrl=0x%x\n",
@@ -661,14 +651,12 @@ VOID RT65xx_WLAN_ChipOnOff(
               __FUNCTION__, pAd->WlanFunCtrl.word, WlanFunCtrl.word));
 
 
-#ifdef RTMP_MAC_USB
 
     if(IS_USB_INF(pAd))
     {
         RTMP_SEM_EVENT_UP(&pAd->wlan_en_atomic);
     }
 
-#endif /* RTMP_MAC_USB */
 }
 
 #endif /* RT65xx */

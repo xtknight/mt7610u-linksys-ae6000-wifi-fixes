@@ -198,12 +198,6 @@ static INT mt76x0_ate_tx_pwr_handler(
     PATE_INFO pATEInfo = &(pAd->ate);
     UINT32 mac_val = 0, tx_pwr = 0;
 
-#ifdef RALINK_QA
-
-    if(pATEInfo->bQAEnabled == TRUE)
-        return 0;
-
-#endif /* RALINK_QA */
 
     RTMP_IO_READ32(pAd, TX_ALC_CFG_0, &mac_val);
 

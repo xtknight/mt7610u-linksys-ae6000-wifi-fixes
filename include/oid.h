@@ -937,17 +937,7 @@ typedef struct _NDIS_802_11_CAPABILITY
 #define RT_OID_WSC_QUERY_PEER_INFO_ON_RUNNING		0x075C
 #define RT_OID_WSC_MAC_ADDRESS						0x0760
 
-#ifdef LLTD_SUPPORT
-/* for consistency with RT61 */
-#define RT_OID_GET_PHY_MODE                         0x761
-#endif /* LLTD_SUPPORT */
 
-#ifdef NINTENDO_AP
-/*#define RT_OID_NINTENDO                             0x0D010770 */
-#define RT_OID_802_11_NINTENDO_GET_TABLE			0x0771	/*((RT_OID_NINTENDO + 0x01) & 0xffff) */
-#define RT_OID_802_11_NINTENDO_SET_TABLE			0x0772	/*((RT_OID_NINTENDO + 0x02) & 0xffff) */
-#define RT_OID_802_11_NINTENDO_CAPABLE				0x0773	/*((RT_OID_NINTENDO + 0x03) & 0xffff) */
-#endif /* NINTENDO_AP */
 
 
 
@@ -997,7 +987,6 @@ typedef enum _RT_802_11_PHY_MODE
     PHY_11A = 2,
     PHY_11ABG_MIXED = 3,
     PHY_11G = 4,
-#ifdef DOT11_N_SUPPORT
     PHY_11ABGN_MIXED = 5,	/* both band   5 */
     PHY_11N_2_4G = 6,		/* 11n-only with 2.4G band      6 */
     PHY_11GN_MIXED = 7,		/* 2.4G band      7 */
@@ -1005,17 +994,13 @@ typedef enum _RT_802_11_PHY_MODE
     PHY_11BGN_MIXED = 9,	/* if check 802.11b.      9 */
     PHY_11AGN_MIXED = 10,	/* if check 802.11b.      10 */
     PHY_11N_5G = 11,		/* 11n-only with 5G band                11 */
-#endif /* DOT11_N_SUPPORT */
-#ifdef DOT11_VHT_AC
     PHY_11VHT_N_ABG_MIXED = 12, /* 12 -> AC/A/AN/B/G/GN mixed */
     PHY_11VHT_N_AG_MIXED = 13, /* 13 -> AC/A/AN/G/GN mixed  */
     PHY_11VHT_N_A_MIXED = 14, /* 14 -> AC/AN/A mixed in 5G band */
     PHY_11VHT_N_MIXED = 15, /* 15 -> AC/AN mixed in 5G band */
-#endif /* DOT11_VHT_AC */
     PHY_MODE_MAX,
 } RT_802_11_PHY_MODE;
 
-#ifdef DOT11_VHT_AC
 #define PHY_MODE_IS_5G_BAND(__Mode)	\
 	((__Mode == PHY_11A) ||			\
 	(__Mode == PHY_11ABG_MIXED) ||	\
@@ -1025,20 +1010,6 @@ typedef enum _RT_802_11_PHY_MODE
 	(__Mode == PHY_11N_5G) ||\
 	(__Mode == PHY_11VHT_N_MIXED) ||\
 	(__Mode == PHY_11VHT_N_A_MIXED))
-#elif defined(DOT11_N_SUPPORT)
-#define PHY_MODE_IS_5G_BAND(__Mode)	\
-	((__Mode == PHY_11A) ||			\
-	(__Mode == PHY_11ABG_MIXED) ||	\
-	(__Mode == PHY_11ABGN_MIXED) ||	\
-	(__Mode == PHY_11AN_MIXED) ||	\
-	(__Mode == PHY_11AGN_MIXED) ||	\
-	(__Mode == PHY_11N_5G))
-#else
-
-#define PHY_MODE_IS_5G_BAND(__Mode)	\
-	((__Mode == PHY_11A) ||			\
-	(__Mode == PHY_11ABG_MIXED))
-#endif /* DOT11_N_SUPPORT */
 
 /* put all proprietery for-query objects here to reduce # of Query_OID */
 typedef struct _RT_802_11_LINK_STATUS
@@ -1101,7 +1072,6 @@ typedef struct _RT_802_11_MAC_TABLE
     RT_802_11_MAC_ENTRY Entry[MAX_NUMBER_OF_MAC];
 } RT_802_11_MAC_TABLE, *PRT_802_11_MAC_TABLE;
 
-#ifdef DOT11_N_SUPPORT
 #ifdef TXBF_SUPPORT
 typedef
 struct
@@ -1124,7 +1094,6 @@ struct
     RT_COUNTER_TXBF Entry[MAX_NUMBER_OF_MAC];
 } RT_802_11_TXBF_TABLE;
 #endif /* TXBF_SUPPORT */
-#endif /* DOT11_N_SUPPORT */
 
 /* structure for query/set hardware register - MAC, BBP, RF register */
 typedef struct _RT_802_11_HARDWARE_REGISTER
@@ -1234,66 +1203,7 @@ typedef struct
     UCHAR rsv;
 } OID_SET_HT_PHYMODE, *POID_SET_HT_PHYMODE;
 
-#ifdef NINTENDO_AP
-#define NINTENDO_MAX_ENTRY 16
-#define NINTENDO_SSID_NAME_LN 8
-#define NINTENDO_SSID_NAME "NWCUSBAP"
-#define NINTENDO_PROBE_REQ_FLAG_MASK 0x03
-#define NINTENDO_PROBE_REQ_ON 0x01
-#define NINTENDO_PROBE_REQ_SIGNAL 0x02
-#define NINTENDO_PROBE_RSP_ON 0x01
-#define NINTENDO_SSID_NICKNAME_LN 20
 
-#define NINTENDO_WEPKEY_LN 13
-
-typedef struct _NINTENDO_SSID
-{
-    UCHAR NINTENDOFixChar[NINTENDO_SSID_NAME_LN];
-    UCHAR zero1;
-    UCHAR registe;
-    UCHAR ID;
-    UCHAR zero2;
-    UCHAR NICKname[NINTENDO_SSID_NICKNAME_LN];
-} RT_NINTENDO_SSID, *PRT_NINTENDO_SSID;
-
-typedef struct _NINTENDO_ENTRY
-{
-    UCHAR NICKname[NINTENDO_SSID_NICKNAME_LN];
-    UCHAR DS_Addr[ETH_LENGTH_OF_ADDRESS];
-    UCHAR registe;
-    UCHAR UserSpaceAck;
-} RT_NINTENDO_ENTRY, *PRT_NINTENDO_ENTRY;
-
-/*RTPRIV_IOCTL_NINTENDO_GET_TABLE */
-/*RTPRIV_IOCTL_NINTENDO_SET_TABLE */
-typedef struct _NINTENDO_TABLE
-{
-    UINT number;
-    RT_NINTENDO_ENTRY entry[NINTENDO_MAX_ENTRY];
-} RT_NINTENDO_TABLE, *PRT_NINTENDO_TABLE;
-
-/*RTPRIV_IOCTL_NINTENDO_SEED_WEPKEY */
-typedef struct _NINTENDO_SEED_WEPKEY
-{
-    UCHAR seed[NINTENDO_SSID_NICKNAME_LN];
-    UCHAR wepkey[16];	/*use 13 for 104 bits wep key */
-} RT_NINTENDO_SEED_WEPKEY, *PRT_NINTENDO_SEED_WEPKEY;
-#endif /* NINTENDO_AP */
-
-#ifdef LLTD_SUPPORT
-typedef struct _RT_LLTD_ASSOICATION_ENTRY
-{
-    UCHAR Addr[ETH_LENGTH_OF_ADDRESS];
-    unsigned short MOR;	/* maximum operational rate */
-    UCHAR phyMode;
-} RT_LLTD_ASSOICATION_ENTRY, *PRT_LLTD_ASSOICATION_ENTRY;
-
-typedef struct _RT_LLTD_ASSOICATION_TABLE
-{
-    unsigned int Num;
-    RT_LLTD_ASSOICATION_ENTRY Entry[MAX_NUMBER_OF_MAC];
-} RT_LLTD_ASSOICATION_TABLE, *PRT_LLTD_ASSOICATION_TABLE;
-#endif /* LLTD_SUPPORT */
 
 #ifdef CONFIG_STA_SUPPORT
 #ifdef QOS_DLS_SUPPORT

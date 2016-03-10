@@ -29,9 +29,7 @@
 
 INT MCUBurstWrite(PRTMP_ADAPTER pAd, UINT32 Offset, UINT32 *Data, UINT32 Cnt)
 {
-#ifdef RTMP_USB_SUPPORT
     RTUSBMultiWrite_nBytes(pAd, Offset, Data, Cnt * 4, 64);
-#endif /* RTMP_USB_SUPPORT */
 }
 
 INT MCURandomWrite(PRTMP_ADAPTER pAd, RTMP_REG_PAIR *RegPair, UINT32 Num)
@@ -54,9 +52,7 @@ VOID ChipOpsMCUHook(PRTMP_ADAPTER pAd, enum MCU_TYPE MCUType)
     if(MCUType == ANDES)
     {
 
-#ifdef RTMP_USB_SUPPORT
         pChipOps->loadFirmware = andes_usb_loadfw;
-#endif
         //pChipOps->sendCommandToMcu = andes_send_cmd_msg;
         pChipOps->MCUCtrlInit = andes_ctrl_init;
         pChipOps->MCUCtrlExit = andes_ctrl_exit;

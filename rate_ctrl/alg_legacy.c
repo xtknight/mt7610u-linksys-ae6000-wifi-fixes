@@ -71,14 +71,6 @@ VOID MlmeDynamicTxRateSwitching(
     AGS_STATISTICS_INFO		AGSStatisticsInfo = {0};
 #endif /* AGS_SUPPORT */
 
-#ifdef RALINK_ATE
-
-    if(ATE_ON(pAd))
-    {
-        return;
-    }
-
-#endif /* RALINK_ATE */
 
     /* Update statistic counter */
     NicGetTxRawCounters(pAd, &TxStaCnt0, &StaTx1);
@@ -103,7 +95,6 @@ VOID MlmeDynamicTxRateSwitching(
         MlmeSelectTxRateTable(pAd, pEntry, &pTable, &TableSize, &InitTxRateIdx);
         pEntry->pTable = pTable;
 
-#ifdef NEW_RATE_ADAPT_SUPPORT
 
         if(ADAPT_RATE_TABLE(pTable))
         {
@@ -111,7 +102,6 @@ VOID MlmeDynamicTxRateSwitching(
             continue;
         }
 
-#endif /* NEW_RATE_ADAPT_SUPPORT */
 
         if((pAd->MacTab.Size == 1) || IS_ENTRY_DLS(pEntry))
         {
@@ -459,7 +449,6 @@ VOID MlmeDynamicTxRateSwitching(
 
         pCurrTxRate = PTX_RA_LEGACY_ENTRY(pTable, CurrRateIdx);
 
-#ifdef DOT11_N_SUPPORT
 
         /*
         	when Rssi > -65, there is a lot of interference usually. therefore, the
@@ -472,7 +461,6 @@ VOID MlmeDynamicTxRateSwitching(
             TrainDown = (pCurrTxRate->TrainDown + (pCurrTxRate->TrainDown >> 1));
         }
         else
-#endif /* DOT11_N_SUPPORT */
         {
             TrainUp = pCurrTxRate->TrainUp;
             TrainDown = pCurrTxRate->TrainDown;
@@ -656,7 +644,6 @@ VOID StaQuickResponeForRateUpExec(
         MlmeSelectTxRateTable(pAd, pEntry, &pTable, &TableSize, &InitTxRateIdx);
         pEntry->pTable = pTable;
 
-#ifdef NEW_RATE_ADAPT_SUPPORT
 
         if(ADAPT_RATE_TABLE(pTable))
         {
@@ -664,7 +651,6 @@ VOID StaQuickResponeForRateUpExec(
             continue;
         }
 
-#endif /* NEW_RATE_ADAPT_SUPPORT */
 
         CurrRateIdx = pEntry->CurrTxRateIndex;
 #ifdef TXBF_SUPPORT
@@ -673,7 +659,6 @@ VOID StaQuickResponeForRateUpExec(
 #endif /* TXBF_SUPPORT */
         pCurrTxRate = PTX_RA_LEGACY_ENTRY(pTable, CurrRateIdx);
 
-#ifdef DOT11_N_SUPPORT
 
         if((Rssi > -65) && (pCurrTxRate->Mode >= MODE_HTMIX))
         {
@@ -681,7 +666,6 @@ VOID StaQuickResponeForRateUpExec(
             TrainDown	= (pCurrTxRate->TrainDown + (pCurrTxRate->TrainDown >> 1));
         }
         else
-#endif /* DOT11_N_SUPPORT */
         {
             TrainUp		= pCurrTxRate->TrainUp;
             TrainDown	= pCurrTxRate->TrainDown;

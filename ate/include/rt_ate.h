@@ -28,11 +28,6 @@
 #ifndef __RT_ATE_H__
 #define __RT_ATE_H__
 
-#ifdef RALINK_ATE
-#ifndef STATS_COUNT_SUPPORT
-#error "For ATE support, please set HAS_ATE=y and HAS_STATS_COUNT=y."
-#endif /* !STATS_COUNT_SUPPORT */
-#endif /* RALINK_ATE */
 
 typedef struct _ATE_CHIP_STRUCT
 {
@@ -158,41 +153,6 @@ typedef struct _ATE_INFO
     UINT32 Default_TX_PIN_CFG;
     USHORT HLen;		/* Header Length */
 
-#ifdef RALINK_QA
-    /* Tx frame */
-#ifdef RTMP_MAC_USB
-    //	TXINFO_STRUCT TxInfo;	/* TxInfo */
-#endif /* RTMP_MAC_USB */
-    USHORT PLen;		/* Pattern Length */
-    UCHAR Header[32];	/* Header buffer */
-    UCHAR Pattern[32];	/* Pattern buffer */
-    USHORT DLen;		/* Data Length */
-    USHORT seq;
-    UINT32 CID;
-    RTMP_OS_PID AtePid;
-    /* counters */
-    UINT32 U2M;
-    UINT32 OtherData;
-    UINT32 Beacon;
-    UINT32 OtherCount;
-    UINT32 TxAc0;
-    UINT32 TxAc1;
-    UINT32 TxAc2;
-    UINT32 TxAc3;
-    UINT32 TxHCCA;
-    UINT32 TxMgmt;
-    UINT32 RSSI0;
-    UINT32 RSSI1;
-    UINT32 RSSI2;
-    UINT32 SNR0;
-    UINT32 SNR1;
-#ifdef DOT11N_SS3_SUPPORT
-    UINT32 SNR2;
-#endif /* DOT11N_SS3_SUPPORT */
-    INT32 BF_SNR[3];	/* Last RXWI BF SNR. Units=0.25 dB */
-    /* TxStatus : 0 --> task is idle, 1 --> task is running */
-    UCHAR TxStatus;
-#endif /* RALINK_QA */
 #ifdef TXBF_SUPPORT
 #define MAX_SOUNDING_RESPONSE_SIZE	(57*2*2*9+3+2+6)	/* Assume 114 carriers (40MHz), 3x3, 8bits/coeff, + SNR + HT HEADER + MIMO CONTROL FIELD */
     UCHAR sounding;
@@ -376,7 +336,6 @@ typedef struct _ATE_INFO
 
 
 
-#ifdef RTMP_MAC_USB
 #define ATE_BBP_IO_READ8_BY_REG_ID(_A, _I, _pV)    RTMP_BBP_IO_READ8_BY_REG_ID(_A, _I, _pV)
 #define ATE_BBP_IO_WRITE8_BY_REG_ID(_A, _I, _V)    RTMP_BBP_IO_WRITE8_BY_REG_ID(_A, _I, _V)
 
@@ -400,7 +359,6 @@ VOID ATEResetBulkIn(
 
 INT ATEResetBulkOut(
     IN PRTMP_ADAPTER	pAd);
-#endif /* RTMP_MAC_USB */
 
 
 
@@ -416,48 +374,6 @@ INT RT28xxATETxPwrHandler(
 #endif /* defined(RT28xx) || defined(RT2880) */
 
 
-#ifdef RALINK_QA
-VOID ATE_QA_Statistics(
-    IN RTMP_ADAPTER *pAd,
-    IN RXWI_STRUCT *pRxWI,
-    IN RXINFO_STRUCT *pRxInfo,
-    IN PHEADER_802_11 pHeader);
-
-INT RtmpDoAte(
-    IN RTMP_ADAPTER *pAd,
-    IN RTMP_IOCTL_INPUT_STRUCT *wrq,
-    IN PSTRING wrq_name);
-
-INT Set_TxStop_Proc(
-    IN RTMP_ADAPTER	*pAd,
-    IN PSTRING arg);
-
-INT Set_RxStop_Proc(
-    IN RTMP_ADAPTER *pAd,
-    IN PSTRING arg);
-
-#ifdef DBG
-INT Set_EERead_Proc(
-    IN	PRTMP_ADAPTER	pAd,
-    IN	PSTRING			arg);
-
-INT Set_EEWrite_Proc(
-    IN	PRTMP_ADAPTER	pAd,
-    IN	PSTRING			arg);
-
-INT Set_BBPRead_Proc(
-    IN	PRTMP_ADAPTER	pAd,
-    IN	PSTRING			arg);
-
-INT Set_BBPWrite_Proc(
-    IN	PRTMP_ADAPTER	pAd,
-    IN	PSTRING			arg);
-
-INT Set_RFWrite_Proc(
-    IN	PRTMP_ADAPTER	pAd,
-    IN	PSTRING			arg);
-#endif /* DBG */
-#endif /* RALINK_QA */
 
 #ifdef RLT_RF
 /* for MT7650 */
@@ -469,18 +385,8 @@ INT Set_RFWrite_Proc(
 #define ATE_RF_IO_WRITE8_BY_REG_ID(_A, _I, _V)     RT30xxWriteRFRegister(_A, _I, _V)
 #endif /* !RLT_RF */
 
-#ifdef RALINK_QA
-#define SYNC_CHANNEL_WITH_QA(_A, _pV)\
-	if ((_A->bQATxStart == TRUE) || (_A->bQARxStart == TRUE))\
-	{\
-		return;\
-	}\
-	else\
-		*_pV = _A->Channel
-#else
 #define SYNC_CHANNEL_WITH_QA(_A, _pV)\
 	*_pV = _A->Channel
-#endif /* RALINK_QA */
 
 VOID rt_ee_read_all(
     IN  PRTMP_ADAPTER   pAd,
@@ -777,7 +683,6 @@ VOID ATESampleRssi(
     IN RXWI_STRUCT *pRxWI);
 
 
-#ifdef RTMP_MAC_USB
 INT TxDmaBusy(
     IN PRTMP_ADAPTER pAd);
 
@@ -794,7 +699,6 @@ INT ATESetUpFrame(
 
 VOID RTUSBRejectPendingPackets(
     IN	PRTMP_ADAPTER	pAd);
-#endif /* RTMP_MAC_USB */
 
 
 NDIS_STATUS ChipStructAssign(
@@ -803,10 +707,6 @@ NDIS_STATUS ChipStructAssign(
 NDIS_STATUS ATEInit(
     IN PRTMP_ADAPTER pAd);
 
-#ifdef RALINK_QA
-VOID ReadQATxTypeFromBBP(
-    IN	PRTMP_ADAPTER	pAd);
-#endif /* RALINK_QA */
 
 #ifdef RTMP_MAC
 NDIS_STATUS ATEBBPWriteWithRxChain(

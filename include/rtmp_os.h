@@ -41,19 +41,8 @@ typedef struct _RTMP_OS_ABL_OPS
 extern RTMP_OS_ABL_OPS *pRaOsOps;
 
 #ifdef LINUX
-#ifndef OS_ABL_FUNC_SUPPORT
 #include "os/rt_linux.h"
 
-#else
-
-#ifdef RTMP_MODULE_OS
-/* for util/netif */
-#include "os/rt_linux.h"
-#else
-/* for core */
-#include "os/rt_drv.h"
-#endif /* RTMP_MODULE_OS */
-#endif /* OS_ABL_FUNC_SUPPORT */
 #endif /* LINUX */
 
 
@@ -95,7 +84,6 @@ typedef enum _RTMP_TASK_STATUS_
 
 #define RTMP_OS_TASK_NAME_LEN	16
 
-#if defined(RTMP_MODULE_OS) || !defined(OS_ABL_FUNC_SUPPORT)
 /* used in UTIL/NETIF module */
 typedef struct _RTMP_OS_TASK_
 {
@@ -115,27 +103,15 @@ typedef struct _RTMP_OS_TASK_
     BOOLEAN kthread_running;
 #endif
 } OS_TASK;
-#endif /* RTMP_MODULE_OS || ! OS_ABL_FUNC_SUPPORT */
 
 int RtmpOSIRQRequest(
     IN PNET_DEV pNetDev);
 /*int RtmpOSIRQRelease(IN PNET_DEV pNetDev); */
 
-#ifndef OS_ABL_SUPPORT
 #define RTMP_MATOpsInit(__pAd)
 #define RTMP_MATPktRxNeedConvert(__pAd, __pDev)				\
 	MATPktRxNeedConvert(__pAd, __pDev)
 #define RTMP_MATEngineRxHandle(__pAd, __pPkt, __InfIdx)		\
 	MATEngineRxHandle(__pAd, __pPkt, __InfIdx)
-#else
-
-#define RTMP_MATOpsInit(__pAd)								\
-	(__pAd)->MATPktRxNeedConvert = MATPktRxNeedConvert;		\
-	(__pAd)->MATEngineRxHandle = MATEngineRxHandle;
-#define RTMP_MATPktRxNeedConvert(__pAd, __pDev)				\
-	((__pAd)->MATPktRxNeedConvert(__pAd, __pDev))
-#define RTMP_MATEngineRxHandle(__pAd, __pPkt, __InfIdx)		\
-	((__pAd)->MATEngineRxHandle(__pAd, __pPkt, __InfIdx))
-#endif /* OS_ABL_SUPPORT */
 
 #endif /* __RMTP_OS_H__ */

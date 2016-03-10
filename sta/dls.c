@@ -143,7 +143,6 @@ VOID MlmeDlsReqAction(
         FrameLen += tmp;
     }
 
-#ifdef DOT11_N_SUPPORT
 
     if(WMODE_CAP_N(pAd->CommonCfg.PhyMode))
     {
@@ -174,7 +173,6 @@ VOID MlmeDlsReqAction(
         FrameLen = FrameLen + tmp;
     }
 
-#endif /* DOT11_N_SUPPORT */
 
     RTMPCancelTimer(&pDLS->Timer, &TimerCancelled);
     Timeout = DLS_TIMEOUT;
@@ -336,7 +334,6 @@ VOID PeerDlsReqAction(
                     pEntry->MaxHTPhyMode.field.BW = BW_20;
                     pEntry->MinHTPhyMode.field.BW = BW_20;
 
-#ifdef DOT11_N_SUPPORT
                     pEntry->HTCapability.MCSSet[0] = 0;
                     pEntry->HTCapability.MCSSet[1] = 0;
 
@@ -395,7 +392,6 @@ VOID PeerDlsReqAction(
                                        &HtCapability, sizeof(HT_CAPABILITY_IE));
                     }
 
-#endif /* DOT11_N_SUPPORT */
 
                     pEntry->HTPhyMode.word = pEntry->MaxHTPhyMode.word;
                     pEntry->CurrTxRate = pEntry->MaxSupportedRate;
@@ -476,7 +472,6 @@ VOID PeerDlsReqAction(
             FrameLen += tmp;
         }
 
-#ifdef DOT11_N_SUPPORT
 
         if(WMODE_CAP_N(pAd->CommonCfg.PhyMode))
         {
@@ -507,7 +502,6 @@ VOID PeerDlsReqAction(
             FrameLen = FrameLen + tmp;
         }
 
-#endif /* DOT11_N_SUPPORT */
 
         if(pDLS && (pDLS->Status != DLS_FINISH))
         {
@@ -593,7 +587,6 @@ VOID PeerDlsRspAction(
                 pEntry->MaxHTPhyMode.field.BW = BW_20;
                 pEntry->MinHTPhyMode.field.BW = BW_20;
 
-#ifdef DOT11_N_SUPPORT
                 pEntry->HTCapability.MCSSet[0] = 0;
                 pEntry->HTCapability.MCSSet[1] = 0;
 
@@ -645,7 +638,6 @@ VOID PeerDlsRspAction(
                                    sizeof(HT_CAPABILITY_IE));
                 }
 
-#endif /* DOT11_N_SUPPORT */
                 pEntry->HTPhyMode.word = pEntry->MaxHTPhyMode.word;
                 pEntry->CurrTxRate = pEntry->MaxSupportedRate;
                 CLIENT_STATUS_SET_FLAG(pEntry,
@@ -762,7 +754,6 @@ VOID PeerDlsRspAction(
                     pEntry->MaxHTPhyMode.field.BW = BW_20;
                     pEntry->MinHTPhyMode.field.BW = BW_20;
 
-#ifdef DOT11_N_SUPPORT
                     pEntry->HTCapability.MCSSet[0] = 0;
                     pEntry->HTCapability.MCSSet[1] = 0;
 
@@ -840,7 +831,6 @@ VOID PeerDlsRspAction(
                                        sizeof(HT_CAPABILITY_IE));
                     }
 
-#endif /* DOT11_N_SUPPORT */
 
                     pEntry->HTPhyMode.word = pEntry->MaxHTPhyMode.word;
                     pEntry->CurrTxRate = pEntry->MaxSupportedRate;
@@ -2174,11 +2164,9 @@ INT Set_DlsEntryInfo_Display_Proc(
                      ("\n%-19s%-4s%-4s%-4s%-4s%-7s%-7s%-7s", "MAC",
                       "AID", "BSS", "PSM", "WMM", "RSSI0", "RSSI1",
                       "RSSI2"));
-#ifdef DOT11_N_SUPPORT
             DBGPRINT(RT_DEBUG_ERROR,
                      ("%-8s%-10s%-6s%-6s%-6s%-6s", "MIMOPS", "PhMd",
                       "BW", "MCS", "SGI", "STBC"));
-#endif /* DOT11_N_SUPPORT */
             DBGPRINT(RT_DEBUG_ERROR,
                      ("\n%02X:%02X:%02X:%02X:%02X:%02X  ",
                       pEntry->Addr[0], pEntry->Addr[1],
@@ -2197,7 +2185,6 @@ INT Set_DlsEntryInfo_Display_Proc(
                      ("%-7d", pEntry->RssiSample.AvgRssi1));
             DBGPRINT(RT_DEBUG_ERROR,
                      ("%-7d", pEntry->RssiSample.AvgRssi2));
-#ifdef DOT11_N_SUPPORT
             DBGPRINT(RT_DEBUG_ERROR, ("%-8d", (int)pEntry->MmpsMode));
             DBGPRINT(RT_DEBUG_ERROR,
                      ("%-10s",
@@ -2210,7 +2197,6 @@ INT Set_DlsEntryInfo_Display_Proc(
                      ("%-6d", pEntry->HTPhyMode.field.ShortGI));
             DBGPRINT(RT_DEBUG_ERROR,
                      ("%-6d", pEntry->HTPhyMode.field.STBC));
-#endif /* DOT11_N_SUPPORT */
             DBGPRINT(RT_DEBUG_ERROR,
                      ("%-10d, %d, %d%%\n", pEntry->DebugFIFOCount,
                       pEntry->DebugTxCount,

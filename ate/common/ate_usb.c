@@ -25,7 +25,6 @@
  *************************************************************************/
 
 
-#ifdef RTMP_MAC_USB
 
 #include "rt_config.h"
 
@@ -244,9 +243,6 @@ INT ATESetUpFrame(
     UINT8 TXWISize = pAd->chipCap.TXWISize;
     UCHAR bw, sgi, stbc, mcs, phymode, frag, ts, ampdu, ack, nseq, basize, pid, txop, cfack;
     USHORT mpdu_len;
-#ifdef RALINK_QA
-    PHEADER_802_11	pHeader80211 = NULL;
-#endif /* RALINK_QA */
 
     bw = sgi = stbc = mcs = phymode = frag = ts = ampdu = ack = nseq = basize = pid = txop = cfack = 0;
     mpdu_len = 0;
@@ -271,15 +267,6 @@ INT ATESetUpFrame(
         NdisZeroMemory(&(pAd->NullFrame), sizeof(HEADER_802_11));
 
         /* fill 802.11 header */
-#ifdef RALINK_QA
-
-        if(pATEInfo->bQATxStart == TRUE)
-        {
-            pHeader80211 = NdisMoveMemory(&(pAd->NullFrame),
-                                          pATEInfo->Header, pATEInfo->HLen);
-        }
-        else
-#endif /* RALINK_QA */
         {
             NdisMoveMemory(&(pAd->NullFrame), TemplateFrame,
                            sizeof(HEADER_802_11));
@@ -289,24 +276,6 @@ INT ATESetUpFrame(
         RTMPFrameEndianChange(pAd, (PUCHAR)&(pAd->NullFrame), DIR_READ, FALSE);
 #endif /* RT_BIG_ENDIAN */
 
-#ifdef RALINK_QA
-
-        if(pATEInfo->bQATxStart == TRUE)
-        {
-            /* modify sequence number... */
-            if(pATEInfo->TxDoneCount == 0)
-            {
-                pATEInfo->seq = pHeader80211->Sequence;
-            }
-            else
-            {
-                pHeader80211->Sequence = ++pATEInfo->seq;
-            }
-
-            /* We already got all the address fields from QA GUI. */
-        }
-        else
-#endif /* RALINK_QA */
         {
             COPY_MAC_ADDR(pAd->NullFrame.Addr1, pATEInfo->Addr1);
             COPY_MAC_ADDR(pAd->NullFrame.Addr2, pATEInfo->Addr2);
@@ -316,16 +285,6 @@ INT ATESetUpFrame(
         RTMPZeroMemory(&pAd->NullContext.TransferBuffer->field.WirelessPacket[0], TX_BUFFER_NORMSIZE);
         pTxInfo = (TXINFO_STRUCT *)&pAd->NullContext.TransferBuffer->field.WirelessPacket[0];
 
-#ifdef RALINK_QA
-
-        if(pATEInfo->bQATxStart == TRUE)
-        {
-            /* Avoid to exceed the range of WirelessPacket[]. */
-            ASSERT(pATEInfo->TxInfo.TxInfoPktLen <= (MAX_FRAME_SIZE - 34/* == 2312 */));
-            NdisMoveMemory(pTxInfo, &(pATEInfo->TxInfo), sizeof(pATEInfo->TxInfo));
-        }
-        else
-#endif /* RALINK_QA */
         {
             /* Avoid to exceed the range of WirelessPacket[]. */
             ASSERT(pATEInfo->TxLength <= (MAX_FRAME_SIZE - 34/* == 2312 */));
@@ -412,24 +371,6 @@ INT ATESetUpFrame(
         pDest = &(pAd->NullContext.TransferBuffer->field.WirelessPacket[TXINFO_SIZE + TXWISize + sizeof(HEADER_802_11)]);
 
         /* prepare frame payload */
-#ifdef RALINK_QA
-
-        if(pATEInfo->bQATxStart == TRUE)
-        {
-            /* copy the pattern one by one to the frame payload */
-            if((pATEInfo->PLen != 0) && (pATEInfo->DLen != 0))
-            {
-                for(pos = 0; pos < pATEInfo->DLen; pos += pATEInfo->PLen)
-                {
-                    RTMPMoveMemory(pDest, pATEInfo->Pattern, pATEInfo->PLen);
-                    pDest += pATEInfo->PLen;
-                }
-            }
-
-            TransferBufferLength = TXINFO_SIZE + TXWISize + mpdu_len;
-        }
-        else
-#endif /* RALINK_QA */
         {
             for(pos = 0; pos < (pATEInfo->TxLength - sizeof(HEADER_802_11)); pos++)
             {
@@ -705,5 +646,4 @@ VOID RTUSBRejectPendingPackets(
 
 }
 
-#endif /* RTMP_MAC_USB */
 

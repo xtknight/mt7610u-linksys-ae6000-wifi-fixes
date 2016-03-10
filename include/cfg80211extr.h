@@ -25,7 +25,6 @@
  *************************************************************************/
 
 
-#ifdef RT_CFG80211_SUPPORT
 
 #define RT_CFG80211_REGISTER(__pDev, __pNetDev)								\
 	CFG80211_Register(__pDev, __pNetDev);
@@ -219,6 +218,5 @@ INT CFG80211_SendWirelessEvent(
     IN UCHAR 					*pMacAddr);
 #endif /* RT_P2P_SPECIFIC_WIRELESS_EVENT */
 
-#endif /* RT_CFG80211_SUPPORT */
 
 /* End of cfg80211extr.h */

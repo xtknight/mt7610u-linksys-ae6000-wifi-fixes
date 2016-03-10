@@ -413,7 +413,6 @@ VOID RtmpChipWriteHighMemory(
     IN UINT32 Value,
     IN UINT8 Unit)
 {
-#ifdef RTMP_MAC_USB
 
     switch(Unit)
     {
@@ -435,7 +434,6 @@ VOID RtmpChipWriteHighMemory(
         break;
     }
 
-#endif /* RTMP_MAC_USB */
 }
 
 
@@ -486,14 +484,6 @@ static VOID RxSensitivityTuning(RTMP_ADAPTER *pAd)
 {
     UCHAR R66 = 0x26 + GET_LNA_GAIN(pAd);
 
-#ifdef RALINK_ATE
-
-    if(ATE_ON(pAd))
-    {
-        ATE_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R66, R66);
-    }
-    else
-#endif /* RALINK_ATE */
     {
         rtmp_bbp_set_agc(pAd, R66, RX_CHAIN_ALL);
     }
@@ -546,10 +536,8 @@ static VOID ChipBBPAdjust(RTMP_ADAPTER *pAd)
     UCHAR bbp_val;
 
 
-#ifdef DOT11_N_SUPPORT
 
     if(get_ht_cent_ch(pAd, &rf_bw, &ext_ch) == FALSE)
-#endif /* DOT11_N_SUPPORT */
     {
         rf_bw = BW_20;
         ext_ch = EXTCHA_NONE;
@@ -563,12 +551,10 @@ static VOID ChipBBPAdjust(RTMP_ADAPTER *pAd)
     rtmp_bbp_set_ctrlch(pAd, ext_ch);
 
     /* request by Gary 20070208 for middle and long range G Band*/
-#ifdef DOT11_N_SUPPORT
 
     if(rf_bw == BW_40)
         bbp_val = (pAd->CommonCfg.Channel > 14) ? 0x48 : 0x38;
     else
-#endif /* DOT11_N_SUPPORT */
         bbp_val = (pAd->CommonCfg.Channel > 14) ? 0x40 : 0x38;
 
     rtmp_bbp_set_agc(pAd, bbp_val, RX_CHAIN_ALL);
@@ -636,11 +622,9 @@ static VOID Default_ChipAGCInit(RTMP_ADAPTER *pAd, UCHAR BandWidth)
             if(BandWidth == BW_20)
                 R66 = (UCHAR)(0x32 + (lan_gain * 5) / 3);
 
-#ifdef DOT11_N_SUPPORT
             else
                 R66 = (UCHAR)(0x3A + (lan_gain * 5) / 3);
 
-#endif // DOT11_N_SUPPORT //
         }
     }
 
@@ -668,9 +652,7 @@ VOID NetDevNickNameInit(
     IN PRTMP_ADAPTER		pAd)
 {
 #ifdef CONFIG_STA_SUPPORT
-#ifdef RTMP_MAC_USB
     snprintf((PSTRING) pAd->nickname, sizeof(pAd->nickname), "RT2870STA");
-#endif /* RTMP_MAC_USB */
 #endif /* CONFIG_STA_SUPPORT */
 }
 

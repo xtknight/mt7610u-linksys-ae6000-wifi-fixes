@@ -2597,7 +2597,6 @@ VOID RTMPMakeRSNIE(
 #ifdef CONFIG_STA_SUPPORT
         IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
         {
-#ifdef WPA_SUPPLICANT_SUPPORT
 
             if(pAd->StaCfg.WpaSupplicantUP != WPA_SUPPLICANT_DISABLE)
             {
@@ -2605,7 +2604,6 @@ VOID RTMPMakeRSNIE(
                     return;
             }
             else
-#endif /* WPA_SUPPLICANT_SUPPORT */
             {
                 /* Support WPAPSK or WPA2PSK in STA-Infra mode */
                 /* Support WPANone in STA-Adhoc mode */

@@ -632,7 +632,6 @@ BOOLEAN PeerBeaconAndProbeRspSanity_Old(
             }
 
 #ifdef CONFIG_STA_SUPPORT
-#ifdef DOT11_N_SUPPORT
             /* This HT IE is before IEEE draft set HT IE value.2006-09-28 by Jan.*/
 
             /* Other vendors had production before IE_HT_CAP value is assigned. To backward support those old-firmware AP,*/
@@ -652,7 +651,6 @@ BOOLEAN PeerBeaconAndProbeRspSanity_Old(
                 }
             }
 
-#endif /* DOT11_N_SUPPORT */
 #endif /* CONFIG_STA_SUPPORT */
             else if(NdisEqualMemory(pEid->Octet, WPA_OUI, 4))
             {
@@ -807,14 +805,12 @@ BOOLEAN PeerBeaconAndProbeRspSanity_Old(
             break;
 
 #ifdef CONFIG_STA_SUPPORT
-#if defined (EXT_BUILD_CHANNEL_LIST) || defined (RT_CFG80211_SUPPORT)
 
         case IE_COUNTRY:
             Ptr = (PUCHAR) pVIE;
             NdisMoveMemory(Ptr + *LengthVIE, &pEid->Eid, pEid->Len + 2);
             *LengthVIE += (pEid->Len + 2);
             break;
-#endif /* EXT_BUILD_CHANNEL_LIST */
 #endif /* CONFIG_STA_SUPPORT */
 
         case IE_QBSS_LOAD:
@@ -1225,7 +1221,6 @@ BOOLEAN PeerBeaconAndProbeRspSanity(
             }
 
 #ifdef CONFIG_STA_SUPPORT
-#ifdef DOT11_N_SUPPORT
             /* This HT IE is before IEEE draft set HT IE value.2006-09-28 by Jan.*/
 
             /* Other vendors had production before IE_HT_CAP value is assigned. To backward support those old-firmware AP,*/
@@ -1245,7 +1240,6 @@ BOOLEAN PeerBeaconAndProbeRspSanity(
                 }
             }
 
-#endif /* DOT11_N_SUPPORT */
 #endif /* CONFIG_STA_SUPPORT */
             else if(NdisEqualMemory(pEid->Octet, WPA_OUI, 4))
             {
@@ -1398,14 +1392,12 @@ BOOLEAN PeerBeaconAndProbeRspSanity(
 
 
 #ifdef CONFIG_STA_SUPPORT
-#if defined (EXT_BUILD_CHANNEL_LIST) || defined (RT_CFG80211_SUPPORT)
 
         case IE_COUNTRY:
             Ptr = (PUCHAR) pVIE;
             NdisMoveMemory(Ptr + *LengthVIE, &pEid->Eid, pEid->Len + 2);
             *LengthVIE += (pEid->Len + 2);
             break;
-#endif /* EXT_BUILD_CHANNEL_LIST */
 #endif /* CONFIG_STA_SUPPORT */
 
         case IE_QBSS_LOAD:
@@ -1433,7 +1425,6 @@ BOOLEAN PeerBeaconAndProbeRspSanity(
                 break;
             }
 
-#ifdef DOT11_VHT_AC
 
         case IE_VHT_CAP:
             if(pEid->Len == sizeof(VHT_CAP_IE))
@@ -1452,7 +1443,6 @@ BOOLEAN PeerBeaconAndProbeRspSanity(
             }
 
             break;
-#endif /* DOT11_VHT_AC */
 
         default:
             break;
@@ -1502,7 +1492,6 @@ SanityCheck:
 }
 
 
-#ifdef DOT11N_DRAFT3
 /*
 	==========================================================================
 	Description:
@@ -1593,7 +1582,6 @@ BOOLEAN PeerBeaconAndProbeRspSanity2(
     return brc;
 
 }
-#endif /* DOT11N_DRAFT3 */
 
 #if defined(AP_SCAN_SUPPORT) || defined(CONFIG_STA_SUPPORT)
 /*

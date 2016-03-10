@@ -70,7 +70,6 @@ VOID RtmpDrvMaxRateGet(
 {
     int rate_index = 0;
 
-#ifdef DOT11_VHT_AC
 
     if(MODE >= MODE_VHT)
     {
@@ -88,16 +87,13 @@ VOID RtmpDrvMaxRateGet(
         }
     }
     else
-#endif /* DOT11_VHT_AC */
 
-#ifdef DOT11_N_SUPPORT
         if((MODE >= MODE_HTMIX) && (MODE < MODE_VHT))
         {
             /* rate_index = 16 + ((UCHAR)pHtPhyMode->field.BW *16) + ((UCHAR)pHtPhyMode->field.ShortGI *32) + ((UCHAR)pHtPhyMode->field.MCS); */
             rate_index = 16 + ((UCHAR)BW *24) + ((UCHAR)ShortGI *48) + ((UCHAR)MCS);
         }
         else
-#endif /* DOT11_N_SUPPORT */
             if(MODE == MODE_OFDM)
                 rate_index = (UCHAR)(MCS) + 4;
             else
@@ -144,7 +140,6 @@ BOOLEAN RtmpOsCmdDisplayLenCheck(
 }
 
 
-#if defined(WPA_SUPPLICANT_SUPPORT) || defined(APCLI_WPA_SUPPLICANT_SUPPORT)
 VOID WpaSendMicFailureToWpaSupplicant(
     IN PNET_DEV pNetDev,
     IN BOOLEAN bUnicast)
@@ -160,10 +155,8 @@ VOID WpaSendMicFailureToWpaSupplicant(
 
     return;
 }
-#endif /* defined(WPA_SUPPLICANT_SUPPORT) || defined(APCLI_WPA_SUPPLICANT_SUPPORT) */
 
 
-#ifdef NATIVE_WPA_SUPPLICANT_SUPPORT
 int wext_notify_event_assoc(
     IN PNET_DEV pNetDev,
     IN UCHAR *ReqVarIEs,
@@ -205,33 +198,8 @@ int wext_notify_event_assoc(
     return 0;
 
 }
-#endif /* NATIVE_WPA_SUPPLICANT_SUPPORT */
 
 
-#ifdef WPA_SUPPLICANT_SUPPORT
-#ifndef NATIVE_WPA_SUPPLICANT_SUPPORT
-VOID SendAssocIEsToWpaSupplicant(
-    IN PNET_DEV pNetDev,
-    IN UCHAR *ReqVarIEs,
-    IN UINT32 ReqVarIELen)
-{
-    STRING custom[IW_CUSTOM_MAX] = {0};
-
-    if((ReqVarIELen + 17) <= IW_CUSTOM_MAX)
-    {
-        snprintf(custom, sizeof(custom), "ASSOCINFO_ReqIEs=");
-        NdisMoveMemory(custom+17, ReqVarIEs, ReqVarIELen);
-        RtmpOSWirelessEventSend(pNetDev, RT_WLAN_EVENT_CUSTOM, RT_REQIE_EVENT_FLAG, NULL, (PUCHAR)custom, ReqVarIELen + 17);
-
-        RtmpOSWirelessEventSend(pNetDev, RT_WLAN_EVENT_CUSTOM, RT_ASSOCINFO_EVENT_FLAG, NULL, NULL, 0);
-    }
-    else
-        DBGPRINT(RT_DEBUG_TRACE, ("pAd->StaCfg.ReqVarIELen + 17 > MAX_CUSTOM_LEN\n"));
-
-    return;
-}
-#endif /* NATIVE_WPA_SUPPLICANT_SUPPORT */
-#endif /* WPA_SUPPLICANT_SUPPORT */
 
 
 INT32  RtPrivIoctlSetVal(VOID)

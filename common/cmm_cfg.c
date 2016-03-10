@@ -26,7 +26,6 @@
 
 
 #include "rt_config.h"
-#ifdef DOT11_N_SUPPORT
 #ifdef RT65xx
 #define MAX_AGG_CNT	32
 #elif defined(RT2883) || defined(RT3883)
@@ -53,7 +52,6 @@ void DisplayTxAgg(RTMP_ADAPTER *pAd)
     printk("====================\n");
 
 }
-#endif /* DOT11_N_SUPPORT */
 
 static BOOLEAN RT_isLegalCmdBeforeInfUp(
     IN PSTRING SetCmd);
@@ -194,12 +192,10 @@ static UCHAR CFG_WMODE_MAP[]=
     PHY_11BGN_MIXED, (WMODE_B | WMODE_G | WMODE_GN), /* 9 => B/G/GN mode*/
     PHY_11AGN_MIXED, (WMODE_G | WMODE_GN | WMODE_A | WMODE_AN), /* 10 => A/AN/G/GN mode, not support B mode */
     PHY_11N_5G, (WMODE_AN), /* 11 => only N in 5G band */
-#ifdef DOT11_VHT_AC
     PHY_11VHT_N_ABG_MIXED, (WMODE_B | WMODE_G | WMODE_GN |WMODE_A | WMODE_AN | WMODE_AC), /* 12 => B/G/GN/A/AN/AC mixed*/
     PHY_11VHT_N_AG_MIXED, (WMODE_G | WMODE_GN |WMODE_A | WMODE_AN | WMODE_AC), /* 13 => G/GN/A/AN/AC mixed , no B mode */
     PHY_11VHT_N_A_MIXED, (WMODE_A | WMODE_AN | WMODE_AC), /* 14 => A/AC/AN mixed */
     PHY_11VHT_N_MIXED, (WMODE_AN | WMODE_AC), /* 15 => AC/AN mixed, but no A mode */
-#endif /* DOT11_VHT_AC */
     PHY_MODE_MAX, WMODE_INVALID /* default phy mode if not match */
 };
 
@@ -360,13 +356,11 @@ static BOOLEAN RT_isLegalCmdBeforeInfUp(
 #ifdef CONFIG_APSTA_MIXED_SUPPORT
                 !strcmp(SetCmd, "OpMode") ||
 #endif /* CONFIG_APSTA_MIXED_SUPPORT */
-#ifdef EXT_BUILD_CHANNEL_LIST
                 !strcmp(SetCmd, "CountryCode") ||
                 !strcmp(SetCmd, "DfsType") ||
                 !strcmp(SetCmd, "ChannelListAdd") ||
                 !strcmp(SetCmd, "ChannelListShow") ||
                 !strcmp(SetCmd, "ChannelListDel") ||
-#endif /* EXT_BUILD_CHANNEL_LIST */
 #ifdef SINGLE_SKU
                 !strcmp(SetCmd, "ModuleTxpower") ||
 #endif /* SINGLE_SKU */
@@ -714,7 +708,6 @@ INT RTMP_COM_IoctlHandle(
 #endif /* CONFIG_APSTA_MIXED_SUPPORT */
 #ifdef CONFIG_STA_SUPPORT
         //#ifdef CONFIG_PM
-#ifdef RTMP_USB_SUPPORT
 
     //#ifdef USB_SUPPORT_SELECTIVE_SUSPEND
     case CMD_RTPRIV_IOCTL_USB_DEV_GET:
@@ -796,7 +789,6 @@ INT RTMP_COM_IoctlHandle(
         break;
 
 #ifdef WOW_SUPPORT
-#ifdef RTMP_MAC_USB
 
     case CMD_RTPRIV_IOCTL_ADAPTER_RT28XX_USB_WOW_STATUS:
         *(UCHAR *)pData = (UCHAR)pAd->WOW_Cfg.bEnable;
@@ -809,11 +801,9 @@ INT RTMP_COM_IoctlHandle(
     case CMD_RTPRIV_IOCTL_ADAPTER_RT28XX_USB_WOW_DISABLE:
         RT28xxUsbAsicWOWDisable(pAd);
         break;
-#endif /* RTMP_MAC_USB */
 #endif /* WOW_SUPPORT */
 
         //#endif /* USB_SUPPORT_SELECTIVE_SUSPEND */
-#endif
 
     //#endif /* CONFIG_PM */
 
@@ -892,16 +882,13 @@ INT RTMP_COM_IoctlHandle(
     }
     break;
 
-#ifdef EXT_BUILD_CHANNEL_LIST
 
     case CMD_RTPRIV_SET_PRECONFIG_VALUE:
         /* Set some preconfigured value before interface up*/
         pAd->CommonCfg.DfsType = MAX_RD_REGION;
         break;
-#endif /* EXT_BUILD_CHANNEL_LIST */
 
 
-#ifdef RTMP_USB_SUPPORT
 
     case CMD_RTPRIV_IOCTL_USB_MORE_FLAG_SET:
     {
@@ -973,16 +960,13 @@ INT RTMP_COM_IoctlHandle(
     case CMD_RTPRIV_IOCTL_USB_RESUME:
         pAd->PM_FlgSuspend = 0;
         break;
-#endif /* RTMP_USB_SUPPORT */
 
 
-#ifdef RT_CFG80211_SUPPORT
 
     case CMD_RTPRIV_IOCTL_CFG80211_CFG_START:
         RT_CFG80211_REINIT(pAd);
         RT_CFG80211_CRDA_REG_RULE_APPLY(pAd);
         break;
-#endif /* RT_CFG80211_SUPPORT */
 
 #ifdef INF_PPA_SUPPORT
 
@@ -1168,14 +1152,6 @@ INT RTMP_COM_IoctlHandle(
         break;
 #endif /* WDS_SUPPORT */
 
-#ifdef RALINK_ATE
-#ifdef RALINK_QA
-
-    case CMD_RTPRIV_IOCTL_ATE:
-        RtmpDoAte(pAd, wrq, pData);
-        break;
-#endif /* RALINK_QA */
-#endif /* RALINK_ATE */
 
     case CMD_RTPRIV_IOCTL_MAC_ADDR_GET:
 
@@ -1201,7 +1177,6 @@ INT RTMP_COM_IoctlHandle(
 
     }
 
-#ifdef RT_CFG80211_SUPPORT
 
     if((CMD_RTPRIV_IOCTL_80211_START <= cmd) &&
             (cmd <= CMD_RTPRIV_IOCTL_80211_END))
@@ -1209,7 +1184,6 @@ INT RTMP_COM_IoctlHandle(
         CFG80211DRV_IoctlHandle(pAd, wrq, cmd, subcmd, pData, Data);
     }
 
-#endif /* RT_CFG80211_SUPPORT */
 
     if(cmd >= CMD_RTPRIV_IOCTL_80211_COM_LATEST_ONE)
         return NDIS_STATUS_FAILURE;

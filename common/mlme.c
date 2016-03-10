@@ -39,9 +39,7 @@ UCHAR WME_PARM_ELEM[] = {0x00, 0x50, 0xf2, 0x02, 0x01, 0x01};
 UCHAR BROADCOM_OUI[]  = {0x00, 0x90, 0x4c};
 UCHAR WPS_OUI[] = {0x00, 0x50, 0xf2, 0x04};
 #ifdef CONFIG_STA_SUPPORT
-#ifdef DOT11_N_SUPPORT
 UCHAR PRE_N_HT_OUI[]	= {0x00, 0x90, 0x4c};
-#endif /* DOT11_N_SUPPORT */
 #endif /* CONFIG_STA_SUPPORT */
 
 UCHAR OfdmRateToRxwiMCS[12] =
@@ -89,13 +87,11 @@ USHORT RateIdTo500Kbps[] = { 2, 4, 11, 22, 12, 18, 24, 36, 48, 72, 96, 108, 144,
 UCHAR SsidIe = IE_SSID;
 UCHAR SupRateIe = IE_SUPP_RATES;
 UCHAR ExtRateIe = IE_EXT_SUPP_RATES;
-#ifdef DOT11_N_SUPPORT
 UCHAR HtCapIe = IE_HT_CAP;
 UCHAR AddHtInfoIe = IE_ADD_HT;
 UCHAR NewExtChanIe = IE_SECONDARY_CH_OFFSET;
 UCHAR BssCoexistIe = IE_2040_BSS_COEXIST;
 UCHAR ExtHtCapIe = IE_EXT_CAPABILITY;
-#endif /* DOT11_N_SUPPORT */
 UCHAR ExtCapIe = IE_EXT_CAPABILITY;
 UCHAR ErpIe = IE_ERP;
 UCHAR DsIe = IE_DS_PARM;
@@ -271,10 +267,8 @@ NDIS_STATUS MlmeInit(
             pAd->StaCfg.StaQuickResponeForRateUpTimerRunning = FALSE;
             RTMPInitTimer(pAd, &pAd->StaCfg.WpaDisassocAndBlockAssocTimer, GET_TIMER_FUNCTION(WpaDisassocApAndBlockAssoc), pAd, FALSE);
 
-#ifdef RTMP_MAC_USB
             RTMPInitTimer(pAd, &pAd->Mlme.AutoWakeupTimer, GET_TIMER_FUNCTION(RtmpUsbStaAsicForceWakeupTimeout), pAd, FALSE);
             pAd->Mlme.AutoWakeupTimerRunning = FALSE;
-#endif /* RTMP_MAC_USB */
 
 
         }
@@ -356,20 +350,10 @@ VOID MlmeHandler(RTMP_ADAPTER *pAd)
             break;
         }
 
-#ifdef RALINK_ATE
-
-        if(ATE_ON(pAd))
-        {
-            DBGPRINT(RT_DEBUG_TRACE, ("The driver is in ATE mode now in MlmeHandler\n"));
-            break;
-        }
-
-#endif /* RALINK_ATE */
 
         /*From message type, determine which state machine I should drive*/
         if(MlmeDequeue(&pAd->Mlme.Queue, &Elem))
         {
-#ifdef RTMP_MAC_USB
 
             if(Elem->MsgType == MT2_RESET_CONF)
             {
@@ -380,7 +364,6 @@ VOID MlmeHandler(RTMP_ADAPTER *pAd)
                 continue;
             }
 
-#endif /* RTMP_MAC_USB */
 
             /* if dequeue success*/
             switch(Elem->Machine)
@@ -524,7 +507,6 @@ VOID MlmeHalt(
 #endif /* QOS_DLS_SUPPORT */
         RTMPCancelTimer(&pAd->Mlme.LinkDownTimer, &Cancelled);
 
-#ifdef RTMP_MAC_USB
 
         if(pAd->Mlme.AutoWakeupTimerRunning)
         {
@@ -532,7 +514,6 @@ VOID MlmeHalt(
             pAd->Mlme.AutoWakeupTimerRunning = FALSE;
         }
 
-#endif /* RTMP_MAC_USB */
 
 
 
@@ -560,7 +541,6 @@ VOID MlmeHalt(
         /* Set LED*/
         RTMPSetLED(pAd, LED_HALT);
         RTMPSetSignalLED(pAd, -100);	/* Force signal strength Led to be turned off, firmware is not done it.*/
-#ifdef RTMP_MAC_USB
         {
             LED_CFG_STRUCT LedCfg;
             RTMP_IO_READ32(pAd, LED_CFG, &LedCfg.word);
@@ -570,7 +550,6 @@ VOID MlmeHalt(
             LedCfg.field.YLedMode = 0;
             RTMP_IO_WRITE32(pAd, LED_CFG, LedCfg.word);
         }
-#endif /* RTMP_MAC_USB */
 #endif /* LED_CONTROL_SUPPORT */
 
 #if defined(WOW_SUPPORT) && defined(RTMP_MAC_USB)
@@ -594,10 +573,6 @@ VOID MlmeResetRalinkCounters(
 {
     pAd->RalinkCounters.LastOneSecRxOkDataCnt = pAd->RalinkCounters.OneSecRxOkDataCnt;
 
-#ifdef RALINK_ATE
-
-    if(!ATE_ON(pAd))
-#endif /* RALINK_ATE */
         /* for performace enchanement */
         NdisZeroMemory(&pAd->RalinkCounters,
                        (ULONG)&pAd->RalinkCounters.OneSecEnd -
@@ -635,11 +610,6 @@ VOID MlmePeriodicExec(
 
     /* No More 0x84 MCU CMD from v.30 FW*/
 
-#ifdef INF_AMAZON_SE
-#ifdef RTMP_MAC_USB
-    SoftwareFlowControl(pAd);
-#endif /* RTMP_MAC_USB */
-#endif /* INF_AMAZON_SE */
 
 #ifdef CONFIG_STA_SUPPORT
 
@@ -648,7 +618,6 @@ VOID MlmePeriodicExec(
         RTMP_MLME_PRE_SANITY_CHECK(pAd);
     }
 
-#ifdef RTMP_MAC_USB
 
     /* Only when count down to zero, can we go to sleep mode.*/
     /* Count down counter is set after link up. So within 10 seconds after link up, we never go to sleep.*/
@@ -658,7 +627,6 @@ VOID MlmePeriodicExec(
         pAd->CountDowntoPsm--;
     }
 
-#endif /* RTMP_MAC_USB */
 
 #endif /* CONFIG_STA_SUPPORT */
 
@@ -720,10 +688,8 @@ VOID MlmePeriodicExec(
     pAd->Mlme.PeriodicRound ++;
     pAd->Mlme.GPIORound++;
 
-#ifdef RTMP_MAC_USB
     /* execute every 100ms, update the Tx FIFO Cnt for update Tx Rate.*/
     NICUpdateFifoStaCounters(pAd);
-#endif /* RTMP_MAC_USB */
 
     /* by default, execute every 500ms */
     if((pAd->ra_interval) &&
@@ -765,17 +731,11 @@ VOID MlmePeriodicExec(
 
         RTMP_SECOND_CCA_DETECTION(pAd);
 
-#ifdef RTMP_MAC_USB
-#ifndef INF_AMAZON_SE
         //RTUSBWatchDog(pAd);
         ;
-#endif /* INF_AMAZON_SE */
-#endif /* RTMP_MAC_USB */
 
-#ifdef DOT11_N_SUPPORT
         /* Need statistics after read counter. So put after NICUpdateRawCounters*/
         ORIBATimerTimeout(pAd);
-#endif /* DOT11_N_SUPPORT */
 
         /*
         	if (pAd->RalinkCounters.MgmtRingFullCount >= 2)
@@ -889,10 +849,8 @@ VOID MlmePeriodicExec(
 #ifdef CONFIG_STA_SUPPORT
         IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
         {
-#ifdef RTMP_MAC_USB
 
             if(!RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_IDLE_RADIO_OFF))
-#endif /* RTMP_MAC_USB */
             {
 
 
@@ -972,10 +930,8 @@ VOID STAMlmePeriodicExec(
 
     RTMP_CHIP_HIGH_POWER_TUNING(pAd, &pAd->StaCfg.RssiSample);
 
-#ifdef WPA_SUPPLICANT_SUPPORT
 
     if(pAd->StaCfg.WpaSupplicantUP == WPA_SUPPLICANT_DISABLE)
-#endif /* WPA_SUPPLICANT_SUPPORT */
     {
         /* WPA MIC error should block association attempt for 60 seconds*/
         if(pAd->StaCfg.bBlockAssoc &&
@@ -983,7 +939,6 @@ VOID STAMlmePeriodicExec(
             pAd->StaCfg.bBlockAssoc = FALSE;
     }
 
-#ifdef RTMP_MAC_USB
 
     /* If station is idle, go to sleep*/
     if(1
@@ -1009,7 +964,6 @@ VOID STAMlmePeriodicExec(
         DBGPRINT(RT_DEBUG_TRACE, ("PSM - Issue Sleep command)\n"));
     }
 
-#endif /* RTMP_MAC_USB */
 
 
 
@@ -1252,8 +1206,6 @@ VOID STAMlmePeriodicExec(
         }
 
 
-#ifdef RTMP_MAC_USB
-#ifdef DOT11_N_SUPPORT
 
         /*for 1X1 STA pass 11n wifi wmm, need to change txop per case;*/
         /* 1x1 device for 802.11n WMM Test*/
@@ -1328,7 +1280,6 @@ VOID STAMlmePeriodicExec(
             }
         }
 
-#endif /* DOT11_N_SUPPORT */
 
         /* TODO: for debug only. to be removed*/
         pAd->RalinkCounters.OneSecOsTxCount[QID_AC_BE] = 0;
@@ -1343,7 +1294,6 @@ VOID STAMlmePeriodicExec(
         pAd->RalinkCounters.OneSecTxAggregationCount = 0;
 
 
-#endif /* RTMP_MAC_USB */
 
 
         /*if ((pAd->RalinkCounters.OneSecTxNoRetryOkCount == 0) &&*/
@@ -1378,13 +1328,11 @@ VOID STAMlmePeriodicExec(
             if(pAd->StaCfg.bAutoConnectByBssid)
                 pAd->StaCfg.bAutoConnectByBssid = FALSE;
 
-#ifdef WPA_SUPPLICANT_SUPPORT
 
             if((pAd->StaCfg.WpaSupplicantUP != WPA_SUPPLICANT_DISABLE) &&
                     (pAd->StaCfg.AuthMode == Ndis802_11AuthModeWPA2))
                 pAd->StaCfg.bLostAp = TRUE;
 
-#endif /* WPA_SUPPLICANT_SUPPORT */
 
             pAd->MlmeAux.CurrReqIsFromNdis = FALSE;
             /* Lost AP, send disconnect & link down event*/
@@ -1472,12 +1420,10 @@ VOID STAMlmePeriodicExec(
     {
 
 
-#ifdef WPA_SUPPLICANT_SUPPORT
 
         if(pAd->StaCfg.WpaSupplicantUP & WPA_SUPPLICANT_ENABLE_WPS)
             goto SKIP_AUTO_SCAN_CONN;
 
-#endif /* WPA_SUPPLICANT_SUPPORT */
 
         if(pAd->StaCfg.bSkipAutoScanConn &&
                 RTMP_TIME_BEFORE(pAd->Mlme.Now32, pAd->StaCfg.LastScanTime + (30 * OS_HZ)))
@@ -1524,10 +1470,8 @@ VOID STAMlmePeriodicExec(
                 else
 #endif /* CARRIER_DETECTION_SUPPORT */
                 {
-#ifdef WPA_SUPPLICANT_SUPPORT
 
                     if(pAd->StaCfg.WpaSupplicantUP != WPA_SUPPLICANT_ENABLE)
-#endif // WPA_SUPPLICANT_SUPPORT //
                         MlmeAutoReconnectLastSSID(pAd);
                 }
             }
@@ -1536,7 +1480,6 @@ VOID STAMlmePeriodicExec(
 
 SKIP_AUTO_SCAN_CONN:
 
-#ifdef DOT11_N_SUPPORT
 
     if((pAd->MacTab.Content[BSSID_WCID].TXBAbitmap !=0) && (pAd->MacTab.fAnyBASession == FALSE)
             && (!RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_IDLE_RADIO_OFF)))
@@ -1551,12 +1494,9 @@ SKIP_AUTO_SCAN_CONN:
         AsicUpdateProtect(pAd, pAd->MlmeAux.AddHtInfo.AddHtInfo2.OperaionMode,  ALLN_SETPROTECT, FALSE, FALSE);
     }
 
-#endif /* DOT11_N_SUPPORT */
 
 
 
-#ifdef DOT11_N_SUPPORT
-#ifdef DOT11N_DRAFT3
 
     /* Perform 20/40 BSS COEX scan every Dot11BssWidthTriggerScanInt	*/
     if((OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_SCAN_2040)) &&
@@ -1588,8 +1528,6 @@ SKIP_AUTO_SCAN_CONN:
                                   pAd->RalinkCounters.LastOneSecRxOkDataCnt));
     }
 
-#endif /* DOT11N_DRAFT3 */
-#endif /* DOT11_N_SUPPORT */
 
     return;
 }
@@ -1846,9 +1784,7 @@ VOID MlmeCheckPsmChange(
 #ifdef PCIE_PS_SUPPORT
             && RTMP_TEST_PSFLAG(pAd, fRTMP_PS_CAN_GO_SLEEP)
 #endif /* PCIE_PS_SUPPORT */
-#ifdef RTMP_MAC_USB
             &&	(pAd->CountDowntoPsm == 0)
-#endif /* RTMP_MAC_USB */
             /*&&
             (pAd->RalinkCounters.OneSecTxNoRetryOkCount == 0) &&
             (pAd->RalinkCounters.OneSecTxRetryOkCount == 0)*/)
@@ -2654,7 +2590,6 @@ VOID MlmeUpdateTxRates(
                               pAd->MacTab.Content[BSSID_WCID].HTPhyMode.word));
 }
 
-#ifdef DOT11_N_SUPPORT
 /*
 	==========================================================================
 	Description:
@@ -2858,7 +2793,6 @@ VOID BATableExit(
 
     NdisFreeSpinLock(&pAd->BATabLock);
 }
-#endif /* DOT11_N_SUPPORT */
 
 /* IRQL = DISPATCH_LEVEL*/
 VOID MlmeRadioOff(
@@ -3177,7 +3111,6 @@ VOID BssEntrySet(
 
     pBss->AddHtInfoLen = 0;
     pBss->HtCapabilityLen = 0;
-#ifdef DOT11_N_SUPPORT
 
     if(ie_list->HtCapabilityLen> 0)
     {
@@ -3193,7 +3126,6 @@ VOID BssEntrySet(
                                    &ie_list->HtCapability);
         }
 
-#ifdef DOT11_VHT_AC
 
         if(ie_list->vht_cap_len)
         {
@@ -3223,10 +3155,8 @@ VOID BssEntrySet(
             }
         }
 
-#endif /* DOT11_VHT_AC */
     }
 
-#endif /* DOT11_N_SUPPORT */
 
     BssCipherParse(pBss);
 
@@ -3258,10 +3188,8 @@ VOID BssEntrySet(
         pBss->WpaIE.IELen = 0;
         pBss->RsnIE.IELen = 0;
         pBss->WpsIE.IELen = 0;
-#ifdef EXT_BUILD_CHANNEL_LIST
         NdisZeroMemory(&pBss->CountryString[0], 3);
         pBss->bHasCountryIE = FALSE;
-#endif /* EXT_BUILD_CHANNEL_LIST */
 #endif /* CONFIG_STA_SUPPORT */
         pEid = (PEID_STRUCT) pVIE;
 
@@ -3322,13 +3250,11 @@ VOID BssEntrySet(
                 }
 
                 break;
-#ifdef EXT_BUILD_CHANNEL_LIST
 
             case IE_COUNTRY:
                 NdisMoveMemory(&pBss->CountryString[0], pEid->Octet, 3);
                 pBss->bHasCountryIE = TRUE;
                 break;
-#endif /* EXT_BUILD_CHANNEL_LIST */
 #endif /* CONFIG_STA_SUPPORT */
             }
 
@@ -3443,8 +3369,6 @@ ULONG BssTableSetEntry(
 
 
 #ifdef CONFIG_STA_SUPPORT
-#ifdef DOT11_N_SUPPORT
-#ifdef DOT11N_DRAFT3
 VOID  TriEventInit(
     IN	PRTMP_ADAPTER	pAd)
 {
@@ -3518,8 +3442,6 @@ INT TriEventTableSetEntry(
 
     return 0;
 }
-#endif /* DOT11N_DRAFT3 */
-#endif /* DOT11_N_SUPPORT */
 
 /* IRQL = DISPATCH_LEVEL*/
 VOID BssTableSsidSort(
@@ -3558,7 +3480,6 @@ VOID BssTableSsidSort(
         {
             BSS_ENTRY *pOutBss = &OutTab->BssEntry[OutTab->BssNr];
 
-#ifdef WPA_SUPPLICANT_SUPPORT
 
             if(pAd->StaCfg.WpaSupplicantUP & 0x80)
             {
@@ -3568,10 +3489,8 @@ VOID BssTableSsidSort(
                 continue;
             }
 
-#endif /* WPA_SUPPLICANT_SUPPORT */
 
 
-#ifdef EXT_BUILD_CHANNEL_LIST
 
             /* If no Country IE exists no Connection will be established when IEEE80211dClientMode is strict.*/
             if((pAd->StaCfg.IEEE80211dClientMode == Rt802_11_D_Strict) &&
@@ -3581,9 +3500,7 @@ VOID BssTableSsidSort(
                 continue;
             }
 
-#endif /* EXT_BUILD_CHANNEL_LIST */
 
-#ifdef DOT11_N_SUPPORT
 
             /* 2.4G/5G N only mode*/
             if((pInBss->HtCapabilityLen == 0) &&
@@ -3600,7 +3517,6 @@ VOID BssTableSsidSort(
                 continue;
             }
 
-#endif /* DOT11_N_SUPPORT */
 
 
 
@@ -3685,7 +3601,6 @@ VOID BssTableSsidSort(
             BSS_ENTRY *pOutBss = &OutTab->BssEntry[OutTab->BssNr];
 
 
-#ifdef DOT11_N_SUPPORT
 
             /* 2.4G/5G N only mode*/
             if((pInBss->HtCapabilityLen == 0) &&
@@ -3702,7 +3617,6 @@ VOID BssTableSsidSort(
                 continue;
             }
 
-#endif /* DOT11_N_SUPPORT */
 
             /* New for WPA2*/
             /* Check the Authmode first*/
@@ -4451,13 +4365,6 @@ BOOLEAN MlmeEnqueueForRecv(
     INT		 MsgType = 0x0;
     MLME_QUEUE	*Queue = (MLME_QUEUE *)&pAd->Mlme.Queue;
 
-#ifdef RALINK_ATE
-
-    /* Nothing to do in ATE mode */
-    if(ATE_ON(pAd))
-        return FALSE;
-
-#endif /* RALINK_ATE */
 
     /* Do nothing if the driver is starting halt state.*/
     /* This might happen when timer already been fired before cancel timer with mlmehalt*/
@@ -5043,7 +4950,6 @@ VOID RTMPCheckRates(
 }
 
 #ifdef CONFIG_STA_SUPPORT
-#ifdef DOT11_N_SUPPORT
 BOOLEAN RTMPCheckChannel(
     IN PRTMP_ADAPTER pAd,
     IN UCHAR		CentralChannel,
@@ -5214,7 +5120,6 @@ BOOLEAN RTMPCheckHt(
 }
 
 
-#ifdef DOT11_VHT_AC
 /*
 	========================================================================
 
@@ -5270,8 +5175,6 @@ BOOLEAN RTMPCheckVht(
 
     return TRUE;
 }
-#endif /* DOT11_VHT_AC */
-#endif /* DOT11_N_SUPPORT */
 #endif /* CONFIG_STA_SUPPORT */
 
 /*
@@ -5307,10 +5210,8 @@ VOID RTMPUpdateMlmeRate(
         break;
 
     case(WMODE_B | WMODE_G):
-#ifdef DOT11_N_SUPPORT
     case(WMODE_B | WMODE_G | WMODE_GN | WMODE_A |WMODE_AN):
     case(WMODE_B | WMODE_G | WMODE_GN):
-#endif /* DOT11_N_SUPPORT */
         if((pAd->MlmeAux.SupRateLen == 4) &&
                 (pAd->MlmeAux.ExtRateLen == 0))
             /* B only AP*/
@@ -5326,13 +5227,11 @@ VOID RTMPUpdateMlmeRate(
         break;
 
     case(WMODE_A):
-#ifdef DOT11_N_SUPPORT
     case(WMODE_GN):	/* rt2860 need to check mlmerate for 802.11n*/
     case(WMODE_G | WMODE_GN):
     case(WMODE_A | WMODE_G | WMODE_GN | WMODE_AN):
     case(WMODE_A |WMODE_AN):
     case(WMODE_AN):
-#endif /* DOT11_N_SUPPORT */
         ProperMlmeRate = RATE_24;
         MinimumRate = RATE_6;
         break;
@@ -5354,7 +5253,6 @@ VOID RTMPUpdateMlmeRate(
     }
 
 
-#ifdef DOT11_VHT_AC
 
     if(WMODE_EQUAL(pAd->CommonCfg.PhyMode, WMODE_B))
     {
@@ -5382,7 +5280,6 @@ VOID RTMPUpdateMlmeRate(
         }
     }
 
-#endif /* DOT11_VHT_AC */
 
     for(i = 0; i < pAd->MlmeAux.SupRateLen; i++)
     {
@@ -5539,21 +5436,13 @@ CHAR RTMPMinSnr(
 VOID AsicEvaluateRxAnt(
     IN PRTMP_ADAPTER	pAd)
 {
-#ifdef RALINK_ATE
 
-    if(ATE_ON(pAd))
-        return;
-
-#endif /* RALINK_ATE */
-
-#ifdef RTMP_MAC_USB
 #ifdef CONFIG_STA_SUPPORT
 
     if(RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_IDLE_RADIO_OFF))
         return;
 
 #endif /* CONFIG_STA_SUPPORT */
-#endif /* RTMP_MAC_USB */
 
     if(RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_RESET_IN_PROGRESS |
                       fRTMP_ADAPTER_HALT_IN_PROGRESS |
@@ -5632,12 +5521,6 @@ VOID AsicRxAntEvalTimeout(
 
 
 
-#ifdef RALINK_ATE
-
-    if(ATE_ON(pAd))
-        return;
-
-#endif /* RALINK_ATE */
 
     if(RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_RESET_IN_PROGRESS |
                       fRTMP_ADAPTER_HALT_IN_PROGRESS |

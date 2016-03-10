@@ -441,7 +441,6 @@ UCHAR GetChannelFlag(PCH_DESC pChDesc, UCHAR index)
     return 0;
 }
 
-#ifdef EXT_BUILD_CHANNEL_LIST
 
 /*Albania*/
 CH_DESP Country_AL_ChDesp[] =
@@ -1684,14 +1683,11 @@ static UCHAR FillChList(
         pAd->ChannelList[j].MaxTxPwr = pChDesp->MaxTxPwr;
         pAd->ChannelList[j].DfsReq = pChDesp->DfsReq;
         pAd->ChannelList[j].RegulatoryDomain = regulatoryDomain;
-#ifdef DOT11_N_SUPPORT
 
         if(N_ChannelGroupCheck(pAd, pAd->ChannelList[j].Channel))
             pAd->ChannelList[j].Flags |= CHANNEL_40M_CAP;
 
-#endif /* DOT11_N_SUPPORT */
 
-#ifdef RT_CFG80211_SUPPORT
         CFG80211OS_ChanInfoInit(
             pAd->pCfg80211_CB,
             j,
@@ -1699,7 +1695,6 @@ static UCHAR FillChList(
             pAd->ChannelList[j].MaxTxPwr,
             WMODE_CAP_N(pAd->CommonCfg.PhyMode),
             (pAd->CommonCfg.RegTransmitSetting.field.BW == BW_20));
-#endif /* RT_CFG80211_SUPPORT */
 
         j++;
     }
@@ -1829,9 +1824,7 @@ VOID BuildBeaconChList(
         }
     }
 }
-#endif /* EXT_BUILD_CHANNEL_LIST */
 
-#ifdef DOT11_N_SUPPORT
 static BOOLEAN IsValidChannel(
     IN PRTMP_ADAPTER pAd,
     IN UCHAR channel)
@@ -2009,7 +2002,6 @@ UCHAR N_SetCenCh(RTMP_ADAPTER *pAd, UCHAR prim_ch)
 
     return pAd->CommonCfg.CentralChannel;
 }
-#endif /* DOT11_N_SUPPORT */
 
 
 UINT8 GetCuntryMaxTxPwr(
@@ -2033,23 +2025,19 @@ UINT8 GetCuntryMaxTxPwr(
     {
         UINT deltaTxStreamPwr = 0;
 
-#ifdef DOT11_N_SUPPORT
 
         if(WMODE_CAP_N(pAd->CommonCfg.PhyMode) && (pAd->CommonCfg.TxStream == 2))
             deltaTxStreamPwr = 3; /* If 2Tx case, antenna gain will increase 3dBm*/
 
-#endif /* DOT11_N_SUPPORT */
 
         if(pAd->ChannelList[i].RegulatoryDomain == FCC)
         {
             /* FCC should maintain 20/40 Bandwidth, and without antenna gain */
-#ifdef DOT11_N_SUPPORT
             if(WMODE_CAP_N(pAd->CommonCfg.PhyMode) &&
                     (pAd->CommonCfg.RegTransmitSetting.field.BW == BW_40) &&
                     (channel == 1 || channel == 11))
                 return (pAd->ChannelList[i].MaxTxPwr - pAd->CommonCfg.BandedgeDelta - deltaTxStreamPwr);
             else
-#endif /* DOT11_N_SUPPORT */
                 return (pAd->ChannelList[i].MaxTxPwr - deltaTxStreamPwr);
         }
         else if(pAd->ChannelList[i].RegulatoryDomain == CE)

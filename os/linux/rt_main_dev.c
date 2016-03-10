@@ -41,11 +41,6 @@
 // TODO: shiang-6590, remove it when MP
 // TODO: End---
 
-#ifdef RTMP_MAC_USB
-#ifdef OS_ABL_SUPPORT
-MODULE_LICENSE("GPL");
-#endif /* OS_ABL_SUPPORT */
-#endif /* RTMP_MAC_USB */
 
 #ifdef CONFIG_APSTA_MIXED_SUPPORT
 /*UINT32 CW_MAX_IN_BITS;*/
@@ -69,10 +64,6 @@ module_param(debug, long, 0);  // RT_DEBUG_ERROR
 MODULE_PARM_DESC(mac, "wireless mac addr");
 MODULE_PARM_DESC(debug, "log verbosity level (0: off, 1: error only [default], 2: warnings, 3: trace, 4: info, 5: loud)");
 
-#ifdef OS_ABL_SUPPORT
-RTMP_DRV_ABL_OPS RtmpDrvOps, *pRtmpDrvOps = &RtmpDrvOps;
-RTMP_NET_ABL_OPS RtmpDrvNetOps, *pRtmpDrvNetOps = &RtmpDrvNetOps;
-#endif /* OS_ABL_SUPPORT */
 
 
 /*---------------------------------------------------------------------*/
@@ -392,9 +383,7 @@ int rt28xx_open(VOID *dev)
 
 
 #ifdef LINUX
-#ifdef RT_CFG80211_SUPPORT
     RTMP_DRIVER_CFG80211_START(pAd);
-#endif /* RT_CFG80211_SUPPORT */
 #endif /* LINUX */
 
 
@@ -432,9 +421,6 @@ PNET_DEV RtmpPhyNetDevInit(
     pNetDevHook->open = MainVirtualIF_open;
     pNetDevHook->stop = MainVirtualIF_close;
     pNetDevHook->xmit = rt28xx_send_packets;
-#ifdef IKANOS_VX_1X0
-    pNetDevHook->xmit = IKANOS_DataFramesTx;
-#endif /* IKANOS_VX_1X0 */
     pNetDevHook->ioctl = rt28xx_ioctl;
     pNetDevHook->priv_flags = InfId; /*INT_MAIN; */
     pNetDevHook->get_stats = RT28xx_get_ether_stats;
@@ -766,7 +752,6 @@ BOOLEAN RtmpPhyNetDevExit(
     /* Unregister network device */
     if(net_dev != NULL)
     {
-#ifdef RT_CFG80211_SUPPORT
 
         // If scan is running, abort it. Prevents WARN_ON net/wireless/core.c:846
         // Also, we need to prevent new scans from starting after this point (they do).
@@ -776,7 +761,6 @@ BOOLEAN RtmpPhyNetDevExit(
             RT_CFG80211_SCAN_END(pAd, TRUE);
         }
 
-#endif
 
         // FIXED: call MainVirtualIF_close() when disconnecting. otherwise, enjoy 35G of logs and rmmod freeze
         DBGPRINT(RT_DEBUG_TRACE, ("RtmpPhyNetDevExit(): MainVirtualIF_close(), dev->name=%s!\n", net_dev->name));

@@ -48,9 +48,7 @@ REG_PAIR   BBPRegTable[] =
     {BBP_R92,		0x00},	/* middle range issue, Rory @2008-01-28*/
     {BBP_R103,		0x00}, 	/* near range high-power issue, requested from Gary @2008-0528*/
     {BBP_R105,		0x05},	/* 0x05 is for rt2860E to turn on FEQ control. It is safe for rt2860D and before, because Bit 7:2 are reserved in rt2860D and before.*/
-#ifdef DOT11_N_SUPPORT
     {BBP_R106,		0x35},	/* Optimizing the Short GI sampling request from Gray @2009-0409*/
-#endif /* DOT11_N_SUPPORT */
 };
 #define	NUM_BBP_REG_PARMS	(sizeof(BBPRegTable) / sizeof(REG_PAIR))
 
@@ -343,7 +341,6 @@ NDIS_STATUS AsicBBPWriteWithRxChain(
         {
             RTMP_BBP_IO_READ8_BY_REG_ID(pAd, BBP_R27, &val);
             val = (val & (~0x60)) | (idx << 5);
-#ifdef RTMP_MAC_USB
 
             if((IS_USB_INF(pAd)) &&
                     (RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R27, val) == STATUS_SUCCESS))
@@ -351,7 +348,6 @@ NDIS_STATUS AsicBBPWriteWithRxChain(
                 RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, bbpId, bbpVal);
             }
 
-#endif /* RTMP_MAC_USB */
 
 
             DBGPRINT(RT_DEBUG_INFO,
@@ -394,7 +390,6 @@ NDIS_STATUS AsicBBPReadWithRxChain(
             val = 0;
             RTMP_BBP_IO_READ8_BY_REG_ID(pAd, BBP_R27, &val);
             val = (val & (~0x60)) | (idx << 5);
-#ifdef RTMP_MAC_USB
 
             if((IS_USB_INF(pAd)) &&
                     (RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, BBP_R27, val) == STATUS_SUCCESS))
@@ -402,7 +397,6 @@ NDIS_STATUS AsicBBPReadWithRxChain(
                 RTMP_BBP_IO_READ8_BY_REG_ID(pAd, bbpId, pBbpVal);
             }
 
-#endif /* RTMP_MAC_USB */
 
             break;
         }

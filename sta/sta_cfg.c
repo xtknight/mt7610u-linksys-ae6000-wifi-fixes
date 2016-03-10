@@ -66,7 +66,6 @@ static struct
     {"BGProtection",				Set_BGProtection_Proc},
     {"RTSThreshold",				Set_RTSThreshold_Proc},
     {"FragThreshold",				Set_FragThreshold_Proc},
-#ifdef DOT11_N_SUPPORT
     {"HtBw",		                Set_HtBw_Proc},
     {"HtMcs",		                Set_HtMcs_Proc},
     {"HtGi",		                Set_HtGi_Proc},
@@ -82,16 +81,11 @@ static struct
     {"HtProtect",		        	Set_HtProtect_Proc},
     {"HtMimoPs",		        	Set_HtMimoPs_Proc},
     {"HtDisallowTKIP",				Set_HtDisallowTKIP_Proc},
-#ifdef DOT11N_DRAFT3
     {"HtBssCoex",				Set_HT_BssCoex_Proc},
-#endif /* DOT11N_DRAFT3 */
-#endif /* DOT11_N_SUPPORT */
 
-#ifdef DOT11_VHT_AC
     {"VhtBw",					Set_VhtBw_Proc},
     {"VhtStbc",					Set_VhtStbc_Proc},
     {"VhtBwSignal",				Set_VhtBwSignal_Proc},
-#endif /* DOT11_VHT_AC */
 
 #ifdef AGGREGATION_SUPPORT
     {"PktAggregate",				Set_PktAggregate_Proc},
@@ -151,14 +145,12 @@ static struct
 #endif /* STREAM_MODE_SUPPORT */
 
     {"RateAlg",					Set_RateAlg_Proc},
-#ifdef NEW_RATE_ADAPT_SUPPORT
     {"LowTrafficThrd",				Set_LowTrafficThrd_Proc},
     {"TrainUpRule",					Set_TrainUpRule_Proc},
     {"TrainUpRuleRSSI",				Set_TrainUpRuleRSSI_Proc},
     {"TrainUpLowThrd",				Set_TrainUpLowThrd_Proc},
     {"TrainUpHighThrd",				Set_TrainUpHighThrd_Proc},
     {"RateTable",					Set_RateTable_Proc},
-#endif /* NEW_RATE_ADAPT_SUPPORT */
 
 #ifdef PRE_ANT_SWITCH
     {"PreAntSwitch",		        Set_PreAntSwitch_Proc},
@@ -174,73 +166,8 @@ static struct
 #endif /* INCLUDE_DEBUG_QUEUE */
 #endif /* DBG_CTRL_SUPPORT */
 
-#ifdef RALINK_ATE
-    {"ATE",							Set_ATE_Proc},
-    {"ATEDA",						Set_ATE_DA_Proc},
-    {"ATESA",						Set_ATE_SA_Proc},
-    {"ATEBSSID",					Set_ATE_BSSID_Proc},
-    {"ATECHANNEL",					Set_ATE_CHANNEL_Proc},
-    {"ATEINITCHAN",					Set_ATE_INIT_CHAN_Proc},
-    {"ADCDump",					Set_ADCDump_Proc},
-#ifdef RTMP_INTERNAL_TX_ALC
-    {"ATETSSICBA",					Set_ATE_TSSI_CALIBRATION_Proc},
-    {"ATETSSICBAEX",					Set_ATE_TSSI_CALIBRATION_EX_Proc},
-#if defined(RT3350) || defined(RT3352)
-    {"ATETSSICALBRENABLE",				RT335x_Set_ATE_TSSI_CALIBRATION_ENABLE_Proc},
-#endif /* defined(RT3350) || defined(RT3352) */
-#endif /* RTMP_INTERNAL_TX_ALC */
-#ifdef  RTMP_TEMPERATURE_COMPENSATION
-    {"ATEREADEXTSSI",			Set_ATE_READ_EXTERNAL_TSSI_Proc},
-#endif /* RTMP_TEMPERATURE_COMPENSATION */
-    {"ATETXPOW0",					Set_ATE_TX_POWER0_Proc},
-    {"ATETXPOW1",					Set_ATE_TX_POWER1_Proc},
-#ifdef DOT11N_SS3_SUPPORT
-    {"ATETXPOW2",					Set_ATE_TX_POWER2_Proc},
-#endif /* DOT11N_SS3_SUPPORT */
-    {"ATETXANT",					Set_ATE_TX_Antenna_Proc},
-    {"ATERXANT",					Set_ATE_RX_Antenna_Proc},
-    {"ATETXFREQOFFSET",				Set_ATE_TX_FREQ_OFFSET_Proc},
-    {"ATETXBW",						Set_ATE_TX_BW_Proc},
-    {"ATETXLEN",					Set_ATE_TX_LENGTH_Proc},
-    {"ATETXCNT",					Set_ATE_TX_COUNT_Proc},
-    {"ATETXMCS",					Set_ATE_TX_MCS_Proc},
-    {"ATETXSTBC",					Set_ATE_TX_STBC_Proc},
-    {"ATETXMODE",					Set_ATE_TX_MODE_Proc},
-    {"ATETXGI",						Set_ATE_TX_GI_Proc},
-    {"ATERXFER",					Set_ATE_RX_FER_Proc},
-    {"ATERRF",						Set_ATE_Read_RF_Proc},
-#if (!defined(RTMP_RF_RW_SUPPORT)) && (!defined(RLT_RF))
-    {"ATEWRF1",						Set_ATE_Write_RF1_Proc},
-    {"ATEWRF2",						Set_ATE_Write_RF2_Proc},
-    {"ATEWRF3",						Set_ATE_Write_RF3_Proc},
-    {"ATEWRF4",						Set_ATE_Write_RF4_Proc},
-#endif /* (!defined(RTMP_RF_RW_SUPPORT)) && (!defined(RLT_RF)) */
-    {"ATELDE2P",				    Set_ATE_Load_E2P_Proc},
-    {"ATERE2P",						Set_ATE_Read_E2P_Proc},
-#ifdef LED_CONTROL_SUPPORT
-#endif /* LED_CONTROL_SUUPORT */
-    {"ATEAUTOALC",					Set_ATE_AUTO_ALC_Proc},
-    {"ATEIPG",						Set_ATE_IPG_Proc},
-    {"ATEPAYLOAD",					Set_ATE_Payload_Proc},
-#ifdef TXBF_SUPPORT
-    {"ATETXBF",						Set_ATE_TXBF_Proc},
-    {"ATETXSOUNDING",				Set_ATE_TXSOUNDING_Proc},
-    {"ATETXBFDIVCAL",				Set_ATE_TXBF_DIVCAL_Proc},
-    {"ATETXBFLNACAL",				Set_ATE_TXBF_LNACAL_Proc},
-    {"ATETxBfGolden",				Set_ATE_TXBF_GOLDEN_Proc},
-#endif /* TXBF_SUPPORT */
-    {"ATESHOW",						Set_ATE_Show_Proc},
-    {"ATEHELP",						Set_ATE_Help_Proc},
 
-#ifdef RALINK_QA
-    {"TxStop",						Set_TxStop_Proc},
-    {"RxStop",						Set_RxStop_Proc},
-#endif /* RALINK_QA */
-#endif /* RALINK_ATE */
-
-#ifdef WPA_SUPPLICANT_SUPPORT
     {"WpaSupport",                  Set_Wpa_Support},
-#endif /* WPA_SUPPLICANT_SUPPORT */
 
 
 
@@ -250,9 +177,7 @@ static struct
 #ifdef CONFIG_APSTA_MIXED_SUPPORT
     {"OpMode",						Set_OpMode_Proc},
 #endif /* CONFIG_APSTA_MIXED_SUPPORT */
-#ifdef DOT11_N_SUPPORT
     {"TGnWifiTest",                 Set_TGnWifiTest_Proc},
-#endif /* DOT11_N_SUPPORT */
 #ifdef QOS_DLS_SUPPORT
     {"DlsAddEntry",					Set_DlsAddEntry_Proc},
     {"DlsTearDownEntry",			Set_DlsTearDownEntry_Proc},
@@ -260,14 +185,12 @@ static struct
     {"LongRetry",	        		Set_LongRetryLimit_Proc},
     {"ShortRetry",	        		Set_ShortRetryLimit_Proc},
     {"AutoFallBack",	        	Set_AutoFallBack_Proc},
-#ifdef EXT_BUILD_CHANNEL_LIST
     {"11dClientMode",				Set_Ieee80211dClientMode_Proc},
     {"CountryCode", 				Set_ExtCountryCode_Proc},
     {"DfsType", 					Set_ExtDfsType_Proc},
     {"ChannelListAdd",				Set_ChannelListAdd_Proc},
     {"ChannelListShow", 			Set_ChannelListShow_Proc},
     {"ChannelListDel",				Set_ChannelListDel_Proc},
-#endif /* EXT_BUILD_CHANNEL_LIST */
 #ifdef CARRIER_DETECTION_SUPPORT
     {"CarrierDetect",				Set_StaCarrierDetect_Proc},
 #endif /* CARRIER_DETECTION_SUPPORT */
@@ -293,21 +216,17 @@ static struct
 #endif /* AGS_SUPPORT */
 
 #ifdef WOW_SUPPORT
-#ifdef RTMP_MAC_USB
     {"wow_enable",					Set_WOW_Enable},
     {"wow_gpio",					Set_WOW_GPIO},
     {"wow_delay",					Set_WOW_Delay},
     {"wow_hold",                    Set_WOW_Hold},
-#endif /* RTMP_MAC_USB */
 #endif /* WOW_SUPPORT */
 
     {"VcoPeriod",					Set_VcoPeriod_Proc},
 
 #ifdef WFD_SUPPORT
     {"WfdEnable",						Set_WfdEnable_Proc},
-#ifdef RT_CFG80211_SUPPORT
     {"WfdInsertIe",						Set_WfdInsertIe_Proc},
-#endif /* RT_CFG80211_SUPPORT */
     {"WfdDevType",						Set_WfdDeviceType_Proc},
     {"WfdCouple",						Set_WfdCouple_Proc},
     {"WfdSessionAvail", 				Set_WfdSessionAvailable_Proc},
@@ -499,9 +418,7 @@ INT	Set_WmmCapable_Proc(
     bWmmCapable = simple_strtol(arg, 0, 10);
 
     if((bWmmCapable == 1)
-#ifdef RTMP_MAC_USB
             && (pAd->NumberOfPipes >= 5)
-#endif /* RTMP_MAC_USB */
       )
         pAd->CommonCfg.bWmmCapable = TRUE;
     else if(bWmmCapable == 0)
@@ -561,9 +478,7 @@ INT Set_NetworkType_Proc(
                 DBGPRINT(RT_DEBUG_TRACE, ("NDIS_STATUS_MEDIA_DISCONNECT Event BB!\n"));
             }
 
-#ifdef DOT11_N_SUPPORT
             SetCommonHT(pAd);
-#endif /* DOT11_N_SUPPORT */
         }
 
         pAd->StaCfg.BssType = BSS_ADHOC;
@@ -599,9 +514,7 @@ INT Set_NetworkType_Proc(
                 LinkDown(pAd, FALSE);
             }
 
-#ifdef DOT11_N_SUPPORT
             SetCommonHT(pAd);
-#endif /* DOT11_N_SUPPORT */
         }
 
         pAd->StaCfg.BssType = BSS_INFRA;
@@ -623,13 +536,11 @@ INT Set_NetworkType_Proc(
         UCHAR rf_channel, rf_bw;
         INT ext_ch;
 
-#ifdef RT_CFG80211_SUPPORT
 #ifdef CONFIG_STA_SUPPORT
         // This helps when doing rmmod in Monitor mode if it was switched from Managed mode in the past
         DBGPRINT(RT_DEBUG_TRACE, ("MONITOR: LOST_AP_INFORM\n"));
         RT_CFG80211_LOST_AP_INFORM(pAd);
 #endif
-#endif /* RT_CFG80211_SUPPORT */
 
 #ifdef MONITOR_FLAG_11N_SNIFFER_SUPPORT
 
@@ -649,24 +560,19 @@ INT Set_NetworkType_Proc(
 
         if(pAd->CommonCfg.CentralChannel == 0)
         {
-#ifdef DOT11_N_SUPPORT
 
             if(WMODE_EQUAL(pAd->CommonCfg.PhyMode, WMODE_A | WMODE_AN))
                 pAd->CommonCfg.CentralChannel = 36;
             else
-#endif /* DOT11_N_SUPPORT */
                 pAd->CommonCfg.CentralChannel = 6;
         }
 
-#ifdef DOT11_N_SUPPORT
         else
             N_ChannelCheck(pAd);
 
-#endif /* DOT11_N_SUPPORT */
 
 
         /* same procedure with window driver */
-#ifdef DOT11_N_SUPPORT
 
         if(WMODE_CAP_N(pAd->CommonCfg.PhyMode) &&
                 pAd->CommonCfg.RegTransmitSetting.field.BW == BW_40 &&
@@ -689,7 +595,6 @@ INT Set_NetworkType_Proc(
             rf_channel = pAd->CommonCfg.CentralChannel;
         }
         else
-#endif /* DOT11_N_SUPPORT */
         {
             /* 20MHz */
             rf_bw = BW_20;
@@ -756,13 +661,11 @@ INT Set_AuthMode_Proc(
     else if((strcmp(arg, "WPA2PSK") == 0) || (strcmp(arg, "wpa2psk") == 0))
         pAd->StaCfg.AuthMode = Ndis802_11AuthModeWPA2PSK;
 
-#ifdef WPA_SUPPLICANT_SUPPORT
     else if((strcmp(arg, "WPA") == 0) || (strcmp(arg, "wpa") == 0))
         pAd->StaCfg.AuthMode = Ndis802_11AuthModeWPA;
     else if((strcmp(arg, "WPA2") == 0) || (strcmp(arg, "wpa2") == 0))
         pAd->StaCfg.AuthMode = Ndis802_11AuthModeWPA2;
 
-#endif /* WPA_SUPPLICANT_SUPPORT */
     else
         return FALSE;
 
@@ -1405,7 +1308,6 @@ INT Set_PSMode_Proc(
     return TRUE;
 }
 
-#ifdef WPA_SUPPLICANT_SUPPORT
 /*
     ==========================================================================
     Description:
@@ -1436,7 +1338,6 @@ INT Set_Wpa_Support(
 
     return TRUE;
 }
-#endif /* WPA_SUPPLICANT_SUPPORT */
 
 
 
@@ -1453,7 +1354,6 @@ INT Set_TGnWifiTest_Proc(
     return TRUE;
 }
 
-#ifdef EXT_BUILD_CHANNEL_LIST
 INT Set_Ieee80211dClientMode_Proc(
     IN  PRTMP_ADAPTER   pAdapter,
     IN  PSTRING          arg)
@@ -1470,7 +1370,6 @@ INT Set_Ieee80211dClientMode_Proc(
     DBGPRINT(RT_DEBUG_TRACE, ("Set_Ieee802dMode_Proc::(IEEEE0211dMode=%d)\n", pAdapter->StaCfg.IEEE80211dClientMode));
     return TRUE;
 }
-#endif /* EXT_BUILD_CHANNEL_LIST */
 
 #ifdef CARRIER_DETECTION_SUPPORT
 INT Set_StaCarrierDetect_Proc(
@@ -1496,9 +1395,7 @@ INT	Show_Adhoc_MacTable_Proc(
 
     sprintf(extra, "\n");
 
-#ifdef DOT11_N_SUPPORT
     sprintf(extra, "%sHT Operating Mode : %d\n", extra, pAd->CommonCfg.AddHTInfo.AddHtInfo2.OperaionMode);
-#endif /* DOT11_N_SUPPORT */
 
     sprintf(extra + strlen(extra), "\n%-19s%-4s%-4s%-7s%-7s%-7s%-10s%-6s%-6s%-6s%-6s\n",
             "MAC", "AID", "BSS", "RSSI0", "RSSI1", "RSSI2", "PhMd", "BW", "MCS", "SGI", "STBC");
@@ -1645,7 +1542,6 @@ VOID RTMPAddKey(
             NdisZeroMemory(&pAd->SharedKey[BSS0][0], sizeof(CIPHER_KEY));
             pAd->SharedKey[BSS0][0].KeyLen = LEN_TK;
             NdisMoveMemory(pAd->SharedKey[BSS0][0].Key, pKey->KeyMaterial, LEN_TK);
-#ifdef WPA_SUPPLICANT_SUPPORT
 
             if(pAd->StaCfg.PairCipher == Ndis802_11Encryption2Enabled)
             {
@@ -1653,7 +1549,6 @@ VOID RTMPAddKey(
                 NdisMoveMemory(pAd->SharedKey[BSS0][0].TxMic, pKey->KeyMaterial + LEN_TK + LEN_TKIP_MIC, LEN_TKIP_MIC);
             }
             else
-#endif /* WPA_SUPPLICANT_SUPPORT */
             {
                 NdisMoveMemory(pAd->SharedKey[BSS0][0].TxMic, pKey->KeyMaterial + LEN_TK, LEN_TKIP_MIC);
                 NdisMoveMemory(pAd->SharedKey[BSS0][0].RxMic, pKey->KeyMaterial + LEN_TK + LEN_TKIP_MIC, LEN_TKIP_MIC);
@@ -1702,7 +1597,6 @@ VOID RTMPAddKey(
             NdisZeroMemory(&pAd->SharedKey[BSS0][pAd->StaCfg.DefaultKeyId], sizeof(CIPHER_KEY));
             pAd->SharedKey[BSS0][pAd->StaCfg.DefaultKeyId].KeyLen = LEN_TK;
             NdisMoveMemory(pAd->SharedKey[BSS0][pAd->StaCfg.DefaultKeyId].Key, pKey->KeyMaterial, LEN_TK);
-#ifdef WPA_SUPPLICANT_SUPPORT
 
             if(pAd->StaCfg.GroupCipher == Ndis802_11Encryption2Enabled)
             {
@@ -1710,7 +1604,6 @@ VOID RTMPAddKey(
                 NdisMoveMemory(pAd->SharedKey[BSS0][pAd->StaCfg.DefaultKeyId].TxMic, pKey->KeyMaterial + LEN_TK + LEN_TKIP_MIC, LEN_TKIP_MIC);
             }
             else
-#endif /* WPA_SUPPLICANT_SUPPORT */
             {
                 NdisMoveMemory(pAd->SharedKey[BSS0][pAd->StaCfg.DefaultKeyId].TxMic, pKey->KeyMaterial + LEN_TK, LEN_TKIP_MIC);
                 NdisMoveMemory(pAd->SharedKey[BSS0][pAd->StaCfg.DefaultKeyId].RxMic, pKey->KeyMaterial + LEN_TK + LEN_TKIP_MIC, LEN_TKIP_MIC);
@@ -1885,7 +1778,6 @@ INT Set_AdhocN_Proc(
     IN  PRTMP_ADAPTER	pAd,
     IN  PSTRING			arg)
 {
-#ifdef DOT11_N_SUPPORT
 
     if(simple_strtol(arg, 0, 10) == 0)
         pAd->StaCfg.bAdhocN = FALSE;
@@ -1893,14 +1785,12 @@ INT Set_AdhocN_Proc(
         pAd->StaCfg.bAdhocN = TRUE;
 
     DBGPRINT(RT_DEBUG_TRACE, ("IF Set_AdhocN_Proc::(bAdhocN=%d)\n", pAd->StaCfg.bAdhocN));
-#endif /* DOT11_N_SUPPORT */
     return TRUE;
 }
 
 
 
 #ifdef WOW_SUPPORT
-#ifdef RTMP_MAC_USB
 /* set WOW enable */
 INT Set_WOW_Enable(
     IN PRTMP_ADAPTER        pAd,
@@ -1983,7 +1873,6 @@ INT Set_WOW_Hold(
 
     return TRUE;
 }
-#endif /* RTMP_MAC_USB */
 #endif /* WOW_SUPPORT */
 
 
@@ -2017,15 +1906,11 @@ INT RTMPSetInformation(
     BOOLEAN RadioState;
     BOOLEAN StateMachineTouched = FALSE;
     PNDIS_802_11_PASSPHRASE ppassphrase = NULL;
-#ifdef DOT11_N_SUPPORT
     OID_SET_HT_PHYMODE HT_PhyMode;	/*11n */
-#endif /* DOT11_N_SUPPORT */
-#ifdef WPA_SUPPLICANT_SUPPORT
     PNDIS_802_11_PMKID pPmkId = NULL;
     BOOLEAN IEEE8021xState = FALSE;
     BOOLEAN IEEE8021x_required_keys = FALSE;
     UCHAR wpa_supplicant_enable = 0;
-#endif /* WPA_SUPPLICANT_SUPPORT */
 
 #ifdef SNMP_SUPPORT
     TX_RTY_CFG_STRUCT tx_rty_cfg;
@@ -2037,9 +1922,7 @@ INT RTMPSetInformation(
 
 
 
-#ifdef DOT11_N_SUPPORT
     MaxPhyMode = PHY_11N_5G;
-#endif /* DOT11_N_SUPPORT */
 
     DBGPRINT(RT_DEBUG_TRACE, ("-->RTMPSetInformation(),	0x%08x\n", cmd&0x7FFF));
 
@@ -2499,7 +2382,6 @@ INT RTMPSetInformation(
         pAd->Counters8023.RxNoBuffer   = 0;
         pAd->Counters8023.GoodReceives = 0;
         pAd->Counters8023.RxNoBuffer   = 0;
-#ifdef RTMP_MAC_USB
         pAd->BulkOutComplete	= 0;
         pAd->BulkOutCompleteOther= 0;
         pAd->BulkOutCompleteCancel = 0;
@@ -2507,7 +2389,6 @@ INT RTMPSetInformation(
         pAd->BulkInReq= 0;
         pAd->BulkInComplete = 0;
         pAd->BulkInCompleteFail = 0;
-#endif /* RTMP_MAC_USB */
 #ifdef TXBF_SUPPORT
 
         if(pAd->chipCap.FlgHwTxBfCap)
@@ -2804,7 +2685,6 @@ INT RTMPSetInformation(
         }
 
         break;
-#ifdef DOT11_N_SUPPORT
 
     case RT_OID_802_11_SET_HT_PHYMODE:
         if(wrq->u.data.length	!= sizeof(OID_SET_HT_PHYMODE))
@@ -2826,7 +2706,6 @@ INT RTMPSetInformation(
                                   pAd->StaCfg.HTPhyMode.field.MCS, pAd->StaCfg.HTPhyMode.field.BW, pAd->StaCfg.HTPhyMode.field.ShortGI,
                                   pAd->StaCfg.HTPhyMode.field.STBC));
         break;
-#endif /* DOT11_N_SUPPORT */
 
     case RT_OID_802_11_SET_APSD_SETTING:
         if(wrq->u.data.length != sizeof(ULONG))
@@ -2980,7 +2859,6 @@ INT RTMPSetInformation(
 
         break;
 
-#ifdef DOT11_N_SUPPORT
 
     case RT_OID_802_11_SET_IMME_BA_CAP:
         if(wrq->u.data.length != sizeof(OID_BACAP_STRUCT))
@@ -3152,7 +3030,6 @@ INT RTMPSetInformation(
         }
 
         break;
-#endif /* DOT11_N_SUPPORT */
 
     /* For WPA_SUPPLICANT to set static wep key */
     case OID_802_11_ADD_WEP:
@@ -3216,7 +3093,6 @@ INT RTMPSetInformation(
                 /* Default key for tx (shared key) */
                 if(pWepKey->KeyIndex & 0x80000000)
                 {
-#ifdef WPA_SUPPLICANT_SUPPORT
                     NdisZeroMemory(&pAd->StaCfg.DesireSharedKey[KeyIdx], sizeof(CIPHER_KEY));
 
                     /* set key material and key length */
@@ -3224,11 +3100,9 @@ INT RTMPSetInformation(
                     NdisMoveMemory(pAd->StaCfg.DesireSharedKey[KeyIdx].Key, &pWepKey->KeyMaterial, pWepKey->KeyLength);
                     pAd->StaCfg.DesireSharedKeyId = KeyIdx;
                     pAd->StaCfg.DesireSharedKey[KeyIdx].CipherAlg = CipherAlg;
-#endif /* WPA_SUPPLICANT_SUPPORT */
                     pAd->StaCfg.DefaultKeyId = (UCHAR) KeyIdx;
                 }
 
-#ifdef WPA_SUPPLICANT_SUPPORT
 
                 if((pAd->StaCfg.WpaSupplicantUP != WPA_SUPPLICANT_DISABLE) &&
                         (pAd->StaCfg.AuthMode >= Ndis802_11AuthModeWPA))
@@ -3241,7 +3115,6 @@ INT RTMPSetInformation(
                     STA_PORT_SECURED(pAd);
                 }
                 else if(pAd->StaCfg.PortSecured == WPA_802_1X_PORT_SECURED)
-#endif /* WPA_SUPPLICANT_SUPPORT */
                 {
                     Key = pAd->SharedKey[BSS0][KeyIdx].Key;
 
@@ -3267,7 +3140,6 @@ INT RTMPSetInformation(
         os_free_mem(NULL, pWepKey);
         /*            kfree(pWepKey); */
         break;
-#ifdef WPA_SUPPLICANT_SUPPORT
 
     case OID_SET_COUNTERMEASURES:
         if(wrq->u.data.length != sizeof(int))
@@ -3485,7 +3357,6 @@ INT RTMPSetInformation(
             Status = -ENOMEM;
 
         break;
-#endif /* WPA_SUPPLICANT_SUPPORT */
 
 
 
@@ -3690,13 +3561,11 @@ INT RTMPQueryInformation(
         break;
 
     case OID_802_11_BSSID_LIST:
-#ifdef WPA_SUPPLICANT_SUPPORT
         if((pAd->StaCfg.WpaSupplicantUP & 0x7F) == WPA_SUPPLICANT_ENABLE)
         {
             pAd->StaCfg.WpaSupplicantScanCount = 0;
         }
 
-#endif /* WPA_SUPPLICANT_SUPPORT */
         DBGPRINT(RT_DEBUG_TRACE, ("Query::OID_802_11_BSSID_LIST (%d BSS returned)\n",pAd->ScanTab.BssNr));
         pAd->StaCfg.bSkipAutoScanConn = FALSE;
         /* Claculate total buffer size required */
@@ -4348,7 +4217,6 @@ INT RTMPQueryInformation(
         break;
 
 
-#ifdef WPA_SUPPLICANT_SUPPORT
 
     case RT_OID_NEW_DRIVER:
     {
@@ -4364,7 +4232,6 @@ INT RTMPQueryInformation(
         Status = copy_to_user(wrq->u.data.pointer, &pAd->StaCfg.WpaSupplicantUP, wrq->u.data.length);
         DBGPRINT(RT_DEBUG_TRACE, ("Query::RT_OID_WPA_SUPPLICANT_SUPPORT (=%d)\n", pAd->StaCfg.WpaSupplicantUP));
         break;
-#endif /* WPA_SUPPLICANT_SUPPORT */
 
     case RT_OID_DRIVER_DEVICE_NAME:
         DBGPRINT(RT_DEBUG_TRACE, ("Query::RT_OID_DRIVER_DEVICE_NAME\n"));
@@ -4570,12 +4437,10 @@ INT RTMPQueryInformation(
     case RT_OID_802_11_PRODUCTID:
         DBGPRINT(RT_DEBUG_TRACE, ("Query::RT_OID_802_11_PRODUCTID\n"));
 
-#ifdef RTMP_MAC_USB
         snprintf((PSTRING)tmp, sizeof(tmp), "%04x %04x\n",
                  RtmpOsGetUsbDevVendorID(((POS_COOKIE)pAd->OS_Cookie)->pUsb_Dev),
                  RtmpOsGetUsbDevProductID(((POS_COOKIE)pAd->OS_Cookie)->pUsb_Dev));
 
-#endif /* RTMP_MAC_USB */
         wrq->u.data.length = strlen((PSTRING)tmp);
         Status = copy_to_user(wrq->u.data.pointer, tmp, wrq->u.data.length);
         break;
@@ -4600,13 +4465,8 @@ INT RTMPQueryInformation(
         UCHAR value;
         DBGPRINT(RT_DEBUG_TRACE, ("Query::OID_802_11_BUILD_CHANNEL_EX\n"));
         wrq->u.data.length = sizeof(UCHAR);
-#ifdef EXT_BUILD_CHANNEL_LIST
         DBGPRINT(RT_DEBUG_TRACE, ("Support EXT_BUILD_CHANNEL_LIST.\n"));
         value = 1;
-#else
-        DBGPRINT(RT_DEBUG_TRACE, ("Doesn't support EXT_BUILD_CHANNEL_LIST.\n"));
-        value = 0;
-#endif /* EXT_BUILD_CHANNEL_LIST */
         Status = copy_to_user(wrq->u.data.pointer, &value, 1);
         DBGPRINT(RT_DEBUG_TRACE, ("Status=%d\n", Status));
     }
@@ -4655,7 +4515,6 @@ INT RTMPQueryInformation(
         DBGPRINT(RT_DEBUG_TRACE, ("Status=%d\n", Status));
         break;
 
-#ifdef EXT_BUILD_CHANNEL_LIST
 
     case OID_802_11_GET_CHANNEL_GEOGRAPHY:
         DBGPRINT(RT_DEBUG_TRACE, ("Query::OID_802_11_GET_CHANNEL_GEOGRAPHY\n"));
@@ -4663,7 +4522,6 @@ INT RTMPQueryInformation(
         Status = copy_to_user(wrq->u.data.pointer, &pAd->CommonCfg.Geography, 1);
         DBGPRINT(RT_DEBUG_TRACE, ("Status=%d\n", Status));
         break;
-#endif /* EXT_BUILD_CHANNEL_LIST */
 
 
 
@@ -5709,14 +5567,6 @@ VOID RTMPIoctlBbp(
                 {
                     if(bbpId <= pAd->chipCap.MaxNumOfBbpId)
                     {
-#ifdef RALINK_ATE
-
-                        if(ATE_ON(pAd))
-                        {
-                            ATE_BBP_IO_READ8_BY_REG_ID(pAd, bbpId, &regBBP);
-                        }
-                        else
-#endif /* RALINK_ATE */
                         {
                             RTMP_BBP_IO_READ8_BY_REG_ID(pAd, bbpId, &regBBP);
                         }
@@ -5746,16 +5596,6 @@ VOID RTMPIoctlBbp(
                 {
                     if(bbpId <= pAd->chipCap.MaxNumOfBbpId)
                     {
-#ifdef RALINK_ATE
-
-                        if(ATE_ON(pAd))
-                        {
-                            ATE_BBP_IO_WRITE8_BY_REG_ID(pAd, bbpId, bbpValue);
-                            /* read it back for showing */
-                            ATE_BBP_IO_READ8_BY_REG_ID(pAd, bbpId, &regBBP);
-                        }
-                        else
-#endif /* RALINK_ATE */
                         {
                             RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, bbpId, bbpValue);
                             /* read it back for showing */
@@ -5796,14 +5636,6 @@ next:
             if(strlen(extra) >= (size - 20))
                 break;
 
-#ifdef RALINK_ATE
-
-            if(ATE_ON(pAd))
-            {
-                ATE_BBP_IO_READ8_BY_REG_ID(pAd, bbpId, &regBBP);
-            }
-            else
-#endif /* RALINK_ATE */
                 RTMP_BBP_IO_READ8_BY_REG_ID(pAd, bbpId, &regBBP);
 
             /*sprintf(extra+strlen(extra), "R%02d[0x%02X]:%02X    ", bbpId, bbpId, regBBP);
@@ -5819,7 +5651,6 @@ next:
 
 
 
-#ifdef DOT11_N_SUPPORT
 void	getBaInfo(
     IN	PRTMP_ADAPTER	pAd,
     IN	PSTRING			pOutBuf,
@@ -5874,7 +5705,6 @@ void	getBaInfo(
 
     return;
 }
-#endif /* DOT11_N_SUPPORT */
 
 
 VOID RTMPIoctlShow(
@@ -5904,13 +5734,11 @@ VOID RTMPIoctlShow(
     case SHOW_CONN_STATUS:
         if(MONITOR_ON(pAd))
         {
-#ifdef DOT11_N_SUPPORT
 
             if(WMODE_CAP_N(pAd->CommonCfg.PhyMode) &&
                     pAd->CommonCfg.RegTransmitSetting.field.BW)
                 snprintf(extra, size, "Monitor Mode(CentralChannel %d)\n", pAd->CommonCfg.CentralChannel);
             else
-#endif /* DOT11_N_SUPPORT */
                 snprintf(extra, size, "Monitor Mode(Channel %d)\n", pAd->CommonCfg.Channel);
         }
         else
@@ -5946,13 +5774,11 @@ VOID RTMPIoctlShow(
         snprintf(extra, size, "Driver version-%s, %s\n", STA_DRIVER_VERSION, STA_DRIVER_BUILD);
         wrq->u.data.length = strlen(extra) + 1; /* 1: size of '\0' */
         break;
-#ifdef DOT11_N_SUPPORT
 
     case SHOW_BA_INFO:
         getBaInfo(pAd, extra, size);
         wrq->u.data.length = strlen(extra) + 1; /* 1: size of '\0' */
         break;
-#endif /* DOT11_N_SUPPORT */
 
     case SHOW_DESC_INFO:
     {
@@ -6405,12 +6231,10 @@ RtmpIoctl_rt_ioctl_giwap(
     if(INFRA_ON(pAd) || ADHOC_ON(pAd))
         NdisMoveMemory(pData, pAd->CommonCfg.Bssid, MAC_ADDR_LEN);
 
-#ifdef WPA_SUPPLICANT_SUPPORT
     /* Add for RT2870 */
     else if(pAd->StaCfg.WpaSupplicantUP != WPA_SUPPLICANT_DISABLE)
         NdisMoveMemory(pData, pAd->MlmeAux.Bssid, MAC_ADDR_LEN);
 
-#endif /* WPA_SUPPLICANT_SUPPORT */
     else
         return NDIS_STATUS_FAILURE;
 
@@ -6476,14 +6300,12 @@ RtmpIoctl_rt_ioctl_siwscan(
     }
 
 
-#ifdef WPA_SUPPLICANT_SUPPORT
 
     if((pAd->StaCfg.WpaSupplicantUP & 0x7F) == WPA_SUPPLICANT_ENABLE)
     {
         pAd->StaCfg.WpaSupplicantScanCount++;
     }
 
-#endif /* WPA_SUPPLICANT_SUPPORT */
 
     pAd->StaCfg.bSkipAutoScanConn = TRUE;
 
@@ -6502,7 +6324,6 @@ RtmpIoctl_rt_ioctl_siwscan(
             break;
         }
 
-#ifdef WPA_SUPPLICANT_SUPPORT
 
         if(pConfig->FlgScanThisSsid)
         {
@@ -6514,7 +6335,6 @@ RtmpIoctl_rt_ioctl_siwscan(
             StaSiteSurvey(pAd, &Ssid, SCAN_ACTIVE);
         }
         else
-#endif /* WPA_SUPPLICANT_SUPPORT */
             StaSiteSurvey(pAd, NULL, SCAN_ACTIVE);
     }
     while(0);
@@ -6596,14 +6416,12 @@ RtmpIoctl_rt_ioctl_giwscan(
     pIoctlScan->BssNr = 0;
 
 
-#ifdef WPA_SUPPLICANT_SUPPORT
 
     if((pAd->StaCfg.WpaSupplicantUP & 0x7F) == WPA_SUPPLICANT_ENABLE)
     {
         pAd->StaCfg.WpaSupplicantScanCount = 0;
     }
 
-#endif /* WPA_SUPPLICANT_SUPPORT */
 
     pIoctlScan->BssNr = pAd->ScanTab.BssNr;
 
@@ -6763,8 +6581,6 @@ RtmpIoctl_rt_ioctl_giwessid(
         memcpy(pSsid->pSsid, pAd->CommonCfg.Ssid, pAd->CommonCfg.SsidLen);
     }
 
-#ifdef RTMP_MAC_USB
-#ifdef WPA_SUPPLICANT_SUPPORT
     /* Add for RT2870 */
     else if(pAd->StaCfg.WpaSupplicantUP != WPA_SUPPLICANT_DISABLE)
     {
@@ -6772,8 +6588,6 @@ RtmpIoctl_rt_ioctl_giwessid(
         memcpy(pSsid->pSsid, pAd->CommonCfg.Ssid, pAd->CommonCfg.SsidLen);
     }
 
-#endif /* WPA_SUPPLICANT_SUPPORT */
-#endif /* RTMP_MAC_USB */
     else
     {
         /*the ANY ssid was specified */
@@ -7294,9 +7108,7 @@ RtmpIoctl_rt_ioctl_siwauth(
         {
             pAd->StaCfg.WepStatus = Ndis802_11WEPEnabled;
             pAd->StaCfg.PairCipher = Ndis802_11WEPEnabled;
-#ifdef WPA_SUPPLICANT_SUPPORT
             pAd->StaCfg.IEEE8021X = FALSE;
-#endif /* WPA_SUPPLICANT_SUPPORT */
         }
         /*            else if (pIoctlWpa->value == RT_CMD_STA_IOCTL_WPA_PAIRWISE_TKIP)
                     {
@@ -7350,37 +7162,27 @@ RtmpIoctl_rt_ioctl_siwauth(
         break;
 
     case RT_CMD_STA_IOCTL_WPA_KEY_MGMT:
-#ifdef NATIVE_WPA_SUPPLICANT_SUPPORT
         pAd->StaCfg.WpaSupplicantUP &= 0x7F;
-#endif /* NATIVE_WPA_SUPPLICANT_SUPPORT */
 
         if(pIoctlWpa->value == RT_CMD_STA_IOCTL_WPA_KEY_MGMT_1X)
         {
             if(pAd->StaCfg.AuthMode == Ndis802_11AuthModeWPAPSK)
             {
                 pAd->StaCfg.AuthMode = Ndis802_11AuthModeWPA;
-#ifdef WPA_SUPPLICANT_SUPPORT
                 pAd->StaCfg.IEEE8021X = FALSE;
-#endif /* WPA_SUPPLICANT_SUPPORT */
             }
             else if(pAd->StaCfg.AuthMode == Ndis802_11AuthModeWPA2PSK)
             {
                 pAd->StaCfg.AuthMode = Ndis802_11AuthModeWPA2;
-#ifdef WPA_SUPPLICANT_SUPPORT
                 pAd->StaCfg.IEEE8021X = FALSE;
-#endif /* WPA_SUPPLICANT_SUPPORT */
             }
 
-#ifdef WPA_SUPPLICANT_SUPPORT
             else
                 /* WEP 1x */
                 pAd->StaCfg.IEEE8021X = TRUE;
 
-#endif /* WPA_SUPPLICANT_SUPPORT */
         }
 
-#ifdef NATIVE_WPA_SUPPLICANT_SUPPORT
-#endif /* NATIVE_WPA_SUPPLICANT_SUPPORT */
         else if(pIoctlWpa->value == 0)
         {
             pAd->StaCfg.PortSecured = WPA_802_1X_PORT_SECURED;
@@ -7841,7 +7643,6 @@ RtmpIoctl_rt_ioctl_siwgenie(
     IN	VOID					*pData,
     IN	ULONG					Data)
 {
-#ifdef WPA_SUPPLICANT_SUPPORT
     ULONG length = (ULONG)Data;
 
 
@@ -7877,7 +7678,6 @@ RtmpIoctl_rt_ioctl_siwgenie(
         }
     }
 
-#endif /* WPA_SUPPLICANT_SUPPORT */
 
     return NDIS_STATUS_SUCCESS;
 }
@@ -7915,7 +7715,6 @@ RtmpIoctl_rt_ioctl_giwgenie(
         return NDIS_STATUS_SUCCESS;
     }
 
-#ifdef WPA_SUPPLICANT_SUPPORT
 
     /*
     	Can not use SIOCSIWGENIE definition, it is used in wireless.h
@@ -7934,7 +7733,6 @@ RtmpIoctl_rt_ioctl_giwgenie(
     }
     else
         /* #endif */ /* SIOCSIWGENIE */
-#endif /* NATIVE_WPA_SUPPLICANT_SUPPORT */
     {
         UCHAR RSNIe = IE_WPA;
 
@@ -8090,9 +7888,7 @@ RtmpIoctl_rt_ioctl_siwrate(
                 (pAd->MacTab.Content[BSSID_WCID].HTPhyMode.field.MODE <= MODE_OFDM))
             RTMPSetDesiredRates(pAd, -1);
 
-#ifdef DOT11_N_SUPPORT
         SetCommonHT(pAd);
-#endif /* DOT11_N_SUPPORT */
     }
     else
     {
@@ -8106,9 +7902,7 @@ RtmpIoctl_rt_ioctl_siwrate(
             else
             {
                 pAd->StaCfg.DesiredTransmitSetting.field.MCS = MCS_AUTO;
-#ifdef DOT11_N_SUPPORT
                 SetCommonHT(pAd);
-#endif /* DOT11_N_SUPPORT */
             }
 
             DBGPRINT(RT_DEBUG_TRACE,
@@ -8160,7 +7954,6 @@ RtmpIoctl_rt_ioctl_giwrate(
     else
         ht_setting.word = pAd->MacTab.Content[BSSID_WCID].HTPhyMode.word;
 
-#ifdef DOT11_VHT_AC
 
     if(ht_setting.field.MODE >= MODE_VHT)
     {
@@ -8178,16 +7971,13 @@ RtmpIoctl_rt_ioctl_giwrate(
         }
     }
     else
-#endif /* DOT11_VHT_AC */
 
-#ifdef DOT11_N_SUPPORT
         if((ht_setting.field.MODE >= MODE_HTMIX) && (ht_setting.field.MODE < MODE_VHT))
         {
             /* rate_index = 12 + ((UCHAR)ht_setting.field.BW *16) + ((UCHAR)ht_setting.field.ShortGI *32) + ((UCHAR)ht_setting.field.MCS); */
             rate_index = 16 + ((UCHAR)ht_setting.field.BW *24) + ((UCHAR)ht_setting.field.ShortGI *48) + ((UCHAR)ht_setting.field.MCS);
         }
         else
-#endif /* DOT11_N_SUPPORT */
             if(ht_setting.field.MODE == MODE_OFDM)
                 rate_index = (UCHAR)(ht_setting.field.MCS) + 4;
             else if(ht_setting.field.MODE == MODE_CCK)
@@ -8379,12 +8169,6 @@ RtmpIoctl_rt_private_get_statistics(
 
     sprintf(extra, "\n\n");
 
-#ifdef RALINK_ATE
-
-    if(ATE_ON(pAd))
-        txCount = pAd->ate.TxDoneCount;
-    else
-#endif /* RALINK_ATE */
         txCount = (ULONG)pAd->WlanCounters.TransmittedFragmentCount.u.LowPart;
 
     sprintf(extra+strlen(extra), "Tx success                      = %lu\n", txCount);
@@ -8420,23 +8204,6 @@ RtmpIoctl_rt_private_get_statistics(
     sprintf(extra+strlen(extra), "False CCA (one second)          = %lu\n", (ULONG)pAd->RalinkCounters.OneSecFalseCCACnt);
 #endif /* ENHANCED_STAT_DISPLAY */
 
-#ifdef RALINK_ATE
-
-    if(ATE_ON(pAd))
-    {
-        if(pAd->ate.RxAntennaSel == 0)
-        {
-            sprintf(extra+strlen(extra), "RSSI-A                          = %ld\n", (LONG)(pAd->ate.LastRssi0 - pAd->BbpRssiToDbmDelta));
-            sprintf(extra+strlen(extra), "RSSI-B (if available)           = %ld\n", (LONG)(pAd->ate.LastRssi1 - pAd->BbpRssiToDbmDelta));
-            sprintf(extra+strlen(extra), "RSSI-C (if available)           = %ld\n\n", (LONG)(pAd->ate.LastRssi2 - pAd->BbpRssiToDbmDelta));
-        }
-        else
-        {
-            sprintf(extra+strlen(extra), "RSSI                            = %ld\n", (LONG)(pAd->ate.LastRssi0 - pAd->BbpRssiToDbmDelta));
-        }
-    }
-    else
-#endif /* RALINK_ATE */
     {
 #ifdef ENHANCED_STAT_DISPLAY
         sprintf(extra+strlen(extra), "RSSI                            = %ld %ld %ld\n",
@@ -8492,16 +8259,12 @@ RtmpIoctl_rt_private_get_statistics(
         sprintf(extra+strlen(extra), "SNR-B (if available)           = %ld\n\n", (LONG)(pAd->StaCfg.RssiSample.AvgSnr1));
     }
 
-#ifdef WPA_SUPPLICANT_SUPPORT
     sprintf(extra+strlen(extra), "WpaSupplicantUP                 = %d\n\n", pAd->StaCfg.WpaSupplicantUP);
-#endif /* WPA_SUPPLICANT_SUPPORT */
 
 
 
-#ifdef DOT11_N_SUPPORT
     /* Display Tx Aggregation statistics */
     DisplayTxAgg(pAd);
-#endif /* DOT11_N_SUPPORT */
     return NDIS_STATUS_SUCCESS;
 }
 

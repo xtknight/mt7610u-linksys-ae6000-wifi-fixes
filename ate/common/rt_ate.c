@@ -816,7 +816,6 @@ VOID rt_ee_write_all(PRTMP_ADAPTER pAd, USHORT *Data)
     }
 #endif /* RTMP_FLASH_SUPPORT */
 
-#ifdef RTMP_USB_SUPPORT
 
     if(pAd->infType == RTMP_DEV_INF_USB)
     {
@@ -827,7 +826,6 @@ VOID rt_ee_write_all(PRTMP_ADAPTER pAd, USHORT *Data)
         return;
     }
 
-#endif /* RTMP_USB_SUPPORT */
 
     for(offset = 0; offset < (EEPROM_SIZE >> 1);)
     {
@@ -1186,18 +1184,6 @@ INT DefaultATETxPwrHandler(
     PATE_INFO pATEInfo = &(pAd->ate);
     CHAR TxPower = 0;
 
-#ifdef RALINK_QA
-
-    if((pATEInfo->bQATxStart == TRUE) || (pATEInfo->bQARxStart == TRUE))
-    {
-        /*
-        	When QA is used for Tx, pATEInfo->TxPower0/1 and real tx power
-        	are not synchronized.
-        */
-        return 0;
-    }
-    else
-#endif /* RALINK_QA */
 
         if(index == 0)
         {
@@ -1448,9 +1434,7 @@ static NDIS_STATUS ATESTART(
     PATE_INFO pATEInfo = &(pAd->ate);
     UINT32			MacData=0, atemode=0, temp=0;
     NDIS_STATUS		Status = NDIS_STATUS_SUCCESS;
-#ifdef RTMP_MAC_USB
     UCHAR LoopCount=0;
-#endif /* RTMP_MAC_USB */
     PATE_CHIP_STRUCT pChipStruct = pATEInfo->pChipStruct;
     BOOLEAN Cancelled;
 #ifdef RLT_MAC
@@ -1487,7 +1471,6 @@ static NDIS_STATUS ATESTART(
         }
     }
 
-#ifdef RTMP_MAC_USB
 #ifdef MT76x0
 
     if(IS_MT76x0(pAd))
@@ -1504,7 +1487,6 @@ static NDIS_STATUS ATESTART(
         LoopCount++;
     }
 
-#endif /* RTMP_MAC_USB */
 
     /* Disable Rx */
     ATE_MAC_RX_DISABLE(pAd, MAC_SYS_CTRL, &MacData);
@@ -1708,7 +1690,6 @@ static NDIS_STATUS ATESTART(
         RtmpDmaEnable(pAd, 1);
     }
 
-#ifdef RTMP_MAC_USB
     /*	pAd->ContinBulkIn = FALSE; */
     RTUSBRejectPendingPackets(pAd);
     RTUSBCleanUpDataBulkOutQueue(pAd);
@@ -1773,7 +1754,6 @@ static NDIS_STATUS ATESTART(
     }
 
     ASSERT(pAd->PendingRx == 0);
-#endif /* RTMP_MAC_USB */
 
     /* reset Rx statistics. */
     pATEInfo->LastSNR0 = 0;
@@ -1792,36 +1772,6 @@ static NDIS_STATUS ATESTART(
     pATEInfo->AvgRssi2X8 = 0;
     pATEInfo->NumOfAvgRssiSample = 0;
 
-#ifdef RALINK_QA
-    /* Tx frame */
-    pATEInfo->bQATxStart = FALSE;
-    pATEInfo->bQARxStart = FALSE;
-    pATEInfo->seq = 0;
-
-    /* counters */
-    pATEInfo->U2M = 0;
-    pATEInfo->OtherData = 0;
-    pATEInfo->Beacon = 0;
-    pATEInfo->OtherCount = 0;
-    pATEInfo->TxAc0 = 0;
-    pATEInfo->TxAc1 = 0;
-    pATEInfo->TxAc2 = 0;
-    pATEInfo->TxAc3 = 0;
-    pATEInfo->TxHCCA = 0;
-    pATEInfo->TxMgmt = 0;
-    pATEInfo->RSSI0 = 0;
-    pATEInfo->RSSI1 = 0;
-    pATEInfo->RSSI2 = 0;
-    pATEInfo->SNR0 = 0;
-    pATEInfo->SNR1 = 0;
-#ifdef DOT11N_SS3_SUPPORT
-    pATEInfo->SNR2 = 0;
-#endif /* DOT11N_SS3_SUPPORT */
-    /* control */
-    pATEInfo->TxDoneCount = 0;
-    /* TxStatus : 0 --> task is idle, 1 --> task is running */
-    pATEInfo->TxStatus = 0;
-#endif /* RALINK_QA */
 
     if((!IS_RT3883(pAd)) && (!IS_RT3593(pAd)) && (!IS_RT8592(pAd)) && (!IS_MT76x0(pAd)))
     {
@@ -1864,7 +1814,6 @@ static NDIS_STATUS ATESTART(
 #endif /* LED_CONTROL_SUPPORT */
 
 
-#ifdef RTMP_MAC_USB
 #ifdef RTMP_MAC
     /* Default value in BBP R22 is 0x0. */
     ATE_BBP_RESET_TX_MODE(pAd, BBP_R22, &BbpData);
@@ -1883,7 +1832,6 @@ static NDIS_STATUS ATESTART(
     NdisReleaseSpinLock(&pAd->GenericLock);
 
     RTUSB_CLEAR_BULK_FLAG(pAd, fRTUSB_BULK_OUT_DATA_ATE);
-#endif /* RTMP_MAC_USB */
 
     DBGPRINT(RT_DEBUG_TRACE, ("ATE : <=== %s\n", __FUNCTION__));
     return Status;
@@ -1985,7 +1933,6 @@ static NDIS_STATUS ATESTOP(
     }
 
 
-#ifdef RTMP_MAC_USB
     /*
     	Make sure there are no pending bulk in/out IRPs before we go on.
     	pAd->BulkFlags != 0 : wait bulk out finish
@@ -2096,7 +2043,6 @@ static NDIS_STATUS ATESTOP(
     RtmpOsMsDelay(50);
 
     pATEInfo->Mode = ATE_STOP;
-#endif /* RTMP_MAC_USB */
 
 
 #ifdef CONFIG_STA_SUPPORT
@@ -2114,13 +2060,11 @@ static NDIS_STATUS ATESTOP(
     ATE_MAC_RX_ENABLE(pAd, MAC_SYS_CTRL, &MacData);
 
 
-#ifdef RTMP_MAC_USB
     /* Wait 10ms for all of the bulk-in URBs to complete. */
     RtmpOsMsDelay(10);
 
     /* Everything is ready to start normal Tx/Rx. */
     RTUSBBulkReceive(pAd);
-#endif /* RTMP_MAC_USB */
 
     DBGPRINT(RT_DEBUG_TRACE, ("ATE : <=== %s\n", __FUNCTION__));
     return Status;
@@ -2160,10 +2104,8 @@ static NDIS_STATUS TXCARR(
     }
 
 #endif /* RTMP_MAC */
-#ifdef RTMP_MAC_USB
     /* Disable Rx */
     ATE_MAC_RX_DISABLE(pAd, MAC_SYS_CTRL, &MacData);
-#endif /* RTMP_MAC_USB */
 
     /* QA has done the following steps if it is used. */
     if(pATEInfo->bQATxStart == FALSE)
@@ -2312,10 +2254,8 @@ static NDIS_STATUS TXCONT(
         SetJapanFilter(pAd);
 
 
-#ifdef RTMP_MAC_USB
     /* Setup frame format. */
     ATESetUpFrame(pAd, 0);
-#endif /* RTMP_MAC_USB */
 
     /* Enable Tx */
     ATE_MAC_TX_ENABLE(pAd, MAC_SYS_CTRL, &MacData);
@@ -2326,21 +2266,10 @@ static NDIS_STATUS TXCONT(
     /* Start Tx, Rx DMA. */
     RtmpDmaEnable(pAd, 1);
 
-#ifdef RTMP_MAC_USB
     InterlockedExchange(&pAd->BulkOutRemained, pATEInfo->TxCount);
-#endif /* RTMP_MAC_USB */
-
-#ifdef RALINK_QA
-
-    if(pATEInfo->bQATxStart == TRUE)
-    {
-        pATEInfo->TxStatus = 1;
-    }
-
-#endif /* RALINK_QA */
 
 
-#ifdef RTMP_MAC_USB
+
     NdisAcquireSpinLock(&pAd->GenericLock);
     pAd->ContinBulkOut = FALSE;
     NdisReleaseSpinLock(&pAd->GenericLock);
@@ -2356,7 +2285,6 @@ static NDIS_STATUS TXCONT(
         RtmpOsMsDelay(5);
     }
 
-#endif /* RTMP_MAC_USB */
 
     if(pATEInfo->TxMethod == TX_METHOD_1)
     {
@@ -2412,10 +2340,8 @@ static NDIS_STATUS TXCONT(
             SetJapanFilter(pAd);
 
 
-#ifdef RTMP_MAC_USB
         /* Build up Tx frame. */
         ATESetUpFrame(pAd, 0);
-#endif /* RTMP_MAC_USB */
 
         /* Enable Tx */
         ATE_MAC_TX_ENABLE(pAd, MAC_SYS_CTRL, &MacData);
@@ -2426,20 +2352,9 @@ static NDIS_STATUS TXCONT(
         /* Start Tx, Rx DMA. */
         RtmpDmaEnable(pAd, 1);
 
-#ifdef RTMP_MAC_USB
         InterlockedExchange(&pAd->BulkOutRemained, pATEInfo->TxCount);
-#endif /* RTMP_MAC_USB */
-#ifdef RALINK_QA
-
-        if(pATEInfo->bQATxStart == TRUE)
-        {
-            pATEInfo->TxStatus = 1;
-        }
-
-#endif /* RALINK_QA */
 
 
-#ifdef RTMP_MAC_USB
         NdisAcquireSpinLock(&pAd->GenericLock);
         pAd->ContinBulkOut = FALSE;
         NdisReleaseSpinLock(&pAd->GenericLock);
@@ -2449,7 +2364,6 @@ static NDIS_STATUS TXCONT(
         RTUSBKickBulkOut(pAd);
 
         /* Let pAd->BulkOutRemained be consumed to zero. */
-#endif /* RTMP_MAC_USB */
         RTMPusecDelay(500);
 
         /* enable continuous tx production test */
@@ -2495,10 +2409,8 @@ static NDIS_STATUS TXCARS(
 #endif /* RTMP_MAC */
     }
 
-#ifdef RTMP_MAC_USB
     /* Disable Rx */
     ATE_MAC_RX_DISABLE(pAd, MAC_SYS_CTRL, &MacData);
-#endif /* RTMP_MAC_USB */
 
     /* QA has done the following steps if it is used. */
     if(pATEInfo->bQATxStart == FALSE)
@@ -2583,9 +2495,7 @@ static NDIS_STATUS TXFRAME(
 {
     PATE_INFO pATEInfo = &(pAd->ate);
     UINT32			MacData=0;
-#ifdef RTMP_MAC_USB
     ULONG			IrqFlags = 0;
-#endif /* RTMP_MAC_USB */
     NDIS_STATUS		Status = NDIS_STATUS_SUCCESS;
     UCHAR			BbpData = 0;
     STRING			IPGStr[8] = {0};
@@ -2646,7 +2556,6 @@ static NDIS_STATUS TXFRAME(
     }
 
 
-#ifdef RTMP_MAC_USB
     /* Soft reset BBP. */
     BbpSoftReset(pAd);
 
@@ -2657,34 +2566,7 @@ static NDIS_STATUS TXFRAME(
 
     /* Clear bit4 to stop continuous Tx production test. */
     ATE_MAC_TX_CTS_DISABLE(pAd, MAC_SYS_CTRL, &MacData);
-#endif /* RTMP_MAC_USB */
 
-#ifdef RALINK_QA
-
-    /* add this for LoopBack mode */
-    if(pATEInfo->bQARxStart == FALSE)
-    {
-#ifdef TXBF_SUPPORT
-
-        /* Enable Rx if Sending Sounding. Otherwise Disable */
-        if(pATEInfo->txSoundingMode != 0)
-        {
-            ATE_MAC_RX_ENABLE(pAd, MAC_SYS_CTRL, &MacData);
-        }
-        else
-#endif /* TXBF_SUPPORT */
-        {
-            /* Disable Rx */
-            ATE_MAC_RX_DISABLE(pAd, MAC_SYS_CTRL, &MacData);
-        }
-    }
-
-    if(pATEInfo->bQATxStart == TRUE)
-    {
-        pATEInfo->TxStatus = 1;
-    }
-
-#else
 #ifdef TXBF_SUPPORT
 
     /* Enable Rx if Sending Sounding. Otherwise Disable */
@@ -2699,10 +2581,8 @@ static NDIS_STATUS TXFRAME(
         ATE_MAC_RX_DISABLE(pAd, MAC_SYS_CTRL, &MacData);
     }
 
-#endif /* RALINK_QA */
 
 
-#ifdef RTMP_MAC_USB
     /* Enable Tx */
     ATE_MAC_TX_ENABLE(pAd, MAC_SYS_CTRL, &MacData);
 
@@ -2765,7 +2645,6 @@ static NDIS_STATUS TXFRAME(
 
     /* Kick bulk out */
     RTUSBKickBulkOut(pAd);
-#endif /* RTMP_MAC_USB */
 
 #ifdef RTMP_INTERNAL_TX_ALC
 #if defined(RT3350) || defined(RT3352)
@@ -2846,9 +2725,7 @@ static NDIS_STATUS RXFRAME(
 #ifdef RTMP_MAC
     UCHAR			BbpData = 0;
 #endif /* RTMP_MAC */
-#ifdef RTMP_MAC_USB
     UINT32			ring_index=0;
-#endif /* RTMP_MAC_USB */
 
     DBGPRINT(RT_DEBUG_TRACE, ("ATE : ===> %s\n", __FUNCTION__));
 
@@ -2869,7 +2746,6 @@ static NDIS_STATUS RXFRAME(
 
     pATEInfo->Mode = ATE_RXFRAME;
 
-#ifdef RTMP_MAC_USB
 
     if(pAd->chipCap.MCUType != ANDES)
     {
@@ -2877,12 +2753,10 @@ static NDIS_STATUS RXFRAME(
         RtmpDmaEnable(pAd, 0);
     }
 
-#endif /* RTMP_MAC_USB */
 
     /* Disable Tx of MAC block. */
     ATE_MAC_TX_DISABLE(pAd, MAC_SYS_CTRL, &MacData);
 
-#ifdef RTMP_MAC_USB
 
     /* Reset Rx RING */
     for(ring_index = 0; ring_index < (RX_RING_SIZE); ring_index++)
@@ -2917,16 +2791,13 @@ static NDIS_STATUS RXFRAME(
 
     /* Enable Tx, RX DMA. */
     RtmpDmaEnable(pAd, 1);
-#endif /* RTMP_MAC_USB */
 
     /* Enable Rx of MAC block. */
     ATE_MAC_RX_ENABLE(pAd, MAC_SYS_CTRL, &MacData);
 
 
-#ifdef RTMP_MAC_USB
     /* Kick bulk in. */
     RTUSBBulkReceive(pAd);
-#endif /* RTMP_MAC_USB */
 
     DBGPRINT(RT_DEBUG_TRACE, ("ATE : <=== %s\n", __FUNCTION__));
     return Status;
@@ -2962,20 +2833,6 @@ static NDIS_STATUS	ATECmdHandler(
 
     DBGPRINT(RT_DEBUG_TRACE, ("===> %s\n", __FUNCTION__));
 
-#ifdef CONFIG_RT2880_ATE_CMD_NEW
-
-    if(!strcmp(arg, "ATESTART"))
-    {
-        /* Enter/Reset ATE mode and set Tx/Rx Idle */
-        Status = ATESTART(pAd);
-    }
-    else if(!strcmp(arg, "ATESTOP"))
-    {
-        /* Leave ATE mode */
-        Status = ATESTOP(pAd);
-    }
-
-#else
 
     if(!strcmp(arg, "APSTOP"))
     {
@@ -2986,7 +2843,6 @@ static NDIS_STATUS	ATECmdHandler(
         Status = ATESTOP(pAd);
     }
 
-#endif
     else if(!strcmp(arg, "TXCARR"))
     {
 #ifdef RT6352
@@ -3142,18 +2998,6 @@ static NDIS_STATUS	ATECmdHandler(
         }
     }
 
-#ifdef RALINK_QA
-    /* Enter ATE mode and set Tx/Rx Idle */
-    else if(!strcmp(arg, "TXSTOP"))
-    {
-        Status = TXSTOP(pAd);
-    }
-    else if(!strcmp(arg, "RXSTOP"))
-    {
-        Status = RXSTOP(pAd);
-    }
-
-#endif /* RALINK_QA */
     else
     {
         DBGPRINT_ERR(("ATE : Invalid arg in %s!\n", __FUNCTION__));
@@ -5013,11 +4857,7 @@ INT Set_ATE_TXBF_INIT_Proc(
         return FALSE;
 
     /* Do ATESTART */
-#ifdef CONFIG_RT2880_ATE_CMD_NEW
-    Set_ATE_Proc(pAd, "ATESTART");
-#else
     Set_ATE_Proc(pAd, "APSTOP");
-#endif /* CONFIG_RT2880_ATE_CMD_NEW */
 
     /* set ATETXBF=3 */
     Set_ATE_TXBF_Proc(pAd, "3");
@@ -5172,11 +5012,7 @@ INT Set_ATE_TXBF_GOLDEN_Proc(
         return FALSE;
 
     /* iwpriv ra0 set ATE=ATESTART */
-#ifdef	CONFIG_RT2880_ATE_CMD_NEW
-    Set_ATE_Proc(pAd, "ATESTART");
-#else
     Set_ATE_Proc(pAd, "APSTOP");
-#endif // CONFIG_RT2880_ATE_CMD_NEW //
 
     /* set the ate channel and read txpower from EEPROM and set to bbp */
     /* iwpriv ra0 set ATECHANNEL=Channel */
@@ -5563,16 +5399,6 @@ INT	Set_ATE_Show_Proc(
 
     switch(pATEInfo->Mode)
     {
-#ifdef CONFIG_RT2880_ATE_CMD_NEW
-
-    case(fATE_IDLE):
-        Mode_String = "ATESTART";
-        break;
-
-    case(fATE_EXIT):
-        Mode_String = "ATESTOP";
-        break;
-#else
 
     case(fATE_IDLE):
         Mode_String = "APSTOP";
@@ -5581,7 +5407,6 @@ INT	Set_ATE_Show_Proc(
     case(fATE_EXIT):
         Mode_String = "APSTART";
         break;
-#endif /* CONFIG_RT2880_ATE_CMD_NEW */
 
     case((fATE_TX_ENABLE)|(fATE_TXCONT_ENABLE)):
         Mode_String = "TXCONT";
@@ -5682,11 +5507,7 @@ INT	Set_ATE_Help_Proc(
     IN	PRTMP_ADAPTER	pAd,
     IN	PSTRING			arg)
 {
-#ifdef CONFIG_RT2880_ATE_CMD_NEW
-    DBGPRINT(RT_DEBUG_TRACE, ("ATE=ATESTART, ATESTOP, TXCONT, TXCARR, TXCARS, TXFRAME, RXFRAME\n"));
-#else
     DBGPRINT(RT_DEBUG_TRACE, ("ATE=APSTOP, APSTART, TXCONT, TXCARR, TXCARS, TXFRAME, RXFRAME\n"));
-#endif /* CONFIG_RT2880_ATE_CMD_NEW */
     DBGPRINT(RT_DEBUG_TRACE, ("ATEDA\n"));
     DBGPRINT(RT_DEBUG_TRACE, ("ATESA\n"));
     DBGPRINT(RT_DEBUG_TRACE, ("ATEBSSID\n"));
@@ -6058,9 +5879,7 @@ struct _ATE_CHIP_STRUCT RALINKDefault =
 };
 
 #ifdef RT28xx
-#ifdef RTMP_MAC_USB
 extern ATE_CHIP_STRUCT RALINK2870;
-#endif /* RTMP_MAC_USB */
 #endif /* RT28xx */
 
 
@@ -6308,142 +6127,13 @@ NDIS_STATUS ATEInit(
 #endif /* TXBF_SUPPORT */
 
 
-#ifdef RTMP_MAC_USB
-#endif /* RTMP_MAC_USB */
 
-#ifdef RALINK_QA
-    pATEInfo->TxStatus = 0;
-    RtmpOsTaskPidInit(&(pATEInfo->AtePid));
-    /*	pATEInfo->AtePid = THREAD_PID_INIT_VALUE; */
-#endif /* RALINK_QA */
     pATEInfo->OneSecPeriodicRound = 0;
 
     return NDIS_STATUS_SUCCESS;
 }
 
 
-#ifdef RALINK_QA
-/*
-==========================================================================
-	Description:
-		This routine is specific for ATE.
-		When we start tx from QA GUI, it will modify BBP registers without
-		notify ATE driver what the tx subtype is.
-
-    Return:
-        VOID
-==========================================================================
-*/
-VOID ReadQATxTypeFromBBP(
-    IN	PRTMP_ADAPTER	pAd)
-{
-    PATE_INFO pATEInfo = &(pAd->ate);
-    UCHAR   Bbp22Value = 0, Bbp24Value = 0;
-
-#ifdef RT65xx
-
-    if(IS_RT65XX(pAd))
-    {
-        UINT32 bbp_val;
-
-        RTMP_BBP_IO_READ32(pAd, CORE_R24, &bbp_val);
-        Bbp22Value = (bbp_val & 0xff00) >> 8;
-    }
-    else
-#endif /* RT65xx */
-    {
-#ifdef RTMP_MAC
-        ATE_BBP_IO_READ8_BY_REG_ID(pAd, BBP_R22, &Bbp22Value);
-#endif /* RTMP_MAC */
-    }
-
-    switch(Bbp22Value)
-    {
-    case BBP22_TXFRAME:
-    {
-        DBGPRINT(RT_DEBUG_TRACE,("START TXFRAME\n"));
-        pATEInfo->bQATxStart = TRUE;
-        Set_ATE_Proc(pAd, "TXFRAME");
-    }
-    break;
-
-    case BBP22_TXCONT_OR_CARRSUPP:
-    {
-        DBGPRINT(RT_DEBUG_TRACE,("BBP22_TXCONT_OR_CARRSUPP\n"));
-#ifdef RT65xx
-
-        if(IS_RT65XX(pAd))
-        {
-            UINT32 bbp_val;
-
-            RTMP_BBP_IO_READ32(pAd, TXC_R1, &bbp_val);
-            Bbp24Value = (bbp_val & 0x01);
-        }
-        else
-#endif /* RT65xx */
-        {
-#ifdef RTMP_MAC
-            ATE_BBP_IO_READ8_BY_REG_ID(pAd, BBP_R24, &Bbp24Value);
-#endif /* RTMP_MAC */
-        }
-
-        switch(Bbp24Value)
-        {
-        case BBP24_TXCONT:
-        {
-            DBGPRINT(RT_DEBUG_TRACE,("START TXCONT\n"));
-            pATEInfo->bQATxStart = TRUE;
-
-            if(pATEInfo->TxMethod == TX_METHOD_0)
-            {
-                Set_ATE_Proc(pAd, "TXCONT");
-            }
-        }
-        break;
-
-        case BBP24_CARRSUPP:
-        {
-            DBGPRINT(RT_DEBUG_TRACE,("START TXCARRSUPP\n"));
-            pATEInfo->bQATxStart = TRUE;
-
-            if(pATEInfo->TxMethod == TX_METHOD_0)
-            {
-                Set_ATE_Proc(pAd, "TXCARS");
-            }
-        }
-        break;
-
-        default:
-        {
-            DBGPRINT_ERR(("Unknown TX subtype !\n"));
-        }
-        break;
-        }
-    }
-    break;
-
-    case BBP22_TXCARR:
-    {
-        DBGPRINT(RT_DEBUG_TRACE,("START TXCARR\n"));
-        pATEInfo->bQATxStart = TRUE;
-
-        if(pATEInfo->TxMethod == TX_METHOD_0)
-        {
-            Set_ATE_Proc(pAd, "TXCARR");
-        }
-    }
-    break;
-
-    default:
-    {
-        DBGPRINT_ERR(("Unknown Start TX subtype !\n"));
-    }
-    break;
-    }
-
-    return;
-}
-#endif /* RALINK_QA */
 
 #ifdef RTMP_MAC
 NDIS_STATUS ATEBBPWriteWithRxChain(
@@ -6470,7 +6160,6 @@ NDIS_STATUS ATEBBPWriteWithRxChain(
         {
             ATE_BBP_IO_READ8_BY_REG_ID(pAd, BBP_R27, &val);
             val = (val & (~0x60)/* clear bit5 and bit6 */) | (idx << 5);
-#ifdef RTMP_MAC_USB
 
             if(IS_USB_INF(pAd))
             {
@@ -6478,7 +6167,6 @@ NDIS_STATUS ATEBBPWriteWithRxChain(
                 ATE_BBP_IO_WRITE8_BY_REG_ID(pAd, bbpId, bbpVal);
             }
 
-#endif /* RTMP_MAC_USB */
 
 
             DBGPRINT(RT_DEBUG_INFO,

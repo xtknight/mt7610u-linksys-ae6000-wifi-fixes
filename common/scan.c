@@ -135,9 +135,7 @@ static INT scan_ch_restore(RTMP_ADAPTER *pAd, UCHAR OpMode)
         }
 
 #ifdef LINUX
-#ifdef RT_CFG80211_SUPPORT
         RTEnqueueInternalCmd(pAd, CMDTHREAD_SCAN_END, NULL, 0);
-#endif /* RT_CFG80211_SUPPORT */
 #endif /* LINUX */
     }
 
@@ -178,16 +176,12 @@ static INT scan_active(RTMP_ADAPTER *pAd, UCHAR OpMode, UCHAR ScanType)
         return FALSE;
     }
 
-#ifdef DOT11_N_SUPPORT
-#ifdef DOT11N_DRAFT3
 
     if(ScanType == SCAN_2040_BSS_COEXIST)
     {
         DBGPRINT(RT_DEBUG_INFO, ("SYNC - SCAN_2040_BSS_COEXIST !! Prepare to send Probe Request\n"));
     }
 
-#endif /* DOT11N_DRAFT3 */
-#endif /* DOT11_N_SUPPORT */
 
     /* There is no need to send broadcast probe request if active scan is in effect.*/
     SsidLen = 0;
@@ -229,7 +223,6 @@ static INT scan_active(RTMP_ADAPTER *pAd, UCHAR OpMode, UCHAR ScanType)
             FrameLen += Tmp;
         }
     }
-#ifdef DOT11_N_SUPPORT
 
     if(WMODE_CAP_N(pAd->CommonCfg.PhyMode))
     {
@@ -307,7 +300,6 @@ static INT scan_active(RTMP_ADAPTER *pAd, UCHAR OpMode, UCHAR ScanType)
 
         FrameLen += Tmp;
 
-#ifdef DOT11N_DRAFT3
 
         if((pAd->MlmeAux.Channel <= 14) && (pAd->CommonCfg.bBssCoexEnable == TRUE))
         {
@@ -322,12 +314,9 @@ static INT scan_active(RTMP_ADAPTER *pAd, UCHAR OpMode, UCHAR ScanType)
             FrameLen += Tmp;
         }
 
-#endif /* DOT11N_DRAFT3 */
     }
 
-#endif /* DOT11_N_SUPPORT */
 
-#ifdef DOT11_VHT_AC
 
     if(WMODE_CAP_AC(pAd->CommonCfg.PhyMode) &&
             (pAd->MlmeAux.Channel > 14))
@@ -335,10 +324,8 @@ static INT scan_active(RTMP_ADAPTER *pAd, UCHAR OpMode, UCHAR ScanType)
         FrameLen += build_vht_ies(pAd, (UCHAR *)(frm_buf + FrameLen), SUBTYPE_PROBE_REQ);
     }
 
-#endif /* DOT11_VHT_AC */
 
 
-#ifdef WPA_SUPPLICANT_SUPPORT
 
     if((OpMode == OPMODE_STA) &&
             (pAd->StaCfg.WpaSupplicantUP != WPA_SUPPLICANT_DISABLE) &&
@@ -353,7 +340,6 @@ static INT scan_active(RTMP_ADAPTER *pAd, UCHAR OpMode, UCHAR ScanType)
         FrameLen += WpsTmpLen;
     }
 
-#endif /* WPA_SUPPLICANT_SUPPORT */
 
 
     MiniportMMRequest(pAd, 0, frm_buf, FrameLen);
@@ -405,13 +391,6 @@ VOID ScanNextChannel(
     UCHAR ImprovedScan_MaxScanChannelCnt;
 
 
-#ifdef RALINK_ATE
-
-    /* Nothing to do in ATE mode. */
-    if(ATE_ON(pAd))
-        return;
-
-#endif /* RALINK_ATE */
 
 
 #ifdef CONFIG_STA_SUPPORT
@@ -435,7 +414,6 @@ VOID ScanNextChannel(
         scan_ch_restore(pAd, OpMode);
     }
 
-#ifdef RTMP_MAC_USB
 #ifdef CONFIG_STA_SUPPORT
     else if(RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST) &&
             (OpMode == OPMODE_STA))
@@ -445,7 +423,6 @@ VOID ScanNextChannel(
     }
 
 #endif /* CONFIG_STA_SUPPORT */
-#endif /* RTMP_MAC_USB */
     else
     {
 #ifdef CONFIG_STA_SUPPORT

@@ -379,18 +379,6 @@ int rt_ioctl_giwrange(struct net_device *dev,
         return -ENETDOWN;
     }
 
-#ifndef NATIVE_WPA_SUPPLICANT_SUPPORT
-#ifndef RT_CFG80211_SUPPORT
-
-    /*	if(!RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_INTERRUPT_IN_USE)) */
-    if(RTMP_DRIVER_IOCTL_SANITY_CHECK(pAd, NULL) != NDIS_STATUS_SUCCESS)
-    {
-        DBGPRINT(RT_DEBUG_TRACE, ("INFO::Network is down!\n"));
-        return -ENETDOWN;
-    }
-
-#endif /* RT_CFG80211_SUPPORT */
-#endif /* NATIVE_WPA_SUPPLICANT_SUPPORT */
 
     DBGPRINT(RT_DEBUG_TRACE ,("===>rt_ioctl_giwrange\n"));
     data->length = sizeof(struct iw_range);
@@ -759,7 +747,6 @@ int rt_ioctl_iwaplist(struct net_device *dev,
     return 0;
 }
 
-#if defined(SIOCGIWSCAN) || defined(RT_CFG80211_SUPPORT)
 int rt_ioctl_siwscan(struct net_device *dev,
                      struct iw_request_info *info,
                      union iwreq_data *wreq, char *extra)
@@ -767,9 +754,7 @@ int rt_ioctl_siwscan(struct net_device *dev,
     VOID *pAd = NULL;
     int Status = NDIS_STATUS_SUCCESS;
     RT_CMD_STA_IOCTL_SCAN IoctlScan, *pIoctlScan = &IoctlScan;
-#ifdef WPA_SUPPLICANT_SUPPORT
     struct iw_scan_req *req = (struct iw_scan_req *)extra;
-#endif /* WPA_SUPPLICANT_SUPPORT */
 
     GET_PAD_FROM_NET_DEV(pAd, dev);
 
@@ -788,14 +773,12 @@ int rt_ioctl_siwscan(struct net_device *dev,
 
 
     memset(pIoctlScan, 0, sizeof(RT_CMD_STA_IOCTL_SCAN));
-#ifdef WPA_SUPPLICANT_SUPPORT
 #if WIRELESS_EXT > 17
     pIoctlScan->FlgScanThisSsid = (wreq->data.length == sizeof(struct iw_scan_req) &&
                                    wreq->data.flags & IW_SCAN_THIS_ESSID);
     pIoctlScan->SsidLen = req->essid_len;
     pIoctlScan->pSsid = (CHAR *)(req->essid);
 #endif
-#endif /* WPA_SUPPLICANT_SUPPORT */
     RTMP_STA_IoctlHandle(pAd, NULL, CMD_RTPRIV_IOCTL_STA_SIOCSIWSCAN, 0,
                          pIoctlScan, 0, RT_DEV_PRIV_FLAGS_GET(dev));
 
@@ -1308,7 +1291,6 @@ go_out:
 
     return status;
 }
-#endif
 
 int rt_ioctl_siwessid(struct net_device *dev,
                       struct iw_request_info *info,
@@ -2204,7 +2186,6 @@ int rt_ioctl_siwgenie(struct net_device *dev,
         return -ENETDOWN;
     }
 
-#ifdef WPA_SUPPLICANT_SUPPORT
 
     if(RTMP_STA_IoctlHandle(pAd, NULL, CMD_RTPRIV_IOCTL_STA_SIOCSIWGENIE, 0,
                             extra, wrqu->data.length,
@@ -2213,7 +2194,6 @@ int rt_ioctl_siwgenie(struct net_device *dev,
     else
         return 0;
 
-#endif /* WPA_SUPPLICANT_SUPPORT */
 
     return -EOPNOTSUPP;
 }

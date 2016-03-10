@@ -38,10 +38,8 @@ struct _RSSI_SAMPLE;
 #include "eeprom.h"
 
 
-#ifdef RTMP_MAC_USB
 #include "mac_ral/rtmp_mac.h"
 #include "mac_ral/mac_usb.h"
-#endif /* RTMP_MAC_USB */
 
 
 
@@ -626,9 +624,7 @@ struct _RTMP_CHIP_CAP_
     INT16	PAModeCCK[4];
     INT16	PAModeOFDM[8];
     INT16	PAModeHT[16];
-#ifdef DOT11_VHT_AC
     INT16	PAModeVHT[10];
-#endif /* DOT11_VHT_AC */
 #endif /* SINGLE_SKU_V2 */
 
     /* ---------------------------- packet ---------------------------------- */
@@ -711,13 +707,11 @@ struct _RTMP_CHIP_CAP_
     UINT8 cmd_header_len;
     UINT8 cmd_padding_len;
 
-#ifdef RTMP_USB_SUPPORT
     UINT8 DataBulkInAddr;
     UINT8 CommandRspBulkInAddr;
     UINT8 WMM0ACBulkOutAddr[4];
     UINT8 WMM1ACBulkOutAddr;
     UINT8 CommandBulkOutAddr;
-#endif
 
     enum MCU_TYPE MCUType;
     UCHAR *FWImageName;

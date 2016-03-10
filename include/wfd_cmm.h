@@ -216,10 +216,8 @@ typedef struct _WFD_ENTRY_INFO
 typedef struct _RT_WFD_CONFIG
 {
     BOOLEAN bWfdEnable;
-#ifdef RT_CFG80211_SUPPORT
     BOOLEAN bSuppInsertWfdIe;		/* Insert WFD IE to management frames from wpa_supplicant */
     BOOLEAN bSuppGoOn;				/* wpa_supplicant P2P GO is on */
-#endif /* RT_CFG80211_SUPPORT */
     UCHAR  	DeviceType;
     UCHAR  	SourceCoupled;
     UCHAR  	SinkCoupled;

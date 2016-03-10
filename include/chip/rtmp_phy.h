@@ -596,9 +596,7 @@ typedef union _BBP_R182_STRUCT
 	RF register Read/Write marco definition
  *****************************************************************************/
 
-#ifdef RTMP_MAC_USB
 #define RTMP_RF_IO_WRITE32(_A, _V)                 RTUSBWriteRFRegister(_A, _V)
-#endif /* RTMP_MAC_USB */
 
 
 /*****************************************************************************
@@ -635,12 +633,10 @@ typedef union _BBP_R182_STRUCT
 }
 #endif /*DFS_SUPPORT*/
 
-#ifdef RTMP_MAC_USB
 #define RTMP_BBP_IO_READ8_BY_REG_ID(_A, _I, _pV)   RTUSBReadBBPRegister(_A, _I, _pV)
 #define RTMP_BBP_IO_WRITE8_BY_REG_ID(_A, _I, _V)   RTUSBWriteBBPRegister(_A, _I, _V)
 #define BBP_IO_WRITE8_BY_REG_ID(_A, _I, _V)			RTUSBWriteBBPRegister(_A, _I, _V)
 #define BBP_IO_READ8_BY_REG_ID(_A, _I, _pV)   		RTUSBReadBBPRegister(_A, _I, _pV)
-#endif /* RTMP_MAC_USB */
 
 
 

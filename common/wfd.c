@@ -27,20 +27,9 @@
 
 #ifdef WFD_SUPPORT
 
-#ifdef OS_ABL_SUPPORT
-#ifdef RT_CFG80211_SUPPORT
-#include <linux/version.h>
-#include <net/cfg80211.h>
-#endif /* RT_CFG80211_SUPPORT */
-#endif /* OS_ABL_SUPPORT */
 
 #include "rt_config.h"
 #include "wfd_cmm.h"
-#ifdef OS_ABL_SUPPORT
-#ifdef RT_CFG80211_SUPPORT
-#include "cfg80211.h"
-#endif /* RT_CFG80211_SUPPORT */
-#endif /* OS_ABL_SUPPORT */
 
 UCHAR WIFIDISPLAY_OUI[] = {0x50, 0x6f, 0x9a, 0x0a};
 
@@ -66,7 +55,6 @@ INT Set_WfdEnable_Proc(
     return TRUE;
 }
 
-#ifdef RT_CFG80211_SUPPORT
 INT Set_WfdInsertIe_Proc(
     IN  PRTMP_ADAPTER		pAd,
     IN  PSTRING			arg)
@@ -112,7 +100,6 @@ INT Set_WfdInsertIe_Proc(
 
     return TRUE;
 }
-#endif /* RT_CFG80211_SUPPORT */
 
 INT Set_WfdDeviceType_Proc(
     IN  PRTMP_ADAPTER		pAd,
@@ -577,9 +564,7 @@ ULONG InsertWfdSubelmtTlv(
         PRT_P2P_TABLE Tab = &pAd->P2pTable;
 
         if(P2P_GO_ON(pAd)
-#ifdef RT_CFG80211_SUPPORT
                 || (pWFDCtrl->bSuppGoOn)
-#endif /* RT_CFG80211_SUPPORT */
           )
         {
             for(i = 1; i < MAX_LEN_OF_MAC_TABLE; i++)
@@ -873,10 +858,8 @@ VOID	WfdCfgInit(
 
     RTMPZeroMemory(&pAd->StaCfg.WfdCfg, sizeof(RT_WFD_CONFIG));
     pWfdcfg->bWfdEnable = TRUE;
-#ifdef RT_CFG80211_SUPPORT
     pWfdcfg->bSuppInsertWfdIe = FALSE;
     pWfdcfg->bSuppGoOn = FALSE;
-#endif /* RT_CFG80211_SUPPORT */
     pWfdcfg->DeviceType = WFD_PRIMARY_SINK;
     pWfdcfg->SessionAvail = WFD_SESSION_AVAILABLE;
     pWfdcfg->PeerSessionAvail = WFD_SESSION_AVAILABLE;

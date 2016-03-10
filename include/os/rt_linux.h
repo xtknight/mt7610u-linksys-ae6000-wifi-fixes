@@ -49,9 +49,7 @@
 #include <linux/if_arp.h>
 #include <linux/ctype.h>
 #include <linux/vmalloc.h>
-#ifdef RTMP_USB_SUPPORT
 #include <linux/usb.h>
-#endif /* RTMP_USB_SUPPORT */
 #include <linux/wireless.h>
 #include <net/iw_handler.h>
 
@@ -71,16 +69,11 @@
 #include <linux/pid.h>
 #endif
 
-#ifdef RT_CFG80211_SUPPORT
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,28)
 #include <net/mac80211.h>
-#ifndef EXT_BUILD_CHANNEL_LIST
-#define EXT_BUILD_CHANNEL_LIST		/* must define with CRDA */
-#endif
 #else /* LINUX_VERSION_CODE */
 #undef RT_CFG80211_SUPPORT
 #endif /* LINUX_VERSION_CODE */
-#endif /* RT_CFG80211_SUPPORT */
 
 
 /* must put the definition before include "os/rt_linux_cmm.h" */
@@ -96,9 +89,7 @@
 
 #include "os/rt_linux_cmm.h"
 
-#ifdef RT_CFG80211_SUPPORT
 #include "cfg80211.h"
-#endif /* RT_CFG80211_SUPPORT */
 
 #undef AP_WSC_INCLUDED
 #undef STA_WSC_INCLUDED
@@ -128,7 +119,6 @@ typedef struct usb_ctrlrequest devctrlrequest;
 
 #ifdef CONFIG_STA_SUPPORT
 
-#ifdef RTMP_MAC_USB
 #define STA_PROFILE_PATH			"/etc/Wireless/RT2870STA/RT2870STA.dat"
 #define STA_DRIVER_VERSION			"3.0.0.2"
 #ifdef SINGLE_SKU_V2
@@ -137,7 +127,6 @@ typedef struct usb_ctrlrequest devctrlrequest;
 #ifdef MULTIPLE_CARD_SUPPORT
 #define CARD_INFO_PATH			"/etc/Wireless/RT2870STA/RT2870STACard.dat"
 #endif /* MULTIPLE_CARD_SUPPORT */
-#endif /* RTMP_MAC_USB */
 
 
 extern	const struct iw_handler_def rt28xx_iw_handler_def;
@@ -503,11 +492,7 @@ do { \
 /* TODO: Use this IOCTL carefully when linux kernel version larger than 2.6.27, because the PID only correct when the user space task do this ioctl itself. */
 /*#define RTMP_GET_OS_PID(_x, _y)    _x = get_task_pid(current, PIDTYPE_PID); */
 #define RT_GET_OS_PID(_x, _y)		do{rcu_read_lock(); _x=(ULONG)current->pids[PIDTYPE_PID].pid; rcu_read_unlock();}while(0)
-#ifdef OS_ABL_FUNC_SUPPORT
-#define RTMP_GET_OS_PID(_a, _b)			RtmpOsGetPid(&_a, _b)
-#else
 #define RTMP_GET_OS_PID(_a, _b)			RT_GET_OS_PID(_a, _b)
-#endif
 #define	GET_PID_NUMBER(_v)	pid_nr((_v))
 #define CHECK_PID_LEGALITY(_pid)	if (pid_nr((_pid)) > 0)
 #define KILL_THREAD_PID(_A, _B, _C)	kill_pid((_A), (_B), (_C))
@@ -602,7 +587,6 @@ static inline void NdisGetSystemUpTime(ULONG *time)
 struct os_cookie
 {
 
-#ifdef RTMP_MAC_USB
     struct usb_device		*pUsb_Dev;
 #ifdef CONFIG_STA_SUPPORT
 #ifdef CONFIG_PM
@@ -611,7 +595,6 @@ struct os_cookie
 #endif /* USB_SUPPORT_SELECTIVE_SUSPEND */
 #endif /* CONFIG_PM */
 #endif /* CONFIG_STA_SUPPORT */
-#endif /* RTMP_MAC_USB */
 
 #ifdef WORKQUEUE_BH
     UINT32		     pAd_va;
@@ -621,9 +604,6 @@ struct os_cookie
     RTMP_NET_TASK_STRUCT cmd_rsp_event_task;
     RTMP_NET_TASK_STRUCT mgmt_dma_done_task;
     RTMP_NET_TASK_STRUCT ac0_dma_done_task;
-#ifdef RALINK_ATE
-    RTMP_NET_TASK_STRUCT ate_ac0_dma_done_task;
-#endif /* RALINK_ATE */
     RTMP_NET_TASK_STRUCT ac1_dma_done_task;
     RTMP_NET_TASK_STRUCT ac2_dma_done_task;
     RTMP_NET_TASK_STRUCT ac3_dma_done_task;
@@ -635,10 +615,8 @@ struct os_cookie
 #endif /* UAPSD_SUPPORT */
 
 
-#ifdef RTMP_MAC_USB
     RTMP_NET_TASK_STRUCT null_frame_complete_task;
     RTMP_NET_TASK_STRUCT pspoll_frame_complete_task;
-#endif /* RTMP_MAC_USB */
 
     RTMP_OS_PID			apd_pid; /*802.1x daemon pid */
     unsigned long			apd_pid_nr;
@@ -786,7 +764,6 @@ void linux_pci_unmap_single(void *handle, ra_dma_addr_t dma_addr, size_t size, i
  * Device Register I/O Access related definitions and data structures.
  **********************************************************************************/
 
-#ifdef RTMP_MAC_USB
 #define RTMP_IO_FORCE_READ32(_A, _R, _pV)								\
 	RTUSBReadMACRegister((_A), (_R), (PUINT32) (_pV))
 
@@ -821,7 +798,6 @@ void linux_pci_unmap_single(void *handle, ra_dma_addr_t dma_addr, size_t size, i
 
 #define RTMP_SYS_IO_READ32
 #define RTMP_SYS_IO_WRITE32
-#endif /* RTMP_MAC_USB */
 
 #define RTMP_USB_URB_DATA_GET(__pUrb)			((purbb_t)__pUrb)->context
 #define RTMP_USB_URB_STATUS_GET(__pUrb)			((purbb_t)__pUrb)->status
@@ -862,9 +838,6 @@ void linux_pci_unmap_single(void *handle, ra_dma_addr_t dma_addr, size_t size, i
 #define PACKET_TO_QUEUE_ENTRY(pPacket) \
 	(PQUEUE_ENTRY)(pPacket)
 
-#ifdef CONFIG_5VT_ENHANCE
-#define BRIDGE_TAG 0x35564252    /* depends on 5VT define in br_input.c */
-#endif
 
 #define GET_SG_LIST_FROM_PACKET(_p, _sc)	\
     rt_get_sg_list_from_packet(_p, _sc)
@@ -1132,15 +1105,11 @@ void linux_pci_unmap_single(void *handle, ra_dma_addr_t dma_addr, size_t size, i
 #define RTMP_GET_PACKET_CLEAR_EAP_FRAME(_p)         (RTPKT_TO_OSPKT(_p)->cb[CB_OFF+12])
 
 
-#ifdef DOT11_VHT_AC
 #ifdef WFA_VHT_PF
 #define MAX_PACKETS_IN_QUEUE				2048 /*(512)*/
 #else
 #define MAX_PACKETS_IN_QUEUE				1024 /*(512)*/
 #endif /* WFA_VHT_PF */
-#else
-#define MAX_PACKETS_IN_QUEUE				(512)
-#endif /* DOT11_VHT_AC */
 
 
 /* use bit3 of cb[CB_OFF+16] */
@@ -1167,11 +1136,6 @@ void linux_pci_unmap_single(void *handle, ra_dma_addr_t dma_addr, size_t size, i
 	((((UINT16)(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+24]) & 0x00ff) << 8) \
 	| ((UINT16)(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+23]) & 0x00ff))
 
-#ifdef INF_AMAZON_SE
-/* [CB_OFF+28], 1B, Iverson patch for WMM A5-T07 ,WirelessStaToWirelessSta do not bulk out aggregate */
-#define RTMP_SET_PACKET_NOBULKOUT(_p, _morebit)			(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+28] = _morebit)
-#define RTMP_GET_PACKET_NOBULKOUT(_p)					(RTPKT_TO_OSPKT(_p)->cb[CB_OFF+28])
-#endif /* INF_AMAZON_SE */
 
 
 
@@ -1237,15 +1201,10 @@ extern int ra_mtd_read(int num, loff_t from, size_t len, u_char *buf);
 
 typedef struct usb_device_id USB_DEVICE_ID;
 
-#ifdef INF_AMAZON_SE
-#define BULKAGGRE_SIZE				30
-#else
 #define BULKAGGRE_SIZE				60 /* 100 */
-#endif /* INF_AMAZON_SE */
 
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(2,5,0)
 
-#ifndef OS_ABL_SUPPORT
 /*#define RT28XX_PUT_DEVICE			usb_put_dev */
 #define RTUSB_ALLOC_URB(iso)		usb_alloc_urb(iso, GFP_ATOMIC)
 #define RTUSB_SUBMIT_URB(pUrb)		usb_submit_urb(pUrb, GFP_ATOMIC)
@@ -1263,45 +1222,24 @@ typedef struct usb_device_id USB_DEVICE_ID;
 #endif
 
 #define RTUSB_FILL_BULK_URB(_urb, _dev, _pipe, _buffer, _buffer_len, _complete_fn, _context) usb_fill_bulk_urb(_urb, _dev, _pipe, _buffer, _buffer_len, _complete_fn, _context)
-#else
-
-/*#define RT28XX_PUT_DEVICE			rausb_put_dev */
-#define RTUSB_ALLOC_URB(iso)		rausb_alloc_urb(iso)
-#define RTUSB_SUBMIT_URB(pUrb)		rausb_submit_urb(pUrb)
-#define RTUSB_URB_ALLOC_BUFFER		rausb_buffer_alloc
-#define RTUSB_URB_FREE_BUFFER		rausb_buffer_free
-#endif /* OS_ABL_SUPPORT */
 
 #else
 
 #define RT28XX_PUT_DEVICE(dev_p)
 
-#ifndef OS_ABL_SUPPORT
 #define RTUSB_ALLOC_URB(iso)                                               	usb_alloc_urb(iso)
 #define RTUSB_SUBMIT_URB(pUrb)                                             	usb_submit_urb(pUrb)
-#else
-#define RTUSB_ALLOC_URB(iso)                                               	rausb_alloc_urb(iso)
-#define RTUSB_SUBMIT_URB(pUrb)                                             	rausb_submit_urb(pUrb)
-#endif /* OS_ABL_SUPPORT */
 
 #define RTUSB_URB_ALLOC_BUFFER(pUsb_Dev, BufSize, pDma_addr)         		kmalloc(BufSize, GFP_ATOMIC)
 #define RTUSB_URB_FREE_BUFFER(pUsb_Dev, BufSize, pTransferBuf, Dma_addr)  	kfree(pTransferBuf)
 #endif
 
-#ifndef OS_ABL_SUPPORT
 #define RTUSB_FREE_URB(pUrb)	usb_free_urb(pUrb)
-#else
-#define RTUSB_FREE_URB(pUrb)	rausb_free_urb(pUrb)
-#endif /* OS_ABL_SUPPORT */
 
 /* unlink urb */
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,7)
 
-#ifndef OS_ABL_SUPPORT
 #define RTUSB_UNLINK_URB(pUrb)		usb_kill_urb(pUrb)
-#else
-#define RTUSB_UNLINK_URB(pUrb)		rausb_kill_urb(pUrb)
-#endif /* OS_ABL_SUPPORT */
 
 #else
 #define RTUSB_UNLINK_URB(pUrb)		usb_unlink_urb(pUrb)
@@ -1478,88 +1416,11 @@ USBHST_STATUS RTUSBBulkCmdRspEventComplete(URBCompleteStatus Status, purbb_t pUR
 #define RTMP_OS_USB_CONTEXT_GET(__pURB)		__pURB->rtusb_urb_context
 #define RTMP_OS_USB_STATUS_GET(__pURB)		__pURB->rtusb_urb_status
 
-#ifndef OS_ABL_SUPPORT
 #define USB_CONTROL_MSG		usb_control_msg
 
-#else
-
-#define USB_CONTROL_MSG		rausb_control_msg
-
-/*extern int rausb_register(struct usb_driver * new_driver); */
-/*extern void rausb_deregister(struct usb_driver * driver); */
-
-extern struct urb *rausb_alloc_urb(int iso_packets);
-extern void rausb_free_urb(VOID *urb);
-
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,5,0)
-extern void rausb_put_dev(VOID *dev);
-extern struct usb_device *rausb_get_dev(VOID *dev);
-#endif /* LINUX_VERSION_CODE */
-
-extern int rausb_submit_urb(VOID *urb);
-
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,5,0)
-#ifndef gfp_t
-#define gfp_t		INT32
-#endif /* gfp_t */
-
-extern void *rausb_buffer_alloc(VOID *dev,
-                                size_t size,
-                                ra_dma_addr_t *dma);
-extern void rausb_buffer_free(VOID *dev,
-                              size_t size,
-                              void *addr,
-                              ra_dma_addr_t dma);
-#endif /* LINUX_VERSION_CODE */
-
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,7)
-extern void rausb_kill_urb(VOID *urb);
-#endif /* LINUX_VERSION_CODE */
-
-extern int rausb_control_msg(VOID *dev,
-                             unsigned int pipe,
-                             __u8 request,
-                             __u8 requesttype,
-                             __u16 value,
-                             __u16 index,
-                             void *data,
-                             __u16 size,
-                             int timeout);
-
-#endif /* OS_ABL_SUPPORT */
 
 /*#endif // RTMP_USB_SUPPORT */
 
-#ifdef RALINK_ATE
-/******************************************************************************
-
-  	ATE related definitions
-
-******************************************************************************/
-#define ate_print printk
-#define ATEDBGPRINT DBGPRINT
-
-#ifdef RTMP_MAC_USB
-#ifdef CONFIG_STA_SUPPORT
-#undef EEPROM_BIN_FILE_NAME /* Avoid APSTA mode re-define issue */
-#define EEPROM_BIN_FILE_NAME  "/etc/Wireless/RT2870STA/e2p.bin"
-#endif /* CONFIG_STA_SUPPORT */
-#endif /* RTMP_MAC_USB */
-
-#ifdef RTMP_USB_SUPPORT
-
-#if ((LINUX_VERSION_CODE < KERNEL_VERSION(2, 5, 51)) || (LINUX_VERSION_CODE > KERNEL_VERSION(2, 6, 18)))
-/* Prototypes of completion funuc. */
-#define ATE_RTUSBBulkOutDataPacketComplete(Status, pURB, pt_regs)    ATE_RTUSBBulkOutDataPacketComplete(pURB)
-#else
-#define ATE_RTUSBBulkOutDataPacketComplete(Status, pURB, pt_regs)    ATE_RTUSBBulkOutDataPacketComplete(pURB, pt_regs)
-#endif /* LINUX_VERSION_CODE */
-
-USBHST_STATUS ATE_RTUSBBulkOutDataPacketComplete(URBCompleteStatus Status, purbb_t pURB, pregs *pt_regs);
-
-#endif /* RTMP_USB_SUPPORT */
-
-#endif /* RALINK_ATE */
 
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,31)
 INT RtmpOSNetDevOpsAlloc(

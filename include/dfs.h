@@ -177,7 +177,6 @@
 		(_pRadarDetect->bDfsInit == FALSE) ||						\
 		(_pRadarDetect->DFSAPRestart == 1))
 
-#ifdef RTMP_MAC_USB
 #define INIT_DFS_EVENT_BUFF_SHARED_MEMORY(_pAd, _StartOffset, _NumOfPages, _InitVal)	\
 {																						\
 	UINT32 i = 0;																			\
@@ -187,7 +186,6 @@
 	RTMP_IO_WRITE32(_pAd, BBPR127TABLE_OWNERID, 0x01010101);							\
 	RTMP_IO_WRITE32(_pAd, BBPR127TABLE_OWNERID + 4, 0x01010101);						\
 }
-#endif /* RTMP_MAC_USB */
 
 typedef enum _DFS_VERSION
 {

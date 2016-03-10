@@ -25,7 +25,6 @@
  *************************************************************************/
 
 
-#ifdef NEW_RATE_ADAPT_SUPPORT
 #include "rt_config.h"
 
 
@@ -49,7 +48,6 @@ VOID MlmeSetMcsGroup(RTMP_ADAPTER *pAd, MAC_TABLE_ENTRY *pEntry)
         else
             pEntry->mcsGroup = 1;
 
-#ifdef DOT11_VHT_AC
 
     // TODO: shiang-6590, fix me!!
     if(pEntry->SupportRateMode & SUPPORT_VHT_MODE)
@@ -60,7 +58,6 @@ VOID MlmeSetMcsGroup(RTMP_ADAPTER *pAd, MAC_TABLE_ENTRY *pEntry)
             pEntry->mcsGroup = 1;
     }
 
-#endif /* DOT11_VHT_AC */
 }
 
 
@@ -124,9 +121,7 @@ UCHAR MlmeSelectUpRate(
                  (pEntry->HTCapability.MCSSet[1] == 0xff) &&
                  (pAd->CommonCfg.TxStream > 1) &&
                  ((pAd->CommonCfg.TxStream == 2) || (pEntry->HTCapability.MCSSet[2] == 0x0)))
-#ifdef DOT11_VHT_AC
                 || (pEntry->pTable == RateTableVht2S)
-#endif /* DOT11_VHT_AC */
                )
         {
             switch(pEntry->mcsGroup)
@@ -266,9 +261,7 @@ UCHAR MlmeSelectDownRate(
             BOOLEAN valid_mcs32 = FALSE;
 
             if((pEntry->MaxHTPhyMode.field.BW == BW_40 && pAd->CommonCfg.BBPCurrentBW == BW_40)
-#ifdef DOT11_VHT_AC
                     || (pEntry->MaxHTPhyMode.field.BW == BW_80 && pAd->CommonCfg.BBPCurrentBW == BW_80)
-#endif /* DOT11_VHT_AC */
               )
                 valid_mcs32 = TRUE;
 
@@ -323,7 +316,6 @@ VOID MlmeGetSupportedMcsAdapt(
     for(idx=0; idx<24; idx++)
         mcs[idx] = -1;
 
-#ifdef DOT11_VHT_AC
 
     if(pEntry->pTable == RateTableVht2S)
     {
@@ -426,7 +418,6 @@ VOID MlmeGetSupportedMcsAdapt(
         return;
     }
 
-#endif /* DOT11_VHT_AC */
 
     /*  check the existence and index of each needed MCS */
     for(idx = 0; idx < RATE_TABLE_SIZE(pTable); idx++)
@@ -525,8 +516,6 @@ UCHAR MlmeSelectTxRateAdapt(
 
 #endif /* DBG_CTRL_SUPPORT */
 
-#ifdef DOT11_N_SUPPORT
-#ifdef DOT11_VHT_AC
 
     if(pTable == RateTableVht1S || pTable == RateTableVht2S || pTable == RateTableVht1S_MCS7)
     {
@@ -608,7 +597,6 @@ UCHAR MlmeSelectTxRateAdapt(
         }
     }
     else
-#endif /* DOT11_VHT_AC */
         if(ADAPT_RATE_TABLE(pTable) ||
                 (pTable == RateSwitchTable11BGN3S) ||
                 (pTable == RateSwitchTable11BGN3SForABand))
@@ -733,7 +721,6 @@ UCHAR MlmeSelectTxRateAdapt(
                 TxRateIdx = mcs[0];
         }
         else
-#endif /*  DOT11_N_SUPPORT */
         {
             /*  Legacy mode */
             if(mcs[7]>=0 && (Rssi > -70))
@@ -1148,7 +1135,6 @@ VOID StaQuickResponeForRateUpExecAdapt(
 #endif /* TXBF_SUPPORT */
     pCurrTxRate = PTX_RA_GRP_ENTRY(pTable, CurrRateIdx);
 
-#ifdef DOT11_N_SUPPORT
 
     if((Rssi > -65) && (pCurrTxRate->Mode >= MODE_HTMIX) && pEntry->perThrdAdj == 1)
     {
@@ -1156,7 +1142,6 @@ VOID StaQuickResponeForRateUpExecAdapt(
         TrainDown	= (pCurrTxRate->TrainDown + (pCurrTxRate->TrainDown >> 1));
     }
     else
-#endif /* DOT11_N_SUPPORT */
     {
         TrainUp		= pCurrTxRate->TrainUp;
         TrainDown	= pCurrTxRate->TrainDown;
@@ -1430,7 +1415,6 @@ VOID MlmeDynamicTxRateSwitchingAdapt(
     UpRateIdx = MlmeSelectUpRate(pAd, pEntry, pCurrTxRate);
     DownRateIdx = MlmeSelectDownRate(pAd, pEntry, CurrRateIdx);
 
-#ifdef DOT11_N_SUPPORT
 
     /*
     	when Rssi > -65, there is a lot of interference usually. therefore, the algorithm tends to choose the mcs lower than the optimal one.
@@ -1442,7 +1426,6 @@ VOID MlmeDynamicTxRateSwitchingAdapt(
         TrainDown	= (pCurrTxRate->TrainDown + (pCurrTxRate->TrainDown >> 1));
     }
     else
-#endif /* DOT11_N_SUPPORT */
     {
         TrainUp		= pCurrTxRate->TrainUp;
         TrainDown	= pCurrTxRate->TrainDown;
@@ -1644,12 +1627,10 @@ INT Set_RateTable_Proc(RTMP_ADAPTER *pAd, PSTRING arg)
     if(itemNo<0 || itemNo>=RATE_TABLE_SIZE(pTable))
         return FALSE;
 
-#ifdef NEW_RATE_ADAPT_SUPPORT
 
     if(ADAPT_RATE_TABLE(pTable))
         pRateEntry = (UCHAR *)PTX_RA_GRP_ENTRY(pTable, itemNo);
     else
-#endif /* NEW_RATE_ADAPT_SUPPORT */
         pRateEntry = (UCHAR *)PTX_RA_LEGACY_ENTRY(pTable, itemNo);
 
     /* If no addtional parameters then print the entry */
@@ -1751,5 +1732,4 @@ INT	Set_TrainUpHighThrd_Proc(
     return TRUE;
 }
 
-#endif /* NEW_RATE_ADAPT_SUPPORT */
 

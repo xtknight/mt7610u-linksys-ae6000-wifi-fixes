@@ -188,7 +188,6 @@ TX_PWR_CFG TxPwrCfg[] =
     {MODE_OFDM, 5, 1, 0, 0x0000000f},
     {MODE_OFDM, 6, 1, 12, 0x0000f000},
     {MODE_OFDM, 7, 1, 8, 0x00000f00}
-#ifdef DOT11_N_SUPPORT
     ,{MODE_HTMIX, 0, 1, 20, 0x00f00000},
     {MODE_HTMIX, 1, 1, 16, 0x000f0000},
     {MODE_HTMIX, 2, 1, 28, 0xf0000000},
@@ -205,7 +204,6 @@ TX_PWR_CFG TxPwrCfg[] =
     {MODE_HTMIX, 13, 3, 0, 0x0000000f},
     {MODE_HTMIX, 14, 3, 12, 0x0000f000},
     {MODE_HTMIX, 15, 3, 8, 0x00000f00}
-#endif /* DOT11_N_SUPPORT */
 };
 #define MAX_TXPWR_TAB_SIZE (sizeof(TxPwrCfg) / sizeof(TX_PWR_CFG))
 
@@ -291,7 +289,6 @@ CHAR RTMP_GetTxPwr(
 
         break;
 
-#ifdef DOT11_N_SUPPORT
 
     case MODE_HTMIX:
     case MODE_HTGREENFIELD:
@@ -307,14 +304,11 @@ CHAR RTMP_GetTxPwr(
         }
 
         break;
-#endif /* DOT11_N_SUPPORT */
     }
 
     PhyMode =
-#ifdef DOT11_N_SUPPORT
         (HTTxMode.field.MODE == MODE_HTGREENFIELD)
         ? MODE_HTMIX :
-#endif /* DOT11_N_SUPPORT */
         HTTxMode.field.MODE;
 
     for(Idx = 0; Idx < MAX_TXPWR_TAB_SIZE; Idx++)
@@ -1509,9 +1503,7 @@ static VOID StartDFSProcedure(
 {
     /* start DFS procedure*/
     pAd->CommonCfg.Channel = Channel;
-#ifdef DOT11_N_SUPPORT
     N_ChannelCheck(pAd);
-#endif /* DOT11_N_SUPPORT */
     pAd->Dot11_H.RDMode = RD_SWITCHING_MODE;
     pAd->Dot11_H.CSCount = 0;
 }
@@ -2202,7 +2194,6 @@ VOID PeerSpectrumAction(
 
     case SPEC_CHANNEL_SWITCH:
 
-#ifdef DOT11N_DRAFT3
     {
         SEC_CHA_OFFSET_IE	Secondary;
         CHA_SWITCH_ANNOUNCE_IE	ChannelSwitch;
@@ -2226,7 +2217,6 @@ VOID PeerSpectrumAction(
         }
     }
 
-#endif /* DOT11N_DRAFT3 */
 
     PeerChSwAnnAction(pAd, Elem);
     break;

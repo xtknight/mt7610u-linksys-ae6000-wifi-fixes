@@ -366,13 +366,6 @@ void announce_802_3_packet(
 
     /* Push up the protocol stack */
 
-#ifdef IKANOS_VX_1X0
-    {
-        RTMP_ADAPTER *pAd = (RTMP_ADAPTER *)pAdSrc;
-        IKANOS_DataFrameRx(pAd, pRxPkt);
-        return;
-    }
-#endif /* IKANOS_VX_1X0 */
 
 #ifdef INF_PPA_SUPPORT
     {
@@ -557,9 +550,7 @@ VOID	RTMPFreeAdapter(
     NdisFreeSpinLock(&pAd->UAPSDEOSPLock); /* OS_ABL_SUPPORT */
 #endif /* UAPSD_SUPPORT */
 
-#ifdef DOT11_N_SUPPORT
     NdisFreeSpinLock(&pAd->mpdu_blk_pool.lock);
-#endif /* DOT11_N_SUPPORT */
 
     if(pAd->iw_stats)
     {
@@ -575,12 +566,6 @@ VOID	RTMPFreeAdapter(
 
     NdisFreeSpinLock(&TimerSemLock);
 
-#ifdef RALINK_ATE
-#ifdef RTMP_MAC_USB
-    RTMP_OS_ATMOIC_DESTROY(&pAd->BulkOutRemained);
-    RTMP_OS_ATMOIC_DESTROY(&pAd->BulkInRemained);
-#endif /* RTMP_MAC_USB */
-#endif /* RALINK_ATE */
 
     RTMP_OS_FREE_TIMER(pAd);
     RTMP_OS_FREE_LOCK(pAd);
@@ -613,15 +598,6 @@ int	RTMPSendPackets(
         goto done;
 
     /* RT2870STA does this in RTMPSendPackets() */
-#ifdef RALINK_ATE
-
-    if(ATE_ON(pAd))
-    {
-        RELEASE_NDIS_PACKET(pAd, pPacket, NDIS_STATUS_RESOURCES);
-        return 0;
-    }
-
-#endif /* RALINK_ATE */
 
 #ifdef CONFIG_STA_SUPPORT
     IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
@@ -648,14 +624,6 @@ int	RTMPSendPackets(
 
     RTMP_SET_PACKET_5VT(pPacket, 0);
     /*	MiniportMMRequest(pAd, pkt->data, pkt->len); */
-#ifdef CONFIG_5VT_ENHANCE
-
-    if(*(int *)(GET_OS_PKT_CB(pPacket)) == BRIDGE_TAG)
-    {
-        RTMP_SET_PACKET_5VT(pPacket, 1);
-    }
-
-#endif
 
 
 #ifdef CONFIG_STA_SUPPORT

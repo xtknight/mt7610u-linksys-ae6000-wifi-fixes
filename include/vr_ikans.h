@@ -34,15 +34,6 @@
 #define IKANOS_EXTERN
 #endif /* MODULE_IKANOS */
 
-#ifdef IKANOS_VX_1X0
-typedef void (*IkanosWlanTxCbFuncP)(void *, void *);
-
-struct IKANOS_TX_INFO
-{
-    struct net_device *netdev;
-    IkanosWlanTxCbFuncP *fp;
-};
-#endif /* IKANOS_VX_1X0 */
 
 
 IKANOS_EXTERN void VR_IKANOS_FP_Init(UINT8 BssNum, UINT8 *pApMac);

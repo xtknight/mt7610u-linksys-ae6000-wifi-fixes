@@ -60,13 +60,6 @@ VOID CarrierDetectionPeriodicStateCtrl(
     CARRIER_DETECT_PARAM CarrDetectParam;
 
 
-#ifdef RALINK_ATE
-
-    /* Nothing to do in ATE mode */
-    if(ATE_ON(pAd))
-        return;
-
-#endif /* RALINK_ATE */
 
     /* tell firmware to prepare Recheck and RadarToneCount  */
     AsicSendCommandToMcu(pAd, CD_CHECKOUT_MCU_CMD, 0xff, 0x00, 0x00, FALSE);

@@ -25,7 +25,6 @@
  *************************************************************************/
 
 
-#ifdef RTMP_MAC_USB
 
 #include	"rt_config.h"
 
@@ -1439,13 +1438,11 @@ NDIS_STATUS	RTMPCheckRxError(
         if((pRxInfo->CipherErr == 2) && pRxInfo->MyBss)
         {
             pWpaKey = &pAd->SharedKey[BSS0][pRxWI->RxWIKeyIndex];
-#ifdef WPA_SUPPLICANT_SUPPORT
 
             if(pAd->StaCfg.WpaSupplicantUP)
                 WpaSendMicFailureToWpaSupplicant(pAd->net_dev,
                                                  (pWpaKey->Type == PAIRWISEKEY) ? TRUE:FALSE);
             else
-#endif /* WPA_SUPPLICANT_SUPPORT */
                 RTMPReportMicError(pAd, pWpaKey);
 
             DBGPRINT_RAW(RT_DEBUG_ERROR,("Rx MIC Value error\n"));
@@ -1541,5 +1538,4 @@ VOID RT28xxUsbStaAsicSleepThenAutoWakeup(
 }
 #endif /* CONFIG_STA_SUPPORT */
 
-#endif /* RTMP_MAC_USB */
 

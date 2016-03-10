@@ -30,9 +30,7 @@
 
 
 
-#ifdef RTMP_USB_SUPPORT
 #include "iface/rtmp_usb.h"
-#endif /* RTMP_USB_SUPPORT */
 
 typedef struct _INF_PCI_CONFIG_
 {

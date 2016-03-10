@@ -98,7 +98,6 @@ VOID RTMPSetLEDStatus(
     IN PRTMP_ADAPTER 	pAd,
     IN UCHAR			Status);
 
-#ifdef RTMP_MAC_USB
 #define RTMPSetLED(pAd, Status)	\
 do{								\
 	UCHAR LEDStatus;			\
@@ -109,7 +108,6 @@ do{								\
 		RTEnqueueInternalCmd(pAd, CMDTHREAD_SET_LED_STATUS, &LEDStatus, sizeof(LEDStatus));	\
 }while(0)
 
-#endif /* RTMP_MAC_USB */
 
 
 VOID RTMPSetSignalLED(

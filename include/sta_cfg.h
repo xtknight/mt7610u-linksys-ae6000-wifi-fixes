@@ -34,7 +34,6 @@ INT RTMPSTAPrivIoctlSet(
     IN PSTRING ProcArg);
 
 #ifdef WOW_SUPPORT
-#ifdef RTMP_MAC_USB
 /* set WOW enable */
 INT Set_WOW_Enable(
     IN PRTMP_ADAPTER        pAd,
@@ -51,7 +50,6 @@ INT Set_WOW_Delay(
 INT Set_WOW_Hold(
     IN PRTMP_ADAPTER		pAd,
     IN PSTRING				arg);
-#endif /* RTMP_MAC_USB */
 #endif /* WOW_SUPPORT */
 
 #endif /* __STA_CFG_H__ */

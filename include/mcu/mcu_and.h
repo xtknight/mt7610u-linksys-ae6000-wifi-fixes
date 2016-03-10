@@ -145,9 +145,7 @@ struct cmd_msg
     enum cmd_msg_state state;
     void *priv;
     PNDIS_PACKET net_pkt;
-#ifdef RTMP_USB_SUPPORT
     PURB urb;
-#endif
     int retransmit_times;
 };
 
@@ -261,9 +259,7 @@ struct mcu_skb_data
     enum mcu_skb_state state;
 };
 
-#ifdef RTMP_MAC_USB
 NDIS_STATUS andes_usb_loadfw(struct _RTMP_ADAPTER *ad);
-#endif /* RTMP_MAC_USB */
 void andes_ctrl_init(struct _RTMP_ADAPTER *ad);
 void andes_ctrl_enable(struct _RTMP_ADAPTER *ad);
 void andes_ctrl_disable(struct _RTMP_ADAPTER *ad);

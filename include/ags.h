@@ -32,10 +32,8 @@
 extern UCHAR AGS1x1HTRateTable[];
 extern UCHAR AGS2x2HTRateTable[];
 extern UCHAR AGS3x3HTRateTable[];
-#ifdef DOT11_VHT_AC
 extern UCHAR Ags1x1VhtRateTable[];
 extern UCHAR Ags2x2VhtRateTable[];
-#endif /* DOT11_VHT_AC */
 
 #define AGS_TX_QUALITY_WORST_BOUND       8
 #define AGS_QUICK_RA_TIME_INTERVAL        50	/* 50ms */
@@ -90,7 +88,6 @@ typedef struct _AGS_STATISTICS_INFO
 /* Support AGS (Adaptive Group Switching) */
 #define SUPPORT_AGS(__pAd)		((__pAd)->rateAlg == RATE_ALG_AGS)
 
-#ifdef DOT11_VHT_AC
 #define AGS_IS_USING(__pAd, __pRateTable)	\
     (SUPPORT_AGS(__pAd) && \
      ((__pRateTable == AGS1x1HTRateTable) ||\
@@ -98,13 +95,6 @@ typedef struct _AGS_STATISTICS_INFO
       (__pRateTable == AGS3x3HTRateTable) ||\
       (__pRateTable == Ags1x1VhtRateTable) ||\
       (__pRateTable == Ags2x2VhtRateTable)))
-#else
-#define AGS_IS_USING(__pAd, __pRateTable)	\
-    (SUPPORT_AGS(__pAd) && \
-     ((__pRateTable == AGS1x1HTRateTable) || \
-      (__pRateTable == AGS2x2HTRateTable) || \
-      (__pRateTable == AGS3x3HTRateTable)))
-#endif /* DOT11_VHT_AC */
 
 #endif /* __AGS_H__ */
 

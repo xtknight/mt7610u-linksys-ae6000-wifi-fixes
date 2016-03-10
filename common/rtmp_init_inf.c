@@ -36,78 +36,6 @@ NDIS_STATUS WriteDatThread(RTMP_ADAPTER *pAd);
 #endif /* CONFIG_STA_SUPPORT */
 
 #ifdef LINUX
-#ifdef OS_ABL_FUNC_SUPPORT
-/* Utilities provided from NET module */
-RTMP_NET_ABL_OPS RtmpDrvNetOps, *pRtmpDrvNetOps = &RtmpDrvNetOps;
-RTMP_PCI_CONFIG RtmpPciConfig, *pRtmpPciConfig = &RtmpPciConfig;
-RTMP_USB_CONFIG RtmpUsbConfig, *pRtmpUsbConfig = &RtmpUsbConfig;
-
-VOID RtmpDrvOpsInit(
-    OUT VOID *pDrvOpsOrg,
-    INOUT VOID *pDrvNetOpsOrg,
-    IN RTMP_PCI_CONFIG *pPciConfig,
-    IN RTMP_USB_CONFIG *pUsbConfig)
-{
-    RTMP_DRV_ABL_OPS *pDrvOps = (RTMP_DRV_ABL_OPS *)pDrvOpsOrg;
-#ifdef RTMP_USB_SUPPORT
-    RTMP_NET_ABL_OPS *pDrvNetOps = (RTMP_NET_ABL_OPS *)pDrvNetOpsOrg;
-#endif /* RTMP_USB_SUPPORT */
-
-
-    /* init PCI/USB configuration in different OS */
-    if(pPciConfig != NULL)
-        RtmpPciConfig = *pPciConfig;
-
-    if(pUsbConfig != NULL)
-        RtmpUsbConfig = *pUsbConfig;
-
-    /* init operators provided from us (DRIVER module) */
-    pDrvOps->RTMPAllocAdapterBlock = RTMPAllocAdapterBlock;
-    pDrvOps->RTMPFreeAdapter = RTMPFreeAdapter;
-
-    pDrvOps->RtmpRaDevCtrlExit = RtmpRaDevCtrlExit;
-    pDrvOps->RtmpRaDevCtrlInit = RtmpRaDevCtrlInit;
-
-    pDrvOps->RTMPSendPackets = RTMPSendPackets;
-#ifdef MBSS_SUPPORT
-    pDrvOps->MBSS_PacketSend = MBSS_PacketSend;
-#endif /* MBSS_SUPPORT */
-#ifdef WDS_SUPPORT
-    pDrvOps->WDS_PacketSend = WDS_PacketSend;
-#endif /* WDS_SUPPORT */
-#ifdef APCLI_SUPPORT
-    pDrvOps->APC_PacketSend = APC_PacketSend;
-#endif /* APCLI_SUPPORT */
-
-    pDrvOps->RTMP_COM_IoctlHandle = RTMP_COM_IoctlHandle;
-
-
-#ifdef CONFIG_STA_SUPPORT
-    pDrvOps->RTMP_STA_IoctlHandle = RTMP_STA_IoctlHandle;
-    pDrvOps->RTMPDrvSTAOpen = RTMPDrvSTAOpen;
-    pDrvOps->RTMPDrvSTAClose = RTMPDrvSTAClose;
-#endif
-
-    pDrvOps->RTMPInfClose = RTMPInfClose;
-    pDrvOps->rt28xx_init = rt28xx_init;
-
-    /* init operators provided from us and netif module */
-#ifdef RTMP_USB_SUPPORT
-    *pRtmpDrvNetOps = *pDrvNetOps;
-    pRtmpDrvNetOps->RtmpDrvUsbBulkOutDataPacketComplete = RTUSBBulkOutDataPacketComplete;
-    pRtmpDrvNetOps->RtmpDrvUsbBulkOutMLMEPacketComplete = RTUSBBulkOutMLMEPacketComplete;
-    pRtmpDrvNetOps->RtmpDrvUsbBulkOutNullFrameComplete = RTUSBBulkOutNullFrameComplete;
-    /*	pRtmpDrvNetOps->RtmpDrvUsbBulkOutRTSFrameComplete = RTUSBBulkOutRTSFrameComplete;*/
-    pRtmpDrvNetOps->RtmpDrvUsbBulkOutPsPollComplete = RTUSBBulkOutPsPollComplete;
-    pRtmpDrvNetOps->RtmpDrvUsbBulkRxComplete = RTUSBBulkRxComplete;
-    //pRtmpDrvNetOps->RtmpDrvUsbBulkCmdRspEventComplete =RTUSBBulkCmdRspEventComplete;
-    *pDrvNetOps = *pRtmpDrvNetOps;
-#endif /* RTMP_USB_SUPPORT */
-}
-
-RTMP_BUILD_DRV_OPS_FUNCTION_BODY
-
-#endif /* OS_ABL_FUNC_SUPPORT */
 #endif /* LINUX */
 
 
@@ -203,13 +131,11 @@ int rt28xx_init(VOID *pAdSrc, PSTRING pDefaultMac, PSTRING pHostName)
 
     /* Init BssTab & ChannelInfo tabbles for auto channel select.*/
 
-#ifdef DOT11_N_SUPPORT
 
     /* Allocate BA Reordering memory*/
     if(ba_reordering_resource_init(pAd, MAX_REORDERING_MPDU_NUM) != TRUE)
         goto err1;
 
-#endif /* DOT11_N_SUPPORT */
 
     /* Make sure MAC gets ready.*/
     index = 0;
@@ -350,7 +276,6 @@ int rt28xx_init(VOID *pAdSrc, PSTRING pDefaultMac, PSTRING pHostName)
         goto err6;
     }
 
-#ifdef RTMP_MAC_USB
     pAd->CommonCfg.bMultipleIRP = FALSE;
 
     if(pAd->CommonCfg.bMultipleIRP)
@@ -358,9 +283,7 @@ int rt28xx_init(VOID *pAdSrc, PSTRING pDefaultMac, PSTRING pHostName)
     else
         pAd->CommonCfg.NumOfBulkInIRP = 1;
 
-#endif /* RTMP_MAC_USB */
 
-#ifdef DOT11_N_SUPPORT
     /*Init Ba Capability parameters.*/
     /*	RT28XX_BA_INIT(pAd);*/
     pAd->CommonCfg.DesiredHtPhy.MpduDensity = (UCHAR)pAd->CommonCfg.BACapability.field.MpduDensity;
@@ -371,7 +294,6 @@ int rt28xx_init(VOID *pAdSrc, PSTRING pDefaultMac, PSTRING pHostName)
     pAd->CommonCfg.HtCapability.HtCapInfo.MimoPs = (USHORT)pAd->CommonCfg.BACapability.field.MMPSmode;
     pAd->CommonCfg.HtCapability.HtCapInfo.AMsduSize = (USHORT)pAd->CommonCfg.BACapability.field.AmsduSize;
     pAd->CommonCfg.HtCapability.HtCapParm.MpduDensity = (UCHAR)pAd->CommonCfg.BACapability.field.MpduDensity;
-#endif /* DOT11_N_SUPPORT */
 
     /* after reading Registry, we now know if in AP mode or STA mode*/
 
@@ -391,15 +313,6 @@ int rt28xx_init(VOID *pAdSrc, PSTRING pDefaultMac, PSTRING pHostName)
 
     NICInitAsicFromEEPROM(pAd); /* rt2860b */
 
-#ifdef RALINK_ATE
-
-    if(ATEInit(pAd) != NDIS_STATUS_SUCCESS)
-    {
-        DBGPRINT(RT_DEBUG_ERROR, ("%s(): ATE initialization failed !\n", __FUNCTION__));
-        goto err6;
-    }
-
-#endif /* RALINK_ATE */
 
 
 #ifdef RTMP_INTERNAL_TX_ALC
@@ -427,27 +340,18 @@ int rt28xx_init(VOID *pAdSrc, PSTRING pDefaultMac, PSTRING pHostName)
         goto err6;
     }
 
-#ifdef DOT11_N_SUPPORT
     DBGPRINT(RT_DEBUG_TRACE, ("MCS Set = %02x %02x %02x %02x %02x\n", pAd->CommonCfg.HtCapability.MCSSet[0],
                             pAd->CommonCfg.HtCapability.MCSSet[1], pAd->CommonCfg.HtCapability.MCSSet[2],
                             pAd->CommonCfg.HtCapability.MCSSet[3], pAd->CommonCfg.HtCapability.MCSSet[4]));
-#endif /* DOT11_N_SUPPORT */
 
 
 
     /* APInitialize(pAd);*/
 
-#ifdef IKANOS_VX_1X0
-    VR_IKANOS_FP_Init(pAd->ApCfg.BssidNum, pAd->PermanentAddress);
-#endif /* IKANOS_VX_1X0 */
 
-#ifdef RTMP_MAC_USB
     AsicSendCommandToMcu(pAd, 0x31, 0xff, 0x00, 0x02, FALSE);
     RTMPusecDelay(10000);
-#endif /* RTMP_MAC_USB */
 
-#ifdef RALINK_ATE
-#endif /* RALINK_ATE */
 
 
     /*
@@ -475,7 +379,6 @@ int rt28xx_init(VOID *pAdSrc, PSTRING pDefaultMac, PSTRING pHostName)
         DBGPRINT(RT_DEBUG_TRACE, ("NDIS_STATUS_MEDIA_DISCONNECT Event B!\n"));
 
 
-#ifdef RTMP_MAC_USB
         RTMP_CLEAR_FLAG(pAd, fRTMP_ADAPTER_RESET_IN_PROGRESS);
         RTMP_CLEAR_FLAG(pAd, fRTMP_ADAPTER_REMOVE_IN_PROGRESS);
 
@@ -489,7 +392,6 @@ int rt28xx_init(VOID *pAdSrc, PSTRING pDefaultMac, PSTRING pHostName)
             DBGPRINT(RT_DEBUG_TRACE, ("RTUSBBulkReceive!\n"));
         }
 
-#endif /* RTMP_MAC_USB */
     }/* end of else*/
 
     /* Set up the Mac address*/
@@ -513,12 +415,6 @@ int rt28xx_init(VOID *pAdSrc, PSTRING pDefaultMac, PSTRING pHostName)
     IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
     {
 
-#ifdef WPA_SUPPLICANT_SUPPORT
-#ifndef NATIVE_WPA_SUPPLICANT_SUPPORT
-        /* send wireless event to wpa_supplicant for infroming interface up.*/
-        RtmpOSWirelessEventSend(pAd->net_dev, RT_WLAN_EVENT_CUSTOM, RT_INTERFACE_UP, NULL, NULL, 0);
-#endif /* NATIVE_WPA_SUPPLICANT_SUPPORT */
-#endif /* WPA_SUPPLICANT_SUPPORT */
 
     }
 #endif /* CONFIG_STA_SUPPORT */
@@ -542,7 +438,6 @@ int rt28xx_init(VOID *pAdSrc, PSTRING pDefaultMac, PSTRING pHostName)
 #endif /* STREAM_MODE_SUPPORT */
 
 
-#ifdef DOT11_N_SUPPORT
 #ifdef TXBF_SUPPORT
 
     if(pAd->CommonCfg.ITxBfTimeout)
@@ -560,7 +455,6 @@ int rt28xx_init(VOID *pAdSrc, PSTRING pDefaultMac, PSTRING pHostName)
     }
 
 #endif /* TXBF_SUPPORT */
-#endif /* DOT11_N_SUPPORT */
 
 
 
@@ -627,21 +521,13 @@ err1:
 
 #endif /* RT3290 */
 
-#ifdef DOT11_N_SUPPORT
 
     if(pAd->mpdu_blk_pool.mem)
         os_free_mem(pAd, pAd->mpdu_blk_pool.mem); /* free BA pool*/
 
-#endif /* DOT11_N_SUPPORT */
 
     /* shall not set priv to NULL here because the priv didn't been free yet.*/
     /*net_dev->priv = 0;*/
-#ifdef INF_AMAZON_SE
-err0:
-#endif /* INF_AMAZON_SE */
-#ifdef ST
-err0:
-#endif /* ST */
 
     DBGPRINT(RT_DEBUG_ERROR, ("!!! rt28xx initialization failed. Try unplugging and plugging your adapter in again.\n"));
     return FALSE;
@@ -751,23 +637,19 @@ VOID RTMPDrvSTAClose(
             AsicForceWakeup(pAd, TRUE);
         }
 
-#ifdef RTMP_MAC_USB
         RTMP_SET_FLAG(pAd, fRTMP_ADAPTER_REMOVE_IN_PROGRESS);
-#endif /* RTMP_MAC_USB */
 
     }
 
     /* RTMP_CLEAR_FLAG(pAd, fRTMP_ADAPTER_MCU_SEND_IN_BAND_CMD); */
     RTMP_SET_FLAG(pAd, fRTMP_ADAPTER_HALT_IN_PROGRESS);
 
-#ifdef EXT_BUILD_CHANNEL_LIST
 
     if(pAd->CommonCfg.pChDesp != NULL)
         os_free_mem(NULL, pAd->CommonCfg.pChDesp);
 
     pAd->CommonCfg.pChDesp = NULL;
     pAd->CommonCfg.DfsType = MAX_RD_REGION;
-#endif /* EXT_BUILD_CHANNEL_LIST */
     pAd->CommonCfg.bCountryFlag = FALSE;
 
 
@@ -844,10 +726,8 @@ VOID RTMPDrvSTAClose(
     skb_queue_purge(&pAd->rx0_recycle);
 #endif /* WLAN_SKB_RECYCLE */
 
-#ifdef DOT11_N_SUPPORT
     /* Free BA reorder resource*/
     ba_reordering_resource_release(pAd);
-#endif /* DOT11_N_SUPPORT */
 
     UserCfgExit(pAd); /* must after ba_reordering_resource_release */
 
@@ -962,11 +842,6 @@ VOID RTMPInfClose(
             RTMPusecDelay(1000);
         }
 
-#ifdef WPA_SUPPLICANT_SUPPORT
-#ifndef NATIVE_WPA_SUPPLICANT_SUPPORT
-        /* send wireless event to wpa_supplicant for infroming interface down.*/
-        RtmpOSWirelessEventSend(pAd->net_dev, RT_WLAN_EVENT_CUSTOM, RT_INTERFACE_DOWN, NULL, NULL, 0);
-#endif /* NATIVE_WPA_SUPPLICANT_SUPPORT */
 
         if(pAd->StaCfg.pWpsProbeReqIe)
         {
@@ -984,7 +859,6 @@ VOID RTMPInfClose(
             pAd->StaCfg.WpaAssocIeLen = 0;
         }
 
-#endif /* WPA_SUPPLICANT_SUPPORT */
 
 
     }
