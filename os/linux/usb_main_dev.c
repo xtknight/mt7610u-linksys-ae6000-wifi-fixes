@@ -40,11 +40,9 @@ MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Paul Lin <paul_lin@ralinktech.com>");
 MODULE_DESCRIPTION("RT2870 Wireless Lan Linux Driver");
 MODULE_LICENSE("GPL");
-#ifdef CONFIG_STA_SUPPORT
 #ifdef MODULE_VERSION
 MODULE_VERSION(STA_DRIVER_VERSION);
 #endif
-#endif /* CONFIG_STA_SUPPORT */
 
 
 extern USB_DEVICE_ID rtusb_dev_id[];
@@ -420,9 +418,7 @@ static int rt2870_suspend(
     else
 #endif /* WOW_SUPPORT */
     {
-#ifdef CONFIG_STA_SUPPORT
         RTMP_DRIVER_ADAPTER_END_DISSASSOCIATE(pAd);
-#endif
         RTMP_DRIVER_ADAPTER_IDLE_RADIO_OFF_TEST(pAd, &Flag);
 
         if(!Flag)
@@ -435,9 +431,7 @@ static int rt2870_suspend(
     return 0;
 #endif /* USB_SUPPORT_SELECTIVE_SUSPEND */
 
-#ifdef CONFIG_STA_SUPPORT
     RTMP_DRIVER_ADAPTER_END_DISSASSOCIATE(pAd);
-#endif
 
     RTMP_DRIVER_ADAPTER_RT28XX_USB_ASICRADIO_OFF(pAd);
     RTMP_DRIVER_ADAPTER_SUSPEND_SET(pAd);
@@ -560,7 +554,6 @@ static void rt2870_disconnect(struct usb_device *dev, VOID *pAd)
 
     RTMP_DRIVER_NET_DEV_GET(pAd, &net_dev);
 
-#ifdef CONFIG_STA_SUPPORT
     // TODO: Do we need to check if we're in STA/Infrastructure mode?
     // First let's disassociate before we tear down anything
     // Or else, we'll get a WARN_ON() under unregister_netdev()
@@ -569,7 +562,6 @@ static void rt2870_disconnect(struct usb_device *dev, VOID *pAd)
     DBGPRINT(RT_DEBUG_TRACE, ("rtusb_disconnect(): set AP to null\n"));
     RTMP_STA_IoctlHandle(pAd, NULL, CMD_RTPRIV_IOCTL_STA_SIOCSIWAP, 0,
                          (VOID *)(&ZERO_MAC_ADDR[0]), 0, RT_DEV_PRIV_FLAGS_GET(net_dev));
-#endif
 
     DBGPRINT(RT_DEBUG_TRACE, ("rtusb_disconnect(): unregister usbnet usb-%s-%s\n",
                               dev->bus->bus_name, dev->devpath));
@@ -754,10 +746,8 @@ static int rt2870_probe(
     SET_NETDEV_DEV(net_dev, &(usb_dev->dev));
 #endif
 
-#ifdef CONFIG_STA_SUPPORT
     /*    pAd->StaCfg.OriDevType = net_dev->type; */
     RTMP_DRIVER_STA_DEV_TYPE_SET(pAd, net_dev->type);
-#endif /* CONFIG_STA_SUPPORT */
 
     /*All done, it's time to register the net device to linux kernel. */
     /* Register this device */

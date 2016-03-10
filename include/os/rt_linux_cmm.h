@@ -38,9 +38,6 @@ typedef struct _OS_RSTRUC
 /* declare new chipset function here */
 
 #define RTMP_DRV_NAME	"mt7610u"
-#ifdef HE_SUPPORT
-#define RTMP_DRV_NAME   "rtsta"
-#endif
 
 
 

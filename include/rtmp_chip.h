@@ -681,10 +681,8 @@ struct _RTMP_CHIP_CAP_
     /* 2nd CCA Detection -- */
 
 
-#ifdef CONFIG_STA_SUPPORT
     UINT8 init_vga_gain_5G;
     UINT8 init_vga_gain_2G;
-#endif /* CONFIG_STA_SUPPORT */
 
 #ifdef RT5592EP_SUPPORT
     UINT32 Priv; /* Flag for RT5592 EP */

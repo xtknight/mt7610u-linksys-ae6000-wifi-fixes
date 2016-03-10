@@ -2651,10 +2651,8 @@ VOID LinkDown(
 
 
     /* ------ new addition from mt7612u ------ */
-#ifdef CONFIG_STA_SUPPORT
     DBGPRINT(RT_DEBUG_TRACE, ("LOST_AP_INFORM\n"));
     RT_CFG80211_LOST_AP_INFORM(pAd);
-#endif
     /* ------ new addition from mt7612u ------ */
 
     if(pAd->StaCfg.BssType != BSS_ADHOC)

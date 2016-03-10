@@ -2080,7 +2080,6 @@ static VOID MT76x0_ChipSwitchChannel(
     return;
 }
 
-#ifdef CONFIG_STA_SUPPORT
 static VOID MT76x0_NetDevNickNameInit(RTMP_ADAPTER *pAd)
 {
 
@@ -2093,7 +2092,6 @@ static VOID MT76x0_NetDevNickNameInit(RTMP_ADAPTER *pAd)
         snprintf((PSTRING) pAd->nickname, sizeof(pAd->nickname), "MT7610U_STA");
 
 }
-#endif /* CONFIG_STA_SUPPORT */
 
 VOID MT76x0_NICInitAsicFromEEPROM(
     IN PRTMP_ADAPTER		pAd)
@@ -2767,10 +2765,8 @@ VOID MT76x0_Init(RTMP_ADAPTER *pAd)
 #endif /* NEW_MBSSID_MODE */
 
 
-#ifdef CONFIG_STA_SUPPORT
     pChipCap->init_vga_gain_5G = 0x54;
     pChipCap->init_vga_gain_2G = 0x4E;
-#endif /* CONFIG_STA_SUPPORT */
 
 #ifdef RTMP_EFUSE_SUPPORT
     pChipCap->EFUSE_USAGE_MAP_START = 0x1e0;
@@ -2851,9 +2847,7 @@ VOID MT76x0_Init(RTMP_ADAPTER *pAd)
     /* BBP adjust */
     pChipOps->ChipBBPAdjust = MT76x0_ChipBBPAdjust;
 
-#ifdef CONFIG_STA_SUPPORT
     pChipOps->ChipAGCAdjust = NULL;
-#endif /* CONFIG_STA_SUPPORT */
 
     /* Channel */
     pChipOps->ChipSwitchChannel = MT76x0_ChipSwitchChannel;
@@ -2886,9 +2880,7 @@ VOID MT76x0_Init(RTMP_ADAPTER *pAd)
     pChipOps->TSSIRatio = NULL;
 
     /* Others */
-#ifdef CONFIG_STA_SUPPORT
     pChipOps->NetDevNickNameInit = MT76x0_NetDevNickNameInit;
-#endif /* CONFIG_STA_SUPPORT */
 #ifdef CARRIER_DETECTION_SUPPORT
     pAd->chipCap.carrier_func = TONE_RADAR_V3;
     pChipOps->ToneRadarProgram = ToneRadarProgram_v3;

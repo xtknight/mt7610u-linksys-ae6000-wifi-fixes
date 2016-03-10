@@ -772,7 +772,6 @@ PNDIS_PACKET RTMP_AllocateRxPacketBuffer(
     OUT	PVOID					*VirtualAddress,
     OUT	PNDIS_PHYSICAL_ADDRESS	PhysicalAddress);
 
-#ifdef CONFIG_STA_SUPPORT
 #ifdef CONFIG_PM
 #ifdef USB_SUPPORT_SELECTIVE_SUSPEND
 
@@ -786,7 +785,6 @@ int  RTMP_Usb_AutoPM_Get_Interface(
 
 #endif /* USB_SUPPORT_SELECTIVE_SUSPEND */
 #endif /* CONFIG_PM */
-#endif /* CONFIG_STA_SUPPORT */
 
 
 

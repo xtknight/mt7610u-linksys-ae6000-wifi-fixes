@@ -289,7 +289,6 @@ VOID AsicAdjustTxPower(
 #endif /* SINGLE_SKU */
 
 
-#ifdef CONFIG_STA_SUPPORT
 
     if(RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_IDLE_RADIO_OFF))
         return;
@@ -308,7 +307,6 @@ VOID AsicAdjustTxPower(
                                pAd->StaCfg.RssiSample.AvgRssi2);
         }
     }
-#endif /* CONFIG_STA_SUPPORT */
 
     /* Get Tx rate offset table which from EEPROM 0xDEh ~ 0xEFh */
     RTMP_CHIP_ASIC_TX_POWER_OFFSET_GET(pAd, (PULONG)&CfgOfTxPwrCtrlOverMAC);
@@ -554,7 +552,6 @@ VOID AsicPercentageDeltaPower(
 
     if(pAd->CommonCfg.TxPowerPercentage >= 100)  /* AUTO TX POWER control */
     {
-#ifdef CONFIG_STA_SUPPORT
 
         if((pAd->OpMode == OPMODE_STA)
           )
@@ -572,7 +569,6 @@ VOID AsicPercentageDeltaPower(
                 ;
         }
 
-#endif /* CONFIG_STA_SUPPORT */
     }
     else if(pAd->CommonCfg.TxPowerPercentage > 90)  /* 91 ~ 100% & AUTO, treat as 100% in terms of mW */
         ;

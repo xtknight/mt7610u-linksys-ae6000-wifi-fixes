@@ -96,8 +96,6 @@ char const *pWirelessFloodEventText[IW_FLOOD_EVENT_TYPE_NUM] =
 #endif /* IDS_SUPPORT */
 
 
-#ifdef CONFIG_STA_SUPPORT
-#endif /* CONFIG_STA_SUPPORT */
 #endif /* SYSTEM_LOG_SUPPORT */
 
 
@@ -124,12 +122,10 @@ NDIS_STATUS	RTMPReadParametersHook(
 
     {
 
-#ifdef CONFIG_STA_SUPPORT
         IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
         {
             src = STA_PROFILE_PATH;
         }
-#endif /* CONFIG_STA_SUPPORT */
 #ifdef MULTIPLE_CARD_SUPPORT
         src = (PSTRING)pAd->MC_FileName;
 #endif /* MULTIPLE_CARD_SUPPORT */
@@ -252,8 +248,6 @@ VOID RtmpDrvSendWirelessEvent(
         event_table_len = IW_FLOOD_EVENT_TYPE_NUM;
         break;
 #endif /* IDS_SUPPORT */
-#ifdef CONFIG_STA_SUPPORT
-#endif /* CONFIG_STA_SUPPORT */
     }
 
     if(event_table_len == 0)
@@ -303,8 +297,6 @@ VOID RtmpDrvSendWirelessEvent(
             pBufPtr += sprintf(pBufPtr, "%s", pWirelessFloodEventText[event]);
 
 #endif /* IDS_SUPPORT */
-#ifdef CONFIG_STA_SUPPORT
-#endif /* CONFIG_STA_SUPPORT */
         else
             pBufPtr += sprintf(pBufPtr, "%s", "unknown event");
 
@@ -361,8 +353,6 @@ void announce_802_3_packet(
 
 
 
-#ifdef CONFIG_STA_SUPPORT
-#endif /* CONFIG_STA_SUPPORT */
 
     /* Push up the protocol stack */
 
@@ -431,7 +421,6 @@ void announce_802_3_packet(
 }
 
 
-#ifdef CONFIG_STA_SUPPORT
 void STA_MonPktSend(
     IN RTMP_ADAPTER *pAd,
     IN RX_BLK *pRxBlk)
@@ -499,7 +488,6 @@ err_free_sk_buff:
     RELEASE_NDIS_PACKET(pAd, pRxBlk->pRxPacket, NDIS_STATUS_FAILURE);
     return;
 }
-#endif /* CONFIG_STA_SUPPORT */
 
 
 extern NDIS_SPIN_LOCK TimerSemLock;
@@ -587,7 +575,6 @@ int	RTMPSendPackets(
 
     /* RT2870STA does this in RTMPSendPackets() */
 
-#ifdef CONFIG_STA_SUPPORT
     IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
     {
         /* Drop send request since we are in monitor mode */
@@ -597,7 +584,6 @@ int	RTMPSendPackets(
             return 0;
         }
     }
-#endif /* CONFIG_STA_SUPPORT */
 
     /* EapolStart size is 18 */
     if(PktTotalLen < 14)
@@ -614,14 +600,12 @@ int	RTMPSendPackets(
     /*	MiniportMMRequest(pAd, pkt->data, pkt->len); */
 
 
-#ifdef CONFIG_STA_SUPPORT
     IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
     {
 
         STASendPackets((NDIS_HANDLE)pAd, (PPNDIS_PACKET) &pPacket, 1);
     }
 
-#endif /* CONFIG_STA_SUPPORT */
 
 done:
     return 0;
@@ -636,8 +620,6 @@ PNET_DEV get_netdev_from_bssid(
 
     do
     {
-#ifdef CONFIG_STA_SUPPORT
-#endif /* CONFIG_STA_SUPPORT */
         {
             dev_p = pAd->net_dev;
         }

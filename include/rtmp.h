@@ -153,9 +153,7 @@ extern UCHAR AddHtInfoIe;
 extern UCHAR NewExtChanIe;
 extern UCHAR BssCoexistIe;
 extern UCHAR ExtHtCapIe;
-#ifdef CONFIG_STA_SUPPORT
 extern UCHAR PRE_N_HT_OUI[];
-#endif /* CONFIG_STA_SUPPORT */
 extern UCHAR ExtCapIe;
 
 extern UCHAR ErpIe;
@@ -308,14 +306,12 @@ void DisplayTxAgg(RTMP_ADAPTER *pAd);
 #define CLR_ASIC_CAP(_pAd, _caps)		((_pAd)->chipCap.asic_caps &= ~(_caps))
 
 
-#ifdef CONFIG_STA_SUPPORT
 #define STA_NO_SECURITY_ON(_p)          (_p->StaCfg.WepStatus == Ndis802_11EncryptionDisabled)
 #define STA_WEP_ON(_p)                  (_p->StaCfg.WepStatus == Ndis802_11Encryption1Enabled)
 #define STA_TKIP_ON(_p)                 (_p->StaCfg.WepStatus == Ndis802_11Encryption2Enabled)
 #define STA_AES_ON(_p)                  (_p->StaCfg.WepStatus == Ndis802_11Encryption3Enabled)
 
 #define STA_TGN_WIFI_ON(_p)             (_p->StaCfg.bTGnWifiTest == TRUE)
-#endif /* CONFIG_STA_SUPPORT */
 
 #define CKIP_KP_ON(_p)				((((_p)->StaCfg.CkipFlag) & 0x10) && ((_p)->StaCfg.bCkipCmicOn == TRUE))
 #define CKIP_CMIC_ON(_p)			((((_p)->StaCfg.CkipFlag) & 0x08) && ((_p)->StaCfg.bCkipCmicOn == TRUE))
@@ -508,7 +504,6 @@ typedef struct _RTMP_SCATTER_GATHER_LIST
 #define SSID_EQUAL(ssid1, len1, ssid2, len2)    ((len1==len2) && (RTMPEqualMemory(ssid1, ssid2, len1)))
 
 
-#ifdef CONFIG_STA_SUPPORT
 #define STA_EXTRA_SETTING(_pAd)
 
 #define STA_PORT_SECURED(_pAd) \
@@ -523,7 +518,6 @@ typedef struct _RTMP_SCATTER_GATHER_LIST
 	RTMPCancelTimer(&((_pAd)->Mlme.LinkDownTimer), &Cancelled);\
 	STA_EXTRA_SETTING(_pAd); \
 }
-#endif /* CONFIG_STA_SUPPORT */
 
 /* */
 /*  Data buffer for DMA operation, the buffer must be contiguous physical memory */
@@ -930,10 +924,8 @@ typedef struct _SOFT_RX_ANT_DIVERSITY_STRUCT
     UCHAR EvaluateStableCnt;
     UCHAR Pair1PrimaryRxAnt;	/* 0:Ant-E1, 1:Ant-E2 */
     UCHAR Pair1SecondaryRxAnt;	/* 0:Ant-E1, 1:Ant-E2 */
-#ifdef CONFIG_STA_SUPPORT
     SHORT Pair1AvgRssi[2];	/* AvgRssi[0]:E1, AvgRssi[1]:E2 */
     SHORT Pair2AvgRssi[2];	/* AvgRssi[0]:E3, AvgRssi[1]:E4 */
-#endif /* CONFIG_STA_SUPPORT */
     SHORT Pair1LastAvgRssi;	/* */
     SHORT Pair2LastAvgRssi;	/* */
     ULONG RcvPktNumWhenEvaluate;
@@ -947,14 +939,11 @@ typedef enum _ABGBAND_STATE_
     A_BAND,
 } ABGBAND_STATE;
 
-#ifdef CONFIG_STA_SUPPORT
-#endif /* CONFIG_STA_SUPPORT */
 /***************************************************************************
   *	structure for MLME state machine
   **************************************************************************/
 typedef struct _MLME_STRUCT
 {
-#ifdef CONFIG_STA_SUPPORT
     /* STA state machines */
     STATE_MACHINE CntlMachine;
     STATE_MACHINE AssocMachine;
@@ -968,7 +957,6 @@ typedef struct _MLME_STRUCT
     STATE_MACHINE_FUNC AuthRspFunc[AUTH_RSP_FUNC_SIZE];
     STATE_MACHINE_FUNC SyncFunc[SYNC_FUNC_SIZE];
 
-#endif /* CONFIG_STA_SUPPORT */
     STATE_MACHINE_FUNC ActFunc[ACT_FUNC_SIZE];
     /* Action */
     STATE_MACHINE ActMachine;
@@ -1207,13 +1195,11 @@ typedef struct _BssCoexChRange_
 typedef struct _IOT_STRUCT
 {
     BOOLEAN bRTSLongProtOn;
-#ifdef CONFIG_STA_SUPPORT
     BOOLEAN bLastAtheros;
     BOOLEAN bCurrentAtheros;
     BOOLEAN bNowAtherosBurstOn;
     BOOLEAN bNextDisableRxBA;
     BOOLEAN bToggle;
-#endif /* CONFIG_STA_SUPPORT */
 } IOT_STRUCT, *PIOT_STRUCT;
 
 /* This is the registry setting for 802.11n transmit setting.  Used in advanced page. */
@@ -1456,9 +1442,7 @@ typedef struct _COMMON_CONFIG
     EDCA_PARM APEdcaParm;	/* EDCA parameters of the current associated AP */
     QBSS_LOAD_PARM APQbssLoad;	/* QBSS load of the current associated AP */
     UCHAR AckPolicy[4];	/* ACK policy of the specified AC. see ACK_xxx */
-#ifdef CONFIG_STA_SUPPORT
     BOOLEAN bDLSCapable;	/* 0:disable DLS, 1:enable DLS */
-#endif /* CONFIG_STA_SUPPORT */
     /* a bitmap of BOOLEAN flags. each bit represent an operation status of a particular */
     /* BOOLEAN control, either ON or OFF. These flags should always be accessed via */
     /* OPSTATUS_TEST_FLAG(), OPSTATUS_SET_FLAG(), OP_STATUS_CLEAR_FLAG() macros. */
@@ -1673,7 +1657,6 @@ typedef struct _COMMON_CONFIG
 #define DBF_DISABLE_20MHZ_MCS1	0x08000000	/* Disable substitution of 20MHz MCS1 for 40MHz MCS0 */
 #endif /* DBG_CTRL_SUPPORT */
 
-#ifdef CONFIG_STA_SUPPORT
 
 #ifdef CREDENTIAL_STORE
 typedef struct _STA_CONNECT_INFO
@@ -1969,7 +1952,6 @@ typedef struct _STA_ACTIVE_CONFIG
 
 
 
-#endif /* CONFIG_STA_SUPPORT */
 
 
 
@@ -2199,11 +2181,9 @@ typedef struct _MAC_TABLE_ENTRY
 
 
 
-#ifdef CONFIG_STA_SUPPORT
 #ifdef QOS_DLS_SUPPORT
     UINT MatchDlsEntryIdx;	/* indicate the index in pAd->StaCfg.DLSEntry */
 #endif /* QOS_DLS_SUPPORT */
-#endif /* CONFIG_STA_SUPPORT */
 
     /*
     	A bitmap of BOOLEAN flags. each bit represent an operation status of a particular
@@ -2260,9 +2240,7 @@ typedef struct _MAC_TABLE_ENTRY
     UINT32 TXMCSFailed[MAX_MCS_SET];
     UINT32 TXMCSAutoFallBack[MAX_MCS_SET][MAX_MCS_SET];
 
-#ifdef CONFIG_STA_SUPPORT
     ULONG LastBeaconRxTime;
-#endif /* CONFIG_STA_SUPPORT */
 
 
 
@@ -2641,9 +2619,7 @@ struct _RTMP_ADAPTER
     RTMP_CHIP_OP chipOps;
     RTMP_CHIP_CAP chipCap;
 
-#ifdef CONFIG_STA_SUPPORT
     USHORT ThisTbttNumToNextWakeUp;
-#endif /* CONFIG_STA_SUPPORT */
 
 #ifdef HOSTAPD_SUPPORT
     UINT32 IoctlIF;
@@ -2738,9 +2714,7 @@ struct _RTMP_ADAPTER
     BOOLEAN MgmtBulkPending;
     ULONG bulkResetReq[6];
 
-#ifdef CONFIG_STA_SUPPORT
     USHORT CountDowntoPsm;
-#endif /* CONFIG_STA_SUPPORT */
 
 
     /* resource for software backlog queues */
@@ -2928,9 +2902,7 @@ struct _RTMP_ADAPTER
     USHORT BeaconOffset[HW_BEACON_MAX_NUM];
 
     /* pre-build PS-POLL and NULL frame upon link up. for efficiency purpose. */
-#ifdef CONFIG_STA_SUPPORT
     PSPOLL_FRAME PsPollFrame;
-#endif /* CONFIG_STA_SUPPORT */
     HEADER_802_11 NullFrame;
 
     TX_CONTEXT NullContext;
@@ -2945,37 +2917,10 @@ struct _RTMP_ADAPTER
     /*=========AP=========== */
 
 
-#ifdef CONFIG_AP_SUPPORT
-    /* ----------------------------------------------- */
-    /* AP specific configuration & operation status */
-    /* used only when pAd->OpMode == OPMODE_AP */
-    /* ----------------------------------------------- */
-    AP_ADMIN_CONFIG ApCfg;	/* user configuration when in AP mode */
-    AP_MLME_AUX ApMlmeAux;
-
-
-
-#ifdef MBSS_SUPPORT
-    BOOLEAN FlgMbssInit;
-#endif /* MBSS_SUPPORT */
-
-
-#ifdef APCLI_SUPPORT
-    BOOLEAN flg_apcli_init;
-#endif /* APCLI_SUPPORT */
-
-    /*#ifdef AUTO_CH_SELECT_ENHANCE */
-    PBSSINFO pBssInfoTab;
-    PCHANNELINFO pChannelInfo;
-    /*#endif // AUTO_CH_SELECT_ENHANCE */
-
-
-#endif /* CONFIG_AP_SUPPORT */
 
 
 
     /*=======STA=========== */
-#ifdef CONFIG_STA_SUPPORT
     /* ----------------------------------------------- */
     /* STA specific configuration & operation status */
     /* used only when pAd->OpMode == OPMODE_STA */
@@ -2984,7 +2929,6 @@ struct _RTMP_ADAPTER
     STA_ACTIVE_CONFIG StaActive;	/* valid only when ADHOC_ON(pAd) || INFRA_ON(pAd) */
     CHAR nickname[IW_ESSID_MAX_SIZE + 1];	/* nickname, only used in the iwconfig i/f */
     NDIS_MEDIA_STATE PreMediaState;
-#endif /* CONFIG_STA_SUPPORT */
 
     /*=======Common=========== */
     /* OP mode: either AP or STA */
@@ -3029,9 +2973,7 @@ struct _RTMP_ADAPTER
 
     /* AP needs those vaiables for site survey feature. */
     MLME_AUX MlmeAux;	/* temporary settings used during MLME state machine */
-#if defined(AP_SCAN_SUPPORT) || defined(CONFIG_STA_SUPPORT)
     BSS_TABLE ScanTab;	/* store the latest SCAN result */
-#endif /* defined(AP_SCAN_SUPPORT) || defined(CONFIG_STA_SUPPORT) */
 
     /*About MacTab, the sta driver will use #0 and #1 for multicast and AP. */
     MAC_TABLE MacTab;	/* ASIC on-chip WCID entry table.  At TX, ASIC always use key according to this on-chip table. */
@@ -3186,8 +3128,6 @@ struct _RTMP_ADAPTER
     UCHAR EEPROMImage[1024];
 #endif /* RTMP_EFUSE_SUPPORT */
 
-#ifdef CONFIG_STA_SUPPORT
-#endif /* CONFIG_STA_SUPPORT */
 
     EXT_CAP_INFO_ELEMENT ExtCapInfo;
 
@@ -3578,8 +3518,6 @@ typedef struct _TX_BLK_
 #define	fTX_bWMM_UAPSD_EOSP	0x0800	/* Used when UAPSD_SUPPORT */
 #endif /* UAPSD_SUPPORT */
 
-#ifdef CONFIG_STA_SUPPORT
-#endif /* CONFIG_STA_SUPPORT */
 
 
 
@@ -4109,11 +4047,9 @@ VOID PeerPublicAction(
     IN PRTMP_ADAPTER pAd,
     IN MLME_QUEUE_ELEM *Elem);
 
-#ifdef CONFIG_STA_SUPPORT
 VOID StaPublicAction(
     IN PRTMP_ADAPTER pAd,
     IN BSS_2040_COEXIST_IE *pBss2040CoexIE);
-#endif /* CONFIG_STA_SUPPORT */
 
 
 VOID PeerBSSTranAction(
@@ -4134,7 +4070,6 @@ VOID PeerDLSAction(
     IN MLME_QUEUE_ELEM *Elem);
 #endif /* QOS_DLS_SUPPORT */
 
-#ifdef CONFIG_STA_SUPPORT
 #ifdef QOS_DLS_SUPPORT
 VOID DlsParmFill(
     IN PRTMP_ADAPTER pAd,
@@ -4142,7 +4077,6 @@ VOID DlsParmFill(
     IN PRT_802_11_DLS pDls,
     IN USHORT reason);
 #endif /* QOS_DLS_SUPPORT */
-#endif /* CONFIG_STA_SUPPORT */
 
 VOID RECBATimerTimeout(
     IN PVOID SystemSpecific1,
@@ -4380,7 +4314,6 @@ VOID RTMPSendNullFrame(
     IN BOOLEAN bQosNull,
     IN USHORT PwrMgmt);
 
-#ifdef CONFIG_STA_SUPPORT
 VOID RTMPReportMicError(
     IN  PRTMP_ADAPTER   pAd,
     IN  PCIPHER_KEY     pWpaKey);
@@ -4405,7 +4338,6 @@ VOID    WpaSendEapolStart(
     IN	PRTMP_ADAPTER	pAdapter,
     IN  PUCHAR          pBssid);
 
-#endif /* CONFIG_STA_SUPPORT */
 
 
 
@@ -4506,7 +4438,6 @@ VOID AsicAntennaSelect(
 VOID AsicResetBBPAgent(
     IN PRTMP_ADAPTER pAd);
 
-#ifdef CONFIG_STA_SUPPORT
 VOID AsicSleepThenAutoWakeup(
     IN  PRTMP_ADAPTER   pAd,
     IN  USHORT TbttNumToNextWakeUp);
@@ -4517,7 +4448,6 @@ VOID AsicForceSleep(
 VOID AsicForceWakeup(
     IN PRTMP_ADAPTER pAd,
     IN BOOLEAN    bFromTx);
-#endif /* CONFIG_STA_SUPPORT */
 
 VOID AsicSetBssid(
     IN  PRTMP_ADAPTER   pAd,
@@ -5025,7 +4955,6 @@ VOID PeerAuthSimpleRspGenAndSend(
 /* Private routines in dls.c */
 /* */
 
-#ifdef CONFIG_STA_SUPPORT
 #ifdef QOS_DLS_SUPPORT
 void DlsStateMachineInit(
     IN PRTMP_ADAPTER pAd,
@@ -5123,7 +5052,6 @@ INT	Set_DlsTearDownEntry_Proc(
     IN	PRTMP_ADAPTER	pAd,
     IN	PSTRING			arg);
 #endif /* QOS_DLS_SUPPORT */
-#endif /* CONFIG_STA_SUPPORT */
 
 #ifdef QOS_DLS_SUPPORT
 BOOLEAN PeerDlsReqSanity(
@@ -5392,7 +5320,6 @@ VOID ScanNextChannel(
 ULONG MakeIbssBeacon(
     IN  PRTMP_ADAPTER   pAd);
 
-#ifdef CONFIG_STA_SUPPORT
 VOID InitChannelRelatedValue(
     IN  PRTMP_ADAPTER   pAd);
 
@@ -5403,7 +5330,6 @@ VOID AdjustChannelRelatedValue(
     IN BOOLEAN BandWidth,
     IN UCHAR PriCh,
     IN UCHAR ExtraCh);
-#endif /* CONFIG_STA_SUPPORT */
 
 BOOLEAN MlmeScanReqSanity(
     IN  PRTMP_ADAPTER   pAd,
@@ -5448,9 +5374,7 @@ BOOLEAN PeerBeaconAndProbeRspSanity_Old(
     OUT PQOS_CAPABILITY_PARM pQosCapability,
     OUT ULONG *pRalinkIe,
     OUT UCHAR		 *pHtCapabilityLen,
-#ifdef CONFIG_STA_SUPPORT
     OUT UCHAR		 *pPreNHtCapabilityLen,
-#endif /* CONFIG_STA_SUPPORT */
     OUT HT_CAPABILITY_IE *pHtCapability,
     OUT EXT_CAP_INFO_ELEMENT *pExtCapInfo,
     OUT UCHAR		 *AddHtInfoLen,
@@ -5659,7 +5583,6 @@ INT Show_AGS_Proc(
     IN  PRTMP_ADAPTER	pAd,
     IN  PSTRING			arg);
 
-#ifdef CONFIG_STA_SUPPORT
 VOID MlmeDynamicTxRateSwitchingAGS(
     IN PRTMP_ADAPTER pAd,
     IN PMAC_TABLE_ENTRY pEntry,
@@ -5675,7 +5598,6 @@ VOID StaQuickResponeForRateUpExecAGS(
     IN UCHAR TableSize,
     IN PAGS_STATISTICS_INFO pAGSStatisticsInfo,
     IN UCHAR InitTxRateIdx);
-#endif /* CONFIG_STA_SUPPORT */
 
 #endif /* AGS_SUPPORT */
 
@@ -5713,12 +5635,10 @@ VOID    RTMPCheckRates(
     IN OUT  UCHAR           SupRate[],
     IN OUT  UCHAR           *SupRateLen);
 
-#ifdef CONFIG_STA_SUPPORT
 BOOLEAN RTMPCheckChannel(
     IN PRTMP_ADAPTER pAd,
     IN UCHAR		CentralChannel,
     IN UCHAR		Channel);
-#endif /* CONFIG_STA_SUPPORT */
 
 BOOLEAN RTMPCheckHt(
     IN RTMP_ADAPTER *pAd,
@@ -5817,8 +5737,6 @@ NDIS_STATUS MlmeInit(
     IN  PRTMP_ADAPTER   pAd);
 
 
-#ifdef CONFIG_STA_SUPPORT
-#endif /* CONFIG_STA_SUPPORT */
 
 #ifdef RTMP_TEMPERATURE_COMPENSATION
 VOID InitLookupTable(
@@ -6677,7 +6595,6 @@ INT RTMPIoctlConnStatus(
 
 
 
-#ifdef CONFIG_STA_SUPPORT
 VOID RTMPSendDLSTearDownFrame(
     IN	PRTMP_ADAPTER	pAd,
     IN	PUCHAR			pDA);
@@ -6691,7 +6608,6 @@ INT	    WpaCheckEapCode(
     IN  PUCHAR				pFrame,
     IN  USHORT				FrameLen,
     IN  USHORT				OffSet);
-#endif /* CONFIG_STA_SUPPORT */
 
 
 
@@ -6799,7 +6715,6 @@ BOOLEAN rtmp_chk_itxbf_calibration(
 BOOLEAN CmdRspEventCallbackHandle(PRTMP_ADAPTER pAd, PUCHAR pRspBuffer);
 
 
-#ifdef CONFIG_STA_SUPPORT
 /* remove LLC and get 802_3 Header */
 #define  RTMP_802_11_REMOVE_LLC_AND_CONVERT_TO_802_3(_pRxBlk, _pHeader802_3)	\
 {																				\
@@ -6830,7 +6745,6 @@ BOOLEAN CmdRspEventCallbackHandle(PRTMP_ADAPTER pAd, PUCHAR pRspBuffer);
 	CONVERT_TO_802_3(_pHeader802_3, _pDA, _pSA, _pRxBlk->pData, 				\
 		_pRxBlk->DataSize, _pRemovedLLCSNAP);                                   \
 }
-#endif /* CONFIG_STA_SUPPORT */
 
 
 BOOLEAN APFowardWirelessStaToWirelessSta(
@@ -6849,11 +6763,9 @@ VOID Sta_Announce_or_Forward_802_3_Packet(
     IN	UCHAR			FromWhichBSSID);
 
 
-#ifdef CONFIG_STA_SUPPORT
 #define ANNOUNCE_OR_FORWARD_802_3_PACKET(_pAd, _pPacket, _FromWhichBSS)\
 			Sta_Announce_or_Forward_802_3_Packet(_pAd, _pPacket, _FromWhichBSS);
 /*announce_802_3_packet(_pAd, _pPacket); */
-#endif /* CONFIG_STA_SUPPORT */
 
 
 
@@ -6895,11 +6807,9 @@ PNDIS_PACKET RTMPDeFragmentDataFrame(
 
 /*////////////////////////////////////*/
 
-#if defined (AP_SCAN_SUPPORT) || defined (CONFIG_STA_SUPPORT)
 VOID RTMPIoctlGetSiteSurvey(
     IN	PRTMP_ADAPTER	pAdapter,
     IN	RTMP_IOCTL_INPUT_STRUCT *wrq);
-#endif
 
 
 
@@ -6915,7 +6825,6 @@ typedef struct _DefaultKeyIdxValue
 #endif
 
 
-#ifdef CONFIG_STA_SUPPORT
 
 /* The radio capture header precedes the 802.11 header. */
 typedef struct GNU_PACKED _ieee80211_radiotap_header
@@ -6987,7 +6896,6 @@ INT Set_XlinkMode_Proc(
     IN	PRTMP_ADAPTER	pAdapter,
     IN	PSTRING			arg);
 #endif /* XLINK_SUPPORT */
-#endif /* CONFIG_STA_SUPPORT */
 
 INT	Set_FixedTxMode_Proc(
     IN	PRTMP_ADAPTER	pAd,
@@ -7045,7 +6953,6 @@ void tbtt_tasklet(unsigned long data);
 
 
 
-#ifdef CONFIG_STA_SUPPORT
 #ifdef CREDENTIAL_STORE
 NDIS_STATUS RecoverConnectInfo(
     IN  RTMP_ADAPTER *pAd);
@@ -7053,7 +6960,6 @@ NDIS_STATUS RecoverConnectInfo(
 NDIS_STATUS StoreConnectInfo(
     IN  RTMP_ADAPTER *pAd);
 #endif /* CREDENTIAL_STORE */
-#endif /* CONFIG_STA_SUPPORT */
 
 VOID AsicTurnOffRFClk(
     IN PRTMP_ADAPTER    pAd,
@@ -7415,7 +7321,6 @@ PSTRING RTMPGetRalinkEncryModeStr(
     IN  USHORT encryMode);
 /*//////////////////////////////////*/
 
-#ifdef CONFIG_STA_SUPPORT
 VOID AsicStaBbpTuning(
     IN PRTMP_ADAPTER pAd);
 
@@ -7439,7 +7344,6 @@ BOOLEAN	AUTH_ReqSend(
     IN  USHORT				SeqNo,
     IN  PUCHAR				pNewElement,
     IN  ULONG				ElementLen);
-#endif /* CONFIG_STA_SUPPORT */
 
 
 VOID ReSyncBeaconTime(RTMP_ADAPTER *pAd);
@@ -7632,7 +7536,6 @@ BOOLEAN CHAN_PropertyCheck(
     IN UINT32			ChanNum,
     IN UCHAR			Property);
 
-#ifdef CONFIG_STA_SUPPORT
 
 /* command */
 INT Set_SSID_Proc(
@@ -7766,7 +7669,6 @@ VOID MaintainBssTable(
     IN OUT	BSS_TABLE *Tab,
     IN  ULONG	MaxRxTimeDiff,
     IN  UCHAR	MaxSameRxTimeCount);
-#endif /* CONFIG_STA_SUPPORT */
 
 void  getRate(
     IN HTTRANSMIT_SETTING HTSetting,
@@ -7866,7 +7768,6 @@ VOID RtmpCleanupPsQueue(
     IN  PRTMP_ADAPTER   pAd,
     IN  PQUEUE_HEADER   pQueue);
 
-#ifdef CONFIG_STA_SUPPORT
 BOOLEAN RtmpPktPmBitCheck(
     IN  PRTMP_ADAPTER       pAd);
 
@@ -7876,7 +7777,6 @@ VOID RtmpPsActiveExtendCheck(
 VOID RtmpPsModeChange(
     IN PRTMP_ADAPTER		pAd,
     IN UINT32				PsMode);
-#endif /* CONFIG_STA_SUPPORT */
 
 UCHAR dot11_2_ra_rate(UCHAR MaxSupportedRateIn500Kbps);
 UCHAR dot11_max_sup_rate(INT SupRateLen, UCHAR *SupRate, INT ExtRateLen, UCHAR *ExtRate);

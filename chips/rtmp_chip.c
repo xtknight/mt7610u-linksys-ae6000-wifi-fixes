@@ -492,7 +492,6 @@ static VOID RxSensitivityTuning(RTMP_ADAPTER *pAd)
 }
 
 
-#ifdef CONFIG_STA_SUPPORT
 static UCHAR ChipAGCAdjust(
     IN PRTMP_ADAPTER		pAd,
     IN CHAR					Rssi,
@@ -527,7 +526,6 @@ static UCHAR ChipAGCAdjust(
 
     return R66;
 }
-#endif /* CONFIG_STA_SUPPORT */
 
 
 static VOID ChipBBPAdjust(RTMP_ADAPTER *pAd)
@@ -651,9 +649,7 @@ static VOID AsicAntennaDefaultReset(
 VOID NetDevNickNameInit(
     IN PRTMP_ADAPTER		pAd)
 {
-#ifdef CONFIG_STA_SUPPORT
     snprintf((PSTRING) pAd->nickname, sizeof(pAd->nickname), "RT2870STA");
-#endif /* CONFIG_STA_SUPPORT */
 }
 
 
@@ -925,9 +921,7 @@ int RtmpChipOpsHook(VOID *pCB)
     RtmpChipBcnInit(pAd);
 
     pChipOps->RxSensitivityTuning = RxSensitivityTuning;
-#ifdef CONFIG_STA_SUPPORT
     pChipOps->ChipAGCAdjust = ChipAGCAdjust;
-#endif /* CONFIG_STA_SUPPORT */
     pChipOps->ChipBBPAdjust = ChipBBPAdjust;
     pChipOps->ChipSwitchChannel = Default_ChipSwitchChannel;
 

@@ -33,14 +33,11 @@ BUILD_TIMER_FUNCTION(MlmePeriodicExec);
 BUILD_TIMER_FUNCTION(AsicRxAntEvalTimeout);
 BUILD_TIMER_FUNCTION(APSDPeriodicExec);
 BUILD_TIMER_FUNCTION(EnqueueStartForPSKExec);
-#ifdef CONFIG_STA_SUPPORT
-#endif /* CONFIG_STA_SUPPORT */
 
 
 BUILD_TIMER_FUNCTION(BeaconUpdateExec);
 
 
-#ifdef CONFIG_STA_SUPPORT
 BUILD_TIMER_FUNCTION(BeaconTimeout);
 BUILD_TIMER_FUNCTION(ScanTimeout);
 BUILD_TIMER_FUNCTION(AuthTimeout);
@@ -63,7 +60,6 @@ BUILD_TIMER_FUNCTION(DlsTimeoutAction);
 BUILD_TIMER_FUNCTION(RtmpUsbStaAsicForceWakeupTimeout);
 
 
-#endif /* CONFIG_STA_SUPPORT */
 
 
 

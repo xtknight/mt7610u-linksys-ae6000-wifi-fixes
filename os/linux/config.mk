@@ -41,18 +41,8 @@ HAS_IDS_SUPPORT=n
 #Support for Net-SNMP
 HAS_SNMP_SUPPORT=n
 
-#Support features of 802.11n Draft3
-HAS_DOT11N_DRAFT3_SUPPORT=y
-
 #Support features of Single SKU. 
 HAS_SINGLE_SKU_SUPPORT=n
-
-#Support features of 802.11n
-HAS_DOT11_N_SUPPORT=y
-
-#Support for 802.11ac VHT
-HAS_DOT11_VHT_SUPPORT=y
-
 
 
 #Support for 2860/2880 co-exist 
@@ -107,9 +97,6 @@ HAS_BGFP_OPEN_SUPPORT=n
 
 # Support HOSTAPD function
 HAS_HOSTAPD_SUPPORT=n
-
-#Support GreenAP function
-HAS_GREENAP_SUPPORT=n
 
 #Support RFKILL hardware block/unblock LINUX-only function
 HAS_RFKILL_HW_SUPPORT=n
@@ -202,10 +189,6 @@ ifeq ($(HAS_HDR_TRANS_SUPPORT),y)
 WFLAGS += -DHDR_TRANS_SUPPORT
 endif
 
-ifeq ($(HAS_DOT11_VHT_SUPPORT),y)
-WFLAGS += -DDOT11_VHT_AC
-endif
-
 
 ifeq ($(HAS_MAC_REPEATER_SUPPORT),y)
 WFLAGS += -DMAC_REPEATER_SUPPORT
@@ -216,8 +199,7 @@ endif
 
 # config for STA mode
 
-ifeq ($(RT28xx_MODE),STA)
-WFLAGS += -DCONFIG_STA_SUPPORT -DSCAN_SUPPORT -DDBG
+WFLAGS += -DDBG
 
 ifeq ($(HAS_HDR_TRANS_SUPPORT),y)
 WFLAGS += -DHDR_TRANS_TX_SUPPORT
@@ -235,18 +217,10 @@ ifeq ($(HAS_QOS_DLS_SUPPORT),y)
 WFLAGS += -DQOS_DLS_SUPPORT
 endif
 
-ifeq ($(HAS_DOT11_N_SUPPORT),y)
-WFLAGS += -DDOT11_N_SUPPORT
-
-ifeq ($(HAS_DOT11N_DRAFT3_SUPPORT),y)
-WFLAGS += -DDOT11N_DRAFT3
-endif
-
 ifeq ($(HAS_TXBF_SUPPORT),y)
 WFLAGS += -DTXBF_SUPPORT
 endif
 
-endif
 
 
 ifeq ($(HAS_WFD_SUPPORT),y)
@@ -317,8 +291,6 @@ ifeq ($(HAS_WOW_IFDOWN_SUPPORT),y)
 WFLAGS += -DWOW_IFDOWN_SUPPORT
 endif
 
-endif
-# endif of ifeq ($(RT28xx_MODE),STA)
 
 #################################################
 

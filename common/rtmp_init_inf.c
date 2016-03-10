@@ -29,11 +29,9 @@
 
 
 
-#ifdef CONFIG_STA_SUPPORT
 #ifdef PROFILE_STORE
 NDIS_STATUS WriteDatThread(RTMP_ADAPTER *pAd);
 #endif /* PROFILE_STORE */
-#endif /* CONFIG_STA_SUPPORT */
 
 #ifdef LINUX
 #endif /* LINUX */
@@ -107,7 +105,6 @@ int rt28xx_init(VOID *pAdSrc, PSTRING pDefaultMac, PSTRING pHostName)
 
 #endif /* RT3290 */
 
-#ifdef CONFIG_STA_SUPPORT
 #ifdef PCIE_PS_SUPPORT
     IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
     {
@@ -124,7 +121,6 @@ int rt28xx_init(VOID *pAdSrc, PSTRING pDefaultMac, PSTRING pHostName)
         }
     }
 #endif /* PCIE_PS_SUPPORT */
-#endif /* CONFIG_STA_SUPPORT */
 
     /* reset Adapter flags*/
     RTMP_CLEAR_FLAGS(pAd);
@@ -259,11 +255,9 @@ int rt28xx_init(VOID *pAdSrc, PSTRING pDefaultMac, PSTRING pHostName)
 #endif /* CAPTURE_MODE */
 #endif /* CONFIG_FPGA_MODE */
 
-#ifdef CONFIG_STA_SUPPORT
 #ifdef CREDENTIAL_STORE
     RecoverConnectInfo(pAd);
 #endif /* CREDENTIAL_STORE */
-#endif /* CONFIG_STA_SUPPORT */
 
     DBGPRINT(RT_DEBUG_INFO, ("1. Phy Mode = %d\n", pAd->CommonCfg.PhyMode));
 
@@ -298,8 +292,6 @@ int rt28xx_init(VOID *pAdSrc, PSTRING pDefaultMac, PSTRING pHostName)
 
     /* We should read EEPROM for all cases.  rt2860b*/
     NICReadEEPROMParameters(pAd, (PSTRING)pDefaultMac);
-#ifdef CONFIG_STA_SUPPORT
-#endif /* CONFIG_STA_SUPPORT */
 
     DBGPRINT(RT_DEBUG_INFO, ("3. Phy Mode = %d\n", pAd->CommonCfg.PhyMode));
 
@@ -392,9 +384,7 @@ int rt28xx_init(VOID *pAdSrc, PSTRING pDefaultMac, PSTRING pHostName)
     }/* end of else*/
 
     /* Set up the Mac address*/
-#ifdef CONFIG_STA_SUPPORT
     RtmpOSNetDevAddrSet(pAd->OpMode, pAd->net_dev, &pAd->CurrentAddress[0], (PUCHAR)(pAd->StaCfg.dev_name));
-#endif /* CONFIG_STA_SUPPORT */
 
     /* Various AP function init*/
 
@@ -408,13 +398,11 @@ int rt28xx_init(VOID *pAdSrc, PSTRING pDefaultMac, PSTRING pHostName)
 
 
 
-#ifdef CONFIG_STA_SUPPORT
     IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
     {
 
 
     }
-#endif /* CONFIG_STA_SUPPORT */
 
     /* auto-fall back settings */
 #ifdef RANGE_EXTEND
@@ -531,7 +519,6 @@ err1:
 }
 
 
-#ifdef CONFIG_STA_SUPPORT
 VOID RTMPDrvSTAOpen(
     IN VOID *pAdSrc)
 {
@@ -753,7 +740,6 @@ VOID RTMPDrvSTAClose(
 #endif /* CAPTURE_MODE */
 #endif /* CONFIG_FPGA_MODE */
 }
-#endif
 
 VOID RTMPInfClose(
     IN VOID				*pAdSrc)
@@ -764,7 +750,6 @@ VOID RTMPInfClose(
 
 
 
-#ifdef CONFIG_STA_SUPPORT
     IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
     {
 #ifdef PROFILE_STORE
@@ -859,7 +844,6 @@ VOID RTMPInfClose(
 
 
     }
-#endif /* CONFIG_STA_SUPPORT */
 }
 
 
@@ -892,7 +876,6 @@ PNET_DEV RtmpPhyNetDevMainCreate(
     return pDevNew;
 }
 
-#ifdef CONFIG_STA_SUPPORT
 #ifdef PROFILE_STORE
 static void	WriteConfToDatFile(
     IN  PRTMP_ADAPTER pAd)
@@ -1116,5 +1099,4 @@ NDIS_STATUS WriteDatThread(
     return status;
 }
 #endif /* PROFILE_STORE */
-#endif /* CONFIG_STA_SUPPORT */
 

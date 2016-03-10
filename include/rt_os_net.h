@@ -122,7 +122,6 @@ int P2P_PacketSend(
     IN	RTMP_NET_PACKET_TRANSMIT	Func);
 
 
-#ifdef CONFIG_STA_SUPPORT
 INT RTMP_STA_IoctlHandle(
     IN	VOID					*pAd,
     IN	RTMP_IOCTL_INPUT_STRUCT	*wrq,
@@ -131,7 +130,6 @@ INT RTMP_STA_IoctlHandle(
     IN	VOID					*pData,
     IN	ULONG					Data,
     IN  USHORT                  priv_flags);
-#endif /* CONFIG_STA_SUPPORT */
 
 VOID RTMPDrvSTAOpen(VOID *pAd);
 VOID RTMPDrvAPOpen(VOID *pAd);
@@ -175,12 +173,10 @@ __inline VOID VIRTUAL_IF_DOWN(VOID *pAd)
 #ifdef RTMP_MODULE_OS
 
 
-#ifdef CONFIG_STA_SUPPORT
 INT rt28xx_sta_ioctl(
     IN	PNET_DEV		net_dev,
     IN	OUT	struct ifreq	*rq,
     IN	INT			cmd);
-#endif /* CONFIG_STA_SUPPORT */
 
 PNET_DEV RtmpPhyNetDevInit(
     IN VOID						*pAd,

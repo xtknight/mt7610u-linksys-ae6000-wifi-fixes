@@ -1058,9 +1058,7 @@ VOID rtmp_dbg_sanity_diff(RTMP_ADAPTER *pAd, MLME_QUEUE_ELEM *Elem)
                  &QosCapability,
                  &RalinkIe,
                  &HtCapabilityLen,
-#ifdef CONFIG_STA_SUPPORT
                  &PreNHtCapabilityLen,
-#endif /* CONFIG_STA_SUPPORT */
                  pHtCapability,
                  &ExtCapInfo,
                  &AddHtInfoLen,
@@ -1234,14 +1232,12 @@ VOID rtmp_dbg_sanity_diff(RTMP_ADAPTER *pAd, MLME_QUEUE_ELEM *Elem)
             DBGPRINT(RT_DEBUG_ERROR, ("HtCapabilityLen mismatch!Old=%d, New=%d\n", HtCapabilityLen, ie_list->HtCapabilityLen));
         }
 
-#ifdef CONFIG_STA_SUPPORT
 
         if(PreNHtCapabilityLen != ie_list->PreNHtCapabilityLen)
         {
             DBGPRINT(RT_DEBUG_ERROR, ("PreNHtCapabilityLen mismatch!Old=%d, New=%d\n", PreNHtCapabilityLen, ie_list->PreNHtCapabilityLen));
         }
 
-#endif /* CONFIG_STA_SUPPORT */
 
         if(NdisCmpMemory(&ie_list->HtCapability, pHtCapability, sizeof(HT_CAPABILITY_IE)) != 0)
         {

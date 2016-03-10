@@ -44,10 +44,6 @@ obj_cmm := \
         ../../phy/rlt_phy.o\
 	../../phy/rlt_rf.o
 
-ifeq ($(HAS_BLOCK_NET_IF),y)
-obj_cmm += ../../common/netif_block.o
-endif
-
 obj_cmm += ../../rate_ctrl/alg_grp.o
 
 ifeq ($(HAS_RATE_ADAPT_AGS_SUPPORT),y)
@@ -62,8 +58,6 @@ ifeq ($(HAS_CS_SUPPORT),y)
 obj_cmm += ../../common/cmm_cs.o
 endif
 
-#ifdef DOT11_N_SUPPORT
-ifeq ($(HAS_DOT11_N_SUPPORT),y)
 obj_cmm += \
         ../../common/ba_action.o\
         ../../mgmt/mgmt_ht.o
@@ -75,39 +69,21 @@ obj_cmm += \
         ../../common/cmm_txbf_cal.o
 endif
 #endif // TXBF_SUPPORT //
-endif
-#endif // DOT11_N_SUPPORT //
 
-#ifdef DOT11_VHT_SUPPORT
-ifeq ($(HAS_DOT11_VHT_SUPPORT),y)
 obj_vht += ../../mgmt/mgmt_vht.o\
 	../../common/vht.o
-endif
-#endif // DOT11_VHT_SUPPORT //
 
 
 
 
-#ifdef CONFIG_STA_SUPPORT
-ifeq ($(RT28xx_MODE), STA)
 MOD_NAME = $(MODULE)_sta
-ifeq ($(PLATFORM),MT85XX)
-MOD_NAME = rtsta
-endif
-ifeq ($(PLATFORM),MT53XX)
-MOD_NAME = rtsta
-endif
 DAT_PATH = /etc/Wireless/RT$(CHIPSET_DAT)STA
 DAT_FILE_NAME = conf/RT$(CHIPSET_DAT)STA.dat
-endif
-#endif // CONFIG_STA_SUPPORT //
 
 
 obj-m := $(MOD_NAME).o
 
 
-#ifdef CONFIG_STA_SUPPORT
-ifeq ($(RT28xx_MODE), STA)
 $(MOD_NAME)-objs := \
 	../../os/linux/rt_profile.o\
 	../../sta/assoc.o\
@@ -169,9 +145,6 @@ $(MOD_NAME)-objs += \
 	../../os/linux/cfg80211.o \
 	../../os/linux/cfg80211drv.o
 
-
-endif
-#endif // CONFIG_STA_SUPPORT //
 
 
 

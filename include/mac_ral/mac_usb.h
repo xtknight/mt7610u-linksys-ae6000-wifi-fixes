@@ -386,7 +386,6 @@ typedef struct _CMD_RSP_CONTEXT
 /*
   *	Power Save Related MACRO
   */
-#ifdef CONFIG_STA_SUPPORT
 #define RTMP_PS_POLL_ENQUEUE(pAd)						\
 	{	RTUSB_SET_BULK_FLAG(pAd, fRTUSB_BULK_OUT_PSPOLL);	\
 		RTUSBKickBulkOut(pAd); }
@@ -407,7 +406,6 @@ typedef struct _CMD_RSP_CONTEXT
 			RTEnqueueInternalCmd(_pAd, CMDTHREAD_SET_PSM_BIT, &(_psm_val), sizeof(USHORT)); \
 		}\
 	}
-#endif /* CONFIG_STA_SUPPORT */
 
 #define RTMP_MLME_RADIO_ON(pAd) \
     RT28xxUsbMlmeRadioOn(pAd);
@@ -499,13 +497,11 @@ typedef struct _CMD_RSP_CONTEXT
 							&Info, sizeof(RT_ASIC_SHARED_KEY));				\
 }
 
-#ifdef CONFIG_STA_SUPPORT
 /* Set Port Secured */
 #define RTMP_SET_PORT_SECURED(_pAd) 										\
 {																			\
 	RTEnqueueInternalCmd(_pAd, CMDTHREAD_SET_PORT_SECURED, NULL, 0);		\
 }
-#endif /* CONFIG_STA_SUPPORT */
 
 /* Remove Pairwise Key table */
 #define RTMP_REMOVE_PAIRWISE_KEY_ENTRY(_pAd, _Wcid)										\

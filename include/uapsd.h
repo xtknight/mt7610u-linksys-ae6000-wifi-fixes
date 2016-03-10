@@ -91,18 +91,11 @@
 #define UAPSD_SP_START(__pAd, __pEntry)					\
 	__pEntry->bAPSDFlagSPStart = 1;
 
-#ifdef CONFIG_STA_SUPPORT
 #define UAPSD_SP_END(__pAd, __pEntry)					\
 	__pEntry->bAPSDFlagSPStart = 0;						\
 	RtmpAsicSleepHandle(__pAd);
-#else
-/* for AP, we maybe sleep until all SPs are closed */
-#define UAPSD_SP_END(__pAd, __pEntry)					\
-	__pEntry->bAPSDFlagSPStart = 0;
-#endif /* CONFIG_STA_SUPPORT */
 
 
-#ifdef CONFIG_STA_SUPPORT
 
 /* ASIC power save behavior */
 /* TODO: maybe need to do protection */
@@ -130,7 +123,6 @@
 		__pMacEntry->Addr[0], __pMacEntry->Addr[1], __pMacEntry->Addr[2],	\
 		__pMacEntry->Addr[3], __pMacEntry->Addr[4], __pMacEntry->Addr[5]));											\
 }
-#endif /* CONFIG_STA_SUPPORT */
 
 /* recover the peer power save mode virtually */
 #define RTMP_PS_VIRTUAL_SLEEP(__pMacEntry)									\

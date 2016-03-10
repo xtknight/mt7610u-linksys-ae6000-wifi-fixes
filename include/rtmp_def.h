@@ -35,8 +35,6 @@
 #undef WSC_INCLUDED
 
 
-#ifdef CONFIG_STA_SUPPORT
-#endif /* CONFIG_STA_SUPPORT */
 
 #if defined(AP_WSC_INCLUDED) || defined(STA_WSC_INCLUDED)
 #define WSC_INCLUDED
@@ -145,11 +143,9 @@
 /* RxFilter */
 #define STANORMAL	 0x17f97
 #define APNORMAL	 0x15f97
-#ifdef CONFIG_STA_SUPPORT
 #ifdef XLINK_SUPPORT
 #define PSPXLINK	 0x17f93
 #endif /* XLINK_SUPPORT */
-#endif /* CONFIG_STA_SUPPORT */
 
 #define MAX_PRECONFIG_DESP_ENTRY_SIZE  11
 
@@ -1143,8 +1139,6 @@ enum WIFI_MODE
 
 #endif /* APCLI_SUPPORT */
 
-#ifdef CONFIG_STA_SUPPORT
-#endif /* CONFIG_STA_SUPPORT */
 
 /* ============================================================================= */
 
@@ -1701,7 +1695,6 @@ enum WIFI_MODE
 
 /* End - WIRELESS EVENTS definition */
 
-#ifdef CONFIG_STA_SUPPORT
 
 /* definition for DLS */
 #define	MAX_NUM_OF_INIT_DLS_ENTRY   1
@@ -1718,7 +1711,6 @@ enum WIFI_MODE
 /* Maximum size of the ESSID and pAd->nickname strings */
 #define IW_ESSID_MAX_SIZE   		32
 #endif
-#endif /* CONFIG_STA_SUPPORT */
 
 
 /* For AsicRadioOff/AsicRadioOn function */

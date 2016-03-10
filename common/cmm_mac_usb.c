@@ -1549,12 +1549,10 @@ VOID RTUSBBssBeaconStop(
         INT NumOfBcn = 0;
 
 
-#ifdef CONFIG_STA_SUPPORT
         IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
         {
             NumOfBcn = MAX_MESH_NUM;
         }
-#endif /* CONFIG_STA_SUPPORT */
 
         RTMPCancelTimer(&pAd->CommonCfg.BeaconUpdateTimer, &Cancelled);
 
@@ -1591,20 +1589,16 @@ VOID RTUSBBssBeaconStart(
         INT NumOfBcn = 0;
 
 
-#ifdef CONFIG_STA_SUPPORT
         IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
         {
             NumOfBcn = MAX_MESH_NUM;
         }
-#endif /* CONFIG_STA_SUPPORT */
 
         for(apidx=0; apidx<NumOfBcn; apidx++)
         {
             UCHAR CapabilityInfoLocationInBeacon = 0;
             UCHAR TimIELocationInBeacon = 0;
 
-#ifdef CONFIG_STA_SUPPORT
-#endif /* CONFIG_STA_SUPPORT */
 
             NdisZeroMemory(pBeaconSync->BeaconBuf[apidx], HW_BEACON_OFFSET);
             pBeaconSync->CapabilityInfoLocationInBeacon[apidx] = CapabilityInfoLocationInBeacon;
@@ -1825,9 +1819,7 @@ VOID RT28xxUsbMlmeRadioOn(
 
 #ifdef LED_CONTROL_SUPPORT
     /* Set LED*/
-#ifdef CONFIG_STA_SUPPORT
     RTMPSetLED(pAd, LED_RADIO_ON);
-#endif /* CONFIG_STA_SUPPORT */
 #endif /* LED_CONTROL_SUPPORT */
 
 }
@@ -1843,7 +1835,6 @@ VOID RT28xxUsbMlmeRadioOFF(
         return;
 
 
-#ifdef CONFIG_STA_SUPPORT
     /* Clear PMKID cache.*/
     pAd->StaCfg.SavedPMKNum = 0;
     RTMPZeroMemory(pAd->StaCfg.SavedPMK, (PMKID_NO * sizeof(BSSID_INFO)));
@@ -1877,12 +1868,10 @@ VOID RT28xxUsbMlmeRadioOFF(
         }
     }
 
-#endif /* CONFIG_STA_SUPPORT */
 
     /* Set Radio off flag*/
     RTMP_SET_FLAG(pAd, fRTMP_ADAPTER_RADIO_OFF);
 
-#ifdef CONFIG_STA_SUPPORT
     IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
     {
         /* Link down first if any association exists*/
@@ -1899,7 +1888,6 @@ VOID RT28xxUsbMlmeRadioOFF(
 #endif /* ANDROID_SUPPORT */
 
     }
-#endif /* CONFIG_STA_SUPPORT */
 
 
 #ifdef LED_CONTROL_SUPPORT

@@ -77,7 +77,6 @@ void dump_urb(VOID *purb_org)
 
 
 
-#ifdef CONFIG_STA_SUPPORT
 #ifdef CONFIG_PM
 #ifdef USB_SUPPORT_SELECTIVE_SUSPEND
 
@@ -186,7 +185,6 @@ EXPORT_SYMBOL(RTMP_Usb_AutoPM_Get_Interface);
 
 #endif /* USB_SUPPORT_SELECTIVE_SUSPEND */
 #endif /* CONFIG_PM */
-#endif /* CONFIG_STA_SUPPORT */
 
 
 

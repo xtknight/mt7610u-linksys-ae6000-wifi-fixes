@@ -109,9 +109,7 @@ INT CFG80211DRV_IoctlHandle(
         break;
 
     case CMD_RTPRIV_IOCTL_80211_KEY_DEFAULT_SET:
-#ifdef CONFIG_STA_SUPPORT
         pAd->StaCfg.DefaultKeyId = Data; /* base 0 */
-#endif /* CONFIG_STA_SUPPORT */
         break;
 
     case CMD_RTPRIV_IOCTL_80211_CONNECT_TO:
@@ -166,33 +164,6 @@ INT CFG80211DRV_IoctlHandle(
         break;
 #endif /* RT_P2P_SPECIFIC_WIRELESS_EVENT */
 
-#ifdef CONFIG_AP_SUPPORT
-
-    case CMD_RTPRIV_IOCTL_80211_BEACON_SET:
-        CFG80211DRV_OpsBeaconSet(pAd, pData);
-        break;
-
-    case CMD_RTPRIV_IOCTL_80211_BEACON_ADD:
-        CFG80211DRV_OpsBeaconAdd(pAd, pData);
-        break;
-
-    case CMD_RTPRIV_IOCTL_80211_BEACON_DEL:
-    {
-        INT i;
-
-        for(i = 0; i < WLAN_MAX_NUM_OF_TIM; i++)
-            pAd->ApCfg.MBSSID[MAIN_MBSSID].TimBitmaps[i] = 0;
-
-        if(pAd->cfg80211_ctrl.beacon_tail_buf != NULL)
-        {
-            os_free_mem(NULL, pAd->cfg80211_ctrl.beacon_tail_buf);
-            pAd->cfg80211_ctrl.beacon_tail_buf = NULL;
-        }
-
-        pAd->cfg80211_ctrl.beacon_tail_len = 0;
-    }
-    break;
-#endif /* CONFIG_AP_SUPPORT */
 
     default:
         return NDIS_STATUS_FAILURE;
@@ -286,7 +257,6 @@ BOOLEAN CFG80211DRV_OpsSetChannel(
         CFG80211DBG(RT_DEBUG_ERROR, ("mt7610u: Change channel fail!\n"));
     } /* End of if */
 
-#ifdef CONFIG_STA_SUPPORT
 
     if((IfType == RT_CMD_80211_IFTYPE_STATION) && (FlgIsChanged == TRUE))
     {
@@ -318,7 +288,6 @@ BOOLEAN CFG80211DRV_OpsSetChannel(
         RTMP_IO_WRITE32(pAd, RX_FILTR_CFG, pChan->MonFilterFlag);
     } /* End of if */
 
-#endif /* CONFIG_STA_SUPPORT */
 
     return TRUE;
 }
@@ -329,7 +298,6 @@ BOOLEAN CFG80211DRV_OpsChgVirtualInf(
     VOID						*pFlgFilter,
     UINT8						IfType)
 {
-#ifdef CONFIG_STA_SUPPORT
     PRTMP_ADAPTER pAd = (PRTMP_ADAPTER)pAdOrg;
     UINT32 FlgFilter = *(UINT32 *)pFlgFilter;
 
@@ -402,7 +370,6 @@ BOOLEAN CFG80211DRV_OpsChgVirtualInf(
 
     CFG80211DBG(RT_DEBUG_ERROR, ("mt7610u: SSID = %s\n", pAd->CommonCfg.Ssid));
     Set_SSID_Proc(pAd, (PSTRING)pAd->CommonCfg.Ssid);
-#endif /* CONFIG_STA_SUPPORT */
 
     return TRUE;
 }
@@ -428,7 +395,6 @@ BOOLEAN CFG80211DRV_OpsJoinIbss(
     VOID						*pAdOrg,
     VOID						*pData)
 {
-#ifdef CONFIG_STA_SUPPORT
     PRTMP_ADAPTER pAd = (PRTMP_ADAPTER)pAdOrg;
     CMD_RTPRIV_IOCTL_80211_IBSS *pIbssInfo;
 
@@ -438,7 +404,6 @@ BOOLEAN CFG80211DRV_OpsJoinIbss(
 
     pAd->CommonCfg.BeaconPeriod = pIbssInfo->BeaconInterval;
     Set_SSID_Proc(pAd, (PSTRING)pIbssInfo->pSsid);
-#endif /* CONFIG_STA_SUPPORT */
     return TRUE;
 }
 
@@ -446,14 +411,12 @@ BOOLEAN CFG80211DRV_OpsJoinIbss(
 BOOLEAN CFG80211DRV_OpsLeave(
     VOID						*pAdOrg)
 {
-#ifdef CONFIG_STA_SUPPORT
     PRTMP_ADAPTER pAd = (PRTMP_ADAPTER)pAdOrg;
 
 
     pAd->StaCfg.bAutoReconnect = FALSE;
     pAd->FlgCfg80211Connecting = FALSE;
     LinkDown(pAd, FALSE);
-#endif /* CONFIG_STA_SUPPORT */
     return TRUE;
 }
 
@@ -468,7 +431,6 @@ BOOLEAN CFG80211DRV_StaGet(
 
     pIbssInfo = (CMD_RTPRIV_IOCTL_80211_STA *)pData;
 
-#ifdef CONFIG_STA_SUPPORT
     {
         HTTRANSMIT_SETTING PhyInfo;
         ULONG DataRate = 0;
@@ -514,7 +476,6 @@ BOOLEAN CFG80211DRV_StaGet(
                 pAd->StaCfg.RssiSample.AvgRssi2) / 3;
         pIbssInfo->Signal = RSSI;
     }
-#endif /* CONFIG_STA_SUPPORT */
 
     return TRUE;
 }
@@ -524,7 +485,6 @@ BOOLEAN CFG80211DRV_KeyAdd(
     VOID						*pAdOrg,
     VOID						*pData)
 {
-#ifdef CONFIG_STA_SUPPORT
     PRTMP_ADAPTER pAd = (PRTMP_ADAPTER)pAdOrg;
     CMD_RTPRIV_IOCTL_80211_KEY *pKeyInfo;
 
@@ -608,7 +568,6 @@ BOOLEAN CFG80211DRV_KeyAdd(
                              &IoctlSec, 0, INT_MAIN);
     }
 
-#endif /* CONFIG_STA_SUPPORT */
 
     return TRUE;
 }
@@ -618,7 +577,6 @@ BOOLEAN CFG80211DRV_Connect(
     VOID						*pAdOrg,
     VOID						*pData)
 {
-#ifdef CONFIG_STA_SUPPORT
     PRTMP_ADAPTER pAd = (PRTMP_ADAPTER)pAdOrg;
     CMD_RTPRIV_IOCTL_80211_CONNECT *pConnInfo;
     UCHAR SSID[NDIS_802_11_LENGTH_SSID + 1]; /* Add One for SSID_Len == 32 */
@@ -795,7 +753,6 @@ BOOLEAN CFG80211DRV_Connect(
     Set_SSID_Proc(pAd, (PSTRING)SSID);
     CFG80211DBG(RT_DEBUG_TRACE, ("mt7610u: Connecting SSID = %s\n", SSID));
 
-#endif /* CONFIG_STA_SUPPORT */
 
     return TRUE;
 }
@@ -1193,7 +1150,6 @@ VOID CFG80211_Scanning(
     IN UINT32						FrameLen,
     IN INT32						RSSI)
 {
-#ifdef CONFIG_STA_SUPPORT
     PRTMP_ADAPTER pAd = (PRTMP_ADAPTER)pAdCB;
     VOID *pCfg80211_CB = pAd->pCfg80211_CB;
     BOOLEAN FlgIsNMode;
@@ -1237,7 +1193,6 @@ VOID CFG80211_Scanning(
                        RSSI,
                        FlgIsNMode,
                        BW);
-#endif /* CONFIG_STA_SUPPORT */
 } /* End of CFG80211_Scanning */
 
 
@@ -1260,7 +1215,6 @@ VOID CFG80211_ScanEnd(
     IN VOID						*pAdCB,
     IN BOOLEAN					FlgIsAborted)
 {
-#ifdef CONFIG_STA_SUPPORT
     PRTMP_ADAPTER pAd = (PRTMP_ADAPTER)pAdCB;
 
 
@@ -1286,7 +1240,6 @@ VOID CFG80211_ScanEnd(
     CFG80211OS_ScanEnd(CFG80211CB, FlgIsAborted);
 
     pAd->FlgCfg80211Scanning = FALSE;
-#endif /* CONFIG_STA_SUPPORT */
 } /* End of CFG80211_ScanEnd */
 
 
@@ -1383,7 +1336,6 @@ INT CFG80211_SendWirelessEvent(
 }
 #endif /* RT_P2P_SPECIFIC_WIRELESS_EVENT */
 
-#ifdef CONFIG_STA_SUPPORT
 VOID CFG80211_LostApInform(
     IN VOID 					*pAdCB)
 {
@@ -1421,7 +1373,6 @@ VOID CFG80211_LostApInform(
     //}
     //}
 }
-#endif /*CONFIG_STA_SUPPORT*/
 
 
 /* End of cfg80211drv.c */

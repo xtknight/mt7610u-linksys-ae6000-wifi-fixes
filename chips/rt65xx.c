@@ -259,12 +259,10 @@ VOID RT65xxUsbAsicRadioOn(RTMP_ADAPTER *pAd, UCHAR Stage)
     RTMP_CLEAR_FLAG(pAd, fRTMP_ADAPTER_SUSPEND);
 
     /* Send Bulkin IRPs after flag fRTMP_ADAPTER_IDLE_RADIO_OFF is cleared.*/
-#ifdef CONFIG_STA_SUPPORT
     IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
     {
         RTUSBBulkReceive(pAd);
     }
-#endif /* CONFIG_STA_SUPPORT */
 
     MCU_CTRL_INIT(pAd);
 

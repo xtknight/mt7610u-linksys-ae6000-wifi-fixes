@@ -328,12 +328,10 @@ NDIS_STATUS MiniportMMRequest(
             break;
         }
 
-#ifdef CONFIG_STA_SUPPORT
 
         if(RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_IDLE_RADIO_OFF))
             ASIC_RADIO_ON(pAd, MLME_RADIO_ON);
 
-#endif /* CONFIG_STA_SUPPORT */
 
         /* Check Free priority queue*/
         /* Since we use PBF Queue2 for management frame.  Its corresponding DMA ring should be using TxRing.*/
@@ -463,14 +461,12 @@ NDIS_STATUS MlmeHardTransmitMgmtRing(
         return NDIS_STATUS_FAILURE;
     }
 
-#ifdef CONFIG_STA_SUPPORT
     IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
     {
         /* outgoing frame always wakeup PHY to prevent frame lost*/
         if(OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_DOZE))
             AsicForceWakeup(pAd, TRUE);
     }
-#endif /* CONFIG_STA_SUPPORT */
 
     pFirstTxWI = (TXWI_STRUCT *)(pSrcBufVA +  TXINFO_SIZE);
     pHeader_802_11 = (PHEADER_802_11)(pSrcBufVA + TXINFO_SIZE + TSO_SIZE + TXWISize);
@@ -494,7 +490,6 @@ NDIS_STATUS MlmeHardTransmitMgmtRing(
         pMacEntry = MacTableLookup(pAd, pHeader_802_11->Addr1);
     }
 
-#ifdef CONFIG_STA_SUPPORT
     IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
     {
         /* Fixed W52 with Activity scan issue in ABG_MIXED and ABGN_MIXED mode.*/
@@ -516,13 +511,11 @@ NDIS_STATUS MlmeHardTransmitMgmtRing(
             }
         }
     }
-#endif /* CONFIG_STA_SUPPORT */
 
     /* Should not be hard code to set PwrMgmt to 0 (PWR_ACTIVE)*/
     /* Snice it's been set to 0 while on MgtMacHeaderInit*/
     /* By the way this will cause frame to be send on PWR_SAVE failed.*/
 
-#ifdef CONFIG_STA_SUPPORT
     IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
     {
         if(RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_BSS_SCAN_IN_PROGRESS))
@@ -530,14 +523,10 @@ NDIS_STATUS MlmeHardTransmitMgmtRing(
             /* We are in scan progress, just let the PwrMgmt bit keep as it orginally should be.*/
         }
         else
-#endif /* CONFIG_STA_SUPPORT */
             pHeader_802_11->FC.PwrMgmt = PWR_ACTIVE; /* (pAd->StaCfg.Psm == PWR_SAVE);*/
 
-#ifdef CONFIG_STA_SUPPORT
     }
-#endif /* CONFIG_STA_SUPPORT */
 
-#ifdef CONFIG_STA_SUPPORT
 
     /* In WMM-UAPSD, mlme frame should be set psm as power saving but probe request frame*/
     /* Data-Null packets alse pass through MMRequest in RT2860, however, we hope control the psm bit to pass APSD*/
@@ -563,7 +552,6 @@ NDIS_STATUS MlmeHardTransmitMgmtRing(
             }
         }
     }
-#endif /* CONFIG_STA_SUPPORT */
 
 
 
@@ -573,7 +561,6 @@ NDIS_STATUS MlmeHardTransmitMgmtRing(
 
     if(pHeader_802_11->FC.Type == BTYPE_CNTL)  /* must be PS-POLL*/
     {
-#ifdef CONFIG_STA_SUPPORT
 
         /*Set PM bit in ps-poll, to fix WLK 1.2  PowerSaveMode_ext failure issue.*/
         if((pAd->OpMode == OPMODE_STA) && (pHeader_802_11->FC.SubType == SUBTYPE_PS_POLL))
@@ -581,7 +568,6 @@ NDIS_STATUS MlmeHardTransmitMgmtRing(
             pHeader_802_11->FC.PwrMgmt = PWR_SAVE;
         }
 
-#endif /* CONFIG_STA_SUPPORT */
         bAckRequired = FALSE;
     }
     else /* BTYPE_MGMT or BTYPE_DATA(must be NULL frame)*/
@@ -892,7 +878,6 @@ BOOLEAN RTMP_FillTxBlkInfo(RTMP_ADAPTER *pAd, TX_BLK *pTxBlk)
         else
             TX_BLK_SET_FLAG(pTxBlk, fTX_bAckRequired);
 
-#ifdef CONFIG_STA_SUPPORT
 #ifdef XLINK_SUPPORT
 
         if((pAd->OpMode == OPMODE_STA) &&
@@ -904,11 +889,9 @@ BOOLEAN RTMP_FillTxBlkInfo(RTMP_ADAPTER *pAd, TX_BLK *pTxBlk)
         }
 
 #endif /* XLINK_SUPPORT */
-#endif /* CONFIG_STA_SUPPORT */
 
         {
 
-#ifdef CONFIG_STA_SUPPORT
             IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
             {
 
@@ -918,7 +901,6 @@ BOOLEAN RTMP_FillTxBlkInfo(RTMP_ADAPTER *pAd, TX_BLK *pTxBlk)
                         CLIENT_STATUS_TEST_FLAG(pMacEntry, fCLIENT_STATUS_WMM_CAPABLE))
                     TX_BLK_SET_FLAG(pTxBlk, fTX_bWMM);
             }
-#endif /* CONFIG_STA_SUPPORT */
         }
 
         if(pTxBlk->TxFrameType == TX_LEGACY_FRAME)
@@ -1021,12 +1003,10 @@ BOOLEAN CanDoAggregateTransmit(
         return FALSE;
     }
 
-#ifdef CONFIG_STA_SUPPORT
 
     if((INFRA_ON(pAd)) && (pAd->OpMode == OPMODE_STA))  /* must be unicast to AP*/
         return TRUE;
     else
-#endif /* CONFIG_STA_SUPPORT */
         return FALSE;
 
 }
@@ -1226,12 +1206,10 @@ VOID RTMPDeQueuePacket(
             Count += pTxBlk->TxPacketList.Number;
 
             /* Do HardTransmit now.*/
-#ifdef CONFIG_STA_SUPPORT
             IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
             {
                 Status = STAHardTransmit(pAd, pTxBlk, QueIdx);
             }
-#endif /* CONFIG_STA_SUPPORT */
 
 
         }
@@ -1441,7 +1419,6 @@ UINT deaggregate_AMSDU_announce(
         /* convert to 802.3 header*/
         CONVERT_TO_802_3(Header802_3, pDA, pSA, pPayload, PayloadSize, pRemovedLLCSNAP);
 
-#ifdef CONFIG_STA_SUPPORT
 
         if((Header802_3[12] == 0x88) && (Header802_3[13] == 0x8E)
           )
@@ -1462,9 +1439,7 @@ UINT deaggregate_AMSDU_announce(
             }
         }
 
-#endif /* CONFIG_STA_SUPPORT */
 
-#ifdef CONFIG_STA_SUPPORT
         IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
         {
             if(pRemovedLLCSNAP)
@@ -1474,16 +1449,13 @@ UINT deaggregate_AMSDU_announce(
                 NdisMoveMemory(pPayload, &Header802_3[0], LENGTH_802_3);
             }
         }
-#endif /* CONFIG_STA_SUPPORT */
 
         pClonePacket = ClonePacket(pAd, pPacket, pPayload, PayloadSize);
 
         if(pClonePacket)
         {
-#ifdef CONFIG_STA_SUPPORT
             IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
             ANNOUNCE_OR_FORWARD_802_3_PACKET(pAd, pClonePacket, RTMP_GET_PACKET_IF(pPacket));
-#endif /* CONFIG_STA_SUPPORT */
         }
 
 
@@ -1909,10 +1881,8 @@ VOID Indicate_Legacy_Packet(
     		a. pointer pRxBlk->pData to payload
     		b. modify pRxBlk->DataSize
     */
-#ifdef CONFIG_STA_SUPPORT
     IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
     RTMP_802_11_REMOVE_LLC_AND_CONVERT_TO_802_3(pRxBlk, Header802_3);
-#endif /* CONFIG_STA_SUPPORT */
 
     if(pRxBlk->DataSize > MAX_RX_PKT_LEN)
     {
@@ -1982,10 +1952,8 @@ VOID Indicate_Legacy_Packet(
 
     /* pass this 802.3 packet to upper layer or forward this packet to WM directly*/
 
-#ifdef CONFIG_STA_SUPPORT
     IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
     ANNOUNCE_OR_FORWARD_802_3_PACKET(pAd, pRxPacket, FromWhichBSSID);
-#endif /* CONFIG_STA_SUPPORT */
 
 }
 
@@ -2101,10 +2069,8 @@ VOID Indicate_Legacy_Packet_Hdr_Trns(
 
     /* pass this 802.3 packet to upper layer or forward this packet to WM directly*/
 
-#ifdef CONFIG_STA_SUPPORT
     IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
     ANNOUNCE_OR_FORWARD_802_3_PACKET(pAd, pRxPacket, FromWhichBSSID);
-#endif /* CONFIG_STA_SUPPORT */
 
 }
 #endif /* HDR_TRANS_SUPPORT */
@@ -2196,10 +2162,8 @@ VOID CmmRxRalinkFrameIndicate(
     }
 
     /* get 802.3 Header and  remove LLC*/
-#ifdef CONFIG_STA_SUPPORT
     IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
     RTMP_802_11_REMOVE_LLC_AND_CONVERT_TO_802_3(pRxBlk, Header802_3);
-#endif /* CONFIG_STA_SUPPORT */
 
 
     ASSERT(pRxBlk->pRxPacket);
@@ -2210,12 +2174,10 @@ VOID CmmRxRalinkFrameIndicate(
     Payload2Size = Msdu2Size - LENGTH_802_3;
 
     pData2 = pRxBlk->pData + Payload1Size + LENGTH_802_3;
-#ifdef CONFIG_STA_SUPPORT
     IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
     pPacket2 = duplicate_pkt(get_netdev_from_bssid(pAd, FromWhichBSSID),
                              (pData2-LENGTH_802_3), LENGTH_802_3, pData2,
                              Payload2Size, FromWhichBSSID);
-#endif /* CONFIG_STA_SUPPORT */
 
     if(!pPacket2)
     {
@@ -2230,17 +2192,13 @@ VOID CmmRxRalinkFrameIndicate(
     RT_80211_TO_8023_PACKET(pAd, VLAN_VID, VLAN_Priority,
                             pRxBlk, Header802_3, FromWhichBSSID, TPID);
 
-#ifdef CONFIG_STA_SUPPORT
     IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
     ANNOUNCE_OR_FORWARD_802_3_PACKET(pAd, pRxBlk->pRxPacket, FromWhichBSSID);
-#endif /* CONFIG_STA_SUPPORT */
 
     if(pPacket2)
     {
-#ifdef CONFIG_STA_SUPPORT
         IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
         ANNOUNCE_OR_FORWARD_802_3_PACKET(pAd, pPacket2, FromWhichBSSID);
-#endif /* CONFIG_STA_SUPPORT */
     }
 }
 
@@ -2389,7 +2347,6 @@ VOID Indicate_EAPOL_Packet(
     }
 
 
-#ifdef CONFIG_STA_SUPPORT
     IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
     {
         {
@@ -2398,7 +2355,6 @@ VOID Indicate_EAPOL_Packet(
             return;
         }
     }
-#endif /* CONFIG_STA_SUPPORT */
 
 }
 

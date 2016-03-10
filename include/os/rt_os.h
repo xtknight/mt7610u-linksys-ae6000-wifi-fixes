@@ -39,7 +39,6 @@
 #endif /* LINUX */
 
 
-#ifdef CONFIG_STA_SUPPORT
 #define RT_PRIV_IOCTL							(SIOCIWFIRSTPRIV + 0x01) /* Sync. with AP for wsc upnp daemon */
 #define RTPRIV_IOCTL_SET							(SIOCIWFIRSTPRIV + 0x02)
 
@@ -64,7 +63,6 @@
 #define RTPRIV_IOCTL_SHOW							(SIOCIWFIRSTPRIV + 0x11)
 
 
-#endif /* CONFIG_STA_SUPPORT */
 
 
 #endif /* _RT_OS_H_ */

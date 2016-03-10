@@ -81,8 +81,6 @@
 
 
 
-#ifdef CONFIG_STA_SUPPORT
-#endif /* CONFIG_STA_SUPPORT */
 
 
 #ifdef IGMP_SNOOP_SUPPORT
@@ -110,9 +108,7 @@
 #endif /* APCLI_WPA_SUPPLICANT_SUPPORT */
 
 
-#ifdef CONFIG_STA_SUPPORT
 
-#endif /* CONFIG_STA_SUPPORT */
 
 
 
@@ -128,9 +124,7 @@
 #endif /* WFD_SUPPORT */
 
 #include "vht.h"
-#ifdef CONFIG_STA_SUPPORT
 #include "sta_cfg.h"
-#endif /* CONFIG_STA_SUPPORT */
 
 
 

@@ -40,13 +40,8 @@
 #undef RT_CONFIG_IF_OPMODE_ON_AP
 #undef RT_CONFIG_IF_OPMODE_ON_STA
 
-#if defined(CONFIG_AP_SUPPORT) && defined(CONFIG_STA_SUPPORT)
-#define RT_CONFIG_IF_OPMODE_ON_AP(__OpMode)	if (__OpMode == OPMODE_AP)
-#define RT_CONFIG_IF_OPMODE_ON_STA(__OpMode)	if (__OpMode == OPMODE_STA)
-#else
 #define RT_CONFIG_IF_OPMODE_ON_AP(__OpMode)
 #define RT_CONFIG_IF_OPMODE_ON_STA(__OpMode)
-#endif
 
 extern ULONG RTDebugLevel; // moved to rt_main_dev.c
 ULONG RTDebugFunc = 0;
@@ -728,12 +723,10 @@ void wlan_802_11_to_802_3_packet(
 
     /* copy 802.3 header */
 
-#ifdef CONFIG_STA_SUPPORT
     RT_CONFIG_IF_OPMODE_ON_STA(OpMode)
     {
         NdisMoveMemory(skb_push(pOSPkt, LENGTH_802_3), pHeader802_3, LENGTH_802_3);
     }
-#endif /* CONFIG_STA_SUPPORT */
 
 }
 
@@ -807,7 +800,6 @@ VOID RtmpOsSendWirelessEvent(
 #endif /* SYSTEM_LOG_SUPPORT */
 
 
-#ifdef CONFIG_STA_SUPPORT
 INT32 ralinkrate[] =
 {
     2,  4, 11, 22,
@@ -1103,7 +1095,6 @@ err_free_sk_buff:
     return;
 
 }
-#endif /* CONFIG_STA_SUPPORT */
 
 
 /*******************************************************************************
@@ -1546,7 +1537,6 @@ int RtmpOSNetDevAddrSet(
     net_dev = pNetDev;
     /*	GET_PAD_FROM_NET_DEV(pAd, net_dev); */
 
-#ifdef CONFIG_STA_SUPPORT
     /* work-around for the SuSE due to it has it's own interface name management system. */
     RT_CONFIG_IF_OPMODE_ON_STA(OpMode)
     {
@@ -1558,7 +1548,6 @@ int RtmpOSNetDevAddrSet(
             NdisMoveMemory(dev_name, net_dev->name, strlen(net_dev->name));
         }
     }
-#endif /* CONFIG_STA_SUPPORT */
 
     NdisMoveMemory(net_dev->dev_addr, pMacAddr, 6);
 
@@ -1875,7 +1864,6 @@ int RtmpOSNetDevAttach(
         pNetDev->get_wireless_stats = pDevOpHook->get_wstats;
 #endif
 
-#ifdef CONFIG_STA_SUPPORT
 #if WIRELESS_EXT >= 12
 
         if(OpMode == OPMODE_STA)
@@ -1885,7 +1873,6 @@ int RtmpOSNetDevAttach(
         }
 
 #endif /*WIRELESS_EXT >= 12 */
-#endif /* CONFIG_STA_SUPPORT */
 
 #ifdef CONFIG_APSTA_MIXED_SUPPORT
 #if WIRELESS_EXT >= 12
@@ -3319,7 +3306,6 @@ VOID CFG80211OS_Scaning(
     IN UINT8					BW)
 {
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,30)
-#ifdef CONFIG_STA_SUPPORT
     CFG80211_CB *pCfg80211_CB = (CFG80211_CB *)pCB;
     UINT32 IdChan;
     UINT32 CenFreq;
@@ -3355,7 +3341,6 @@ VOID CFG80211OS_Scaning(
                               GFP_ATOMIC);
 
     CFG80211DBG(RT_DEBUG_TRACE, ("mt7610u: cfg80211_inform_bss_frame\n"));
-#endif /* CONFIG_STA_SUPPORT */
 #endif /* LINUX_VERSION_CODE */
 }
 
@@ -3380,13 +3365,11 @@ VOID CFG80211OS_ScanEnd(
     IN BOOLEAN FlgIsAborted)
 {
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,30)
-#ifdef CONFIG_STA_SUPPORT
     CFG80211_CB *pCfg80211_CB = (CFG80211_CB *)pCB;
 
 
     CFG80211DBG(RT_DEBUG_TRACE, ("mt7610u: cfg80211_scan_done\n"));
     cfg80211_scan_done(pCfg80211_CB->pCfg80211_ScanReq, FlgIsAborted);
-#endif /* CONFIG_STA_SUPPORT */
 #endif /* LINUX_VERSION_CODE */
 }
 

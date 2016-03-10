@@ -536,11 +536,9 @@ INT Set_NetworkType_Proc(
         UCHAR rf_channel, rf_bw;
         INT ext_ch;
 
-#ifdef CONFIG_STA_SUPPORT
         // This helps when doing rmmod in Monitor mode if it was switched from Managed mode in the past
         DBGPRINT(RT_DEBUG_TRACE, ("MONITOR: LOST_AP_INFORM\n"));
         RT_CFG80211_LOST_AP_INFORM(pAd);
-#endif
 
 #ifdef MONITOR_FLAG_11N_SNIFFER_SUPPORT
 
@@ -8364,11 +8362,9 @@ INT RTMP_STA_IoctlHandle(
 
     case CMD_RTPRIV_IOCTL_ORI_DEV_TYPE_SET:
         pAd->StaCfg.OriDevType = Data;
-#ifdef CONFIG_STA_SUPPORT
 #ifdef CREDENTIAL_STORE
         NdisAllocateSpinLock(pAd, &pAd->StaCtIf.Lock);
 #endif /* CREDENTIAL_STORE */
-#endif /* CONFIG_STA_SUPPORT */
 
         break;
 

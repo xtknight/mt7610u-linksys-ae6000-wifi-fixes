@@ -557,8 +557,6 @@ static void rtusb_mgmt_dma_done_tasklet(unsigned long data)
     }
 
 
-#ifdef CONFIG_STA_SUPPORT
-#endif /* CONFIG_STA_SUPPORT */
 }
 
 

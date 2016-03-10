@@ -28,12 +28,9 @@
 #include "rt_config.h"
 
 
-#ifdef SCAN_SUPPORT
 static INT scan_ch_restore(RTMP_ADAPTER *pAd, UCHAR OpMode)
 {
-#ifdef CONFIG_STA_SUPPORT
     USHORT Status;
-#endif /* CONFIG_STA_SUPPORT */
     INT bw, ch;
 
     //printk("pAd->hw_cfg.bbp_bw = %d\n", pAd->hw_cfg.bbp_bw);
@@ -77,7 +74,6 @@ static INT scan_ch_restore(RTMP_ADAPTER *pAd, UCHAR OpMode)
     DBGPRINT(RT_DEBUG_TRACE, ("SYNC - End of SCAN, restore to %dMHz channel %d, Total BSS[%02d]\n",
                               bw, ch, pAd->ScanTab.BssNr));
 
-#ifdef CONFIG_STA_SUPPORT
 
     if(OpMode == OPMODE_STA)
     {
@@ -139,7 +135,6 @@ static INT scan_ch_restore(RTMP_ADAPTER *pAd, UCHAR OpMode)
 #endif /* LINUX */
     }
 
-#endif /* CONFIG_STA_SUPPORT */
 
 
 
@@ -154,15 +149,12 @@ static INT scan_active(RTMP_ADAPTER *pAd, UCHAR OpMode, UCHAR ScanType)
     HEADER_802_11 Hdr80211;
     ULONG FrameLen = 0;
     UCHAR SsidLen = 0;
-#ifdef CONFIG_STA_SUPPORT
     USHORT Status;
-#endif /* CONFIG_STA_SUPPORT */
 
 
     if(MlmeAllocateMemory(pAd, &frm_buf) != NDIS_STATUS_SUCCESS)
     {
         DBGPRINT(RT_DEBUG_TRACE, ("SYNC - ScanNextChannel() allocate memory fail\n"));
-#ifdef CONFIG_STA_SUPPORT
 
         if(OpMode == OPMODE_STA)
         {
@@ -171,7 +163,6 @@ static INT scan_active(RTMP_ADAPTER *pAd, UCHAR OpMode, UCHAR ScanType)
             MlmeEnqueue(pAd, MLME_CNTL_STATE_MACHINE, MT2_SCAN_CONF, 2, &Status, 0);
         }
 
-#endif /* CONFIG_STA_SUPPORT */
 
         return FALSE;
     }
@@ -191,7 +182,6 @@ static INT scan_active(RTMP_ADAPTER *pAd, UCHAR OpMode, UCHAR ScanType)
         SsidLen = pAd->MlmeAux.SsidLen;
 
     {
-#ifdef CONFIG_STA_SUPPORT
 
         /*IF_DEV_CONFIG_OPMODE_ON_STA(pAd) */
         if(OpMode == OPMODE_STA)
@@ -200,7 +190,6 @@ static INT scan_active(RTMP_ADAPTER *pAd, UCHAR OpMode, UCHAR ScanType)
                              BROADCAST_ADDR);
         }
 
-#endif /* CONFIG_STA_SUPPORT */
 
         MakeOutgoingFrame(frm_buf,               &FrameLen,
                           sizeof(HEADER_802_11),    &Hdr80211,
@@ -344,7 +333,6 @@ static INT scan_active(RTMP_ADAPTER *pAd, UCHAR OpMode, UCHAR ScanType)
 
     MiniportMMRequest(pAd, 0, frm_buf, FrameLen);
 
-#ifdef CONFIG_STA_SUPPORT
 
     if(OpMode == OPMODE_STA)
     {
@@ -365,7 +353,6 @@ static INT scan_active(RTMP_ADAPTER *pAd, UCHAR OpMode, UCHAR ScanType)
         }
     }
 
-#endif /* CONFIG_STA_SUPPORT */
 
     MlmeFreeMemory(pAd, frm_buf);
 
@@ -393,7 +380,6 @@ VOID ScanNextChannel(
 
 
 
-#ifdef CONFIG_STA_SUPPORT
     IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
     {
         if(MONITOR_ON(pAd))
@@ -406,7 +392,6 @@ VOID ScanNextChannel(
     ImprovedScan_MaxScanChannelCnt = 7;
 #endif /* WIFI_P2P_CONCURRENT_FAST_SCAN */
     ScanPending = ((pAd->StaCfg.bImprovedScan) && (pAd->StaCfg.ScanChannelCnt>=ImprovedScan_MaxScanChannelCnt));
-#endif /* CONFIG_STA_SUPPORT */
 
 
     if((pAd->MlmeAux.Channel == 0) || ScanPending)
@@ -414,7 +399,6 @@ VOID ScanNextChannel(
         scan_ch_restore(pAd, OpMode);
     }
 
-#ifdef CONFIG_STA_SUPPORT
     else if(RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST) &&
             (OpMode == OPMODE_STA))
     {
@@ -422,10 +406,8 @@ VOID ScanNextChannel(
         MlmeCntlConfirm(pAd, MT2_SCAN_CONF, MLME_FAIL_NO_RESOURCE);
     }
 
-#endif /* CONFIG_STA_SUPPORT */
     else
     {
-#ifdef CONFIG_STA_SUPPORT
 
         if(OpMode == OPMODE_STA)
         {
@@ -438,12 +420,10 @@ VOID ScanNextChannel(
                 RTMP_SET_PSM_BIT(pAd, PWR_ACTIVE);
         }
 
-#endif /* CONFIG_STA_SUPPORT */
 
         AsicSwitchChannel(pAd, pAd->MlmeAux.Channel, TRUE);
         AsicLockChannel(pAd, pAd->MlmeAux.Channel);
 
-#ifdef CONFIG_STA_SUPPORT
 
         if(OpMode == OPMODE_STA)
         {
@@ -470,7 +450,6 @@ VOID ScanNextChannel(
             }
         }
 
-#endif /* CONFIG_STA_SUPPORT */
 
         /* Check if channel if passive scan under current regulatory domain */
         if(CHAN_PropertyCheck(pAd, pAd->MlmeAux.Channel, CHANNEL_PASSIVE_SCAN) == TRUE)
@@ -488,9 +467,7 @@ VOID ScanNextChannel(
             stay_time = FAST_ACTIVE_SCAN_TIME;
         else /* must be SCAN_PASSIVE or SCAN_ACTIVE*/
         {
-#ifdef CONFIG_STA_SUPPORT
             pAd->StaCfg.ScanChannelCnt++;
-#endif /* CONFIG_STA_SUPPORT */
 
             if(WMODE_CAP_2G(pAd->CommonCfg.PhyMode) &&
                     WMODE_CAP_5G(pAd->CommonCfg.PhyMode))
@@ -521,12 +498,10 @@ VOID ScanNextChannel(
 
         /* For SCAN_CISCO_PASSIVE, do nothing and silently wait for beacon or other probe reponse*/
 
-#ifdef CONFIG_STA_SUPPORT
 
         if(OpMode == OPMODE_STA)
             pAd->Mlme.SyncMachine.CurrState = SCAN_LISTEN;
 
-#endif /* CONFIG_STA_SUPPORT */
     }
 }
 
@@ -536,16 +511,13 @@ BOOLEAN ScanRunning(
 {
     BOOLEAN	rv = FALSE;
 
-#ifdef CONFIG_STA_SUPPORT
     IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
     {
         if((pAd->Mlme.SyncMachine.CurrState == SCAN_LISTEN) || (pAd->Mlme.SyncMachine.CurrState == SCAN_PENDING))
             rv = TRUE;
     }
-#endif /* CONFIG_STA_SUPPORT */
 
     return rv;
 }
 
-#endif /* SCAN_SUPPORT */
 

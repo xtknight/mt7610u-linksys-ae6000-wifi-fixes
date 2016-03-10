@@ -246,12 +246,10 @@ static int CFG80211_OpsVirtualInfChg(
     CFG80211DBG(RT_DEBUG_TRACE, ("mt7610u: Type = %d\n", Type));
 
     /* sanity check */
-#ifdef CONFIG_STA_SUPPORT
 
     if((Type != NL80211_IFTYPE_ADHOC) &&
             (Type != NL80211_IFTYPE_STATION) &&
             (Type != NL80211_IFTYPE_MONITOR))
-#endif /* CONFIG_STA_SUPPORT */
     {
         DBGPRINT(RT_DEBUG_ERROR, ("mt7610u: Wrong interface type %d!\n", Type));
         return -EINVAL;
@@ -347,7 +345,6 @@ static int CFG80211_OpsScan(
     IN struct cfg80211_scan_request *pRequest)
 #endif /* LINUX_VERSION_CODE: 3.6.0 */
 {
-#ifdef CONFIG_STA_SUPPORT
     VOID *pAd;
     CFG80211_CB *pCfg80211_CB;
     struct iw_scan_req IwReq;
@@ -407,16 +404,11 @@ static int CFG80211_OpsScan(
 
     rt_ioctl_siwscan(pNdev, NULL, &Wreq, (char *)&IwReq);
     return 0;
-#else
-
-    return -EOPNOTSUPP;
-#endif /* CONFIG_STA_SUPPORT */
 } /* End of CFG80211_OpsScan */
 #endif /* LINUX_VERSION_CODE */
 
 
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,31))
-#ifdef CONFIG_STA_SUPPORT
 /*
 ========================================================================
 Routine Description:
@@ -498,7 +490,6 @@ static int CFG80211_OpsIbssLeave(
     RTMP_DRIVER_80211_STA_LEAVE(pAd);
     return 0;
 } /* End of CFG80211_OpsIbssLeave */
-#endif /* CONFIG_STA_SUPPORT */
 #endif /* LINUX_VERSION_CODE */
 
 
@@ -688,22 +679,6 @@ static int CFG80211_OpsStaGet(
     pSinfo->filled |= STATION_INFO_SIGNAL;
 #endif
 
-#ifdef CONFIG_AP_SUPPORT
-    /* fill tx count */
-    pSinfo->tx_packets = StaInfo.TxPacketCnt;
-
-    /* fill inactive time */
-    pSinfo->inactive_time = StaInfo.InactiveTime;
-
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4,0,0))
-    pSinfo->filled |= BIT(NL80211_STA_INFO_TX_PACKETS);
-    pSinfo->filled |= BIT(NL80211_STA_INFO_INACTIVE_TIME);
-#else
-    pSinfo->filled |= STATION_INFO_TX_PACKETS;
-    pSinfo->filled |= STATION_INFO_INACTIVE_TIME;
-#endif
-
-#endif /* CONFIG_AP_SUPPORT */
 
 
     return 0;
@@ -747,14 +722,12 @@ static int CFG80211_OpsStaDump(
     CFG80211DBG(RT_DEBUG_TRACE, ("mt7610u: %s()\n", __FUNCTION__));
     MAC80211_PAD_GET(pAd, pWiphy);
 
-#ifdef CONFIG_STA_SUPPORT
 
     if(RTMP_DRIVER_AP_SSID_GET(pAd, pMac) != NDIS_STATUS_SUCCESS)
         return -EBUSY;
     else
         return CFG80211_OpsStaGet(pWiphy, pNdev, pMac, pSinfo);
 
-#endif /* CONFIG_STA_SUPPORT */
 
     return -EOPNOTSUPP;
 } /* End of CFG80211_OpsStaDump */
@@ -843,7 +816,6 @@ static int CFG80211_OpsKeyAdd(
 
     /* End of if */
 
-#ifdef CONFIG_STA_SUPPORT
     /* init */
     memset(&KeyInfo, 0, sizeof(KeyInfo));
     memcpy(KeyInfo.KeyBuf, pParams->key, pParams->key_len);
@@ -899,7 +871,6 @@ static int CFG80211_OpsKeyAdd(
     }
 
     return 0;
-#endif /* CONFIG_STA_SUPPORT */
 
 } /* End of CFG80211_OpsKeyAdd */
 
@@ -1045,7 +1016,6 @@ static int CFG80211_OpsKeyDefaultSet(
 } /* End of CFG80211_OpsKeyDefaultSet */
 
 
-#ifdef CONFIG_STA_SUPPORT
 /*
 ========================================================================
 Routine Description:
@@ -1251,7 +1221,6 @@ static int CFG80211_OpsDisconnect(
     RTMP_DRIVER_80211_STA_LEAVE(pAd);
     return 0;
 } /* End of CFG80211_OpsDisconnect */
-#endif /* CONFIG_STA_SUPPORT */
 #endif /* LINUX_VERSION_CODE */
 
 
@@ -1380,7 +1349,6 @@ static int CFG80211_OpsPmksaSet(
     IN struct net_device				*pNdev,
     IN struct cfg80211_pmksa			*pPmksa)
 {
-#ifdef CONFIG_STA_SUPPORT
     VOID *pAd;
     RT_CMD_STA_IOCTL_PMA_SA IoctlPmaSa, *pIoctlPmaSa = &IoctlPmaSa;
 
@@ -1398,7 +1366,6 @@ static int CFG80211_OpsPmksaSet(
     pIoctlPmaSa->pPmkid = pPmksa->pmkid;
 
     RTMP_DRIVER_80211_PMKID_CTRL(pAd, pIoctlPmaSa);
-#endif /* CONFIG_STA_SUPPORT */
 
     return 0;
 } /* End of CFG80211_OpsPmksaSet */
@@ -1426,7 +1393,6 @@ static int CFG80211_OpsPmksaDel(
     IN struct net_device				*pNdev,
     IN struct cfg80211_pmksa			*pPmksa)
 {
-#ifdef CONFIG_STA_SUPPORT
     VOID *pAd;
     RT_CMD_STA_IOCTL_PMA_SA IoctlPmaSa, *pIoctlPmaSa = &IoctlPmaSa;
 
@@ -1444,7 +1410,6 @@ static int CFG80211_OpsPmksaDel(
     pIoctlPmaSa->pPmkid = pPmksa->pmkid;
 
     RTMP_DRIVER_80211_PMKID_CTRL(pAd, pIoctlPmaSa);
-#endif /* CONFIG_STA_SUPPORT */
 
     return 0;
 } /* End of CFG80211_OpsPmksaDel */
@@ -1470,7 +1435,6 @@ static int CFG80211_OpsPmksaFlush(
     IN struct wiphy						*pWiphy,
     IN struct net_device				*pNdev)
 {
-#ifdef CONFIG_STA_SUPPORT
     VOID *pAd;
     RT_CMD_STA_IOCTL_PMA_SA IoctlPmaSa, *pIoctlPmaSa = &IoctlPmaSa;
 
@@ -1480,7 +1444,6 @@ static int CFG80211_OpsPmksaFlush(
 
     pIoctlPmaSa->Cmd = RT_CMD_STA_IOCTL_PMA_SA_FLUSH;
     RTMP_DRIVER_80211_PMKID_CTRL(pAd, pIoctlPmaSa);
-#endif /* CONFIG_STA_SUPPORT */
 
     return 0;
 } /* End of CFG80211_OpsPmksaFlush */
@@ -1741,12 +1704,10 @@ struct cfg80211_ops CFG80211_Ops =
 #endif /* LINUX_VERSION_CODE */
 
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,31))
-#ifdef CONFIG_STA_SUPPORT
     /* join the specified IBSS (or create if necessary) */
     .join_ibss					= CFG80211_OpsIbssJoin,
     /* leave the IBSS */
     .leave_ibss					= CFG80211_OpsIbssLeave,
-#endif /* CONFIG_STA_SUPPORT */
 #endif /* LINUX_VERSION_CODE */
 
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,32))
@@ -1772,12 +1733,10 @@ struct cfg80211_ops CFG80211_Ops =
     .set_default_key			= CFG80211_OpsKeyDefaultSet,
     /* need at least this stub */
     //.set.default_mgmt_key			= CFG80211_OpsMgmtKeyDefaultSet,
-#ifdef CONFIG_STA_SUPPORT
     /* connect to the ESS with the specified parameters */
     .connect					= CFG80211_OpsConnect,
     /* disconnect from the BSS/ESS */
     .disconnect					= CFG80211_OpsDisconnect,
-#endif /* CONFIG_STA_SUPPORT */
 #endif /* LINUX_VERSION_CODE */
 
 #ifdef RFKILL_HW_SUPPORT
@@ -1896,11 +1855,9 @@ static struct wireless_dev *CFG80211_WdevAlloc(
 #endif /* KERNEL_VERSION */
 
 
-#ifdef CONFIG_STA_SUPPORT
     pWdev->wiphy->interface_modes = BIT(NL80211_IFTYPE_STATION) |
                                     BIT(NL80211_IFTYPE_ADHOC) |
                                     BIT(NL80211_IFTYPE_MONITOR);
-#endif /* CONFIG_STA_SUPPORT */
     pWdev->wiphy->reg_notifier = CFG80211_RegNotifier;
 
     /* init channel information */
@@ -1988,10 +1945,8 @@ BOOLEAN CFG80211_Register(
 
     /* bind wireless device with net device */
 
-#ifdef CONFIG_STA_SUPPORT
     /* default we are station mode */
     pCfg80211_CB->pCfg80211_Wdev->iftype = NL80211_IFTYPE_STATION;
-#endif /* CONFIG_STA_SUPPORT */
 
     pNetDev->ieee80211_ptr = pCfg80211_CB->pCfg80211_Wdev;
     SET_NETDEV_DEV(pNetDev, wiphy_dev(pCfg80211_CB->pCfg80211_Wdev->wiphy));

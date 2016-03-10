@@ -570,7 +570,6 @@ typedef struct _NDIS_APCLI_802_11_KEY
 #endif/* APCLI_WPA_SUPPLICANT_SUPPORT */
 #endif /* APCLI_SUPPORT */
 
-#ifdef CONFIG_STA_SUPPORT
 /* Key mapping keys require a BSSID */
 typedef struct _NDIS_802_11_KEY
 {
@@ -588,7 +587,6 @@ typedef struct _NDIS_802_11_PASSPHRASE
     NDIS_802_11_MAC_ADDRESS BSSID;
     UCHAR KeyMaterial[1];	/* variable length depending on above field */
 } NDIS_802_11_PASSPHRASE, *PNDIS_802_11_PASSPHRASE;
-#endif /* CONFIG_STA_SUPPORT */
 
 typedef struct _NDIS_802_11_REMOVE_KEY
 {
@@ -828,7 +826,6 @@ typedef enum _NDIS_802_11_MEDIA_STREAM_MODE
 /* PMKID Structures */
 typedef UCHAR NDIS_802_11_PMKID_VALUE[16];
 
-#if defined(CONFIG_STA_SUPPORT) || defined(APCLI_WPA_SUPPLICANT_SUPPORT)
 typedef struct _BSSID_INFO
 {
     NDIS_802_11_MAC_ADDRESS BSSID;
@@ -841,7 +838,6 @@ typedef struct _NDIS_802_11_PMKID
     UINT BSSIDInfoCount;
     BSSID_INFO BSSIDInfo[1];
 } NDIS_802_11_PMKID, *PNDIS_802_11_PMKID;
-#endif /* defined(CONFIG_STA_SUPPORT) || defined(APCLI_WPA_SUPPLICANT_SUPPORT) */
 
 
 typedef struct _NDIS_802_11_AUTHENTICATION_ENCRYPTION
@@ -906,7 +902,6 @@ typedef struct _NDIS_802_11_CAPABILITY
 
 
 
-#ifdef CONFIG_STA_SUPPORT
 #define RT_OID_WSC_SET_PASSPHRASE                   0x0740	/* passphrase for wpa(2)-psk */
 #define RT_OID_WSC_DRIVER_AUTO_CONNECT              0x0741
 #define RT_OID_WSC_QUERY_DEFAULT_PROFILE            0x0742
@@ -917,7 +912,6 @@ typedef struct _NDIS_802_11_CAPABILITY
 #define RT_OID_WSC_SET_MODE                         0x0747	/* PIN or PBC */
 #define RT_OID_WSC_SET_CONF_MODE                    0x0748	/* Enrollee or Registrar */
 #define RT_OID_WSC_SET_PROFILE                      0x0749
-#endif /* CONFIG_STA_SUPPORT */
 #define	RT_OID_WSC_FRAGMENT_SIZE					0x074D
 #define	RT_OID_WSC_V2_SUPPORT						0x074E
 #define	RT_OID_WSC_CONFIG_STATUS					0x074F
@@ -1205,7 +1199,6 @@ typedef struct
 
 
 
-#ifdef CONFIG_STA_SUPPORT
 #ifdef QOS_DLS_SUPPORT
 /*rt2860, 2007-0118 */
 /* structure for DLS */
@@ -1233,21 +1226,18 @@ typedef enum _RT_802_11_DLS_MODE
 #endif /* QOS_DLS_SUPPORT */
 
 
-#endif /* CONFIG_STA_SUPPORT */
 
 
 
 
 /*#define MAX_CUSTOM_LEN 128 */
 
-#ifdef CONFIG_STA_SUPPORT
 typedef enum _RT_802_11_D_CLIENT_MODE
 {
     Rt802_11_D_None,
     Rt802_11_D_Flexible,
     Rt802_11_D_Strict,
 } RT_802_11_D_CLIENT_MODE, *PRT_802_11_D_CLIENT_MODE;
-#endif /* CONFIG_STA_SUPPORT */
 
 typedef struct _RT_CHANNEL_LIST_INFO
 {

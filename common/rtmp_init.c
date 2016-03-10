@@ -104,20 +104,16 @@ RTMP_REG_PAIR MACRegTable[] =
 };
 
 
-#ifdef CONFIG_STA_SUPPORT
 RTMP_REG_PAIR	STAMACRegTable[] =
 {
     {WMM_AIFSN_CFG,	0x00002273},
     {WMM_CWMIN_CFG,	0x00002344},
     {WMM_CWMAX_CFG,	0x000034aa},
 };
-#endif /* CONFIG_STA_SUPPORT */
 
 
 #define	NUM_MAC_REG_PARMS		(sizeof(MACRegTable) / sizeof(RTMP_REG_PAIR))
-#ifdef CONFIG_STA_SUPPORT
 #define	NUM_STA_MAC_REG_PARMS	(sizeof(STAMACRegTable) / sizeof(RTMP_REG_PAIR))
-#endif /* CONFIG_STA_SUPPORT */
 
 
 /*
@@ -562,7 +558,6 @@ VOID NICReadEEPROMParameters(RTMP_ADAPTER *pAd, PSTRING mac_addr)
 
 
 
-#ifdef CONFIG_STA_SUPPORT
     IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
     {
         if((NicConfig2.word & 0x00ff) == 0xff)
@@ -571,7 +566,6 @@ VOID NICReadEEPROMParameters(RTMP_ADAPTER *pAd, PSTRING mac_addr)
         if((NicConfig2.word >> 8) == 0xff)
             NicConfig2.word &= 0x00ff;
     }
-#endif /* CONFIG_STA_SUPPORT */
 
     if(NicConfig2.field.DynamicTxAgcControl == 1)
         pAd->bAutoTxAgcA = pAd->bAutoTxAgcG = TRUE;
@@ -1083,9 +1077,7 @@ VOID NICReadEEPROMParameters(RTMP_ADAPTER *pAd, PSTRING mac_addr)
 VOID	NICInitAsicFromEEPROM(
     IN	PRTMP_ADAPTER	pAd)
 {
-#ifdef CONFIG_STA_SUPPORT
     UINT32 data = 0;
-#endif /* CONFIG_STA_SUPPORT */
     EEPROM_NIC_CONFIG2_STRUCT NicConfig2;
 
     DBGPRINT(RT_DEBUG_TRACE, ("--> NICInitAsicFromEEPROM\n"));
@@ -1116,7 +1108,6 @@ VOID	NICInitAsicFromEEPROM(
         pAd->chipOps.AsicRfInit(pAd);
 
 
-#ifdef CONFIG_STA_SUPPORT
     IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
     {
         /* Read Hardware controlled Radio state enable bit*/
@@ -1199,7 +1190,6 @@ VOID	NICInitAsicFromEEPROM(
 
 #endif /* defined(RT3090) || defined(RT3592) || defined(RT3390) || defined(RT3593) || defined(RT5390) || defined(RT5392) */
 #endif /* PCIE_PS_SUPPORT */
-#endif /* CONFIG_STA_SUPPORT */
 
     if(IS_RT30xx(pAd)|| IS_RT3572(pAd))
     {
@@ -1268,7 +1258,6 @@ VOID	NICInitAsicFromEEPROM(
 
     rtmp_bbp_set_rxpath(pAd, pAd->Antenna.field.RxPath);
 
-#ifdef CONFIG_STA_SUPPORT
     IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
     {
         /* Handle the difference when 1T*/
@@ -1282,13 +1271,10 @@ VOID	NICInitAsicFromEEPROM(
         DBGPRINT(RT_DEBUG_TRACE, ("Use Hw Radio Control Pin=%d; if used Pin=%d;\n",
                                   pAd->StaCfg.bHardwareRadio, pAd->StaCfg.bHardwareRadio));
     }
-#endif /* CONFIG_STA_SUPPORT */
 
     RTMP_EEPROM_ASIC_INIT(pAd);
 
 
-#ifdef CONFIG_STA_SUPPORT
-#endif /* CONFIG_STA_SUPPORT */
     DBGPRINT(RT_DEBUG_TRACE, ("TxPath = %d, RxPath = %d, RFIC=%d\n",
                               pAd->Antenna.field.TxPath, pAd->Antenna.field.RxPath, pAd->RfIcType));
     DBGPRINT(RT_DEBUG_TRACE, ("<-- NICInitAsicFromEEPROM\n"));
@@ -1613,7 +1599,6 @@ NDIS_STATUS	NICInitializeAsic(
         BURST_WRITE(pAd, MAC_WCID_BASE, MACValue, 254 * 2);
     }
 
-#ifdef CONFIG_STA_SUPPORT
     /* Add radio off control*/
     IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
     {
@@ -1624,7 +1609,6 @@ NDIS_STATUS	NICInitializeAsic(
             DBGPRINT(RT_DEBUG_TRACE, ("Set Radio Off\n"));
         }
     }
-#endif /* CONFIG_STA_SUPPORT */
 
     /* Clear raw counters*/
     NicResetRawCounters(pAd);
@@ -1673,14 +1657,12 @@ NDIS_STATUS	NICInitializeAsic(
     RTMP_IO_WRITE32(pAd, USB_CYC_CFG, Counter);
     RTUSBBulkReceive(pAd);
 
-#ifdef CONFIG_STA_SUPPORT
     IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
     {
         /* for rt2860E and after, init TXOP_CTRL_CFG with 0x583f. This is for extension channel overlapping IOT.*/
         if((pAd->MACVersion&0xffff) != 0x0101)
             RTMP_IO_WRITE32(pAd, TXOP_CTRL_CFG, 0x583f);
     }
-#endif /* CONFIG_STA_SUPPORT */
 
 #ifdef RT3290
 
@@ -1714,12 +1696,10 @@ VOID NICUpdateFifoStaCounters(
     UCHAR				succMCS;
 
 
-#ifdef CONFIG_STA_SUPPORT
 
     if(RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_IDLE_RADIO_OFF))
         return;
 
-#endif /* CONFIG_STA_SUPPORT */
 
 
 #ifdef RT65xx
@@ -1832,12 +1812,10 @@ VOID NICUpdateFifoStaCounters(
         UAPSD_SP_AUE_Handle(pAd, pEntry, StaFifo.field.TxSuccess);
 #endif /* UAPSD_SUPPORT */
 
-#ifdef CONFIG_STA_SUPPORT
 
         if(RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_BSS_SCAN_IN_PROGRESS))
             continue;
 
-#endif /* CONFIG_STA_SUPPORT */
 
         if(!StaFifo.field.TxSuccess)
         {
@@ -1849,8 +1827,6 @@ VOID NICUpdateFifoStaCounters(
                 DBGPRINT(RT_DEBUG_TRACE, ("#"));
                 pEntry->NoBADataCountDown = 64;
 
-#ifdef CONFIG_STA_SUPPORT
-#endif /* CONFIG_STA_SUPPORT */
 
                 /* Update the continuous transmission counter.*/
                 pEntry->ContinueTxFailCnt++;
@@ -1904,8 +1880,6 @@ VOID NICUpdateFifoStaCounters(
             pEntry->LockEntryTx = FALSE;
 #endif /* WDS_SUPPORT */
 
-#ifdef CONFIG_STA_SUPPORT
-#endif /* CONFIG_STA_SUPPORT */
         }
 
         succMCS = StaFifo.field.SuccessRate & 0x7F;
@@ -2556,10 +2530,8 @@ VOID UserCfgInit(RTMP_ADAPTER *pAd)
     pAd->CommonCfg.TxPower = 100; /*mW*/
 
     NdisZeroMemory(&pAd->CommonCfg.IOTestParm, sizeof(pAd->CommonCfg.IOTestParm));
-#ifdef CONFIG_STA_SUPPORT
     pAd->CountDowntoPsm = 0;
     pAd->StaCfg.Connectinfoflag = FALSE;
-#endif /* CONFIG_STA_SUPPORT */
 
 
     for(key_index=0; key_index<SHARE_KEY_NUM; key_index++)
@@ -2634,9 +2606,7 @@ VOID UserCfgInit(RTMP_ADAPTER *pAd)
     pAd->Dot11_H.ChMovingTime = 65;
 
 #ifdef UAPSD_SUPPORT
-#ifdef CONFIG_STA_SUPPORT
     pAd->StaCfg.UapsdInfo.bAPSDCapable = FALSE;
-#endif /* CONFIG_STA_SUPPORT */
 #endif /* UAPSD_SUPPORT */
     pAd->CommonCfg.bNeedSendTriggerFrame = FALSE;
     pAd->CommonCfg.TriggerTimerCount = 0;
@@ -2752,7 +2722,6 @@ VOID UserCfgInit(RTMP_ADAPTER *pAd)
 
     pAd->CommonCfg.bRalinkBurstMode = FALSE;
 
-#ifdef CONFIG_STA_SUPPORT
     /* part II. intialize STA specific configuration*/
     IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
     {
@@ -2795,7 +2764,6 @@ VOID UserCfgInit(RTMP_ADAPTER *pAd)
 
     pAd->StaCfg.IEEE80211dClientMode = Rt802_11_D_None;
 
-#endif /* CONFIG_STA_SUPPORT */
 
     /* global variables mXXXX used in MAC protocol state machines*/
     OPSTATUS_SET_FLAG(pAd, fOP_STATUS_RECEIVE_DTIM);
@@ -2806,7 +2774,6 @@ VOID UserCfgInit(RTMP_ADAPTER *pAd)
     pAd->CommonCfg.PhyMode = (WMODE_B | WMODE_G);		/* default PHY mode*/
     OPSTATUS_CLEAR_FLAG(pAd, fOP_STATUS_SHORT_PREAMBLE_INUSED);  /* CCK use LONG preamble*/
 
-#ifdef CONFIG_STA_SUPPORT
     IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
     {
         /* user desired power mode*/
@@ -2859,7 +2826,6 @@ VOID UserCfgInit(RTMP_ADAPTER *pAd)
         pAd->StaCfg.bFastConnect = FALSE;
         pAd->StaCfg.bAdhocCreator = FALSE;
     }
-#endif /* CONFIG_STA_SUPPORT */
 
     /* Default for extra information is not valid*/
     pAd->ExtraInfo = EXTRA_INFO_CLEAR;
@@ -2906,20 +2872,16 @@ VOID UserCfgInit(RTMP_ADAPTER *pAd)
     pAd->CommonCfg.bWiFiTest = FALSE;
 
 
-#ifdef CONFIG_STA_SUPPORT
 #ifdef PCIE_PS_SUPPORT
     RTMP_SET_PSFLAG(pAd, fRTMP_PS_CAN_GO_SLEEP);
 #endif /* PCIE_PS_SUPPORT */
-#endif /* CONFIG_STA_SUPPORT */
 
     pAd->RxAnt.Pair1PrimaryRxAnt = 0;
     pAd->RxAnt.Pair1SecondaryRxAnt = 1;
 
     pAd->RxAnt.EvaluatePeriod = 0;
     pAd->RxAnt.RcvPktNumWhenEvaluate = 0;
-#ifdef CONFIG_STA_SUPPORT
     pAd->RxAnt.Pair1AvgRssi[0] = pAd->RxAnt.Pair1AvgRssi[1] = 0;
-#endif /* CONFIG_STA_SUPPORT */
 
 
 #ifdef TXRX_SW_ANTDIV_SUPPORT
@@ -2927,7 +2889,6 @@ VOID UserCfgInit(RTMP_ADAPTER *pAd)
 #endif /* TXRX_SW_ANTDIV_SUPPORT */
 
 
-#if defined(AP_SCAN_SUPPORT) || defined(CONFIG_STA_SUPPORT)
 
     for(i = 0; i < MAX_LEN_OF_BSS_TABLE; i++)
     {
@@ -2939,7 +2900,6 @@ VOID UserCfgInit(RTMP_ADAPTER *pAd)
             pBssEntry->pVarIeFromProbRsp = NULL;
     }
 
-#endif /* defined(AP_SCAN_SUPPORT) || defined(CONFIG_STA_SUPPORT) */
 
 
 
@@ -3430,7 +3390,6 @@ VOID RTMPEnableRxTx(
         RTMP_IO_WRITE32(pAd, RX_FILTR_CFG, rx_filter_flag);     /* enable RX of DMA block*/
     }
 
-#ifdef CONFIG_STA_SUPPORT
     else
     {
 #ifdef XLINK_SUPPORT
@@ -3444,7 +3403,6 @@ VOID RTMPEnableRxTx(
         RTMP_IO_WRITE32(pAd, RX_FILTR_CFG, rx_filter_flag);
     }
 
-#endif /* CONFIG_STA_SUPPORT */
 
     {
         RTMP_IO_WRITE32(pAd, MAC_SYS_CTRL, 0xc);
@@ -3557,10 +3515,8 @@ INT RtmpRaDevCtrlInit(VOID *pAdSrc, RTMP_INF_TYPE infType)
     /* Assign the interface type. We need use it when do register/EEPROM access.*/
     pAd->infType = infType;
 
-#ifdef CONFIG_STA_SUPPORT
     pAd->OpMode = OPMODE_STA;
     DBGPRINT(RT_DEBUG_TRACE, ("STA Driver version-%s\n", STA_DRIVER_VERSION));
-#endif /* CONFIG_STA_SUPPORT */
 
 
     DBGPRINT(RT_DEBUG_TRACE, ("pAd->infType=%d\n", pAd->infType));
@@ -3615,10 +3571,8 @@ INT RtmpRaDevCtrlInit(VOID *pAdSrc, RTMP_INF_TYPE infType)
         RTMP_CardInfoRead(pAd);
 
         if(pAd->MC_RowID == -1)
-#ifdef CONFIG_STA_SUPPORT
             strcpy(pAd->MC_FileName, STA_PROFILE_PATH);
 
-#endif /* CONFIG_STA_SUPPORT */
 
         DBGPRINT(RT_DEBUG_TRACE, ("MC> ROW = %d, PATH = %s\n", pAd->MC_RowID, pAd->MC_FileName));
     }
@@ -3659,11 +3613,9 @@ BOOLEAN RtmpRaDevCtrlExit(IN VOID *pAdSrc)
 
 #endif /* MULTIPLE_CARD_SUPPORT */
 
-#ifdef CONFIG_STA_SUPPORT
 #ifdef CREDENTIAL_STORE
     NdisFreeSpinLock(&pAd->StaCtIf.Lock);
 #endif /* CREDENTIAL_STORE */
-#endif /* CONFIG_STA_SUPPORT */
 
 #ifdef RT65xx
 
