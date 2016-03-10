@@ -68,9 +68,7 @@ RT28XX_STA_OBJ += \
 	$(RT28xx_DIR)/os/linux/rt_symb.o
 endif
 
-ifeq ($(HAS_NEW_RATE_ADAPT_SUPPORT),y)
 RT28XX_STA_OBJS += $(RT28xx_DIR)/rate_ctrl/alg_grp.o
-endif
 
 ifeq ($(HAS_ATE),y)
 RT28XX_STA_OBJ += \

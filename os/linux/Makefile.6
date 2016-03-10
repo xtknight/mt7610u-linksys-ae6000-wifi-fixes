@@ -48,9 +48,7 @@ ifeq ($(HAS_BLOCK_NET_IF),y)
 obj_cmm += ../../common/netif_block.o
 endif
 
-ifeq ($(HAS_NEW_RATE_ADAPT_SUPPORT),y)
 obj_cmm += ../../rate_ctrl/alg_grp.o
-endif
 
 ifeq ($(HAS_RATE_ADAPT_AGS_SUPPORT),y)
 obj_cmm += ../../rate_ctrl/alg_ags.o

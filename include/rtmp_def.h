@@ -1720,12 +1720,6 @@ enum WIFI_MODE
 #endif
 #endif /* CONFIG_STA_SUPPORT */
 
-#ifdef MCAST_RATE_SPECIFIC
-#define MCAST_DISABLE	0
-#define MCAST_CCK		1
-#define MCAST_OFDM		2
-#define MCAST_HTMIX		3
-#endif /* MCAST_RATE_SPECIFIC */
 
 /* For AsicRadioOff/AsicRadioOn function */
 #define DOT11POWERSAVE		0

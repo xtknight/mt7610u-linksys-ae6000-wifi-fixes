@@ -9,29 +9,11 @@ HAS_RSSI_FEEDBACK=n
 # Support XLINK mode
 HAS_XLINK=n
 
-
-HAS_NINTENDO=n
-
-# Support LLTD function
-HAS_LLTD=n
-
 # Support WDS function
 HAS_WDS=n
 
 # Support AP-Client function
 HAS_APCLI=n
-
-# Support Wpa_Supplicant
-# i.e. wpa_supplicant -Dralink
-HAS_WPA_SUPPLICANT=y
-
-
-# Support Native WpaSupplicant for Network Maganger
-# i.e. wpa_supplicant -Dwext
-HAS_NATIVE_WPA_SUPPLICANT_SUPPORT=y
-
-#Support Net interface block while Tx-Sw queue full
-HAS_BLOCK_NET_IF=n
 
 #Support IGMP-Snooping function.
 HAS_IGMP_SNOOP_SUPPORT=n
@@ -42,24 +24,8 @@ HAS_DFS_SUPPORT=n
 #Support Carrier-Sense function
 HAS_CS_SUPPORT=n
 
-ifeq ($(PLATFORM),MT85XX)
-#Support HE_SUPPORT
-HAS_HE_SUPPORT=y
-HAS_HE_BD_SUPPORT=y
-endif
-
-ifeq ($(PLATFORM),MT53XX)
-#Support HE_SUPPORT
-HAS_HE_SUPPORT=y
-HAS_HE_TV_SUPPORT=y
-endif
-
 #Support WEPAUTO mode try Open first then shared
 HAS_WEPAUTO_OPEN_FIRST_SUPPORT=n
-
-
-# Support user specific transmit rate of Multicast packet.
-HAS_MCAST_RATE_SPECIFIC_SUPPORT=n
 
 # Support for Multiple Cards
 HAS_MC_SUPPORT=n
@@ -176,8 +142,6 @@ HAS_TXBF_SUPPORT=n
 
 HAS_STREAM_MODE_SUPPORT=n
 
-HAS_NEW_RATE_ADAPT_SUPPORT=y
-
 HAS_RATE_ADAPT_AGS_SUPPORT=n
 
 
@@ -225,21 +189,8 @@ ifeq ($(HAS_WIFI_P2P_CONCURRENT_FAST_SCAN),y)
 WFLAGS += -DWIFI_P2P_CONCURRENT_FAST_SCAN
 endif
 
-ifeq ($(HAS_HE_SUPPORT),y)
-WFLAGS += -DHE_SUPPORT
-WFLAGS += -DIP_ASSEMBLY
-endif
-
-ifeq ($(HAS_HE_BD_SUPPORT),y)
-WFLAGS += -DHE_BD_SUPPORT
-endif
-
 ifeq ($(HAS_WEPAUTO_OPEN_FIRST_SUPPORT),y)
 WFLAGS += -DWEPAUTO_OPEN_FIRST
-endif
-
-ifeq ($(HAS_HE_TV_SUPPORT),y)
-WFLAGS += -DHE_TV_SUPPORT
 endif
 
 ifeq ($(HAS_KTHREAD_SUPPORT),y)
@@ -287,27 +238,6 @@ ifeq ($(HAS_XLINK),y)
 WFLAGS += -DXLINK_SUPPORT
 endif
 
-
-ifeq ($(HAS_WPA_SUPPLICANT),y)
-WFLAGS += -DWPA_SUPPLICANT_SUPPORT
-ifeq ($(HAS_NATIVE_WPA_SUPPLICANT_SUPPORT),y)
-WFLAGS += -DNATIVE_WPA_SUPPLICANT_SUPPORT
-endif
-endif
-
-
-
-
-ifeq ($(HAS_ATE),y)
-WFLAGS += -DRALINK_ATE
-WFLAGS += -DCONFIG_RT2880_ATE_CMD_NEW
-WFLAGS += -I$(RT28xx_DIR)/ate/include
-ifeq ($(HAS_QA_SUPPORT),y)
-WFLAGS += -DRALINK_QA
-endif
-endif
-
-
 ifeq ($(HAS_SNMP_SUPPORT),y)
 WFLAGS += -DSNMP_SUPPORT
 endif
@@ -325,10 +255,6 @@ endif
 
 ifeq ($(HAS_TXBF_SUPPORT),y)
 WFLAGS += -DTXBF_SUPPORT
-endif
-
-ifeq ($(HAS_NEW_RATE_ADAPT_SUPPORT),y)
-WFLAGS += -DNEW_RATE_ADAPT_SUPPORT
 endif
 
 endif
@@ -430,10 +356,6 @@ WFLAGS += -DIDS_SUPPORT
 endif
 
 
-ifeq ($(OSABL),YES)
-WFLAGS += -DEXPORT_SYMTAB
-endif
-
 ifeq ($(HAS_CLIENT_WDS_SUPPORT),y)
 WFLAGS += -DCLIENT_WDS
 endif
@@ -496,20 +418,12 @@ ifeq ($(PLATFORM),5VT)
 #WFLAGS += -DCONFIG_5VT_ENHANCE
 endif
 
-ifeq ($(HAS_BLOCK_NET_IF),y)
-WFLAGS += -DBLOCK_NET_IF
-endif
-
 ifeq ($(HAS_DFS_SUPPORT),y)
 WFLAGS += -DDFS_SUPPORT
 endif
 
 ifeq ($(HAS_MC_SUPPORT),y)
 WFLAGS += -DMULTIPLE_CARD_SUPPORT
-endif
-
-ifeq ($(HAS_LLTD),y)
-WFLAGS += -DLLTD_SUPPORT
 endif
 
 #kernel build options for 2.4

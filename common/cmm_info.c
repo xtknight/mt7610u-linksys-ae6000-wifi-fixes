@@ -6238,16 +6238,6 @@ INT set_force_ext_cca(RTMP_ADAPTER *pAd, PSTRING arg)
 }
 
 
-#ifdef IP_ASSEMBLY
-INT set_force_ip_assemble(RTMP_ADAPTER *pAd, PSTRING arg)
-{
-    pAd->ip_assemble = (simple_strtol(arg, 0, 10) > 0 ? TRUE : FALSE);
-    DBGPRINT(RT_DEBUG_TRACE, ("%s(): ip_assemble = %d\n",
-                              __FUNCTION__, pAd->ip_assemble));
-
-    return TRUE;
-}
-#endif /* IP_ASSEMBLY */
 #endif /* WFA_VHT_PF */
 
 #ifdef RLT_RF

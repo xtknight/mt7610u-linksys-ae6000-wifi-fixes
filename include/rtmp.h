@@ -1549,10 +1549,6 @@ typedef struct _COMMON_CONFIG
     UCHAR RxStream;
 
     /* transmit phy mode, trasmit rate for Multicast. */
-#ifdef MCAST_RATE_SPECIFIC
-    UCHAR McastTransmitMcs;
-    UCHAR McastTransmitPhyMode;
-#endif /* MCAST_RATE_SPECIFIC */
 
     BOOLEAN bHardwareRadio;	/* Hardware controlled Radio enabled */
 
@@ -1579,9 +1575,6 @@ typedef struct _COMMON_CONFIG
     PTPC_REQ_TAB pTpcReqTab;
 
     /* transmit phy mode, trasmit rate for Multicast. */
-#ifdef MCAST_RATE_SPECIFIC
-    HTTRANSMIT_SETTING MCastPhyMode;
-#endif /* MCAST_RATE_SPECIFIC */
 
 #ifdef SINGLE_SKU
     UINT16 DefineMaxTxPwr;
@@ -1988,15 +1981,6 @@ typedef struct _STA_ACTIVE_CONFIG
 
 
 #ifdef WFA_VHT_PF
-#ifdef IP_ASSEMBLY
-struct ip_frag_q
-{
-    QUEUE_HEADER ip_queue[4];
-    INT32 ip_id[4];
-    INT32 ip_id_FragSize[4];
-    ULONG ip_pkt_jiffies[4];
-};
-#endif /* IP_ASSEMBLY */
 #endif /* WFA_VHT_PF */
 
 typedef struct _MAC_TABLE_ENTRY
@@ -2316,20 +2300,6 @@ typedef struct _MAC_TABLE_ENTRY
     BOOLEAN SupportVHTMCS[MAX_LEN_OF_VHT_RATES];
 
 #ifdef WFA_VHT_PF
-#ifdef IP_ASSEMBLY
-    QUEUE_HEADER ip_queue1[4];
-    INT32 ip_id1[4];
-    INT32 ip_id1_FragSize[4];
-    ULONG ip_pkt1_jiffies[4];
-
-    QUEUE_HEADER ip_queue2[4];
-    INT32 ip_id2[4];
-    INT32 ip_id2_FragSize[4];
-    ULONG ip_pkt2_jiffies[4];
-
-    struct ip_frag_q ip_fragQ[2];
-    BOOLEAN ip_queue_inited;
-#endif /* IP_ASSEMBLY */
 #endif /* WFA_VHT_PF */
 
 #ifdef MAC_REPEATER_SUPPORT
@@ -2366,13 +2336,6 @@ typedef struct _MAC_TABLE
 
 
 
-#ifdef BLOCK_NET_IF
-typedef struct _BLOCK_QUEUE_ENTRY
-{
-    BOOLEAN SwTxQueueBlockFlag;
-    LIST_HEADER NetIfList;
-} BLOCK_QUEUE_ENTRY, *PBLOCK_QUEUE_ENTRY;
-#endif /* BLOCK_NET_IF */
 
 
 struct wificonf
@@ -3185,9 +3148,6 @@ struct _RTMP_ADAPTER
     VOID *iw_stats;
     VOID *stats;
 
-#ifdef BLOCK_NET_IF
-    BLOCK_QUEUE_ENTRY blockQueueTab[NUM_OF_TX_RING];
-#endif /* BLOCK_NET_IF */
 
 
 
@@ -3302,9 +3262,6 @@ struct _RTMP_ADAPTER
     BOOLEAN force_noack;
     BOOLEAN vht_force_sgi;
     BOOLEAN vht_force_tx_stbc;
-#ifdef IP_ASSEMBLY
-    BOOLEAN ip_assemble;
-#endif /* IP_ASSEMBLY */
 #endif /* WFA_VHT_PF */
 
     UCHAR bloopBackTest;
@@ -7997,9 +7954,6 @@ INT set_force_noack(RTMP_ADAPTER *pAd, PSTRING arg);
 INT set_force_vht_sgi(RTMP_ADAPTER *pAd, PSTRING arg);
 INT set_force_vht_tx_stbc(RTMP_ADAPTER *pAd, PSTRING arg);
 INT set_force_ext_cca(RTMP_ADAPTER *pAd, PSTRING arg);
-#ifdef IP_ASSEMBLY
-INT set_force_ip_assemble(RTMP_ADAPTER *pAd, PSTRING arg);
-#endif /* IP_ASSEMBLY */
 #endif /* WFA_VHT_PF */
 
 

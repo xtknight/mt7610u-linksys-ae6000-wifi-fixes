@@ -1285,9 +1285,6 @@ static void HTParametersHook(
         else
             pAd->CommonCfg.RegTransmitSetting.field.BW = BW_20;
 
-#ifdef MCAST_RATE_SPECIFIC
-        pAd->CommonCfg.MCastPhyMode.field.BW = pAd->CommonCfg.RegTransmitSetting.field.BW;
-#endif /* MCAST_RATE_SPECIFIC */
 
         DBGPRINT(RT_DEBUG_TRACE, ("HT: Channel Width = %s\n", (Value==BW_40) ? "40 MHz" : "20 MHz"));
     }
@@ -1657,9 +1654,6 @@ static void HTParametersHookDefaultValues(
     // HT_BW=1 (Channel Width: 0: 20 MHz, 1: 40 MHz)
     pAd->CommonCfg.RegTransmitSetting.field.BW = BW_40;
 
-#ifdef MCAST_RATE_SPECIFIC
-    pAd->CommonCfg.MCastPhyMode.field.BW = pAd->CommonCfg.RegTransmitSetting.field.BW;
-#endif /* MCAST_RATE_SPECIFIC */
 
     DBGPRINT(RT_DEBUG_INFO, ("Default HT: Channel Width = %s\n", (pAd->CommonCfg.RegTransmitSetting.field.BW==BW_40) ? "40 MHz" : "20 MHz"));
 

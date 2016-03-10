@@ -163,25 +163,6 @@ MAC_TABLE_ENTRY *MacTableInsertEntry(
             NdisZeroMemory(pEntry, sizeof(MAC_TABLE_ENTRY));
 
 #ifdef WFA_VHT_PF
-#ifdef IP_ASSEMBLY
-
-            if(pEntry->ip_queue_inited == 0)
-            {
-                int q_idx, ac_idx;
-                struct ip_frag_q *fragQ = &pEntry->ip_fragQ[q_idx];
-
-                for(ac_idx = 0; ac_idx < 4; ac_idx++)
-                {
-                    InitializeQueueHeader(&pEntry->ip_queue1[ac_idx]);
-                    InitializeQueueHeader(&pEntry->ip_queue2[ac_idx]);
-                    pEntry->ip_id1[ac_idx] = pEntry->ip_id2[ac_idx] = -1;
-                    pEntry->ip_id1_FragSize[ac_idx] = pEntry->ip_id2_FragSize[ac_idx] = -1;
-                }
-
-                pEntry->ip_queue_inited = 1;
-            }
-
-#endif /* IP_ASSEMBLY */
 #endif /* WFA_VHT_PF */
 
             if(CleanAll == TRUE)
@@ -489,32 +470,6 @@ BOOLEAN MacTableDeleteEntry(
             /*RTMP_REMOVE_PAIRWISE_KEY_ENTRY(pAd, wcid);*/
 
 #ifdef WFA_VHT_PF
-#ifdef IP_ASSEMBLY
-
-            if(pAd->ip_assemble == TRUE)
-            {
-                if(pEntry->ip_queue_inited)
-                {
-                    PQUEUE_ENTRY qe;
-                    PNDIS_PACKET q_pkt;
-
-                    qe = pEntry->ip_queue1;
-
-                    while(qe->Head)
-                    {
-                        DBGPRINT(RT_DEBUG_TRACE, ("%s():%ld...\n", __FUNCTION__, qe->Number));
-
-                        pEntry = RemoveHeadQueue(qe);
-                        /*pPacket = CONTAINING_RECORD(pEntry, NDIS_PACKET, MiniportReservedEx); */
-                        q_pkt = QUEUE_ENTRY_TO_PACKET(pEntry);
-                        RELEASE_NDIS_PACKET(pAd, q_pkt, NDIS_STATUS_FAILURE);
-                    }
-
-                    pEntry->ip_queue_inited = 0;
-                }
-            }
-
-#endif /* IP_ASSEMBLY */
 #endif /* WFA_VHT_PF */
 
 #ifdef UAPSD_SUPPORT

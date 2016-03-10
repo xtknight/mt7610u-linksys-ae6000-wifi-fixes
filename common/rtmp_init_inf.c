@@ -211,9 +211,6 @@ int rt28xx_init(VOID *pAdSrc, PSTRING pDefaultMac, PSTRING pHostName)
     CfgInitHook(pAd);
 
 
-#ifdef BLOCK_NET_IF
-    initblockQueueTab(pAd);
-#endif /* BLOCK_NET_IF */
 
     Status = MeasureReqTabInit(pAd);
 
