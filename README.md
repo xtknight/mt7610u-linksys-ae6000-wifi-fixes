@@ -19,6 +19,15 @@ Some of the issues, such as a WPA supplicant issue, are fixable by comparing MT7
 - make
 - sudo make install
 
+# Building with DKMS
+```bash
+$ sudo apt-get install dkms  # if you've already installed dkms, skip this step.
+$ sudo cp -R . /usr/src/mt7610u_sta-1.0
+$ sudo dkms add mt7610u_sta/1.0
+$ sudo dkms build mt7610u_sta/1.0
+$ sudo dkms install mt7610u_sta/1.0
+```
+
 # Devices recognized by module
 - {USB_DEVICE(0x148F,0x7610)}, /* MT7610U Ralink VID */
 - {USB_DEVICE(0x0E8D,0x7610)}, /* MT7610U MediaTek VID / Sabrent NTWLAC */
