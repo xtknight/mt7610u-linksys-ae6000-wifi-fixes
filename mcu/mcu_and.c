@@ -322,7 +322,7 @@ loadfw_protect:
 									 cap->CommandBulkOutAddr,
 									 fw_data,
 									 sent_len + sizeof(*tx_info) + USB_END_PADDING,
-									 usb_uploadfw_complete,
+									 (usb_complete_t) usb_uploadfw_complete,
 									 &load_fw_done,
 									 fw_dma);
 
@@ -471,7 +471,7 @@ loadfw_protect:
 									 cap->CommandBulkOutAddr,
 									 fw_data,
 									 sent_len + sizeof(*tx_info) + USB_END_PADDING,
-									 usb_uploadfw_complete,
+									 (usb_complete_t) usb_uploadfw_complete,
 									 &load_fw_done,
 									 fw_dma);
 

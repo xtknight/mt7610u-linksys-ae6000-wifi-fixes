@@ -907,7 +907,7 @@ int RtmpChipOpsHook(VOID *pCB)
 	pChipOps->ChipAGCAdjust = ChipAGCAdjust;
 #endif /* CONFIG_STA_SUPPORT */
 	pChipOps->ChipBBPAdjust = ChipBBPAdjust;
-	pChipOps->ChipSwitchChannel = Default_ChipSwitchChannel;
+	pChipOps->ChipSwitchChannel = (VOID*) Default_ChipSwitchChannel;
 
 	/* TX ALC */
 	pChipCap->bTempCompTxALC = FALSE;
