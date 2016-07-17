@@ -1887,13 +1887,13 @@ struct cfg80211_ops CFG80211_Ops = {
 
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,32))
 	/* set the transmit power according to the parameters */
-	.set_tx_power				= CFG80211_OpsTxPwrSet,
+	.set_tx_power				= (VOID*) CFG80211_OpsTxPwrSet,
 	/* store the current TX power into the dbm variable */
-	.get_tx_power				= CFG80211_OpsTxPwrGet,
+	.get_tx_power				= (VOID*) CFG80211_OpsTxPwrGet,
 	/* configure WLAN power management */
 	.set_power_mgmt				= CFG80211_OpsPwrMgmt,
 	/* get station information for the station identified by @mac */
-	.get_station				= CFG80211_OpsStaGet,
+	.get_station				= (VOID*) CFG80211_OpsStaGet,
 	/* dump station callback */
 	.dump_station				= CFG80211_OpsStaDump,
 	/* notify that wiphy parameters have changed */
@@ -2035,7 +2035,7 @@ static struct wireless_dev *CFG80211_WdevAlloc(
 							       BIT(NL80211_IFTYPE_ADHOC) |
 							       BIT(NL80211_IFTYPE_MONITOR);
 #endif /* CONFIG_STA_SUPPORT */
-	pWdev->wiphy->reg_notifier = CFG80211_RegNotifier;
+	pWdev->wiphy->reg_notifier = (VOID*) CFG80211_RegNotifier;
 
 	/* init channel information */
 	CFG80211_SupBandInit(pCfg80211_CB, pBandInfo, pWdev->wiphy, NULL, NULL);

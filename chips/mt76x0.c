@@ -2771,7 +2771,7 @@ VOID MT76x0_Init(RTMP_ADAPTER *pAd)
 #endif /* CONFIG_STA_SUPPORT */
 
 	/* Channel */
-	pChipOps->ChipSwitchChannel = MT76x0_ChipSwitchChannel;
+	pChipOps->ChipSwitchChannel = (VOID*) MT76x0_ChipSwitchChannel;
 	pChipOps->ChipAGCInit = NULL;
 
 	pChipOps->AsicMacInit = NICInitMT76x0MacRegisters;

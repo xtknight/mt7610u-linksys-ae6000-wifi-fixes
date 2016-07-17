@@ -481,7 +481,7 @@ NTSTATUS RTUSBWriteMACRegister(
 		Status = RTUSBMultiWrite_nBytes(
 		pAd,
 		Offset,
-		&Value,
+		(PUCHAR) &Value,
 		4,
 		4);
 	} else {
