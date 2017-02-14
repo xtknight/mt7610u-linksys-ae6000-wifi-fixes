@@ -1,9 +1,7 @@
-ifeq ($(WIFI_MODE),)
-RT28xx_MODE = STA
-# RT28xx_MODE = AP
-else
-RT28xx_MODE = $(WIFI_MODE)
-endif
+# Set default value for WIFI_MODE
+WIFI_MODE ?= STA
+
+RT28xx_MODE = ${WIFI_MODE}
 
 ifeq ($(TARGET),)
 TARGET = LINUX
