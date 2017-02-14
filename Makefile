@@ -11,9 +11,8 @@ TARGET ?= LINUX
 # rt3562(for rt3592), rt3050, rt3350, rt3352, rt5350, rt5370, rt5390, rt5572, rt5592, 
 # rt8592(for rt85592), mt7650e, mt7630e, mt7610e, mt7650u, mt7630u, mt7610u
 
-ifeq ($(CHIPSET),)
-CHIPSET = mt7610u
-endif
+# Set default value for CHIPSET
+CHIPSET ?= mt7610u
 
 MODULE = $(word 1, $(CHIPSET))
 
