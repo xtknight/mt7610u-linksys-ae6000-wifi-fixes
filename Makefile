@@ -3,9 +3,8 @@ WIFI_MODE ?= STA
 
 RT28xx_MODE = ${WIFI_MODE}
 
-ifeq ($(TARGET),)
-TARGET = LINUX
-endif
+# Set default value for TARGET
+TARGET ?= LINUX
 
 # CHIPSET
 # rt2860, rt2870, rt2880, rt2070, rt3070, rt3090, rt3572, rt3062, rt3562, rt3593, rt3573
