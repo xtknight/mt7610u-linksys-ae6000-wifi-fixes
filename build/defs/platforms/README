@@ -1,0 +1,14 @@
+Filename format:
+    defs.platform.<PLATFORM>.mk
+
+Each platform fragment should define the following Makefile variables:
+    LINUX_SRC
+    CROSS_COMPILE
+    LINUX_SRC_MODULE
+    PLATFORM_SUPPORTED
+
+PLATFORM_SUPPORTED is to be used to track which platforms are supported.
+At the time of writing this, it is not known beyond which platforms are
+supported by the initial code (beyond PLATFORM=PC). To help prevent
+potential losses, all platforms referenced in the original top-level
+Makefile will have their own platform definitions file here.
