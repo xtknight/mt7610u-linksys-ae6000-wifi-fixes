@@ -80,16 +80,13 @@ LINUX:
 ifneq (,$(findstring 2.4,$(LINUX_SRC)))
 
 ifeq ($(OSABL),YES)
-	cp -f os/linux/Makefile.4.util $(RT28xx_DIR)/os/linux/Makefile
-	$(MAKE) -C $(RT28xx_DIR)/os/linux/
+	$(MAKE) -C $(RT28xx_DIR)/os/linux/ -f Makefile.4.util
 endif
 
-	cp -f os/linux/Makefile.4 $(RT28xx_DIR)/os/linux/Makefile
-	$(MAKE) -C $(RT28xx_DIR)/os/linux/
+	$(MAKE) -C $(RT28xx_DIR)/os/linux/ -f Makefile.4
 
 ifeq ($(OSABL),YES)
-	cp -f os/linux/Makefile.4.netif $(RT28xx_DIR)/os/linux/Makefile
-	$(MAKE) -C $(RT28xx_DIR)/os/linux/
+	$(MAKE) -C $(RT28xx_DIR)/os/linux/ -f Makefile.4.netif
 endif
 
 ifeq ($(RT28xx_MODE),AP)
@@ -219,8 +216,7 @@ endif
 
 libwapi:
 ifneq (,$(findstring 2.4,$(LINUX_SRC)))
-	cp -f os/linux/Makefile.libwapi.4 $(RT28xx_DIR)/os/linux/Makefile
-	$(MAKE) -C $(RT28xx_DIR)/os/linux/
+	$(MAKE) -C $(RT28xx_DIR)/os/linux/ -f Makefile.libwapi.4
 else
 	cp -f os/linux/Makefile.libwapi.6 $(RT28xx_DIR)/os/linux/Makefile	
 	$(MAKE) -C  $(LINUX_SRC) SUBDIRS=$(RT28xx_DIR)/os/linux modules	
@@ -229,8 +225,7 @@ endif
 osutil:
 ifeq ($(OSABL),YES)
 ifneq (,$(findstring 2.4,$(LINUX_SRC)))
-	cp -f os/linux/Makefile.4.util $(RT28xx_DIR)/os/linux/Makefile
-	$(MAKE) -C $(RT28xx_DIR)/os/linux/
+	$(MAKE) -C $(RT28xx_DIR)/os/linux/ -f Makefile.4.util
 else
 	cp -f os/linux/Makefile.6.util $(RT28xx_DIR)/os/linux/Makefile
 	$(MAKE) -C $(LINUX_SRC) SUBDIRS=$(RT28xx_DIR)/os/linux modules
@@ -240,8 +235,7 @@ endif
 osnet:
 ifeq ($(OSABL),YES)
 ifneq (,$(findstring 2.4,$(LINUX_SRC)))
-	cp -f os/linux/Makefile.4.netif $(RT28xx_DIR)/os/linux/Makefile
-	$(MAKE) -C $(RT28xx_DIR)/os/linux/
+	$(MAKE) -C $(RT28xx_DIR)/os/linux/ -f Makefile.4.netif
 else
 	cp -f os/linux/Makefile.6.netif $(RT28xx_DIR)/os/linux/Makefile
 	$(MAKE) -C $(LINUX_SRC) SUBDIRS=$(RT28xx_DIR)/os/linux modules
@@ -250,8 +244,7 @@ endif
 
 osdrv:
 ifneq (,$(findstring 2.4,$(LINUX_SRC)))
-	cp -f os/linux/Makefile.4 $(RT28xx_DIR)/os/linux/Makefile
-	$(MAKE) -C $(RT28xx_DIR)/os/linux/
+	$(MAKE) -C $(RT28xx_DIR)/os/linux/ -f Makefile.4
 else
 	cp -f os/linux/Makefile.6 $(RT28xx_DIR)/os/linux/Makefile
 	$(MAKE) -C $(LINUX_SRC) SUBDIRS=$(RT28xx_DIR)/os/linux modules
@@ -259,6 +252,3 @@ endif
 
 # Declare the contents of the .PHONY variable as phony.  We keep that information in a variable
 .PHONY: $(PHONY)
-
-
-
