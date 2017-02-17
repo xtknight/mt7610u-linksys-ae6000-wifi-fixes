@@ -53,10 +53,11 @@ $(if ${PLATFORM_SUPPORTED}, , $(error "Platform ${PLATFORM} not supported"))
 #RELEASE Package
 RELEASE = DPO
 
-
-ifeq ($(TARGET),LINUX)
-MAKE = make
-endif
+# It will probably be better in the future to put this in some sort of
+# target definitions makefile fragment and then include it. But for now,
+# keep it as is.
+MAKE_LINUX = make
+MAKE = $(if ${MAKE_${TARGET}},${MAKE_${TARGET}},$(error "MAKE not defined"))
 
 export OSABL RT28xx_DIR RT28xx_MODE LINUX_SRC CROSS_COMPILE CROSS_COMPILE_INCLUDE PLATFORM RELEASE CHIPSET MODULE RTMP_SRC_DIR LINUX_SRC_MODULE TARGET HAS_WOW_SUPPORT
 
