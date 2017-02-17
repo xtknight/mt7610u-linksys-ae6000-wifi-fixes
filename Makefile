@@ -19,10 +19,8 @@ MODULE = $(word 1, $(CHIPSET))
 #OS ABL - YES or NO
 OSABL = NO
 
-ifneq ($(TARGET),THREADX)
 #RT28xx_DIR = home directory of RT28xx source code
 RT28xx_DIR = $(shell pwd)
-endif
 
 include $(RT28xx_DIR)/os/linux/config.mk
 
@@ -60,10 +58,6 @@ ifeq ($(TARGET),LINUX)
 MAKE = make
 endif
 
-ifeq ($(TARGET),THREADX)
-MAKE = gmake
-endif
-
 ifeq ($(TARGET), ECOS)
 MAKE = make
 MODULE = $(shell pwd | sed "s/.*\///" ).o
@@ -73,7 +67,7 @@ endif
 export OSABL RT28xx_DIR RT28xx_MODE LINUX_SRC CROSS_COMPILE CROSS_COMPILE_INCLUDE PLATFORM RELEASE CHIPSET MODULE RTMP_SRC_DIR LINUX_SRC_MODULE TARGET HAS_WOW_SUPPORT
 
 # The targets that may be used.
-PHONY += all build_tools test THREADX LINUX release prerelease clean uninstall install libwapi osabl
+PHONY += all build_tools test LINUX release prerelease clean uninstall install libwapi osabl
 
 ifeq ($(TARGET),LINUX)
 all: build_tools $(TARGET)
@@ -93,9 +87,6 @@ test:
 ECOS:
 	$(MAKE) -C os/ecos/ MODE=$(RT28xx_MODE)
 	cp -f os/ecos/$(MODULE) $(MODULE)
-
-THREADX:
-	$(MAKE) -C $(RT28xx_DIR)/os/Threadx -f $(RT28xx_DIR)/os/ThreadX/Makefile
 
 LINUX:
 ifneq (,$(findstring 2.4,$(LINUX_SRC)))
