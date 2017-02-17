@@ -58,12 +58,6 @@ ifeq ($(TARGET),LINUX)
 MAKE = make
 endif
 
-ifeq ($(TARGET), ECOS)
-MAKE = make
-MODULE = $(shell pwd | sed "s/.*\///" ).o
-export MODULE
-endif
-
 export OSABL RT28xx_DIR RT28xx_MODE LINUX_SRC CROSS_COMPILE CROSS_COMPILE_INCLUDE PLATFORM RELEASE CHIPSET MODULE RTMP_SRC_DIR LINUX_SRC_MODULE TARGET HAS_WOW_SUPPORT
 
 # The targets that may be used.
@@ -83,10 +77,6 @@ build_tools:
 
 test:
 	$(MAKE) -C tools test
-
-ECOS:
-	$(MAKE) -C os/ecos/ MODE=$(RT28xx_MODE)
-	cp -f os/ecos/$(MODULE) $(MODULE)
 
 LINUX:
 ifneq (,$(findstring 2.4,$(LINUX_SRC)))
@@ -210,9 +200,6 @@ ifeq ($(TARGET), LINUX)
 	$(MAKE) -C os/linux clean
 	rm -rf os/linux/Makefile
 endif	
-ifeq ($(TARGET), ECOS)
-	$(MAKE) -C os/ecos clean MODE=$(RT28xx_MODE)
-endif
 
 uninstall:
 ifeq ($(TARGET), LINUX)
