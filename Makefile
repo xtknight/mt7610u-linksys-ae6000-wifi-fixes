@@ -60,9 +60,6 @@ ifeq ($(TARGET),LINUX)
 MAKE = make
 endif
 
-ifeq ($(TARGET), UCOS)
-MAKE = make
-endif
 ifeq ($(TARGET),THREADX)
 MAKE = gmake
 endif
@@ -76,7 +73,7 @@ endif
 export OSABL RT28xx_DIR RT28xx_MODE LINUX_SRC CROSS_COMPILE CROSS_COMPILE_INCLUDE PLATFORM RELEASE CHIPSET MODULE RTMP_SRC_DIR LINUX_SRC_MODULE TARGET HAS_WOW_SUPPORT
 
 # The targets that may be used.
-PHONY += all build_tools test UCOS THREADX LINUX release prerelease clean uninstall install libwapi osabl
+PHONY += all build_tools test THREADX LINUX release prerelease clean uninstall install libwapi osabl
 
 ifeq ($(TARGET),LINUX)
 all: build_tools $(TARGET)
@@ -92,10 +89,6 @@ build_tools:
 
 test:
 	$(MAKE) -C tools test
-
-UCOS:
-	$(MAKE) -C os/ucos/ MODE=$(RT28xx_MODE)
-	echo $(RT28xx_MODE)
 
 ECOS:
 	$(MAKE) -C os/ecos/ MODE=$(RT28xx_MODE)
@@ -226,9 +219,6 @@ ifeq ($(TARGET), LINUX)
 	$(MAKE) -C os/linux clean
 	rm -rf os/linux/Makefile
 endif	
-ifeq ($(TARGET), UCOS)
-	$(MAKE) -C os/ucos clean MODE=$(RT28xx_MODE)
-endif
 ifeq ($(TARGET), ECOS)
 	$(MAKE) -C os/ecos clean MODE=$(RT28xx_MODE)
 endif
