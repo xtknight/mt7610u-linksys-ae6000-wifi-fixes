@@ -62,7 +62,7 @@ MAKE = $(if ${MAKE_${TARGET}},${MAKE_${TARGET}},$(error "MAKE not defined"))
 export OSABL RT28xx_DIR RT28xx_MODE LINUX_SRC CROSS_COMPILE CROSS_COMPILE_INCLUDE PLATFORM RELEASE CHIPSET MODULE RTMP_SRC_DIR LINUX_SRC_MODULE TARGET HAS_WOW_SUPPORT
 
 # The targets that may be used.
-PHONY += all build_tools LINUX release clean uninstall install libwapi osabl
+PHONY += all build_tools LINUX release clean uninstall install osabl
 
 ifeq ($(TARGET),LINUX)
 all: build_tools $(TARGET)
@@ -199,14 +199,6 @@ else
 	$(MAKE) -C $(RT28xx_DIR)/os/linux -f Makefile.6 install
 endif
 endif
-
-libwapi:
-ifneq (,$(findstring 2.4,$(LINUX_SRC)))
-	$(MAKE) -C $(RT28xx_DIR)/os/linux/ -f Makefile.libwapi.4
-else
-	cp -f os/linux/Makefile.libwapi.6 $(RT28xx_DIR)/os/linux/Makefile	
-	$(MAKE) -C  $(LINUX_SRC) SUBDIRS=$(RT28xx_DIR)/os/linux modules	
-endif	
 
 osutil:
 ifeq ($(OSABL),YES)
