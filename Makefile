@@ -65,7 +65,7 @@ MAKE = $(if ${MAKE_${TARGET}},${MAKE_${TARGET}},$(error "MAKE not defined"))
 export OSABL RT28xx_DIR RT28xx_MODE LINUX_SRC CROSS_COMPILE CROSS_COMPILE_INCLUDE PLATFORM RELEASE CHIPSET MODULE RTMP_SRC_DIR LINUX_SRC_MODULE TARGET HAS_WOW_SUPPORT
 
 # The targets that may be used.
-PHONY += all build_tools LINUX release clean uninstall install osabl
+PHONY += all build_tools LINUX clean uninstall install osabl
 
 ifeq ($(TARGET),LINUX)
 all: build_tools $(TARGET)
@@ -167,16 +167,6 @@ endif
 endif
 endif
 
-
-release: build_tools
-	$(MAKE) -C $(RT28xx_DIR)/striptool -f Makefile.release clean
-	$(MAKE) -C $(RT28xx_DIR)/striptool -f Makefile.release
-	striptool/striptool.out
-ifeq ($(RELEASE), DPO)
-	gcc -o striptool/banner striptool/banner.c
-	./striptool/banner -b striptool/copyright.gpl -s DPO/ -d DPO_GPL -R
-	./striptool/banner -b striptool/copyright.frm -s DPO_GPL/include/firmware.h
-endif
 
 clean:
 ifeq ($(TARGET), LINUX)
