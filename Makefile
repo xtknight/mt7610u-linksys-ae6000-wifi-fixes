@@ -62,7 +62,7 @@ MAKE = $(if ${MAKE_${TARGET}},${MAKE_${TARGET}},$(error "MAKE not defined"))
 export OSABL RT28xx_DIR RT28xx_MODE LINUX_SRC CROSS_COMPILE CROSS_COMPILE_INCLUDE PLATFORM RELEASE CHIPSET MODULE RTMP_SRC_DIR LINUX_SRC_MODULE TARGET HAS_WOW_SUPPORT
 
 # The targets that may be used.
-PHONY += all build_tools LINUX release prerelease clean uninstall install libwapi osabl
+PHONY += all build_tools LINUX release clean uninstall install libwapi osabl
 
 ifeq ($(TARGET),LINUX)
 all: build_tools $(TARGET)
@@ -174,20 +174,6 @@ ifeq ($(RELEASE), DPO)
 	./striptool/banner -b striptool/copyright.gpl -s DPO/ -d DPO_GPL -R
 	./striptool/banner -b striptool/copyright.frm -s DPO_GPL/include/firmware.h
 endif
-
-prerelease:
-ifeq ($(MODULE), 2880)
-	$(MAKE) -C $(RT28xx_DIR)/os/linux -f Makefile.release.2880 prerelease
-else
-	$(MAKE) -C $(RT28xx_DIR)/os/linux -f Makefile.release prerelease
-endif
-	cp $(RT28xx_DIR)/os/linux/Makefile.DPB $(RTMP_SRC_DIR)/os/linux/.
-	cp $(RT28xx_DIR)/os/linux/Makefile.DPA $(RTMP_SRC_DIR)/os/linux/.
-	cp $(RT28xx_DIR)/os/linux/Makefile.DPC $(RTMP_SRC_DIR)/os/linux/.
-ifeq ($(RT28xx_MODE),STA)
-	cp $(RT28xx_DIR)/os/linux/Makefile.DPD $(RTMP_SRC_DIR)/os/linux/.
-	cp $(RT28xx_DIR)/os/linux/Makefile.DPO $(RTMP_SRC_DIR)/os/linux/.
-endif	
 
 clean:
 ifeq ($(TARGET), LINUX)
