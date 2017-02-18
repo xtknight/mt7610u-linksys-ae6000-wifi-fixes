@@ -1,15 +1,18 @@
 # Set default value for WIFI_MODE
+# STA, AP (not supported?), APSTA (not supported?)
 WIFI_MODE ?= STA
 
 RT28xx_MODE = ${WIFI_MODE}
 
 # Set default value for TARGET
+# Currently, the only valid TARGET
 TARGET ?= LINUX
 
 # CHIPSET
-# rt2860, rt2870, rt2880, rt2070, rt3070, rt3090, rt3572, rt3062, rt3562, rt3593, rt3573
-# rt3562(for rt3592), rt3050, rt3350, rt3352, rt5350, rt5370, rt5390, rt5572, rt5592, 
-# rt8592(for rt85592), mt7650e, mt7630e, mt7610e, mt7650u, mt7630u, mt7610u
+# rt2860, rt2870, rt2880, rt2070, rt3070, rt3090, rt3572, rt3062,
+# rt3562, rt3593, rt3573, rt3562 (for rt3592), rt3050, rt3350,
+# rt3352, rt5350, rt5370, rt5390, rt5572, rt5592, rt8592 (for rt85592),
+# mt7650e, mt7630e, mt7610e, mt7650u, mt7630u, mt7610u
 
 # Set default value for CHIPSET
 CHIPSET ?= mt7610u
