@@ -27,8 +27,6 @@ RT28xx_DIR = $(shell pwd)
 
 include $(RT28xx_DIR)/os/linux/config.mk
 
-RTMP_SRC_DIR = $(RT28xx_DIR)/RT$(MODULE)
-
 # PLATFORM: Target platform
 # See build/defs/platforms for the list of possible platforms
 # Set the default PLATFORM (unless previously specified)
@@ -62,7 +60,7 @@ RELEASE = DPO
 MAKE_LINUX = make
 MAKE = $(if ${MAKE_${TARGET}},${MAKE_${TARGET}},$(error "MAKE not defined"))
 
-export OSABL RT28xx_DIR RT28xx_MODE LINUX_SRC CROSS_COMPILE CROSS_COMPILE_INCLUDE PLATFORM RELEASE CHIPSET MODULE RTMP_SRC_DIR LINUX_SRC_MODULE TARGET HAS_WOW_SUPPORT
+export OSABL RT28xx_DIR RT28xx_MODE LINUX_SRC CROSS_COMPILE CROSS_COMPILE_INCLUDE PLATFORM RELEASE CHIPSET MODULE LINUX_SRC_MODULE TARGET HAS_WOW_SUPPORT
 
 # The targets that may be used.
 PHONY += all build_tools LINUX clean uninstall install osabl
