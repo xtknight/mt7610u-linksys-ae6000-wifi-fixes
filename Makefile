@@ -25,8 +25,6 @@ OSABL = NO
 #RT28xx_DIR = home directory of RT28xx source code
 RT28xx_DIR = $(shell pwd)
 
-include $(RT28xx_DIR)/os/linux/config.mk
-
 # PLATFORM: Target platform
 # See build/defs/platforms for the list of possible platforms
 # Set the default PLATFORM (unless previously specified)
@@ -50,6 +48,7 @@ include ${RT28xx_DIR}/build/defs/platforms/defs.platform.${PLATFORM}.mk
 
 $(if ${PLATFORM_SUPPORTED}, , $(error "Platform ${PLATFORM} not supported"))
 
+include $(RT28xx_DIR)/os/linux/config.mk
 
 #RELEASE Package
 RELEASE = DPO
