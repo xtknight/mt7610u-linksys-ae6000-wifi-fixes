@@ -6,6 +6,9 @@ http://hprath.com/2014/06/cisco-linksys-ae6000-ac580-media-tek-mt7610u-mt7630u-m
 
 Some of the issues, such as a WPA supplicant issue, are fixable by comparing MT7610U and MT7612U code from MediaTek.
 
+# Note
+- Regretfully I have moved and didn't bring this adapter with me, so I have not been able to handle the issues. The 'configless' branch contains a version that works without using the conf file but may not compile right now.
+
 # Features
 - Linux kernel 4.4 support
 - Works with 2.4/5GHz networks out of the box
