@@ -8,9 +8,10 @@ Some of the issues, such as a WPA supplicant issue, are fixable by comparing MT7
 
 # Note
 - Regretfully I have moved and didn't bring this adapter with me, so I have not been able to handle the issues. The 'configless' branch contains a version that works without using the conf file but may not compile right now.
+- The good news is that 'master' branch should be working with kernel 4.7 now. Thank you for the pull request.
 
 # Features
-- Linux kernel 4.4 support
+- Linux kernel 4.7 support
 - Works with 2.4/5GHz networks out of the box
 - Works with NetworkManager and nl80211 interface out of the box
 - Works with WPA2-Personal and WPA supplicant/NetworkManager without extra configuration
