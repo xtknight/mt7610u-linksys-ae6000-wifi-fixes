@@ -705,10 +705,6 @@ endif
 #################################################
 
 
-ifeq ($(PLATFORM),5VT)
-#WFLAGS-y += -DCONFIG_5VT_ENHANCE
-endif
-
 WFLAGS-${HAS_BLOCK_NET_IF} += -DBLOCK_NET_IF
 
 WFLAGS-${HAS_DFS_SUPPORT} += -DDFS_SUPPORT
@@ -797,10 +793,8 @@ WFLAGS-y += -DPLATFORM_RALINK_3052
 endif
 
 ifeq ($(PLATFORM),FREESCALE8377)
-#EXTRA_CFLAGS := -v -I$(RT28xx_DIR)/include -I$(LINUX_SRC)/include $(WFLAGS-y)-O2 -Wall -Wstrict-prototypes -Wno-trigraphs 
-#export EXTRA_CFLAGS
 WFLAGS-y += -DRT_BIG_ENDIAN
-EXTRA_CFLAGS := $(WFLAGS-y) -I$(RT28xx_DIR)/include
+EXTRA_CFLAGS := ${EXTRA_CFLAGS_${PLATFORM}} ${WFLAGS-y}
 endif
 
 ifeq ($(PLATFORM),ST)
@@ -812,197 +806,170 @@ endif
 # move to Makefile outside LINUX_SRC := /opt/star/kernel/linux-2.4.27-star
 
 ifeq ($(PLATFORM),RALINK_3052)
-CFLAGS := -D__KERNEL__ -I$(LINUX_SRC)/include/asm-mips/mach-generic -I$(LINUX_SRC)/include -Wall -Wstrict-prototypes -Wno-trigraphs -O2 -fno-strict-aliasing -fno-common -fomit-frame-pointer -G 0 -mno-abicalls -fno-pic -pipe  -finline-limit=100000 -march=mips2 -mabi=32 -Wa,--trap -DLINUX -nostdinc -iwithprefix include $(WFLAGS-y)
+CFLAGS := ${CFLAGS_${PLATFORM}} ${WFLAGS-y}
 export CFLAGS
 endif
 
 ifeq ($(PLATFORM), RALINK_2880)
-CFLAGS := -D__KERNEL__ -I$(LINUX_SRC)/include -Wall -Wstrict-prototypes -Wno-trigraphs -O2 -fno-strict-aliasing -fno-common -fomit-frame-pointer -G 0 -mno-abicalls -fno-pic -pipe  -finline-limit=100000 -march=mips2 -mabi=32 -Wa,--trap -DLINUX -nostdinc -iwithprefix include $(WFLAGS-y)
+CFLAGS := ${CFLAGS_${PLATFORM}} ${WFLAGS-y}
 export CFLAGS
 endif
 
 ifeq ($(PLATFORM),STAR)
-CFLAGS := -D__KERNEL__ -I$(LINUX_SRC)/include -Wall -Wstrict-prototypes -Wno-trigraphs -O2 -fno-strict-aliasing -fno-common -Uarm -fno-common -pipe -mapcs-32 -D__LINUX_ARM_ARCH__=4 -march=armv4  -mshort-load-bytes -msoft-float -Uarm -DMODULE -DMODVERSIONS -include $(LINUX_SRC)/include/linux/modversions.h $(WFLAGS-y)
-
+CFLAGS := ${CFLAGS_${PLATFORM}} ${WFLAGS-y}
 export CFLAGS
 endif
 
 ifeq ($(PLATFORM),UBICOM_IPX8)
-EXTRA_CFLAGS += $(WFLAGS-y) 
+EXTRA_CFLAGS += ${EXTRA_CFLAGS_${PLATFORM}} ${WFLAGS-y)}
 export EXTRA_CFLAGS
 endif
 
 ifeq ($(PLATFORM),SIGMA)
-CFLAGS := -D__KERNEL__ -I$(LINUX_SRC)/include -I$(LINUX_SRC)/include/asm/gcc -I$(LINUX_SRC)/include/asm-mips/mach-tango2 -I$(LINUX_SRC)/include/asm-mips/mach-tango2 -DEM86XX_CHIP=EM86XX_CHIPID_TANGO2 -DEM86XX_REVISION=6 -I$(LINUX_SRC)/include/asm-mips/mach-generic -I$(RT2860_DIR)/include -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -ffreestanding -O2     -fomit-frame-pointer -G 0 -mno-abicalls -fno-pic -pipe  -mabi=32 -march=mips32r2 -Wa,-32 -Wa,-march=mips32r2 -Wa,-mips32r2 -Wa,--trap -DMODULE $(WFLAGS-y) -DSIGMA863X_PLATFORM
-
+CFLAGS := ${CFLAGS_${PLATFORM}} ${WFLAGS-y}
 export CFLAGS
 endif
 
 ifeq ($(PLATFORM),SIGMA_8622)
-CFLAGS := -D__KERNEL__ -I$(CROSS_COMPILE_INCLUDE)/include -I$(LINUX_SRC)/include -Wall -Wstrict-prototypes -Wno-trigraphs -O2 -fno-strict-aliasing -fno-common -fno-common -pipe -fno-builtin -D__linux__ -DNO_MM -mapcs-32 -march=armv4 -mtune=arm7tdmi -msoft-float -DMODULE -mshort-load-bytes -nostdinc -iwithprefix -DMODULE $(WFLAGS-y)
+CFLAGS := ${CFLAGS_${PLATFORM}} ${WFLAGS-y}
 export CFLAGS
 endif
 
 ifeq ($(PLATFORM),5VT)
-CFLAGS := -D__KERNEL__ -I$(LINUX_SRC)/include -mlittle-endian -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -O3 -fno-omit-frame-pointer -fno-optimize-sibling-calls -fno-omit-frame-pointer -mapcs -mno-sched-prolog -mabi=apcs-gnu -mno-thumb-interwork -D__LINUX_ARM_ARCH__=5 -march=armv5te -mtune=arm926ej-s --param max-inline-insns-single=40000  -Uarm -Wdeclaration-after-statement -Wno-pointer-sign -DMODULE $(WFLAGS-y) 
+CFLAGS := ${CFLAGS_${PLATFORM}} ${WFLAGS-y}
 
 export CFLAGS
 endif
 
 ifeq ($(PLATFORM),IKANOS_V160)
-CFLAGS := -D__KERNEL__ -I$(LINUX_SRC)/include -I$(LINUX_SRC)/include/asm/gcc -I$(LINUX_SRC)/include/asm-mips/mach-tango2 -I$(LINUX_SRC)/include/asm-mips/mach-tango2 -I$(LINUX_SRC)/include/asm-mips/mach-generic -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -ffreestanding -O2 -fomit-frame-pointer -G 0 -mno-abicalls -fno-pic -pipe -march=lx4189 -Wa, -DMODULE $(WFLAGS-y)
+CFLAGS := ${CFLAGS_${PLATFORM}} ${WFLAGS-y}
 export CFLAGS
 endif
 
 ifeq ($(PLATFORM),IKANOS_V180)
-CFLAGS := -D__KERNEL__ -I$(LINUX_SRC)/include -I$(LINUX_SRC)/include/asm/gcc -I$(LINUX_SRC)/include/asm-mips/mach-tango2 -I$(LINUX_SRC)/include/asm-mips/mach-tango2 -I$(LINUX_SRC)/include/asm-mips/mach-generic -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -ffreestanding -O2 -fomit-frame-pointer -G 0 -mno-abicalls -fno-pic -pipe -mips32r2 -Wa, -DMODULE $(WFLAGS-y)
+CFLAGS := ${CFLAGS_${PLATFORM}} ${WFLAGS-y}
 export CFLAGS
 endif
 
 ifeq ($(PLATFORM),INF_TWINPASS)
-CFLAGS := -D__KERNEL__ -DMODULE -I$(LINUX_SRC)/include -Wall -Wstrict-prototypes -Wno-trigraphs -O2 -fomit-frame-pointer -fno-strict-aliasing -fno-common -G 0 -mno-abicalls -fno-pic -march=4kc -mips32 -Wa,--trap -pipe -mlong-calls $(WFLAGS-y)
+CFLAGS := ${CFLAGS_${PLATFORM}} ${WFLAGS-y}
 export CFLAGS
 endif
 
 ifeq ($(PLATFORM),INF_DANUBE)
-	ifneq (,$(findstring 2.4,$(LINUX_SRC)))
-	CFLAGS := $(WFLAGS-y) -Wundef -fno-strict-aliasing -fno-common -ffreestanding -Os -fomit-frame-pointer -G 0 -mno-abicalls -fno-pic -pipe -msoft-float  -mabi=32 -march=mips32 -Wa,-32 -Wa,-march=mips32 -Wa,-mips32 -Wa,--trap -I$(LINUX_SRC)/include/asm-mips/mach-generic
-	else
-	CFLAGS := $(WFLAGS-y) -Wundef -fno-strict-aliasing -fno-common -ffreestanding -Os -fomit-frame-pointer -G 0 -mno-abicalls -fno-pic -pipe -msoft-float  -mabi=32 -march=mips32r2 -Wa,-32 -Wa,-march=mips32r2 -Wa,-mips32r2 -Wa,--trap -I$(LINUX_SRC)/include/asm-mips/mach-generic
-	endif
+CFLAGS := ${CFLAGS_${PLATFORM}} ${WFLAGS-y}
 export CFLAGS
 endif
 
 ifeq ($(PLATFORM),INF_AR9)
-CFLAGS := $(WFLAGS-y) -Wundef -fno-strict-aliasing -fno-common -fno-pic -ffreestanding -Os -fomit-frame-pointer -G 0 -mno-abicalls -fno-pic -pipe -msoft-float  -mabi=32 -mlong-calls -march=mips32r2 -mtune=34kc -march=mips32r2 -Wa,-32 -Wa,-march=mips32r2 -Wa,-mips32r2 -Wa,--trap -I$(LINUX_SRC)/include/asm-mips/mach-generic
+CFLAGS := ${CFLAGS_${PLATFORM}} ${WFLAGS-y}
 export CFLAGS
 endif
 
 ifeq ($(PLATFORM),INF_VR9)
-CFLAGS := $(WFLAGS-y) -Wundef -fno-strict-aliasing -fno-common -fno-pic -ffreestanding -Os -fomit-frame-pointer -G 0 -mno-abicalls -fno-pic -pipe -msoft-float  -mabi=32 -mlong-calls -march=mips32r2 -march=mips32r2 -Wa,-32 -Wa,-march=mips32r2 -Wa,-mips32r2 -Wa,--trap -I$(LINUX_SRC)/include/asm-mips/mach-generic
+CFLAGS := ${CFLAGS_${PLATFORM}} ${WFLAGS-y}
 export CFLAGS
 endif
 
 ifeq ($(PLATFORM),BRCM_6358)
-CFLAGS := $(WFLAGS-y) -nostdinc -iwithprefix include -D__KERNEL__ -Wall -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -I $(LINUX_SRC)/include/asm/gcc -G 0 -mno-abicalls -fno-pic -pipe  -finline-limit=100000 -mabi=32 -march=mips32 -Wa,-32 -Wa,-march=mips32 -Wa,-mips32 -Wa,--trap -I$(LINUX_SRC)/include/asm-mips/mach-bcm963xx -I$(LINUX_SRC)/include/asm-mips/mach-generic  -Os -fomit-frame-pointer -Wdeclaration-after-statement  -DMODULE -mlong-calls
+CFLAGS := ${CFLAGS_${PLATFORM}} ${WFLAGS-y}
 export CFLAGS
 endif
 
 ifeq ($(PLATFORM),INF_AMAZON_SE)
-CFLAGS := -D__KERNEL__ -DMODULE=1 -I$(LINUX_SRC)/include -Wall -Wstrict-prototypes -Wno-trigraphs -O2 -fno-strict-aliasing -fno-common -DCONFIG_IFX_ALG_QOS -DCONFIG_WAN_VLAN_SUPPORT -fomit-frame-pointer -DIFX_PPPOE_FRAME -G 0 -fno-pic -mno-abicalls -mlong-calls -pipe -finline-limit=100000 -mabi=32 -march=mips32 -Wa,-32 -Wa,-march=mips32 -Wa,-mips32 -Wa,--trap -nostdinc -iwithprefix include $(WFLAGS-y)
+CFLAGS := ${CFLAGS_${PLATFORM}} ${WFLAGS-y}
 export CFLAGS
 endif
 
 ifeq ($(PLATFORM),ST)
-CFLAGS := -D__KERNEL__ -I$(LINUX_SRC)/include -Wall -O2 -Wundef -Wstrict-prototypes -Wno-trigraphs -Wdeclaration-after-statement -Wno-pointer-sign -fno-strict-aliasing -fno-common -fomit-frame-pointer -ffreestanding -m4-nofpu -o $(WFLAGS-y) 
+CFLAGS := ${WFLAGS-y}
 export CFLAGS
 endif
 
 ifeq ($(PLATFORM),PC)
     ifneq (,$(findstring 2.4,$(LINUX_SRC)))
 	# Linux 2.4
-	CFLAGS := -D__KERNEL__ -I$(LINUX_SRC)/include -O2 -fomit-frame-pointer -fno-strict-aliasing -fno-common -pipe -mpreferred-stack-boundary=2 -march=i686 -DMODULE -DMODVERSIONS -include $(LINUX_SRC)/include/linux/modversions.h $(WFLAGS-y)
+	CFLAGS := ${CFLAGS_${PLATFORM}} ${WFLAGS-y}
 	export CFLAGS
     else
 	# Linux 2.6
-	EXTRA_CFLAGS := $(WFLAGS-y) 
+	EXTRA_CFLAGS := ${EXTRA_CFLAGS_${PLATFORM}} ${WFLAGS-y} 
     endif
 endif
 
 ifeq ($(PLATFORM),INTELP6)
-	EXTRA_CFLAGS := $(WFLAGS-y) 
+	EXTRA_CFLAGS := ${EXTRA_CFLAGS_${PLATFORM}} $(WFLAGS-y) 
 endif
 
 #If the kernel version of RMI is newer than 2.6.27, please change "CFLAGS" to "EXTRA_FLAGS"
 ifeq ($(PLATFORM),RMI)
-EXTRA_CFLAGS := -D__KERNEL__ -DMODULE=1 -I$(LINUX_SRC)/include -I$(LINUX_SRC)/include/asm-mips/mach-generic -Wall -Wstrict-prototypes -Wno-trigraphs -O2 -fno-strict-aliasing -fno-common -DCONFIG_IFX_ALG_QOS -DCONFIG_WAN_VLAN_SUPPORT -fomit-frame-pointer -DIFX_PPPOE_FRAME -G 0 -fno-pic -mno-abicalls -mlong-calls -pipe -finline-limit=100000 -mabi=32 -G 0 -mno-abicalls -fno-pic -pipe -msoft-float -march=xlr -ffreestanding  -march=xlr -Wa,--trap, -nostdinc -iwithprefix include $(WFLAGS-y)
+EXTRA_CFLAGS := ${EXTRA_CFLAGS_${PLATFORM}} ${WFLAGS-y}
 export EXTRA_CFLAGS
 endif
 
 ifeq ($(PLATFORM),RMI_64)
-EXTRA_CFLAGS := -D__KERNEL__ -DMODULE=1 -I$(LINUX_SRC)/include -I$(LINUX_SRC)/include/asm-mips/mach-generic -Wall -Wstrict-prototypes -Wno-trigraphs -O2 -fno-strict-aliasing -fno-common -DCONFIG_IFX_ALG_QOS -DCONFIG_WAN_VLAN_SUPPORT -fomit-frame-pointer -DIFX_PPPOE_FRAME -G 0 -fno-pic -mno-abicalls -mlong-calls -pipe -finline-limit=100000 -mabi=64 -G 0 -mno-abicalls -fno-pic -pipe -msoft-float -march=xlr -ffreestanding  -march=xlr -Wa,--trap, -nostdinc -iwithprefix include $(WFLAGS-y)
+EXTRA_CFLAGS := ${EXTRA_CFLAGS_${PLATFORM}} ${WFLAGS-y}
 export EXTRA_CFLAGS
 endif
 
 ifeq ($(PLATFORM),IXP)
-	CFLAGS := -v -D__KERNEL__ -DMODULE -I$(LINUX_SRC)/include -mbig-endian -Wall -Wstrict-prototypes -Wno-trigraphs -O2 -fno-strict-aliasing -fno-common -Uarm -fno-common -pipe -mapcs-32 -D__LINUX_ARM_ARCH__=5 -mcpu=xscale -mtune=xscale -malignment-traps -msoft-float $(WFLAGS-y)
-        EXTRA_CFLAGS := -v $(WFLAGS-y) -mbig-endian
-	export CFLAGS        
+CFLAGS := ${CFLAGS_${PLATFORM}} ${WFLAGS-y}
+EXTRA_CFLAGS := ${EXTRA_CFLAGS_${PLATFORM}} ${WFLAGS-y}
+export CFLAGS        
 endif
 
 ifeq ($(PLATFORM),SMDK)
-        EXTRA_CFLAGS := $(WFLAGS-y) 
+EXTRA_CFLAGS := ${EXTRA_CFLAGS_${PLATFORM}} ${WFLAGS-y}
 endif
 
 ifeq ($(PLATFORM),CAVM_OCTEON)
-	EXTRA_CFLAGS := $(WFLAGS-y) -mabi=64 $(WFLAGS-y)
-export CFLAGS
+EXTRA_CFLAGS := ${EXTRA_CFLAGS_${PLATFORM}} ${WFLAGS-y}
+export EXTRA_CFLAGS
 endif
 
 ifeq ($(PLATFORM),DM6446)
-	CFLAGS := -nostdinc -iwithprefix include -D__KERNEL__ -I$(LINUX_SRC)/include  -Wall -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -Os -fno-omit-frame-pointer -fno-omit-frame-pointer -mapcs -mno-sched-prolog -mlittle-endian -mabi=apcs-gnu -D__LINUX_ARM_ARCH__=5 -march=armv5te -mtune=arm9tdmi -msoft-float -Uarm -Wdeclaration-after-statement -c -o $(WFLAGS-y)
+CFLAGS := ${CFLAGS_${PLATFORM}} $(WFLAGS-y)
 export CFLAGS
 endif
 
 ifeq ($(PLATFORM),BL2348)
-CFLAGS := -D__KERNEL__ -I$(LINUX_SRC)/include -I$(LINUX_SRC)/include/asm/gcc -I$(LINUX_SRC)/include/asm-mips/mach-tango2 -I$(LINUX_SRC)/include/asm-mips/mach-tango2 -DEM86XX_CHIP=EM86XX_CHIPID_TANGO2 -DEM86XX_REVISION=6 -I$(LINUX_SRC)/include/asm-mips/mach-generic -I$(RT2860_DIR)/include -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -ffreestanding -O2     -fomit-frame-pointer -G 0 -mno-abicalls -fno-pic -pipe  -mabi=32 -march=mips32r2 -Wa,-32 -Wa,-march=mips32r2 -Wa,-mips32r2 -Wa,--trap -DMODULE $(WFLAGS-y) -DSIGMA863X_PLATFORM -DEXPORT_SYMTAB -DPLATFORM_BL2348
+CFLAGS := ${CFLAGS_${PLATFORM}} ${WFLAGS-y}
 export CFLAGS
 endif
 
 ifeq ($(PLATFORM),BL23570)
-EXTRA_CFLAGS := -D__KERNEL__ -I$(LINUX_SRC)/include -I$(LINUX_SRC)/include/asm/gcc -I$(LINUX_SRC)/include/asm-mips/mach-tango2 -I$(LINUX_SRC)/include/asm-mips/mach-tango2 -DEM86XX_CHIP=EM86XX_CHIPID_TANGO2 -DEM86XX_REVISION=6 -I$(LINUX_SRC)/include/asm-mips/mach-generic -I$(RT2860_DIR)/include -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -ffreestanding -O2     -fomit-frame-pointer -G 0 -mno-abicalls -fno-pic -pipe  -mabi=32 -march=74kc -Wa,-32 -Wa,-march=mips32r2 -Wa,-mips32r2 -Wa,--trap -DMODULE $(WFLAGS-y) -DSIGMA863X_PLATFORM -DEXPORT_SYMTAB -DPLATFORM_BL23570
+EXTRA_CFLAGS := -${EXTRA_CFLAGS_${PLATFORM}} ${WFLAGS-y}
 export EXTRA_CFLAGS
 endif
 
 ifeq ($(PLATFORM),BLUBB)
-CFLAGS := -D__KERNEL__ -I$(LINUX_SRC)/include -I$(LINUX_SRC)/include/asm/gcc -I$(LINUX_SRC)/include/asm-mips/mach-tango2 -I$(LINUX_SRC)/include/asm-mips/mach-tango2 -DEM86XX_CHIP=EM86XX_CHIPID_TANGO2 -DEM86XX_REVISION=6 -I$(LINUX_SRC)/include/asm-mips/mach-generic -I$(RT2860_DIR)/include -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -ffreestanding -O2     -fomit-frame-pointer -G 0 -mno-abicalls -fno-pic -pipe  -mabi=32 -march=mips32r2 -Wa,-32 -Wa,-march=mips32r2 -Wa,-mips32r2 -Wa,--trap -DMODULE $(WFLAGS-y) -DSIGMA863X_PLATFORM -DEXPORT_SYMTAB -DPLATFORM_BL2348
+CFLAGS := ${CFLAGS_${PLATFORM}} ${WFLAGS-y}
 export CFLAGS
 endif
 
 ifeq ($(PLATFORM),BLPMP)
-CFLAGS := -D__KERNEL__ -I$(LINUX_SRC)/include -I$(LINUX_SRC)/include/asm/gcc -I$(LINUX_SRC)/include/asm-mips/mach-tango2 -I$(LINUX_SRC)/include/asm-mips/mach-tango2 -DEM86XX_CHIP=EM86XX_CHIPID_TANGO2 -DEM86XX_REVISION=6 -I$(LINUX_SRC)/include/asm-mips/mach-generic -I$(RT2860_DIR)/include -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -ffreestanding -O2     -fomit-frame-pointer -G 0 -mno-abicalls -fno-pic -pipe  -mabi=32 -march=mips32r2 -Wa,-32 -Wa,-march=mips32r2 -Wa,-mips32r2 -Wa,--trap -DMODULE $(WFLAGS-y) -DSIGMA863X_PLATFORM -DEXPORT_SYMTAB
+CFLAGS := ${CFLAGS_${PLATFORM}} ${WFLAGS-y}
 export CFLAGS
 endif
 
 ifeq ($(PLATFORM),MT85XX)
-    ifneq (,$(findstring 2.4,$(LINUX_SRC)))
-	# Linux 2.4
-	CFLAGS := -D__KERNEL__ -I$(LINUX_SRC)/include -O2 -fomit-frame-pointer -fno-strict-aliasing -fno-common -pipe -mpreferred-stack-boundary=2 -march=i686 -DMODULE -DMODVERSIONS -include $(LINUX_SRC)/include/linux/modversions.h $(WFLAGS-y)
-	export CFLAGS
-    else
-	# Linux 2.6
-	EXTRA_CFLAGS += $(WFLAGS-y) -DMT85XX
-	EXTRA_CFLAGS += -D _NO_TYPEDEF_BOOL_ \
-	                -D _NO_TYPEDEF_UCHAR_ \
-	                -D _NO_TYPEDEF_UINT8_ \
-	                -D _NO_TYPEDEF_UINT16_ \
-	                -D _NO_TYPEDEF_UINT32_ \
-	                -D _NO_TYPEDEF_UINT64_ \
-	                -D _NO_TYPEDEF_CHAR_ \
-	                -D _NO_TYPEDEF_INT16_ \
-	                -D _NO_TYPEDEF_INT32_ \
-	                -D _NO_TYPEDEF_INT64_ \
-	                
-    endif
+CFLAGS := ${CFLAGS_${PLATFORM}} ${WFLAGS-y}
+EXTRA_CFLAGS := -${EXTRA_CFLAGS_${PLATFORM}} ${WFLAGS-y}
+export CFLAGS
 endif
 
 ifeq ($(PLATFORM),NXP_TV550)
-    ifneq (,$(findstring 2.4,$(LINUX_SRC)))
-        # Linux 2.4
-        CFLAGS := -D__KERNEL__ -I$(LINUX_SRC)/include -O2 -fomit-frame-pointer -fno-strict-aliasing -fno-common -pipe -mpreferred-stack-boundary=2 -march=mips -DMODULE -DMODVERSIONS -include $(LINUX_SRC)/include/linux/modversions.h $(WFLAGS-y)
-        export CFLAGS
-    else
-        # Linux 2.6
-        EXTRA_CFLAGS := $(WFLAGS-y)
-    endif
+CFLAGS := ${CFLAGS_${PLATFORM}} ${WFLAGS-y}
+EXTRA_CFLAGS := -${EXTRA_CFLAGS_${PLATFORM}} ${WFLAGS-y}
+export CFLAGS
 endif
 
 ifeq ($(PLATFORM),MVL5)
-CFLAGS := -D__KERNEL__ -I$(LINUX_SRC)/include -mlittle-endian -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -O3 -fno-omit-frame-pointer -fno-optimize-sibling-calls -fno-omit-frame-pointer -mapcs -mno-sched-prolog -mno-thumb-interwork -D__LINUX_ARM_ARCH__=5 -march=armv5te -mtune=arm926ej-s --param max-inline-insns-single=40000  -Uarm -Wdeclaration-after-statement -Wno-pointer-sign -DMODULE $(WFLAGS-y) 
+CFLAGS := ${CFLAGS_${PLATFORM}} ${WFLAGS-y}
 export CFLAGS
 endif
 
 ifeq ($(PLATFORM),RALINK_3352)
-CFLAGS := -D__KERNEL__ -I$(LINUX_SRC)/include/asm-mips/mach-generic -I$(LINUX_SRC)/include -Wall -Wstrict-prototypes -Wno-trigraphs -O2 -fno-strict-aliasing -fno-common -fomit-frame-pointer -G 0 -mno-abicalls -fno-pic -pipe  -finline-limit=100000 -march=mips2 -mabi=32 -Wa,--trap -DLINUX -nostdinc -iwithprefix include $(WFLAGS-y)
+CFLAGS := ${CFLAGS_${PLATFORM}} ${WFLAGS-y}
 export CFLAGS
 endif

@@ -3,6 +3,7 @@
 # Defines the following variables:
 #    UCOS_SRC
 #    CROSS_COMPILE
+#    CFLAGS_${PLATFORM}
 #    PLATFORM_SUPPORTED (only if known to be supported)
 #
 # NOTE: This uses UCOS_SRC instead of LINUX_SRC. It is not currently known
@@ -11,3 +12,4 @@
 
 UCOS_SRC ?= /opt/uCOS/iNIC_rt2880
 CROSS_COMPILE ?= /usr/bin/mipsel-linux-
+CFLAGS_${PLATFORM} :=

@@ -4,8 +4,10 @@
 #    LINUX_SRC
 #    LINUX_SRC_MODULE
 #    CROSS_COMPILE
+#    EXTRA_CFLAGS_${PLATFORM}
 #    PLATFORM_SUPPORTED (only if known to be supported)
 
 LINUX_SRC ?= /home/bhushan/itcenter/may28/linux-2.6-samsung
 LINUX_SRC_MODULE ?=
 CROSS_COMPILE ?= /usr/local/arm/4.2.2-eabi/usr/bin/arm-linux-
+EXTRA_CFLAGS_${PLATFORM} :=

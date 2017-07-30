@@ -6,6 +6,7 @@ Each platform fragment should define the following Makefile variables:
     CROSS_COMPILE
     LINUX_SRC_MODULE
     PLATFORM_SUPPORTED
+    CFLAGS_${PLATFORM} and/or EXTRA_CFLAGS_${PLATFORM}
 
 PLATFORM_SUPPORTED is to be used to track which platforms are supported.
 At the time of writing this, it is not known beyond which platforms are
