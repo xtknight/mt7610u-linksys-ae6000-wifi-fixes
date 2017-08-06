@@ -1,0 +1,6 @@
+Filename format:
+    defs.chipset.<CHIPSET>.mk
+
+Each chipset fragment should define the following Makefile variables:
+	WFLAGS_${CHIPSET}-y
+	CHIPSET_DAT_${CHIPSET}
