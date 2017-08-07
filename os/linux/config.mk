@@ -1,12 +1,3 @@
-# CHIPSET is expected to be defined by the fragment that includes
-# the current file. If the CHIPSET is not set or is not recognized
-# then fail with an error message; otherwise inclde the appropriate
-# CHIPSET definitions file
-CHIPSET_FILENAME=$(wildcard ${RT28xx_DIR}/build/defs/chipsets/defs.chipset.${CHIPSET}.mk)
-$(if ${CHIPSET_FILENAME}, , $(error "Chipset ${CHIPSET} not found"))
-
-include ${RT28xx_DIR}/build/defs/chipsets/defs.chipset.${CHIPSET}.mk
-
 # Support ATE function
 HAS_ATE=n
 
@@ -403,138 +394,18 @@ WFLAGS-${HAS_TEMPERATURE_TX_ALC} += -DRTMP_TEMPERATURE_TX_ALC
 #################################################
 # ChipSet specific definitions.
 #
-WFLAGS-y += ${WFLAGS_${CHIPSET}-y}
+# CHIPSET is expected to be defined by the fragment that includes
+# the current file. If the CHIPSET is not set or is not recognized
+# then fail with an error message; otherwise inclde the appropriate
+# CHIPSET definitions file
+#
+__CHIPSET_FILENAME=$(wildcard ${RT28xx_DIR}/build/defs/chipsets/defs.chipset.${CHIPSET}.mk)
+$(if ${__CHIPSET_FILENAME}, , $(error "Chipset ${CHIPSET} not found"))
+
+include ${__CHIPSET_FILENAME}
+
+WFLAGS-y += ${WFLAGS_${CHIPSET}-y} ${WFLAGS_${CHIPSET}_${RT28xx_MODE}-y}
 CHIPSET_DAT = ${CHIPSET_DAT_${CHIPSET}}
-
-ifneq ($(findstring rt3070,$(CHIPSET)),)
-    ifneq ($(findstring $(RT28xx_MODE),AP),)
-        WFLAGS-${HAS_CS_SUPPORT} += -DCARRIER_DETECTION_FIRMWARE_SUPPORT 
-    endif
-endif
-
-ifneq ($(findstring rt2880,$(CHIPSET)),)
-WFLAGS-${HAS_WIFI_LED_SHARE} += -DCONFIG_WIFI_LED_SHARE
-endif
-
-ifneq ($(findstring rt3572,$(CHIPSET)),)
-    ifneq ($(findstring $(RT28xx_MODE),AP),)
-        WFLAGS-${HAS_CS_SUPPORT} +=  -DCARRIER_DETECTION_FIRMWARE_SUPPORT
-    endif
-endif
-
-ifneq ($(findstring rt3573,$(CHIPSET)),)
-    ifneq ($(findstring $(RT28xx_MODE),STA APSTA),)
-        WFLAGS-y += -DRTMP_FREQ_CALIBRATION_SUPPORT
-    endif
-
-    ifneq ($(findstring $(RT28xx_MODE),AP),)
-        WFLAGS-y += -DSPECIFIC_BCN_BUF_SUPPORT
-    endif
-
-    ifneq ($(findstring $(RT28xx_MODE),AP),)
-        WFLAGS-${HAS_CS_SUPPORT} +=  -DCARRIER_DETECTION_FIRMWARE_SUPPORT
-    endif
-endif
-
-ifneq ($(findstring rt3593,$(CHIPSET)),)
-    ifneq ($(findstring $(RT28xx_MODE),STA APSTA),)
-        WFLAGS-y += -DRTMP_FREQ_CALIBRATION_SUPPORT
-    endif
-
-    ifneq ($(findstring $(RT28xx_MODE),AP),)
-        WFLAGS-y += -DSPECIFIC_BCN_BUF_SUPPORT
-    endif
-endif
-
-ifneq ($(findstring rt8592,$(CHIPSET)),)
-    ifneq ($(findstring $(RT28xx_MODE),AP),)
-        # TODO: shiang-6590, need to ask hardware about the
-        # memory base setting first!!
-        # WFLAGS-y += -DSPECIFIC_BCN_BUF_SUPPORT
-    endif
-endif
-
-ifneq ($(or $(findstring mt7650u,$(CHIPSET)),$(findstring mt7630u,$(CHIPSET)),$(findstring mt7610u,$(CHIPSET))),)
-    WFLAGS-${HAS_CSO_SUPPORT} += -DCONFIG_CSO_SUPPORT -DCONFIG_TSO_SUPPORT
-endif
-
-ifneq ($(or $(findstring mt7662u,$(CHIPSET)),$(findstring mt7662u,$(CHIPSET))),)
-    WFLAGS-${HAS_CSO_SUPPORT} += -DCONFIG_CSO_SUPPORT -DCONFIG_TSO_SUPPORT
-endif
-
-ifneq ($(findstring rt3370,$(CHIPSET)),)
-    ifneq ($(findstring $(RT28xx_MODE),AP),)
-        WFLAGS-${HAS_CS_SUPPORT} +=  -DCARRIER_DETECTION_FIRMWARE_SUPPORT
-    endif
-endif
-
-ifneq ($(findstring rt5390,$(CHIPSET)),)
-    ifneq ($(findstring $(RT28xx_MODE),AP),)
-        WFLAGS-y += -DSPECIFIC_BCN_BUF_SUPPORT
-    endif
-endif
-
-ifneq ($(findstring rt5370,$(CHIPSET)),)
-    ifneq ($(findstring $(RT28xx_MODE),AP),)
-        WFLAGS-${HAS_CS_SUPPORT} +=  -DCARRIER_DETECTION_FIRMWARE_SUPPORT
-    endif
-
-    ifneq ($(findstring $(RT28xx_MODE),AP),)
-        WFLAGS-y += -DSPECIFIC_BCN_BUF_SUPPORT
-    endif
-endif
-
-ifneq ($(findstring rt3052,$(CHIPSET)),)
-    WFLAGS-${HAS_WIFI_LED_SHARE} += -DCONFIG_WIFI_LED_SHARE
-endif
-
-ifneq ($(findstring rt3352,$(CHIPSET)),)
-    WFLAGS-${HAS_WIFI_LED_SHARE} += -DCONFIG_WIFI_LED_SHARE
-    ifneq ($(findstring $(RT28xx_MODE),AP),)
-        WFLAGS-y += -DSPECIFIC_BCN_BUF_SUPPORT
-    endif
-endif
-
-ifneq ($(findstring rt5350,$(CHIPSET)),)
-    WFLAGS-${HAS_WIFI_LED_SHARE} += -DCONFIG_WIFI_LED_SHARE
-    ifneq ($(findstring $(RT28xx_MODE),AP),)
-        WFLAGS-y += -DSPECIFIC_BCN_BUF_SUPPORT
-    endif
-endif
-
-ifneq ($(findstring rt5592,$(CHIPSET)),)
-    WFLAGS-${HAS_CSO_SUPPORT} += -DCONFIG_CSO_SUPPORT
-
-    ifneq ($(findstring $(RT28xx_MODE),STA APSTA),)
-        WFLAGS-y += -DRTMP_FREQ_CALIBRATION_SUPPORT
-    endif
-
-    ifneq ($(findstring $(RT28xx_MODE),AP),)
-        WFLAGS-y += -DSPECIFIC_BCN_BUF_SUPPORT
-    endif
-endif
-
-ifneq ($(findstring rt5572,$(CHIPSET)),)
-    WFLAGS-${HAS_CSO_SUPPORT} += -DCONFIG_CSO_SUPPORT
-
-    ifneq ($(findstring $(RT28xx_MODE),AP),)
-        WFLAGS-${HAS_CS_SUPPORT} +=  -DCARRIER_DETECTION_FIRMWARE_SUPPORT 
-    endif
-
-    ifneq ($(findstring $(RT28xx_MODE),STA APSTA),)
-        WFLAGS-y += -DRTMP_FREQ_CALIBRATION_SUPPORT
-    endif
-endif
-
-ifneq ($(findstring rt3290,$(CHIPSET)),)
-    ifneq ($(findstring $(RT28xx_MODE),STA APSTA),)
-        WFLAGS-y += -DRTMP_FREQ_CALIBRATION_SUPPORT -DPCIE_PS_SUPPORT
-    endif
-
-    ifneq ($(findstring $(RT28xx_MODE),AP),)
-        WFLAGS-y += -DSPECIFIC_BCN_BUF_SUPPORT
-    endif
-endif
 
 #################################################
 
