@@ -3269,7 +3269,11 @@ VOID CFG80211OS_ScanEnd(
 
 
 	CFG80211DBG(RT_DEBUG_ERROR, ("80211> cfg80211_scan_done\n"));
-	cfg80211_scan_done(pCfg80211_CB->pCfg80211_ScanReq, &(pCfg80211_CB->pCfg80211_ScanReq->info)); //FlgIsAborted);
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(4,8,0)
+	cfg80211_scan_done(pCfg80211_CB->pCfg80211_ScanReq, &(pCfg80211_CB->pCfg80211_ScanReq->info));
+#else
+    cfg80211_scan_done(pCfg80211_CB->pCfg80211_ScanReq, FlgIsAborted);
+#endif /* LINUX_VERSION_CODE 4.8.0 */
 #endif /* CONFIG_STA_SUPPORT */
 #endif /* LINUX_VERSION_CODE */
 }
