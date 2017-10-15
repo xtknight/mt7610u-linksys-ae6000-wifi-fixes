@@ -300,7 +300,13 @@ Note:
 	For iw utility: set type, set monitor
 ========================================================================
 */
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,32))
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4,12,0))
+static int CFG80211_OpsVirtualInfChg(
+    IN struct wiphy                 *pWiphy,
+    IN struct net_device            *pNetDevIn,
+    IN enum nl80211_iftype          Type,
+    struct vif_params               *pParams)
+#elif (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,32))
 static int CFG80211_OpsVirtualInfChg(
 	IN struct wiphy					*pWiphy,
 	IN struct net_device			*pNetDevIn,
@@ -321,6 +327,9 @@ static int CFG80211_OpsVirtualInfChg(
 	struct net_device *pNetDev;
 	UINT32 Filter;
 
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4,12,0))
+    u32 *pFlags = pParams->flags;
+#endif
 
 	CFG80211DBG(RT_DEBUG_ERROR, ("80211> %s ==>\n", __FUNCTION__));
 	MAC80211_PAD_GET(pAd, pWiphy);
