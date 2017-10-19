@@ -51,6 +51,7 @@ $ sudo dkms install mt7610u_sta/1.0
 -	{USB_DEVICE(0x293C,0x5702)}, /* Comcast Xfinity KXW02AAA */
 -	{USB_DEVICE(0x2019,0xAB31)}, /* Planex GW-450D/GW-450D-KATANA */
 -	{USB_DEVICE(0x20F4,0x806B)}, /* TRENDnet TEW-806UBH AC600 */
+-	{USB_DEVICE(0x7392,0xC711)}, /* Devolo Wifi Stick ac */
 -	I have added all the devices from here, but it doesn't necessarily mean they will all work
 	https://wikidevi.com/wiki/MediaTek_MT7610U
 
