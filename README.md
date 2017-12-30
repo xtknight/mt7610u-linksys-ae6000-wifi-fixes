@@ -32,6 +32,32 @@ $ sudo dkms build mt7610u_sta/1.0
 $ sudo dkms install mt7610u_sta/1.0
 ```
 
+# ARMv7 platform notes (e.g. Raspberry PI)
+
+On ARMv7 platforms, there could be a problem with loading module. You'll see something like that in your dmesg output:
+
+```
+raspberrypi kernel: [   11.825048] <-- ERROR in Alloc Bulk buffer for RxContext!
+raspberrypi kernel: [   11.825112] ERROR mt7610u_sta:
+raspberrypi kernel: [   11.825119] Failed to allocate memory - TxRxRing
+```
+
+Modify file `/boot/boot.cmd`:
+
+Find the string `setenv bootargs` and add `coherent_pool=4M` in the end of the line.
+
+Then run the command and reboot the device:
+
+```
+mkimage -C none -A arm -T script -d /boot/boot.cmd /boot/boot.scr
+```
+
+In dmesg output you should see an increased value of DMA atomic allocations:
+
+```
+[    0.439464] DMA: preallocated 4096 KiB pool for atomic coherent allocations
+```
+
 # Devices recognized by module
 - {USB_DEVICE(0x148F,0x7610)}, /* MT7610U Ralink VID */
 - {USB_DEVICE(0x0E8D,0x7610)}, /* MT7610U MediaTek VID / Sabrent NTWLAC */
