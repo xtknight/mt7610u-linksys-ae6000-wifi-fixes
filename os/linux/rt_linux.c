@@ -1090,8 +1090,13 @@ int RtmpOSFileRead(RTMP_OS_FD osfd, char *pDataPtr, int readLen)
 	if (osfd->f_op && osfd->f_op->read) {
 		return osfd->f_op->read(osfd, pDataPtr, readLen, &osfd->f_pos);
 	} else {
+#if LINUX_VERSION_CODE < KERNEL_VERSION(4,14,0)
 		DBGPRINT(RT_DEBUG_ERROR, ("no file read method, using vfs_read\n"));
 		return vfs_read(osfd, pDataPtr, readLen, &osfd->f_pos);
+#else
+        DBGPRINT(RT_DEBUG_ERROR, ("no file read method, using kernel_read\n"));
+		return kernel_read(osfd, pDataPtr, readLen, &osfd->f_pos);
+#endif /*LINUX_VERSION_CODE */
 	}
 }
 
@@ -1100,8 +1105,13 @@ int RtmpOSFileWrite(RTMP_OS_FD osfd, char *pDataPtr, int writeLen)
 	if (osfd->f_op && osfd->f_op->write) {
 		return osfd->f_op->write(osfd, pDataPtr, (size_t) writeLen, &osfd->f_pos);
 	} else {
+#if LINUX_VERSION_CODE < KERNEL_VERSION(4,14,0)
 		DBGPRINT(RT_DEBUG_ERROR, ("no file write method, using vfs_write\n"));
 		return vfs_write(osfd, pDataPtr, (size_t) writeLen, &osfd->f_pos);
+#else
+        DBGPRINT(RT_DEBUG_ERROR, ("no file write method, using kernel_write\n"));
+		return kernel_write(osfd, pDataPtr, (size_t) writeLen, &osfd->f_pos);
+#endif /*LINUX_VERSION_CODE */
 	}
 }
 
