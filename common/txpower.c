@@ -161,8 +161,8 @@ VOID AsicGetAutoAgcOffsetForExternalTxAlc(
 			/* a channel */
 			bAutoTxAgc = pAd->bAutoTxAgcA;
 			TssiRef = pAd->TssiRefA;
-			pTssiMinusBoundary = &pAd->TssiMinusBoundaryA[0];
-			pTssiPlusBoundary = &pAd->TssiPlusBoundaryA[0];
+			pTssiMinusBoundary = (UCHAR*) &pAd->TssiMinusBoundaryA[0];
+			pTssiPlusBoundary = (UCHAR*) &pAd->TssiPlusBoundaryA[0];
 			TxAgcStep = pAd->TxAgcStepA;
 			pTxAgcCompensate = &pAd->TxAgcCompensateA;
 		}

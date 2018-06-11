@@ -400,7 +400,6 @@ BOOLEAN CFG80211DRV_OpsScan(
 {
 	PRTMP_ADAPTER pAd = (PRTMP_ADAPTER)pAdOrg;
 
-
 	if (pAd->FlgCfg80211Scanning == TRUE)
 		return FALSE; /* scanning */
 	/* End of if */
@@ -1239,13 +1238,13 @@ VOID CFG80211_ScanEnd(
 
 	if (!RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_INTERRUPT_IN_USE))
 	{
-		DBGPRINT(RT_DEBUG_TRACE, ("80211> Network is down!\n"));
+		DBGPRINT(RT_DEBUG_ERROR, ("80211> Network is down!\n"));
 		return;
 	} /* End of if */
 
 	if (pAd->FlgCfg80211Scanning == FALSE)
 	{
-		DBGPRINT(RT_DEBUG_TRACE, ("80211> No scan is running!\n"));
+		DBGPRINT(RT_DEBUG_ERROR, ("80211> No scan is running!\n"));
 		return; /* no scan is running */
 	} /* End of if */
 
@@ -1355,6 +1354,45 @@ INT CFG80211_SendWirelessEvent(
 }
 #endif /* RT_P2P_SPECIFIC_WIRELESS_EVENT */
 
+#ifdef CONFIG_STA_SUPPORT
+VOID CFG80211_LostApInform(
+    IN VOID 					*pAdCB)
+{
+
+	PRTMP_ADAPTER pAd = (PRTMP_ADAPTER)pAdCB;
+	CFG80211_CB *p80211CB = pAd->pCfg80211_CB;
+	
+	DBGPRINT(RT_DEBUG_TRACE, ("80211> CFG80211_LostApInform ==> \n"));
+	pAd->StaCfg.bAutoReconnect = FALSE;
+
+	// TODO
+	//if (p80211CB->pCfg80211_Wdev->sme_state == CFG80211_SME_CONNECTING)
+	//{
+	//	   cfg80211_connect_result(pAd->net_dev, NULL, NULL, 0, NULL, 0,
+	//							   WLAN_STATUS_UNSPECIFIED_FAILURE, GFP_KERNEL);
+	//}
+	//else if (p80211CB->pCfg80211_Wdev->sme_state == CFG80211_SME_CONNECTED)
+	//{
+	//if (OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_INFRA_ON) && 
+        //    OPSTATUS_TEST_FLAG(pAd, fOP_STATUS_MEDIA_STATE_CONNECTED))
+	//{
+
+	// Can't find a good way to determine if we're connected to AP or not.
+	// Just call disconnected() no matter what.
+	DBGPRINT(RT_DEBUG_TRACE, ("80211> CFG80211_LostApInform(): calling cfg80211_disconnected() \n"));
+	// This is important to prevent the WARN_ON() that we are still connected to a BSS
+	// (net/wireless/core.c: WARN_ON(wdev->current_bss))
+
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4,2,0))
+	cfg80211_disconnected(pAd->net_dev, 0, NULL, 0, true, GFP_KERNEL);
+#else
+	cfg80211_disconnected(pAd->net_dev, 0, NULL, 0, GFP_KERNEL);
+#endif
+
+	//}
+	//}
+}
+#endif /*CONFIG_STA_SUPPORT*/
 
 #endif /* RT_CFG80211_SUPPORT */
 

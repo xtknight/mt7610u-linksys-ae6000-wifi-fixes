@@ -3981,6 +3981,9 @@ NDIS_STATUS	RTMPSetProfileParameters(
 	IN RTMP_ADAPTER *pAd,
 	IN PSTRING		pBuffer);
 
+NDIS_STATUS	RTMPSetDefaultProfileParameters(
+	IN RTMP_ADAPTER *pAd);
+
 #ifdef SINGLE_SKU_V2
 NDIS_STATUS	RTMPSetSingleSKUParameters(
 	IN RTMP_ADAPTER *pAd);

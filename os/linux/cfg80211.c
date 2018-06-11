@@ -300,7 +300,13 @@ Note:
 	For iw utility: set type, set monitor
 ========================================================================
 */
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,32))
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4,12,0))
+static int CFG80211_OpsVirtualInfChg(
+    IN struct wiphy                 *pWiphy,
+    IN struct net_device            *pNetDevIn,
+    IN enum nl80211_iftype          Type,
+    struct vif_params               *pParams)
+#elif (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,32))
 static int CFG80211_OpsVirtualInfChg(
 	IN struct wiphy					*pWiphy,
 	IN struct net_device			*pNetDevIn,
@@ -321,6 +327,9 @@ static int CFG80211_OpsVirtualInfChg(
 	struct net_device *pNetDev;
 	UINT32 Filter;
 
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4,12,0))
+    u32 *pFlags = pParams->flags;
+#endif
 
 	CFG80211DBG(RT_DEBUG_ERROR, ("80211> %s ==>\n", __FUNCTION__));
 	MAC80211_PAD_GET(pAd, pWiphy);
@@ -437,9 +446,15 @@ static int CFG80211_OpsScan(
 	union iwreq_data Wreq;
 #endif /* WPA_SUPPLICANT_SUPPORT */
 
-
 	CFG80211DBG(RT_DEBUG_ERROR, ("80211> %s ==>\n", __FUNCTION__));
 	MAC80211_PAD_GET(pAd, pWiphy);
+
+	/* Do nothing if the driver is halting */
+	if (RTMP_TEST_FLAG(((PRTMP_ADAPTER)pAd), fRTMP_ADAPTER_HALT_IN_PROGRESS | fRTMP_ADAPTER_NIC_NOT_EXIST))
+	{
+		CFG80211DBG(RT_DEBUG_ERROR, ("80211> %s adapter halting. exiting. \n", __FUNCTION__));
+		return;
+	}
 
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,6,0))
 	struct net_device *pNdev = NULL;
@@ -712,6 +727,13 @@ static int CFG80211_OpsStaGet(
 
 	CFG80211DBG(RT_DEBUG_ERROR, ("80211> %s ==>\n", __FUNCTION__));
 	MAC80211_PAD_GET(pAd, pWiphy);
+
+	/* Do nothing if the driver is halting */
+	if (RTMP_TEST_FLAG(((PRTMP_ADAPTER)pAd), fRTMP_ADAPTER_HALT_IN_PROGRESS | fRTMP_ADAPTER_NIC_NOT_EXIST))
+	{
+		CFG80211DBG(RT_DEBUG_ERROR, ("80211> %s adapter halting. exiting. \n", __FUNCTION__));
+		return;
+	}
 
 	/* init */
 	memset(pSinfo, 0, sizeof(*pSinfo));
@@ -1874,13 +1896,13 @@ struct cfg80211_ops CFG80211_Ops = {
 
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,32))
 	/* set the transmit power according to the parameters */
-	.set_tx_power				= CFG80211_OpsTxPwrSet,
+	.set_tx_power				= (VOID*) CFG80211_OpsTxPwrSet,
 	/* store the current TX power into the dbm variable */
-	.get_tx_power				= CFG80211_OpsTxPwrGet,
+	.get_tx_power				= (VOID*) CFG80211_OpsTxPwrGet,
 	/* configure WLAN power management */
 	.set_power_mgmt				= CFG80211_OpsPwrMgmt,
 	/* get station information for the station identified by @mac */
-	.get_station				= CFG80211_OpsStaGet,
+	.get_station				= (VOID*) CFG80211_OpsStaGet,
 	/* dump station callback */
 	.dump_station				= CFG80211_OpsStaDump,
 	/* notify that wiphy parameters have changed */
@@ -2022,7 +2044,7 @@ static struct wireless_dev *CFG80211_WdevAlloc(
 							       BIT(NL80211_IFTYPE_ADHOC) |
 							       BIT(NL80211_IFTYPE_MONITOR);
 #endif /* CONFIG_STA_SUPPORT */
-	pWdev->wiphy->reg_notifier = CFG80211_RegNotifier;
+	pWdev->wiphy->reg_notifier = (VOID*) CFG80211_RegNotifier;
 
 	/* init channel information */
 	CFG80211_SupBandInit(pCfg80211_CB, pBandInfo, pWdev->wiphy, NULL, NULL);

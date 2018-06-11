@@ -27,7 +27,7 @@
 
 #define RTMP_MODULE_OS
 
-/*#include "rt_config.h" */
+#include "rt_config.h" // for PRTMP_ADAPTER
 #include "rtmp_comm.h"
 #include "rt_os_util.h"
 #include "rt_os_net.h"
@@ -55,14 +55,19 @@ MODULE_LICENSE("GPL");
 /* Private Variables Used                                              */
 /*---------------------------------------------------------------------*/
 
-PSTRING mac = "";		   /* default 00:00:00:00:00:00 */
-PSTRING hostname = "";		   /* default CMPC */
+PSTRING mac = "";		     /* default 00:00:00:00:00:00 */
+PSTRING hostname = "";		     /* default CMPC */
+ULONG RTDebugLevel = RT_DEBUG_ERROR; /* Set to debug mod param in init() */
+ULONG debug = RT_DEBUG_ERROR;        /* default RT_DEBUG_ERROR */
 #if LINUX_VERSION_CODE <= KERNEL_VERSION(2,6,12)
 MODULE_PARM (mac, "s");
+MODULE_PARM (debug, "l");
 #else
 module_param (mac, charp, 0);
+module_param (debug, long, 0); // RT_DEBUG_ERROR
 #endif
-MODULE_PARM_DESC (mac, "rt28xx: wireless mac addr");
+MODULE_PARM_DESC (mac, "wireless mac addr");
+MODULE_PARM_DESC (debug, "log verbosity level (0: off, 1: error only [default], 2: warnings, 3: trace, 4: info, 5: loud)");
 
 #ifdef OS_ABL_SUPPORT
 RTMP_DRV_ABL_OPS RtmpDrvOps, *pRtmpDrvOps = &RtmpDrvOps;
@@ -130,8 +135,6 @@ int MainVirtualIF_close(IN struct net_device *net_dev)
 	VIRTUAL_IF_DOWN(pAd);
 #endif /* IFUP_IN_PROBE */
 
-	RT_MOD_DEC_USE_COUNT();
-
 	return 0; /* close ok */
 }
 
@@ -177,9 +180,6 @@ int MainVirtualIF_open(IN struct net_device *net_dev)
 		return -1;
 #endif /* IFUP_IN_PROBE */	
 
-	/* increase MODULE use count */
-	RT_MOD_INC_USE_COUNT();
-
 	netif_start_queue(net_dev);
 	netif_carrier_on(net_dev);
 	netif_wake_queue(net_dev);
@@ -214,7 +214,7 @@ int rt28xx_close(VOID *dev)
 	
 	GET_PAD_FROM_NET_DEV(pAd, net_dev);	
 
-	DBGPRINT(RT_DEBUG_TRACE, ("===> rt28xx_close\n"));
+	DBGPRINT(RT_DEBUG_ERROR, ("===> rt28xx_close\n"));
 
 	if (pAd == NULL)
 		return 0; /* close ok */
@@ -229,7 +229,7 @@ int rt28xx_close(VOID *dev)
 	printk("Number of Packet Freed in open = %lu\n", OS_NumOfPktFree);
 #endif /* VENDOR_FEATURE2_SUPPORT */
 
-	DBGPRINT(RT_DEBUG_TRACE, ("<=== rt28xx_close\n"));
+	DBGPRINT(RT_DEBUG_ERROR, ("<=== rt28xx_close\n"));
 	return 0;
 }
 
@@ -266,6 +266,8 @@ int rt28xx_open(VOID *dev)
 #endif /* CONFIG_PM */
 #endif /* CONFIG_STA_SUPPORT */
 
+	// Set debug level
+	RTDebugLevel = debug;
 
 	/* sanity check */
 	if (sizeof(ra_dma_addr_t) < sizeof(dma_addr_t))
@@ -734,19 +736,31 @@ BOOLEAN RtmpPhyNetDevExit(
 	IN PNET_DEV		net_dev)
 {
 
-
-
-
 #ifdef INF_PPA_SUPPORT
 
 	RTMP_DRIVER_INF_PPA_EXIT(pAd);
 #endif /* INF_PPA_SUPPORT */
 
+	DBGPRINT(RT_DEBUG_TRACE, ("RtmpPhyNetDevExit(): enter\n"));
+
 	/* Unregister network device */
 	if (net_dev != NULL)
 	{
-		printk("RtmpOSNetDevDetach(): RtmpOSNetDeviceDetach(), dev->name=%s!\n", net_dev->name);
-		RtmpOSNetDevDetach(net_dev);
+#ifdef RT_CFG80211_SUPPORT
+
+		// If scan is running, abort it. Prevents WARN_ON net/wireless/core.c:846
+		// Also, we need to prevent new scans from starting after this point (they do). 
+		if (((PRTMP_ADAPTER)pAd)->FlgCfg80211Scanning == TRUE)
+		{
+			DBGPRINT(RT_DEBUG_TRACE, ("RtmpPhyNetDevExit(): RT_CFG80211_SCAN_END, dev->name=%s!\n", net_dev->name));
+			RT_CFG80211_SCAN_END(pAd, TRUE);
+		}
+#endif
+
+		// FIXED: call MainVirtualIF_close() when disconnecting. otherwise, enjoy 35G of logs and rmmod freeze
+		DBGPRINT(RT_DEBUG_TRACE, ("RtmpPhyNetDevExit(): MainVirtualIF_close(), dev->name=%s!\n", net_dev->name));
+		// This also shuts down operations like scan/etc and stops IOCTLs from going to the adapter
+		MainVirtualIF_close(net_dev);
 	}
 
 	return TRUE;

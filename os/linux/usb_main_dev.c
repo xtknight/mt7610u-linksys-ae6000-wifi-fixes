@@ -334,6 +334,7 @@ static void rtusb_disconnect(struct usb_interface *intf)
 	struct usb_device   *dev = interface_to_usbdev(intf);
 	VOID				*pAd;
 
+	printk("rtusb_disconnect ENTER\n");
 
 	pAd = usb_get_intfdata(intf);
 #ifdef IFUP_IN_PROBE	
@@ -504,6 +505,7 @@ INT __init rtusb_init(void)
 /* Deinit driver module */
 VOID __exit rtusb_exit(void)
 {
+	printk("---> rtusb exit\n");
 	usb_deregister(&rtusb_driver);	
 	printk("<--- rtusb exit\n");
 }
@@ -538,7 +540,20 @@ Note:
 static void rt2870_disconnect(struct usb_device *dev, VOID *pAd)
 {
 	struct net_device *net_dev;
+	UCHAR ZERO_MAC_ADDR[MAC_ADDR_LEN]  = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 
+	RTMP_DRIVER_NET_DEV_GET(pAd, &net_dev);
+
+#ifdef CONFIG_STA_SUPPORT
+	// TODO: Do we need to check if we're in STA/Infrastructure mode?
+	// First let's disassociate before we tear down anything
+	// Or else, we'll get a WARN_ON() under unregister_netdev()
+	// Calls LinkDown() which informs CFG80211 of no AP (via LostApInform)
+
+	printk("rt2870_disconnect(): CMD_RTPRIV_IOCTL_STA_SIOCSIWAP(00:00:00:00:00:00)\n");
+	RTMP_STA_IoctlHandle(pAd, NULL, CMD_RTPRIV_IOCTL_STA_SIOCSIWAP, 0,
+					(VOID *)(&ZERO_MAC_ADDR[0]), 0, RT_DEV_PRIV_FLAGS_GET(net_dev));
+#endif
 
 	DBGPRINT(RT_DEBUG_ERROR, ("rtusb_disconnect: unregister usbnet usb-%s-%s\n",
 				dev->bus->bus_name, dev->devpath));
@@ -556,15 +571,16 @@ static void rt2870_disconnect(struct usb_device *dev, VOID *pAd)
 		printk("rtusb_disconnect: pAd == NULL!\n");
 		return;
 	}
+
+	DBGPRINT(RT_DEBUG_TRACE, ("rt2870_disconnect(): enter\n"));
+
 /*	RTMP_SET_FLAG(pAd, fRTMP_ADAPTER_NIC_NOT_EXIST); */
 	RTMP_DRIVER_NIC_NOT_EXIST_SET(pAd);
 
 	/* for debug, wait to show some messages to /proc system */
 	udelay(1);
 
-
-	RTMP_DRIVER_NET_DEV_GET(pAd, &net_dev);
-
+	DBGPRINT(RT_DEBUG_TRACE, ("rt2870_disconnect(): RtmpPhyNetDevExit()\n"));
 	RtmpPhyNetDevExit(pAd, net_dev);
 
 	/* FIXME: Shall we need following delay and flush the schedule?? */
@@ -572,19 +588,31 @@ static void rt2870_disconnect(struct usb_device *dev, VOID *pAd)
 #if LINUX_VERSION_CODE < KERNEL_VERSION(2,5,0)	/* kernel 2.4 series */
 	;
 #else
+	DBGPRINT(RT_DEBUG_TRACE, ("rt2870_disconnect(): flush_scheduled_work()\n"));
 	flush_scheduled_work();
 #endif /* LINUX_VERSION_CODE */
 	udelay(1);
 
+	// FIXME: may need RTNL lock here to call dev_close() properly. Not critical to call this anyway.
+	//RtmpOSNetDevClose(net_dev);
+
+	// Needs to get rid of wdev->list before calling 80211 unregister
+	DBGPRINT(RT_DEBUG_TRACE, ("rt2870_disconnect(): RtmpOSNetDeviceDetach()\n"));
+	RtmpOSNetDevDetach(net_dev);
+
 #ifdef RT_CFG80211_SUPPORT
+	DBGPRINT(RT_DEBUG_TRACE, ("rt2870_disconnect(): RTMP_DRIVER_80211_UNREGISTER()\n"));
 	RTMP_DRIVER_80211_UNREGISTER(pAd, net_dev);
 #endif /* RT_CFG80211_SUPPORT */
+
 
 	/* free the root net_device */
 //	RtmpOSNetDevFree(net_dev);
 
+	DBGPRINT(RT_DEBUG_TRACE, ("rt2870_disconnect(): RtmpRaDevCtrlExit()\n"));
 	RtmpRaDevCtrlExit(pAd);
 
+	DBGPRINT(RT_DEBUG_TRACE, ("rt2870_disconnect(): RtmpOSNetDevFree()\n"));
 	/* free the root net_device */
 	RtmpOSNetDevFree(net_dev);
 
@@ -595,6 +623,7 @@ static void rt2870_disconnect(struct usb_device *dev, VOID *pAd)
 		MOD_DEC_USE_COUNT;
 	}
 #else
+	DBGPRINT(RT_DEBUG_TRACE, ("rt2870_disconnect(): usb_put_dev()\n"));
 	usb_put_dev(dev);
 #endif /* LINUX_VERSION_CODE */
 	udelay(1);

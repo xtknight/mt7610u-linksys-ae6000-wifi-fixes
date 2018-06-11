@@ -605,6 +605,14 @@ INT Set_NetworkType_Proc(
 		UCHAR rf_channel, rf_bw;
 		INT ext_ch;
 
+#ifdef RT_CFG80211_SUPPORT
+#ifdef CONFIG_STA_SUPPORT
+		// This helps when doing rmmod in Monitor mode if it was switched from Managed mode in the past
+		DBGPRINT(RT_DEBUG_TRACE, ("MONITOR: LOST_AP_INFORM \n"));
+		RT_CFG80211_LOST_AP_INFORM(pAd);
+#endif
+#endif /* RT_CFG80211_SUPPORT */
+
 #ifdef MONITOR_FLAG_11N_SNIFFER_SUPPORT
 		if (strcmp(arg, "Monitor2") == 0)
 			pAd->StaCfg.BssMonitorFlag |= MONITOR_FLAG_11N_SNIFFER;

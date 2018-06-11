@@ -50,6 +50,11 @@
 #define RT_CFG80211_SCAN_END(__pAd, __FlgIsAborted)							\
 	CFG80211_ScanEnd((VOID *)__pAd, __FlgIsAborted);
 
+#ifdef CONFIG_STA_SUPPORT
+#define RT_CFG80211_LOST_AP_INFORM(__pAd) 									\
+	CFG80211_LostApInform((VOID *)__pAd);	
+#endif /*CONFIG_STA_SUPPORT*/
+
 #define RT_CFG80211_REINIT(__pAd)											\
 	CFG80211_SupBandReInit((VOID *)__pAd);									\
 
@@ -121,6 +126,9 @@ BOOLEAN CFG80211DRV_OpsChgVirtualInf(
 BOOLEAN CFG80211DRV_OpsScan(
 	VOID						*pAdOrg);
 
+// TODO
+//VOID CFG80211DRV_OpsScanInLinkDownAction(VOID *pAdOrg);
+
 BOOLEAN CFG80211DRV_OpsJoinIbss(
 	VOID						*pAdOrg,
 	VOID						*pData);
@@ -151,6 +159,10 @@ VOID CFG80211DRV_SurveyGet(
 VOID CFG80211DRV_PmkidConfig(
 	VOID						*pAdOrg,
 	VOID						*pData);
+
+#ifdef CONFIG_STA_SUPPORT
+VOID CFG80211_LostApInform(VOID *pAdCB);
+#endif
 
 VOID CFG80211_RegHint(
 	IN VOID						*pAdCB,

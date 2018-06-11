@@ -130,13 +130,20 @@ NDIS_STATUS	RTMPReadParametersHook(
 #endif /* MULTIPLE_CARD_SUPPORT */
 	}
 
+	// Regardless of what we find in the DAT file, set defaults here.
+	// Now the DAT file is only used to force settings to certain values.
+	// Initialize with defaults first
+	RTMPSetDefaultProfileParameters(pAd);
+	retval = NDIS_STATUS_SUCCESS;
+
 	if (src && *src)
 	{
 		RtmpOSFSInfoChange(&osFSInfo, TRUE);
+
 		srcf = RtmpOSFileOpen(src, O_RDONLY, 0);
 		if (IS_FILE_OPEN_ERR(srcf)) 
 		{
-			DBGPRINT(RT_DEBUG_ERROR, ("Open file \"%s\" failed!\n", src));
+			DBGPRINT(RT_DEBUG_ERROR, ("Open file \"%s\" failed (configuration file not absolutely necessary)\n", src));
 		}
 		else 
 		{
