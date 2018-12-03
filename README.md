@@ -34,6 +34,12 @@ $ sudo dkms install mt7610u_sta/1.0
 
 # ARMv7 platform notes (e.g. Raspberry PI)
 
+On the latest Raspbian stretch lite you will need to install the kernel headers to get DKMS to build
+
+```
+sudo apt-get install raspberrypi-kernel-headers
+```
+
 On ARMv7 platforms, there could be a problem with loading module. You'll see something like that in your dmesg output:
 
 ```
